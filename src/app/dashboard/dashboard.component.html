@@ -1,0 +1,97 @@
+<nz-layout>
+  <nz-sider nzCollapsible nzWidth="200px" nzCollapsible nzBreakpoint="lg" [nzCollapsedWidth]="0">
+
+    <div style="height: 45px;"></div>
+    <ul nz-menu nzTheme="dark" nzMode="inline">
+      <li nz-submenu nzTitle="User" nzIcon="user">
+        <ul>
+          <li nz-menu-item>Tom</li>
+          <li nz-menu-item>Bill</li>
+          <li nz-menu-item>Alex</li>
+        </ul>
+      </li>
+      <li nz-submenu nzTitle="Team" nzIcon="team">
+        <ul>
+          <li nz-menu-item>Team 1</li>
+          <li nz-menu-item>Team 2</li>
+        </ul>
+      </li>
+      <li nz-menu-item>
+        <i nz-icon nzType="file"></i>
+        <span>File</span>
+      </li>
+    </ul>
+  </nz-sider>
+  <nz-layout>
+    <nz-header>
+      <img src="assets/logoAnkieter.PNG" height="100%" style="margin-left: 1rem;">
+      <div style=" width:40vw; margin-left:5vw">
+        <nz-input-group nzSearch nzSize="large" >
+          <input placeholder="Szukaj po nazwie" nz-input [(ngModel)]="inputValue" (input)="onChange($event)" [nzAutocomplete]="auto" />
+        </nz-input-group>
+        <ng-template #suffixIconButton>
+          <button nz-button nzType="primary" nzSize="large" nzSearch>
+            <i nz-icon nzType="search" nzTheme="outline"></i>
+          </button>
+        </ng-template>
+        <nz-autocomplete #auto>
+          <nz-auto-option class="global-search-item" *ngFor="let option of mockService.mockDashboardDataMergedSorted()" [nzValue]="option.name">
+           {{ option.value }}
+            <a
+              class="global-search-item-desc"
+              [href]="'https://s.taobao.com/search?q=' + option.id"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {{ option.name }}
+            </a>
+
+          </nz-auto-option>
+        </nz-autocomplete>
+      </div>
+
+    </nz-header>
+    <nz-content>
+      <nz-breadcrumb>
+        <nz-breadcrumb-item>Ekran główny</nz-breadcrumb-item>
+
+      </nz-breadcrumb>
+      <div class="inner-content">
+
+<section class="filters">
+  <nz-button-group>
+    <button nz-button [nzType]="filter==''?'primary':'default'"  (click)="filter=''"><i nz-icon nzType="select"></i> Wszystkie</button>
+    <button nz-button [nzType]="filter=='report'?'primary':'default'" (click)="filter='report'"><i nz-icon nzType="line-chart"></i> Raporty</button>
+    <button nz-button [nzType]="filter=='survey'?'primary':'default'"  (click)="filter='survey'"><i nz-icon nzType="folder"></i>Ankiety</button>
+  </nz-button-group>
+</section>
+
+        <div class="cards-container">
+          <div class="cards-container-vertical">
+        <div class="card-padding">
+          <nz-card class="add-new">
+              <i nz-icon nzType="folder-add" style="font-size: 2.7rem; display: block"></i>
+            <div style="display: block; text-align: center">Nowy raport</div>
+          </nz-card>
+
+        </div>
+          <div class="card-padding">
+            <nz-card class="add-new">
+              <i nz-icon nzType="appstore-add" style="font-size: 2.7rem; display: block"></i>
+              <div style="display: block; text-align: center">Nowa ankieta</div>
+            </nz-card>
+
+          </div>
+          </div>
+        <div class="card-padding"  *ngFor="let dataObject of mockService.mockDashboardDataMergedSorted(filter)" >
+          <app-survey-tile [survey]="dataObject" *ngIf="dataObject.type=='survey'"></app-survey-tile>
+          <app-report-tile [report]="dataObject" *ngIf="dataObject.type=='report'"></app-report-tile>
+        </div>
+
+
+        </div>
+      </div>
+    </nz-content>
+    <nz-footer>Ant Design ©2020 Implement By Angular</nz-footer>
+  </nz-layout>
+</nz-layout>
