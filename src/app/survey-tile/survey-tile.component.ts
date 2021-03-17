@@ -3,7 +3,7 @@ import {Component, Input, OnInit} from '@angular/core';
 @Component({
   selector: 'app-survey-tile',
   template: `
-    <nz-card style="width:300px;" [nzCover]="coverTemplate" [nzActions]="[actionSetting, actionEdit, actionEllipsis]">
+    <nz-card style="width:300px;" [nzCover]="coverTemplate" [nzActions]="[actionSetting, actionEdit, actionEllipsis, actionCreateReport]">
       <nz-card-meta nzTitle="{{survey.name}}" nzDescription="{{description}}"></nz-card-meta>
       <div class="progress">
         <div class="desc">
@@ -34,13 +34,16 @@ import {Component, Input, OnInit} from '@angular/core';
 
     </ng-template>
     <ng-template #actionSetting>
-      <i nz-icon [nzType]="'copy'"></i>
+      <i nz-icon [nzType]="'copy'" nz-tooltip [nzTooltipTitle]="'duplikuj'"></i>
     </ng-template>
     <ng-template #actionEdit>
-      <i nz-icon nzType="edit"></i>
+      <i nz-icon nzType="edit" nz-tooltip [nzTooltipTitle]="'Edytuj ankietę'"></i>
     </ng-template>
     <ng-template #actionEllipsis>
-     <i nz-icon nzType="download"></i>
+     <i nz-icon nzType="download" nz-tooltip [nzTooltipTitle]="'Pobierz XML ankiety'"></i>
+    </ng-template>
+    <ng-template #actionCreateReport>
+      <i nz-icon nzType="folder-add" nz-tooltip [nzTooltipTitle]="'Nowy raport z wyników ankiety'"></i>
     </ng-template>
   `,
   styles: [

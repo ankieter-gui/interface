@@ -29,6 +29,7 @@ nz-breadcrumb {
 .cards-container{
   display: flex;
   flex-wrap: wrap;
+  transition: 1s all;
 }
 .add-new{
   width:150px;height:150px; color:#3b3b3b; display: flex; flex-direction: column; justify-content: center; justify-items: center; cursor: pointer;
@@ -40,6 +41,7 @@ nz-breadcrumb {
 }
 .card-padding{
   padding: 1.5rem;
+
 }
 .cards-container-vertical{
   display: flex;

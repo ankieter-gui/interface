@@ -31,6 +31,7 @@ import {NzAutocompleteModule} from 'ng-zorro-antd/auto-complete';
 import {NzAffixModule} from 'ng-zorro-antd/affix';
 import {NzSelectModule} from 'ng-zorro-antd/select';
 import {NzInputModule} from 'ng-zorro-antd/input';
+import {NzToolTipModule} from 'ng-zorro-antd/tooltip';
 
 
 registerLocaleData(fr);
@@ -43,35 +44,36 @@ registerLocaleData(fr);
     ReportTileComponent,
 
   ],
-  imports: [
-    NgxEchartsModule.forRoot({
-      /**
-       * This will import all modules from echarts.
-       * If you only need custom modules,
-       * please refer to [Custom Build] section.
-       */
-      echarts: () => import('echarts'), // or import('./path-to-my-custom-echarts')
-    }),
-    BrowserModule,
-    BrowserAnimationsModule,
-    NzLayoutModule,
-    NzBreadCrumbModule,
-    NzCardModule,
-    NzAvatarModule,
-    AppRoutingModule,
-    NzAffixModule,
-    NzMenuModule,
-    NzSelectModule,
-    NzStatisticModule,
-    NzAutocompleteModule,
-    NzTagModule,
-    NzProgressModule,
-    FormsModule,
-    HttpClientModule,
-    NzIconModule,
-    NzButtonModule,
-    NzInputModule
-  ],
+    imports: [
+        NgxEchartsModule.forRoot({
+            /**
+             * This will import all modules from echarts.
+             * If you only need custom modules,
+             * please refer to [Custom Build] section.
+             */
+            echarts: () => import('echarts'), // or import('./path-to-my-custom-echarts')
+        }),
+        BrowserModule,
+        BrowserAnimationsModule,
+        NzLayoutModule,
+        NzBreadCrumbModule,
+        NzCardModule,
+        NzAvatarModule,
+        AppRoutingModule,
+        NzAffixModule,
+        NzMenuModule,
+        NzSelectModule,
+        NzStatisticModule,
+        NzAutocompleteModule,
+        NzTagModule,
+        NzProgressModule,
+        FormsModule,
+        HttpClientModule,
+        NzIconModule,
+        NzButtonModule,
+        NzInputModule,
+        NzToolTipModule
+    ],
   providers: [{ provide: NZ_I18N, useValue: fr_FR }],
   bootstrap: [AppComponent]
 })
