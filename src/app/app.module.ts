@@ -32,7 +32,10 @@ import {NzAffixModule} from 'ng-zorro-antd/affix';
 import {NzSelectModule} from 'ng-zorro-antd/select';
 import {NzInputModule} from 'ng-zorro-antd/input';
 import {NzToolTipModule} from 'ng-zorro-antd/tooltip';
-
+import { NewReportDialogComponent } from './new-report-dialog/new-report-dialog.component';
+import {NzModalModule} from 'ng-zorro-antd/modal';
+import { FilterByNamePipe } from './filter-by-name.pipe';
+import { ShareDialogComponent } from './share-dialog/share-dialog.component';
 
 registerLocaleData(fr);
 @NgModule({
@@ -42,6 +45,10 @@ registerLocaleData(fr);
     SurveyTileComponent,
     SurveySparklineChartComponent,
     ReportTileComponent,
+    NewReportDialogComponent,
+    FilterByNamePipe,
+    ShareDialogComponent,
+
 
   ],
     imports: [
@@ -67,11 +74,13 @@ registerLocaleData(fr);
         NzAutocompleteModule,
         NzTagModule,
         NzProgressModule,
+      NzModalModule,
         FormsModule,
         HttpClientModule,
         NzIconModule,
         NzButtonModule,
         NzInputModule,
+
         NzToolTipModule
     ],
   providers: [{ provide: NZ_I18N, useValue: fr_FR }],

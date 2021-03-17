@@ -36,17 +36,10 @@
           </button>
         </ng-template>
         <nz-autocomplete #auto>
-          <nz-auto-option class="global-search-item" *ngFor="let option of mockService.mockDashboardDataMergedSorted()"
+          <nz-auto-option class="global-search-item" *ngFor="let option of mockService.mockDashboardDataMergedSorted() | filterByName:inputValue"
                           [nzValue]="option.name">
-            {{ option.value }}
-            <a
-              class="global-search-item-desc"
-              [href]="'https://s.taobao.com/search?q=' + option.id"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {{ option.name }}
-            </a>
+            {{ option.name }}
+
 
           </nz-auto-option>
         </nz-autocomplete>
@@ -80,19 +73,19 @@
           <div class="cards-container-vertical">
 
             <div class="card-padding">
-              <nz-card class="add-new">
+              <nz-card class="add-new" [routerLink]="['surveysEditor']">
                 <i nz-icon nzType="appstore-add" style="font-size: 2.7rem; display: block"></i>
                 <div style="display: block; text-align: center">Nowa ankieta</div>
               </nz-card>
             </div>
             <div class="card-padding">
-              <nz-card class="add-new">
+              <nz-card class="add-new" (click)="dashboardModals.openNewReportDialog()">
                 <i nz-icon nzType="folder-add" style="font-size: 2.7rem; display: block"></i>
                 <div style="display: block; text-align: center">Nowy raport</div>
               </nz-card>
             </div>
           </div>
-          <div class="card-padding" *ngFor="let dataObject of mockService.mockDashboardDataMergedSorted(filter)" [@hide]="loading">
+          <div class="card-padding" *ngFor="let dataObject of mockService.mockDashboardDataMergedSorted(filter) | filterByName: inputValue" [@hide]="loading">
             <app-survey-tile [survey]="dataObject" *ngIf="dataObject.type=='survey'"></app-survey-tile>
             <app-report-tile [report]="dataObject" *ngIf="dataObject.type=='report'"></app-report-tile>
           </div>

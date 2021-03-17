@@ -3,6 +3,9 @@ import {MockService} from '../mock.service';
 
 import * as sChance from 'chance'
 import {animate, query, stagger, state, style, transition, trigger} from '@angular/animations';
+import {DashboardModalsService} from '../dashboard-modals.service';
+import {NewReportDialogComponent} from '../new-report-dialog/new-report-dialog.component';
+import {Router} from '@angular/router';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -43,7 +46,9 @@ import {animate, query, stagger, state, style, transition, trigger} from '@angul
 })
 export class DashboardComponent implements OnInit {
 
-  constructor(public mockService:MockService) { }
+  constructor(public mockService:MockService, public dashboardModals:DashboardModalsService, public router:Router) {
+    console.log(this.router.getCurrentNavigation().extras?.state?.example);
+  }
 
   ngOnInit(): void {
   }
@@ -65,5 +70,7 @@ export class DashboardComponent implements OnInit {
   randomAvatart():String{
     return sChance().avatar();
   }
+
+
 
 }

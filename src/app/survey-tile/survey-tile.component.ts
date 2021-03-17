@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {DashboardModalsService} from '../dashboard-modals.service';
 
 @Component({
   selector: 'app-survey-tile',
@@ -43,7 +44,7 @@ import {Component, Input, OnInit} from '@angular/core';
      <i nz-icon nzType="download" nz-tooltip [nzTooltipTitle]="'Pobierz XML ankiety'"></i>
     </ng-template>
     <ng-template #actionCreateReport>
-      <i nz-icon nzType="folder-add" nz-tooltip [nzTooltipTitle]="'Nowy raport z wyników ankiety'"></i>
+      <i nz-icon nzType="folder-add" nz-tooltip [nzTooltipTitle]="'Nowy raport z wyników ankiety'" (click)="dashboardModals.openNewReportDialog(this.survey)"></i>
     </ng-template>
   `,
   styles: [
@@ -97,7 +98,7 @@ export class SurveyTileComponent implements OnInit {
   get daysAlready(){
     return  Math.round(Math.abs((+this.survey.startedOn) - (+new Date()))/8.64e7);
   }
-  constructor() { }
+  constructor( public dashboardModals:DashboardModalsService) { }
 
   ngOnInit(): void {
   }

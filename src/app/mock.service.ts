@@ -52,6 +52,19 @@ export class MockService {
    mockDashboardDataMergedSorted(filter=""){
     return [...this.mockDashboardData.surveys,...this.mockDashboardData.reports].sort((x:any,y:any)=>x.createdOn-y.createdOn).reverse().filter(e=>e.type==filter || filter=="")
   }
+
+  public mockUsersAndGroupsData={
+    groups:[
+      {name:"dziekani", users:['1','2']},
+      {name:"biologia", users:['1']}
+    ],
+    users:[
+      {name:"Stefan Czarnecki", id:'1'},
+      {name:"Jacek Placek", id:'2'},
+      {name:"Pani Róża", id:'3'},
+      {name:"Pani Jadzia z urzędu", id:'4'},
+    ]
+  }
   public mockDashboardData={
     surveys:[
       {
