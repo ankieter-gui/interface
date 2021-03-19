@@ -56,18 +56,23 @@ export class DashboardComponent implements OnInit {
   filter="";
   filter_tmp=""
   loading="open"
-  hideAndShow(criterion){
+  changeFilter(criterion, animate=true){
     if (this.filter_tmp==criterion) return;
-    this.loading="closed"
-    setTimeout(()=>{this.loading="open"}, 400)
-     setTimeout(()=>{this.filter=criterion}, 200)
+    if (animate) {this.hideAndShow();
+    setTimeout(()=>{this.filter=criterion}, 200);}
+    else{this.filter=criterion}
     this.filter_tmp=criterion;
   }
-
-  onChange(event){
-
+  hideAndShow(){
+    this.loading="closed"
+    setTimeout(()=>{this.loading="open"}, 400)
   }
-  randomAvatart():String{
+  onChange(event){
+    if (this.inputValue.length==1){
+      this.changeFilter('',false);
+    }
+  }
+  randomAvatart():string{
     return sChance().avatar();
   }
 

@@ -3,7 +3,7 @@ import {Component, Input, OnInit} from '@angular/core';
 @Component({
   selector: 'app-report-tile',
   template: `
-    <nz-card style="width:300px;" [nzCover]="coverTemplate" [nzActions]="[actionSetting, actionEdit, actionEllipsis, actionSee]">
+    <nz-card style="width:300px;" [nzCover]="coverTemplate" [nzActions]="[actionSetting, actionEdit, actionEllipsis, actionSee, actionDelete]">
       <nz-card-meta nzTitle="{{report.name}}" nzDescription=""></nz-card-meta>
 
       <div class="progress">
@@ -34,16 +34,19 @@ import {Component, Input, OnInit} from '@angular/core';
 
     </ng-template>
     <ng-template #actionSetting>
-      <i nz-icon [nzType]="'copy'" nz-tooltip [nzTooltipTitle]="'duplikuj'"></i>
+      <i nz-icon [nzType]="'copy'" nz-tooltip [nzTooltipTitle]="'Duplikuj'"></i>
     </ng-template>
     <ng-template #actionEdit>
-      <i nz-icon nzType="edit" nz-tooltip [nzTooltipTitle]="'edytuj'"></i>
+      <i nz-icon nzType="edit" nz-tooltip [nzTooltipTitle]="'Edytuj'"></i>
     </ng-template>
     <ng-template #actionEllipsis>
       <i nz-icon nzType="share-alt" nz-tooltip [nzTooltipTitle]="'Udostępnij'"></i>
     </ng-template>
     <ng-template #actionSee>
       <i nz-icon nzType="eye" nz-tooltip [nzTooltipTitle]="'Podejrzyj'"></i>
+    </ng-template>
+    <ng-template #actionDelete>
+      <i nz-icon nzType="delete" nz-tooltip [nzTooltipTitle]="'Usuń'"></i>
     </ng-template>
   `,
   styles: [

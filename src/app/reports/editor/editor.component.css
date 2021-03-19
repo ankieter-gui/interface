@@ -42,3 +42,28 @@ nz-breadcrumb {
 .element-box:hover{
   cursor: pointer;
 }
+.add-more{
+  margin-top: 4em;
+  width: 100%;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border: 3px dashed rgba(0,0,0,0.1);
+}
+.add-more-content{
+  display: flex;
+}
+.add-more-content i{
+  display: block;
+  font-size: 2em;
+  margin:0.5em;
+  color:rgba(0,0,0,0.6);
+  transition: 0.2s all;
+}
+.add-more-content i:hover{
+  color:rgba(0,0,0,0.9);
+  cursor: pointer;
+  transform: scale(1.3);
+}

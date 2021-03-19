@@ -10,7 +10,7 @@
       <img src="assets/logoAnkieter.PNG" height="100%" style="margin-left: 1rem;">
       <div style=" width:40vw; margin-left:5vw">
         <nz-input-group nzSearch nzSize="large">
-          <input placeholder="Szukaj po nazwie" nz-input [(ngModel)]="inputValue" (input)="onChange($event)"
+          <input placeholder="Szukaj po nazwie" nz-input [(ngModel)]="inputValue" (input)="onChange($event)" (ngModelChange)="onChange($event)"
                  [nzAutocomplete]="auto"/>
         </nz-input-group>
         <ng-template #suffixIconButton>
@@ -19,7 +19,7 @@
           </button>
         </ng-template>
         <nz-autocomplete #auto>
-          <nz-auto-option class="global-search-item" *ngFor="let option of mockService.mockDashboardDataMergedSorted() | filterByName:inputValue"
+          <nz-auto-option (click)="changeFilter('')" class="global-search-item" *ngFor="let option of mockService.mockDashboardDataMergedSorted() | filterByName:inputValue"
                           [nzValue]="option.name">
             {{ option.name }}
 
@@ -38,18 +38,22 @@
 
         <section class="filters">
           <nz-button-group>
-            <button nz-button [nzType]="filter_tmp==''?'primary':'default'" (click)="hideAndShow('')"><i nz-icon
-                                                                                               nzType="select"></i>
+            <button nz-button [nzType]="filter_tmp==''?'primary':'default'" (click)="changeFilter('')"><i nz-icon
+                                                                                                          nzType="select"></i>
               Wszystkie
             </button>
-            <button nz-button [nzType]="filter_tmp=='report'?'primary':'default'" (click)="hideAndShow('report')"><i nz-icon
+            <button nz-button [nzType]="filter_tmp=='report'?'primary':'default'" (click)="changeFilter('report')"><i nz-icon
                                                                                                            nzType="line-chart"></i>
               Raporty
             </button>
-            <button nz-button [nzType]="filter_tmp=='survey'?'primary':'default'" (click)="hideAndShow('survey')"><i nz-icon
+            <button nz-button [nzType]="filter_tmp=='survey'?'primary':'default'" (click)="changeFilter('survey')"><i nz-icon
                                                                                                            nzType="folder"></i>Ankiety
             </button>
           </nz-button-group>
+          <div class="search-term-indicator" *ngIf="inputValue">
+           <span class="search-term-indicator-label">Tylko o nazwie:</span> <nz-tag class="search-term-indicator-tag" nzMode="closeable" [nzColor]="'magenta'" (nzOnClose)="hideAndShow();inputValue=''" >{{inputValue}}</nz-tag>
+
+          </div>
         </section>
 
         <div class="cards-container">

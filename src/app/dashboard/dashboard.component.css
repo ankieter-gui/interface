@@ -50,3 +50,13 @@ nz-breadcrumb {
 nz-footer {
   text-align: center;
 }
+.filters{
+  display: flex;
+  align-items: center;
+}
+.search-term-indicator{
+  margin-left: 1em;
+}
+.search-term-indicator-tag{
+  margin-left: 0.5em;
+}
