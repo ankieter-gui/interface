@@ -8,6 +8,7 @@ import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag
 })
 export class EditorComponent implements OnInit {
   mockChartResponseData = {};
+  mouseHoveringAddMorePanel=false;
   get sortedElements(){
     return this.reportDefinition.elements.sort((s,d)=>s.order-d.order)
   }
