@@ -19,19 +19,19 @@
         <nz-breadcrumb-item>Edytor raportu</nz-breadcrumb-item>
 
       </nz-breadcrumb>
-      <div class="inner-content">
+      <div class="inner-content ">
         <div class="report-element" cdkDropList [cdkDropListData]="this.reportDefinition.elements" (cdkDropListDropped)="drop($event)">
           <div class="custom-placeholder" *cdkDragPlaceholder></div>
 
 
-          <div *ngFor="let element of reportDefinition.elements" cdkDrag class="element-box">
+          <div *ngFor="let element of reportDefinition.elements" cdkDrag class="element-box ">
           <ng-container [ngSwitch]="element.type">
             <div *ngSwitchCase="'text'" [innerHTML]="element.content.text"></div>
             <div *ngSwitchCase="'chart'"> {{generateChart(queryData(element.content.dataQuery), element.content.config)}}</div>
           </ng-container>
           </div>
         </div>
-        <section class="add-more" (mouseover)="mouseHoveringAddMorePanel=true" (mouseleave)="mouseHoveringAddMorePanel=false">
+        <section class="add-more slide-top-enter-animation" (mouseover)="mouseHoveringAddMorePanel=true" (mouseleave)="mouseHoveringAddMorePanel=false">
           <div class="add-more-content add-new"> Dodaj nowy <i nz-icon nzType="plus"></i></div>
           <div class="add-more-content">
             <span [class.shake]="mouseHoveringAddMorePanel"><span [class.slide-top]="mouseHoveringAddMorePanel"><i  class="recommended" nz-icon nzType="build" [nz-tooltip]="'Proponowany wykres'"></i></span></span>
