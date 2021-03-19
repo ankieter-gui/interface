@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {MockService} from '../mock.service';
 
 import * as sChance from 'chance'
@@ -45,7 +45,7 @@ import {Router} from '@angular/router';
   ]
 })
 export class DashboardComponent implements OnInit {
-
+  @ViewChild('sidenav', {static: true}) sidenav;
   constructor(public mockService:MockService, public dashboardModals:DashboardModalsService, public router:Router) {
     console.log(this.router.getCurrentNavigation().extras?.state?.example);
   }

@@ -8,7 +8,7 @@ import { AppRoutingModule } from './app-routing.module';
 
 import {NgxEchartsModule} from 'ngx-echarts';
 
-import { NZ_I18N } from 'ng-zorro-antd/i18n';
+import {NZ_I18N, pl_PL} from 'ng-zorro-antd/i18n';
 import { fr_FR } from 'ng-zorro-antd/i18n';
 import { registerLocaleData } from '@angular/common';
 import fr from '@angular/common/locales/fr';
@@ -36,8 +36,43 @@ import { NewReportDialogComponent } from './new-report-dialog/new-report-dialog.
 import {NzModalModule} from 'ng-zorro-antd/modal';
 import { FilterByNamePipe } from './filter-by-name.pipe';
 import { ShareDialogComponent } from './share-dialog/share-dialog.component';
+import { GlobalSidemenuComponent } from './global-sidemenu/global-sidemenu.component';
+import {EditorComponent} from './reports/editor/editor.component';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 registerLocaleData(fr);
+export let commonNZImports = [
+  NgxEchartsModule.forRoot({
+    /**
+     * This will import all modules from echarts.
+     * If you only need custom modules,
+     * please refer to [Custom Build] section.
+     */
+    echarts: () => import('echarts'), // or import('./path-to-my-custom-echarts')
+  }),
+  BrowserModule,
+  BrowserAnimationsModule,
+  NzLayoutModule,
+  NzBreadCrumbModule,
+  NzCardModule,
+  NzAvatarModule,
+  AppRoutingModule,
+  NzAffixModule,
+  NzMenuModule,
+  NzSelectModule,
+  NzStatisticModule,
+  NzAutocompleteModule,
+  NzTagModule,
+  NzProgressModule,
+  NzModalModule,
+  FormsModule,
+  HttpClientModule,
+  NzIconModule,
+  NzButtonModule,
+  NzInputModule,
+
+  NzToolTipModule
+]
 @NgModule({
   declarations: [
     AppComponent,
@@ -48,42 +83,21 @@ registerLocaleData(fr);
     NewReportDialogComponent,
     FilterByNamePipe,
     ShareDialogComponent,
+    GlobalSidemenuComponent,
+    //TODO: lazy loading issue #4
+    EditorComponent,
 
 
   ],
-    imports: [
-        NgxEchartsModule.forRoot({
-            /**
-             * This will import all modules from echarts.
-             * If you only need custom modules,
-             * please refer to [Custom Build] section.
-             */
-            echarts: () => import('echarts'), // or import('./path-to-my-custom-echarts')
-        }),
-        BrowserModule,
-        BrowserAnimationsModule,
-        NzLayoutModule,
-        NzBreadCrumbModule,
-        NzCardModule,
-        NzAvatarModule,
-        AppRoutingModule,
-        NzAffixModule,
-        NzMenuModule,
-        NzSelectModule,
-        NzStatisticModule,
-        NzAutocompleteModule,
-        NzTagModule,
-        NzProgressModule,
-      NzModalModule,
-        FormsModule,
-        HttpClientModule,
-        NzIconModule,
-        NzButtonModule,
-        NzInputModule,
+  imports: [
+    ...commonNZImports,
+    DragDropModule
 
-        NzToolTipModule
-    ],
-  providers: [{ provide: NZ_I18N, useValue: fr_FR }],
+  ],
+  providers: [{provide: NZ_I18N, useValue: fr_FR}],
+  exports: [
+    GlobalSidemenuComponent
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

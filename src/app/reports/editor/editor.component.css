@@ -1,0 +1,44 @@
+.logo {
+  height: 32px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 16px;
+}
+
+nz-header {
+  background: #fff;
+  padding: 0;
+  display: flex;
+  align-items: center;
+
+}
+
+nz-content {
+  margin: 0 16px;
+}
+
+nz-breadcrumb {
+  margin: 16px 0;
+}
+
+.inner-content {
+  padding: 24px;
+  background: #fff;
+  min-height: 100vh;
+  max-width: 900px;
+
+}
+
+
+.cdk-drop-list-dragging .element-box:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+.element-box{
+  margin-top:2em;
+  padding:1em;
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 5px;
+
+}
+.element-box:hover{
+  cursor: pointer;
+}

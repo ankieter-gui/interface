@@ -1,1 +1,39 @@
-<p>editor works!</p>
+<nz-layout>
+
+  <nz-sider nzCollapsible nzWidth="200px" nzCollapsible nzBreakpoint="lg" [nzCollapsedWidth]="0">
+    <app-global-sidemenu></app-global-sidemenu>
+  </nz-sider>
+
+
+  <nz-layout>
+    <nz-header>
+      <img src="assets/logoAnkieter.PNG" height="100%" style="margin-left: 1rem;">
+      <div style=" width:40vw; margin-left:5vw">
+
+      </div>
+
+    </nz-header>
+    <nz-content>
+      <nz-breadcrumb>
+        <nz-breadcrumb-item><a [routerLink]="'/'">Ekran główny</a> </nz-breadcrumb-item>
+        <nz-breadcrumb-item>Edytor raportu</nz-breadcrumb-item>
+
+      </nz-breadcrumb>
+      <div class="inner-content">
+        <div class="report-element" cdkDropList [cdkDropListData]="this.reportDefinition.elements" (cdkDropListDropped)="drop($event)">
+          <div class="custom-placeholder" *cdkDragPlaceholder></div>
+
+
+          <div *ngFor="let element of reportDefinition.elements" cdkDrag class="element-box">
+          <ng-container [ngSwitch]="element.type">
+            <div *ngSwitchCase="'text'" [innerHTML]="element.content.text"></div>
+            <div *ngSwitchCase="'chart'"> {{generateChart(queryData(element.content.dataQuery), element.content.config)}}</div>
+          </ng-container>
+          </div>
+        </div>
+
+      </div>
+    </nz-content>
+    <nz-footer>Ant Design ©2020 Implement By Angular</nz-footer>
+  </nz-layout>
+</nz-layout>

@@ -52,6 +52,10 @@ export class MockService {
    mockDashboardDataMergedSorted(filter=""){
     return [...this.mockDashboardData.surveys,...this.mockDashboardData.reports].sort((x:any,y:any)=>x.createdOn-y.createdOn).reverse().filter(e=>e.type==filter || filter=="")
   }
+  public static survey__repr__(survey){
+    //TODO: move this to survey class as __repr__
+    return survey.name + survey.startedOn
+  }
 
   public mockUsersAndGroupsData={
     groups:[
