@@ -74,6 +74,20 @@ nz-breadcrumb {
   color:rgba(0,0,0,0.5);
   font-family: "Open Sans", sans-serif;
 }
+.title-input{
+  font-size: 3em;
+  width:100%;
+}
+::ng-deep.mat-form-field-ripple {
+  /*change color of underline when focused*/
+  background-color:#44B4EC !important;; }
+::ng-deep .mat-focused .mat-form-field-label {
+  /*change color of label*/
+  color: #44B4EC !important;
+}
+::ng-deep .mat-form-field{
+  font-family: "Cambria", serif !important;
+}
 .recommended{
   color: rgba(0,0,0, 0.8) !important;
 }

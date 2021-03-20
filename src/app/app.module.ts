@@ -39,6 +39,9 @@ import { ShareDialogComponent } from './share-dialog/share-dialog.component';
 import { GlobalSidemenuComponent } from './global-sidemenu/global-sidemenu.component';
 import {EditorComponent} from './reports/editor/editor.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
+import {ChartEditorViewComponent} from './reports/chart-editor-view/chart-editor-view.component';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
 
 registerLocaleData(fr);
 export let commonNZImports = [
@@ -86,12 +89,15 @@ export let commonNZImports = [
     GlobalSidemenuComponent,
     //TODO: lazy loading issue #4
     EditorComponent,
+    ChartEditorViewComponent,
 
 
   ],
   imports: [
     ...commonNZImports,
-    DragDropModule
+    DragDropModule,
+    MatFormFieldModule,
+    MatInputModule,
 
   ],
   providers: [{provide: NZ_I18N, useValue: fr_FR}],

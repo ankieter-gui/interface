@@ -9,10 +9,10 @@ import chance from 'chance';
 export class MockService {
 
   constructor() { }
-  public surveyToChart(survey): EChartsOption{
+  public surveyToChart(survey, showAxes=false): EChartsOption{
     return {
       color:"#3b3b3b",
-      grid: {
+      grid: showAxes?null:{
         left: 0,
         top: 0,
         right: 0,
@@ -20,13 +20,13 @@ export class MockService {
       },
       xAxis:{
         type: 'time',
-        show:false,
+        show:showAxes,
 
       },
 
       yAxis:{
         type:'value',
-        show:false,
+        show:showAxes,
       },
       series:[
         {

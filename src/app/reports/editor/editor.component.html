@@ -20,6 +20,9 @@
 
       </nz-breadcrumb>
       <div class="inner-content ">
+        <mat-form-field class="title-input">
+          <input matInput placeholder="Nazwa raportu" [(ngModel)]="this.reportDefinition.title">
+        </mat-form-field>
         <div class="report-element" cdkDropList [cdkDropListData]="this.reportDefinition.elements" (cdkDropListDropped)="drop($event)">
           <div class="custom-placeholder" *cdkDragPlaceholder></div>
 
@@ -27,7 +30,7 @@
           <div *ngFor="let element of reportDefinition.elements" cdkDrag class="element-box ">
           <ng-container [ngSwitch]="element.type">
             <div *ngSwitchCase="'text'" [innerHTML]="element.content.text"></div>
-            <div *ngSwitchCase="'chart'"> {{generateChart(queryData(element.content.dataQuery), element.content.config)}}</div>
+            <app-chart-editor-view *ngSwitchCase="'chart'" [chartData]="element"></app-chart-editor-view>
           </ng-container>
           </div>
         </div>
