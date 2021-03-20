@@ -13,14 +13,14 @@ import {Router} from '@angular/router';
   animations: [
     trigger("hide", [
       state('open', style({
-        transform:'translateY(0%)',
+        transform: 'translateY(0%)',
         opacity: 1,
 
       })),
       state('closed', style({
 
         opacity: 0,
-        transform:'translateY(15%)',
+        transform: 'translateY(15%)',
       })),
       transition('open => closed', [
         animate('0.2s')
@@ -30,10 +30,10 @@ import {Router} from '@angular/router';
       ]),
     ]),
     trigger('fadeInOut', [
-      state('in', style({ opacity:1,transform: 'translateY(0)' })),
+      state('in', style({ opacity: 1, transform: 'translateY(0)' })),
       transition('void => *', [
 
-        style({ opacity:0,transform: 'translateY(15%)' }),
+        style({ opacity: 0, transform: 'translateY(15%)' }),
 
         animate('200ms')
 
@@ -45,34 +45,34 @@ import {Router} from '@angular/router';
   ]
 })
 export class DashboardComponent implements OnInit {
-  @ViewChild('sidenav', {static: true}) sidenav;
-  constructor(public mockService:MockService, public dashboardModals:DashboardModalsService, public router:Router) {
+  constructor(public mockService: MockService, public dashboardModals: DashboardModalsService, public router: Router) {
     console.log(this.router.getCurrentNavigation().extras?.state?.example);
   }
+  @ViewChild('sidenav', {static: true}) sidenav;
+  inputValue;
+  filter = "";
+  filter_tmp = ""
+  loading = "open"
 
   ngOnInit(): void {
   }
-  inputValue;
-  filter="";
-  filter_tmp=""
-  loading="open"
-  changeFilter(criterion, animate=true){
-    if (this.filter_tmp==criterion) return;
+  changeFilter(criterion: string, animate= true){
+    if (this.filter_tmp == criterion) { return; }
     if (animate) {this.hideAndShow();
-    setTimeout(()=>{this.filter=criterion}, 200);}
-    else{this.filter=criterion}
-    this.filter_tmp=criterion;
+                  setTimeout(() => {this.filter = criterion}, 200); }
+    else{this.filter = criterion}
+    this.filter_tmp = criterion;
   }
   hideAndShow(){
-    this.loading="closed"
-    setTimeout(()=>{this.loading="open"}, 400)
+    this.loading = "closed"
+    setTimeout(() => {this.loading = "open"}, 400)
   }
-  onChange(event){
-    if (this.inputValue.length==1){
-      this.changeFilter('',false);
+  onChange(event: Event){
+    if (this.inputValue.length == 1){
+      this.changeFilter('', false);
     }
   }
-  randomAvatart():string{
+  randomAvatart(): string{
     return sChance().avatar();
   }
 

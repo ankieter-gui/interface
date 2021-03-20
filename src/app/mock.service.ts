@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {EChartsOption} from 'echarts';
 import { graphic } from 'echarts';
 import chance from 'chance';
+import {SurveyMeta} from './dataModels/survey';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ import chance from 'chance';
 export class MockService {
 
   constructor() { }
-  public surveyToChart(survey, showAxes=false): EChartsOption{
+  public surveyToChart(survey:SurveyMeta, showAxes=false): EChartsOption{
     return {
       color:"#3b3b3b",
       grid: showAxes?null:{
