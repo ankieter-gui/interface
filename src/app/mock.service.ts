@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {EChartsOption} from 'echarts';
 import { graphic } from 'echarts';
 import chance from 'chance';
-import {SurveyMeta} from './dataModels/survey';
+import {ReportMeta, SurveyMeta} from './dataModels/survey';
 
 @Injectable({
   providedIn: 'root'
@@ -70,14 +70,16 @@ export class MockService {
       {name:"Pani Jadzia z urzędu", id:'4'},
     ]
   }
-  public mockDashboardData={
+  public mockDashboardData:{surveys:SurveyMeta[], reports:ReportMeta[]}={
     surveys:[
       {
         type:"survey",
         name: "Survey #1",
         questionsAmount:15,
         isActive:true,
+        isPublic:false,
         startedOn:1615915809432,
+        createdOn:1615915809432,
         endsOn:1645915809432,
         responses:[
           {
@@ -117,6 +119,8 @@ export class MockService {
         name: "Ankieta zadowolenia 2020",
         questionsAmount:15,
         startedOn:1515915809432,
+        isPublic:true,
+        createdOn:1515915809432,
         endsOn:1715915809432,
         responses:[
           {
@@ -153,6 +157,7 @@ export class MockService {
     ],
     reports:[
       {
+        id:"#1243142",
         type: "report",
         name: "Raport dla dziekana o jakości kształcenia",
         connectedSurvey:{name:"Ankieta zadowolenia 2020", id:"350925390",},

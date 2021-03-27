@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
+import {ReportDefinition} from '../../dataModels/ReportDefinition';
+import {ChartTypes} from '../../dataModels/ReportElement';
 
 @Component({
   selector: 'app-editor',
@@ -9,18 +11,17 @@ import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag
 export class EditorComponent implements OnInit {
   mockChartResponseData = {};
   mouseHoveringAddMorePanel=false;
-  get sortedElements(){
-    return this.reportDefinition.elements.sort((s,d)=>s.order-d.order)
-  }
 
-  reportDefinition = { title:"", elements:[
-      {order: 0, type:"text", content:{text: "<h1>Header 1</h1>Raport testowy o pieczeniu <b>ciastek</b>"}},
-      {order:1, type:"chart", content: {
+
+  reportDefinition:ReportDefinition = { title:"", elements:[
+      { type:"text", content:{text: "<h1>Header 1</h1>Raport testowy o pieczeniu <b>ciastek</b>"}},
+      {type:"chart", content: {
         dataQuery:{},
           config:{
-            type:"bar",
+            type:ChartTypes.bar,
             orientation:"vertical",
-          }
+          },
+          text:"",
         }}
     ]};
   queryData(charData){

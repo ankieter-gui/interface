@@ -17,12 +17,14 @@ export enum ChartTypes{
 }
 export class ChartConfig{
   type:ChartTypes;
-  colors:[string];
-  showDataLabels:boolean;
-  orientation:"horizontal"|"vertical";
+  colors?:string[]=["black"];
+  showDataLabels?:boolean=true;
+  orientation?:"horizontal"|"vertical"="horizontal";
   extraEChartLiteralObject?:EChartsOption=null;
 }
 export class ChartReportElement{
+  name:string;
   dataQuery:DataQuery;
   config:ChartConfig;
+  text:string;
 }

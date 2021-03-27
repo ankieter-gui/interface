@@ -42,6 +42,10 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
 import {ChartEditorViewComponent} from './reports/chart-editor-view/chart-editor-view.component';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
+import {CKEditorModule} from 'ckeditor4-angular';
+import {ReportsModule} from './reports/reports.module';
+import {TextEditorViewComponent} from './reports/text-editor-view/text-editor-view.component';
+import {MatIconModule} from '@angular/material/icon';
 
 registerLocaleData(fr);
 export let commonNZImports = [
@@ -73,6 +77,7 @@ export let commonNZImports = [
   NzIconModule,
   NzButtonModule,
   NzInputModule,
+  //TODO: lazy loading issue #5
 
   NzToolTipModule
 ]
@@ -89,6 +94,7 @@ export let commonNZImports = [
     GlobalSidemenuComponent,
     //TODO: lazy loading issue #4
     EditorComponent,
+    TextEditorViewComponent,
     ChartEditorViewComponent,
 
 
@@ -98,6 +104,9 @@ export let commonNZImports = [
     DragDropModule,
     MatFormFieldModule,
     MatInputModule,
+    ReportsModule,
+    CKEditorModule,
+    MatIconModule,
 
   ],
   providers: [{provide: NZ_I18N, useValue: fr_FR}],

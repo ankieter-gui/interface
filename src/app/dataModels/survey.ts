@@ -20,13 +20,14 @@ export class GenericObjectMeta{
 export class SurveyMeta extends  GenericObjectMeta{
   isActive: boolean;
   questionsAmount: number;
+  startedOn: number; // linux timestamp
   endsOn: number;
-  responses: [SurveyResponsesAmountTimepoint];
-  targetGroups: [string];
+  responses: SurveyResponsesAmountTimepoint[];
+  targetGroups: string[];
 }
 
 export class ReportMeta extends  GenericObjectMeta{
   connectedSurvey: SurveyID_DTO;
   chartsAmount: number;
-  sharedTo: [string];
+  sharedTo: string[];
 }

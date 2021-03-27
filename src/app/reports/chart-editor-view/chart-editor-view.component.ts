@@ -1,11 +1,14 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {MockService} from '../../mock.service';
+import {ChartReportElement} from '../../dataModels/ReportElement';
 
 @Component({
   selector: 'app-chart-editor-view',
   template: `
     <section class="chart-column-container">
-    <h2 class="chart-name">Nazwa wykresu</h2>
+      <mat-form-field class="chart-title-input chart-name">
+       <h2> <input matInput placeholder="nazwa wykresu" [(ngModel)]="this.chartData.name"></h2>
+      </mat-form-field>
     <div class="chart-container">
 
     <section class="chart-area">
@@ -19,10 +22,20 @@ import {MockService} from '../../mock.service';
         <i nz-icon nzType="font-size" [nz-tooltip]="'Tekst'"></i>
       </section>
     </div>
+      <div *ngIf="textVisible">
+      Opis:
+      <ckeditor style="border: 1px dashed rgba(0,0,0,0.4);margin:1em;" [(ngModel)]="chartData.text" type="inline"></ckeditor>
+      </div>
     </section>
   `,
   styles: [
     `
+      .chart-title-input{
+       max-width: 600px;
+        width: 50%;
+        font-family: "Open Sans"!important;
+        margin: auto;
+      }
       .chart-container{
         display: flex;
         justify-content: flex-start;
@@ -61,8 +74,9 @@ import {MockService} from '../../mock.service';
   ]
 })
 export class ChartEditorViewComponent implements OnInit {
+  textVisible:boolean=false;
 @Input()
-chartData;
+chartData:ChartReportElement;
   constructor(private mockService:MockService) { }
 
   ngOnInit(): void {
