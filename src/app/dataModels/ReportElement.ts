@@ -16,8 +16,11 @@ export enum ChartTypes{
   line="line",
 }
 export class ChartConfig{
+  static colorSets={
+    default:["red", "blue", "green"]
+  }
   type:ChartTypes;
-  colors?:string[]=["black"];
+  colors?:string[]=ChartConfig.colorSets.default;
   showDataLabels?:boolean=true;
   orientation?:"horizontal"|"vertical"="horizontal";
   extraEChartLiteralObject?:EChartsOption=null;

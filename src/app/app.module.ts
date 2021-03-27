@@ -46,6 +46,11 @@ import {CKEditorModule} from 'ckeditor4-angular';
 import {ReportsModule} from './reports/reports.module';
 import {TextEditorViewComponent} from './reports/text-editor-view/text-editor-view.component';
 import {MatIconModule} from '@angular/material/icon';
+import { GroupsEditorComponent } from './groups-editor/groups-editor.component';
+import { GroupsEditorPageComponent } from './groups-editor-page/groups-editor-page.component';
+import {NzCollapseModule} from 'ng-zorro-antd/collapse';
+import {NzListModule} from 'ng-zorro-antd/list';
+import { CreateNewGroupComponent } from './create-new-group/create-new-group.component';
 
 registerLocaleData(fr);
 export let commonNZImports = [
@@ -96,6 +101,9 @@ export let commonNZImports = [
     EditorComponent,
     TextEditorViewComponent,
     ChartEditorViewComponent,
+    GroupsEditorComponent,
+    GroupsEditorPageComponent,
+    CreateNewGroupComponent,
 
 
   ],
@@ -107,6 +115,8 @@ export let commonNZImports = [
     ReportsModule,
     CKEditorModule,
     MatIconModule,
+    NzCollapseModule,
+    NzListModule,
 
   ],
   providers: [{provide: NZ_I18N, useValue: fr_FR}],

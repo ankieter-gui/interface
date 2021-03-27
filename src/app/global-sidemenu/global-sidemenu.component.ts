@@ -8,22 +8,13 @@ import {Component, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 
       <div style="height: 45px;"></div>
       <ul nz-menu nzTheme="dark" nzMode="inline">
-        <li nz-submenu nzTitle="User" nzIcon="user">
-          <ul>
-            <li nz-menu-item>Tom</li>
-            <li nz-menu-item>Bill</li>
-            <li nz-menu-item>Alex</li>
-          </ul>
+        <li nz-menu-item  [routerLink]="'/'">
+          <i nz-icon nzType="folder"></i>
+          <span>Ankiety i raporty</span>
         </li>
-        <li nz-submenu nzTitle="Team" nzIcon="team">
-          <ul>
-            <li nz-menu-item>Team 1</li>
-            <li nz-menu-item>Team 2</li>
-          </ul>
-        </li>
-        <li nz-menu-item>
-          <i nz-icon nzType="file"></i>
-          <span>File</span>
+        <li nz-menu-item [routerLink]="['groups']">
+          <i nz-icon nzType="user"></i>
+          <span>Grupy udostępniania</span>
         </li>
       </ul>
 
