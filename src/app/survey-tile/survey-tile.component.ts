@@ -4,7 +4,7 @@ import {DashboardModalsService} from '../dashboard-modals.service';
 @Component({
   selector: 'app-survey-tile',
   template: `
-    <nz-card style="width:300px;" [nzCover]="coverTemplate" [nzActions]="[actionSetting, actionEdit, actionEllipsis, actionCreateReport]">
+    <nz-card [nzBordered]="false" [nzCover]="coverTemplate" [nzActions]="[actionSetting, actionEdit, actionEllipsis, actionCreateReport]">
       <nz-card-meta nzTitle="{{survey.name}}" nzDescription="{{description}}"></nz-card-meta>
       <div class="progress">
         <div class="desc">
@@ -73,12 +73,13 @@ import {DashboardModalsService} from '../dashboard-modals.service';
       transform: scale(1.03);
     }
     nz-card{
+      width:395px;
       transition: 0.2s all;
     }
     nz-card:hover{
 
       transform: scale(1.01);
-      box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.1);
     }
     `
   ]

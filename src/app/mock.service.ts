@@ -14,7 +14,14 @@ export class MockService {
   public surveyToChart(survey:SurveyMeta, showAxes=false): EChartsOption{
     return {
       color:"#3b3b3b",
-      grid: showAxes?null:{
+      grid: showAxes?
+        {
+          left:25,
+          top: 25,
+          right: 5,
+          bottom: 25
+        }
+        :{
         left: 0,
         top: 0,
         right: 0,

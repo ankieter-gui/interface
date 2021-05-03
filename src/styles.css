@@ -2,3 +2,43 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+@font-face {
+  font-family:"Gilroy ExtraBold";
+  src: url("assets/Gilroy-ExtraBold.otf") format("opentype");
+}
+@font-face {
+  font-family:"Gilroy Light";
+  src: url("assets/Gilroy-Light.otf") format("opentype");
+}
+nz-layout{
+  background-color: #F8F8FB!important;
+}
+nz-breadcrumb-item{
+  font-family: "Gilroy Light", sans-serif;
+  color:#A6ACBE!important;
+}
+.breadcrumb-header{
+  font-family: "Gilroy ExtraBold",sans-serif!important;
+  font-size: 30pt!important;
+
+  color:#000000;
+}
+.header-container{
+  margin-top:50px;
+}
+nz-breadcrumb-item:last-child{
+  color:#6F52ED!important;
+}
+nz-card{
+  border-radius: 10px!important;
+
+}
+.ant-card-actions{
+  position: absolute;
+  bottom: 0;
+  width:395px;
+}
+.ant-card-actions{
+  border-top:none;
+  border-radius: 90px;
+}

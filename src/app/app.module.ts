@@ -51,6 +51,8 @@ import { GroupsEditorPageComponent } from './groups-editor-page/groups-editor-pa
 import {NzCollapseModule} from 'ng-zorro-antd/collapse';
 import {NzListModule} from 'ng-zorro-antd/list';
 import { CreateNewGroupComponent } from './create-new-group/create-new-group.component';
+import { NewGroupDialogComponent } from './new-group-dialog/new-group-dialog.component';
+import { UserSearchComboboxComponent } from './user-search-combobox/user-search-combobox.component';
 
 registerLocaleData(fr);
 export let commonNZImports = [
@@ -104,6 +106,8 @@ export let commonNZImports = [
     GroupsEditorComponent,
     GroupsEditorPageComponent,
     CreateNewGroupComponent,
+    NewGroupDialogComponent,
+    UserSearchComboboxComponent,
 
 
   ],

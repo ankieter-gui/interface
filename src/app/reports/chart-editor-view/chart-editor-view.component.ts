@@ -9,6 +9,13 @@ import {ChartReportElement} from '../../dataModels/ReportElement';
       <mat-form-field class="chart-title-input chart-name">
        <h2> <input matInput placeholder="nazwa wykresu" [(ngModel)]="this.chartData.name"></h2>
       </mat-form-field>
+      <section class="query-display">
+        <nz-tag [nzColor]="'blue'" class="unit">Pytanie 1</nz-tag><i nz-icon nzType="right"></i>
+        <nz-tag [nzColor]="'blue'" class="unit">Wszystkie odpowiedzi</nz-tag><i nz-icon nzType="right"></i>
+        <nz-tag [nzColor]="'magenta'" class="unit">jako procent</nz-tag>
+<!--        <nz-tag [nzColor]="'red'" class="unit">wydział</nz-tag>-->
+<!--        <nz-tag [nzColor]="'red'" class="unit">średnia</nz-tag>-->
+      </section>
     <div class="chart-container">
 
     <section class="chart-area">
@@ -43,6 +50,8 @@ import {ChartReportElement} from '../../dataModels/ReportElement';
       }
       .chart-editor{
         display: flex;
+        justify-items: center;
+        justify-content: center;
         flex-direction: column;
       }
       .chart-editor i{
@@ -59,7 +68,7 @@ import {ChartReportElement} from '../../dataModels/ReportElement';
         transform: scale(1.3);
       }
       .chart-area{
-        width:70%;
+       width:95%;
       }
       .chart-name{
         display: block;
@@ -67,6 +76,7 @@ import {ChartReportElement} from '../../dataModels/ReportElement';
       }
       .chart-column-container{
         display: flex;
+
         flex-direction: column;
       }
       .

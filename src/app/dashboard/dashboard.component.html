@@ -7,7 +7,7 @@
 
   <nz-layout>
     <nz-header>
-      <img src="assets/logoAnkieter.PNG" height="100%" style="margin-left: 1rem;">
+      <img src="assets/logoAnkieter2.png" height="100%" style="margin-left: 1rem;">
       <div style=" width:40vw; margin-left:5vw">
         <nz-input-group nzSearch nzSize="large">
           <input placeholder="Szukaj po nazwie" nz-input [(ngModel)]="inputValue" (input)="onChange($event)" (ngModelChange)="onChange($event)"
@@ -30,8 +30,13 @@
 
     </nz-header>
     <nz-content>
+      <header class="header-container">
+        <h1 class="breadcrumb-header">Raporty i ankiety</h1>
+      </header>
+
       <nz-breadcrumb>
         <nz-breadcrumb-item>Ekran główny</nz-breadcrumb-item>
+        <nz-breadcrumb-item>Raporty i ankiety</nz-breadcrumb-item>
 
       </nz-breadcrumb>
       <div class="inner-content">

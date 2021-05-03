@@ -3,8 +3,8 @@ import {Component, Input, OnInit} from '@angular/core';
 @Component({
   selector: 'app-report-tile',
   template: `
-    <nz-card style="width:300px;" [nzCover]="coverTemplate" [nzActions]="[actionSetting, actionEdit, actionEllipsis, actionSee, actionDelete]">
-      <nz-card-meta nzTitle="{{report.name}}" nzDescription=""></nz-card-meta>
+    <nz-card [nzBordered]="false"  [nzCover]="coverTemplate" [nzActions]="[actionSetting, actionEdit, actionEllipsis, actionSee, actionDelete]">
+<!--      <nz-card-meta nzTitle="{{report.name}}" nzDescription=""></nz-card-meta>-->
 
       <div class="progress">
         <i nz-icon nzType="calendar"></i> {{report.createdOn | date}}
@@ -18,15 +18,8 @@ import {Component, Input, OnInit} from '@angular/core';
 <figure class="header-image" style="background-image: url('https://image.freepik.com/free-vector/gradient-shapes-dark-background_52683-32826.jpg');">
 
 </figure>
+      <span class="card-title">{{report.name}}</span>
 
-      <div class="statistics">
-        <nz-statistic [nzValue]="(report.chartsAmount | number)!" [nzTitle]="'Zestawienia'" [nzPrefix]="prefixTpl"></nz-statistic>
-        <ng-template #prefixTpl><i nz-icon nzType="line-chart"></i></ng-template>
-        <!--        This indicator has to be pulled right by hand. Check the CSS-->
-        <nz-statistic [nzValue]="(report.isPublic?'TAK':'NIE')" [nzTitle]="'Publiczny'" [nzPrefix]="prefixTpl2" class="active-indicator"></nz-statistic>
-        <ng-template #prefixTpl2><i nz-icon nzType="user"></i></ng-template>
-
-      </div>
 
       <div class="units">
         <nz-tag [nzColor]="'magenta'" class="connected-survey">{{report.connectedSurvey.name}}</nz-tag>
@@ -63,8 +56,18 @@ import {Component, Input, OnInit} from '@angular/core';
       margin-left:70px;
     }
     .header-image{
-      height:100px;
+      height:116px;
       background-size: cover;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      border-bottom-right-radius: 5px;
+      border-bottom-left-radius: 5px;
+    }
+    .card-title{
+      padding-left:20px;
+      margin-top:-9px;
+      font-family: "Gilroy ExtraBold";
+      font-size: 18px;
     }
     .connected-survey{
       cursor: pointer;
@@ -79,13 +82,16 @@ import {Component, Input, OnInit} from '@angular/core';
       margin-right:15px;
     }
     nz-card{
+        width:395px;
       transition: 0.2s all;
+      height: 425px;
     }
     nz-card:hover{
 
       transform: scale(1.01);
       box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
     }
+
     `
   ]
 })
