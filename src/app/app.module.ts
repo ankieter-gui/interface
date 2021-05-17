@@ -34,7 +34,7 @@ import {NzInputModule} from 'ng-zorro-antd/input';
 import {NzToolTipModule} from 'ng-zorro-antd/tooltip';
 import { NewReportDialogComponent } from './new-report-dialog/new-report-dialog.component';
 import {NzModalModule} from 'ng-zorro-antd/modal';
-import { FilterByNamePipe } from './filter-by-name.pipe';
+import {FilterByNamePipe, NameFilter} from './filter-by-name.pipe';
 import { ShareDialogComponent } from './share-dialog/share-dialog.component';
 import { GlobalSidemenuComponent } from './global-sidemenu/global-sidemenu.component';
 import {EditorComponent} from './reports/editor/editor.component';
@@ -53,6 +53,8 @@ import {NzListModule} from 'ng-zorro-antd/list';
 import { CreateNewGroupComponent } from './create-new-group/create-new-group.component';
 import { NewGroupDialogComponent } from './new-group-dialog/new-group-dialog.component';
 import { UserSearchComboboxComponent } from './user-search-combobox/user-search-combobox.component';
+import {NgxFileDropModule} from 'ngx-file-drop';
+import {NzBadgeModule} from 'ng-zorro-antd/badge';
 
 registerLocaleData(fr);
 export let commonNZImports = [
@@ -108,7 +110,7 @@ export let commonNZImports = [
     CreateNewGroupComponent,
     NewGroupDialogComponent,
     UserSearchComboboxComponent,
-
+  NameFilter
 
   ],
   imports: [
@@ -121,6 +123,8 @@ export let commonNZImports = [
     MatIconModule,
     NzCollapseModule,
     NzListModule,
+    NgxFileDropModule,
+    NzBadgeModule
 
   ],
   providers: [{provide: NZ_I18N, useValue: fr_FR}],

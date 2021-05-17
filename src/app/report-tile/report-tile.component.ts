@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {ReportMeta} from '../dataModels/survey';
 
 @Component({
   selector: 'app-report-tile',
@@ -74,7 +75,7 @@ import {Component, Input, OnInit} from '@angular/core';
       transition: 0.2s all;
     }
     .connected-survey:hover{
-      transform: scale(1.03);
+      /*transform: scale(1.03);*/
     }
     .units{
       margin-top:5px;
@@ -82,13 +83,14 @@ import {Component, Input, OnInit} from '@angular/core';
       margin-right:15px;
     }
     nz-card{
+      border-bottom:5px solid #6F52ED;
         width:395px;
       transition: 0.2s all;
       height: 425px;
     }
     nz-card:hover{
-
-      transform: scale(1.01);
+      border-bottom:8px solid #6F52ED;
+      /*transform: scale(1.01);*/
       box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
     }
 
@@ -97,7 +99,7 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class ReportTileComponent implements OnInit {
   @Input()
-  report;
+  report:ReportMeta;
   constructor() { }
 
   ngOnInit(): void {

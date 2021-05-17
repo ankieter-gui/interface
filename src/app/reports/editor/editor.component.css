@@ -22,7 +22,7 @@ nz-breadcrumb {
 
 .inner-content {
   padding: 24px;
-  background: #fff;
+
   min-height: 100vh;
   max-width: 900px;
 
@@ -34,9 +34,10 @@ nz-breadcrumb {
 }
 .element-box{
   margin-top:2em;
-  padding:1em;
-  border: 1px solid rgba(0,0,0,0.1);
-  border-radius: 5px;
+  padding:3em;
+  background-color: white;
+  border: 1px solid rgba(0,0,0,0.03);
+  border-radius: 10px;
 
 }
 .element-box:hover{
@@ -84,6 +85,7 @@ nz-breadcrumb {
   color:rgba(0,0,0,0.5);
   font-family: "Open Sans", sans-serif;
 }
+
 .title-input{
   font-size: 3em;
   width:100%;
@@ -96,7 +98,7 @@ nz-breadcrumb {
   color: #44B4EC !important;
 }
 ::ng-deep .mat-form-field{
-  font-family: "Cambria", serif !important;
+  font-family: "Gilroy ExtraBold", serif !important;
 }
 .recommended{
   color: rgba(0,0,0, 0.8) !important;

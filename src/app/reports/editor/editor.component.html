@@ -7,13 +7,16 @@
 
   <nz-layout>
     <nz-header>
-      <img src="assets/logoAnkieter.PNG" height="100%" style="margin-left: 1rem;">
+      <img src="assets/logoAnkieter2.png" height="100%" style="margin-left: 1rem;">
       <div style=" width:40vw; margin-left:5vw">
 
       </div>
 
     </nz-header>
     <nz-content>
+      <header class="header-container">
+        <h1 class="breadcrumb-header">Edytor raportu</h1>
+      </header>
       <nz-breadcrumb>
         <nz-breadcrumb-item><a [routerLink]="'/'">Ekran główny</a> </nz-breadcrumb-item>
         <nz-breadcrumb-item>Edytor raportu</nz-breadcrumb-item>
@@ -32,7 +35,7 @@
           <div [ngSwitch]="element.type" style="position:relative;">
             <mat-icon cdkDragHandle class="drag-handle">open_with</mat-icon>
             <app-text-editor-view *ngSwitchCase="'text'" [text]="element.content.text"></app-text-editor-view>
-            <app-chart-editor-view *ngSwitchCase="'chart'" [chartData]="element" ></app-chart-editor-view>
+            <app-chart-editor-view *ngSwitchCase="'chart'" [chartData]="element.content" [questions]="surveyQuestions" ></app-chart-editor-view>
           </div>
 
           </div>
@@ -51,6 +54,6 @@
 
       </div>
     </nz-content>
-    <nz-footer>Ant Design ©2020 Implement By Angular</nz-footer>
+    <nz-footer></nz-footer>
   </nz-layout>
 </nz-layout>

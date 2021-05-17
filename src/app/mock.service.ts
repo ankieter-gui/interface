@@ -11,6 +11,40 @@ import {UserGroupsResponse} from './dataModels/UserGroup';
 export class MockService {
 
   constructor() { }
+  public exampleQuestionChart(showAxes=false):EChartsOption{
+    return {
+      color: "#3b3b3b",
+      grid: showAxes?
+        {
+          left:25,
+          top: 25,
+          right: 5,
+          bottom: 25
+        }
+        :{
+          left: 0,
+          top: 0,
+          right: 0,
+          bottom: 0
+        },
+      xAxis:{
+        type: 'category',
+        show:showAxes,
+
+      },
+      yAxis:{
+        type:'value',
+        show:showAxes,
+      },
+      series:[
+        {
+          data:[["tak", 25],["nie",50]],
+          type:'bar',
+          color:'#009063',
+        }
+      ]
+    }
+  }
   public surveyToChart(survey:SurveyMeta, showAxes=false): EChartsOption{
     return {
       color:"#3b3b3b",
@@ -83,7 +117,7 @@ export class MockService {
       {
         type:"survey",
         name: "Survey #1",
-        questionsAmount:15,
+        questionCount:15,
         isActive:true,
         isPublic:false,
         startedOn:1615915809432,
@@ -117,7 +151,7 @@ export class MockService {
 
 
         ],
-        targetGroups:["Biologia", "Matematyka"],
+
         id:"350925390",
 
       },
@@ -125,7 +159,7 @@ export class MockService {
         type:"survey",
         isActive: false,
         name: "Ankieta zadowolenia 2020",
-        questionsAmount:15,
+        questionCount:15,
         startedOn:1515915809432,
         isPublic:true,
         createdOn:1515915809432,
@@ -158,7 +192,7 @@ export class MockService {
 
 
         ],
-        targetGroups:["Wszystkie jednostki"],
+
         id:"350925390",
 
       }

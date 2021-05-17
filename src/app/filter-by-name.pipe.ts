@@ -15,3 +15,21 @@ export class FilterByNamePipe implements PipeTransform {
   }
 
 }
+
+
+
+@Pipe({
+  name: 'NameFilter'
+})
+export class NameFilter implements PipeTransform {
+
+  transform(items: any[], filter: string): any {
+    if (!items || !filter) {
+      return items;
+    }
+
+
+    return items.filter(item => item.toLowerCase().includes(filter.toLowerCase()));
+  }
+
+}

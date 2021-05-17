@@ -19,11 +19,11 @@ export class GenericObjectMeta{
 
 export class SurveyMeta extends  GenericObjectMeta{
   isActive: boolean;
-  questionsAmount: number;
+  questionCount: number;
   startedOn: number; // linux timestamp
   endsOn: number;
   responses: SurveyResponsesAmountTimepoint[];
-  targetGroups: string[];
+
 }
 
 export class ReportMeta extends  GenericObjectMeta{

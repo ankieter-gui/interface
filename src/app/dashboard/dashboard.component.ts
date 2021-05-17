@@ -6,6 +6,8 @@ import {animate, query, stagger, state, style, transition, trigger} from '@angul
 import {DashboardModalsService} from '../dashboard-modals.service';
 import {NewReportDialogComponent} from '../new-report-dialog/new-report-dialog.component';
 import {Router} from '@angular/router';
+import {DashboardService} from '../dashboard.service';
+import {DashboardRequestResponse} from '../dataModels/DashboardRequestResponse';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -45,7 +47,7 @@ import {Router} from '@angular/router';
   ]
 })
 export class DashboardComponent implements OnInit {
-  constructor(public mockService: MockService, public dashboardModals: DashboardModalsService, public router: Router) {
+  constructor(public mockService: MockService, public dashboardModals: DashboardModalsService, public router: Router, public dashboardService:DashboardService) {
     console.log(this.router.getCurrentNavigation().extras?.state?.example);
   }
   @ViewChild('sidenav', {static: true}) sidenav;
@@ -53,8 +55,9 @@ export class DashboardComponent implements OnInit {
   filter = "";
   filter_tmp = ""
   loading = "open"
-
+  dashboardData:DashboardRequestResponse={objects:[]};
   ngOnInit(): void {
+    this.dashboardService.getDashobardData().subscribe(d=>{this.dashboardData = d; console.log(this.dashboardData)});
   }
   changeFilter(criterion: string, animate= true){
     if (this.filter_tmp == criterion) { return; }

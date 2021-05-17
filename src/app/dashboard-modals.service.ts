@@ -6,13 +6,14 @@ import {Router} from '@angular/router';
 import {ReportsService} from './reports.service';
 import {NewGroupDialogComponent} from './new-group-dialog/new-group-dialog.component';
 import {from} from 'rxjs';
+import {DashboardService} from './dashboard.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DashboardModalsService {
 
-  constructor(private modal: NzModalService, private mockService: MockService, private router: Router, private reports: ReportsService) { }
+  constructor(private modal: NzModalService, private mockService: MockService, private router: Router, private reports: ReportsService, private dashboardService:DashboardService) { }
   createComponentModal(title, component, params, onOk= (instance, modal) => null): void{
     const modal = this.modal.create({
       nzTitle: title,
@@ -42,17 +43,17 @@ export class DashboardModalsService {
     return instance;
   }
 
-  openNewReportDialog(survey= null): void{
+  async openNewReportDialog(survey= null){
    this.createComponentModal("Nowy raport", NewReportDialogComponent, {
      survey,
-     autocompleteSurveys: this.mockService.mockDashboardData.surveys
+     autocompleteSurveys: (await (this.dashboardService.getDashobardData().toPromise())).objects.filter(d=>d.type==="survey")
 
    }, async (i, m) => {
       const id = await this.reports.createNewReport(i.selectedSurvey.id, i.reportNameInputValue);
 
       console.log(i.selectedSurvey);
       m.destroy();
-      await this.router.navigate(['reports/editor', id]);
+      await this.router.navigate(['reports/editor', id] );
     } );
   }
 

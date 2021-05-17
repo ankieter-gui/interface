@@ -1,37 +1,42 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {DashboardModalsService} from '../dashboard-modals.service';
+import {SurveyMeta} from '../dataModels/survey';
 
 @Component({
   selector: 'app-survey-tile',
   template: `
-    <nz-card [nzBordered]="false" [nzCover]="coverTemplate" [nzActions]="[actionSetting, actionEdit, actionEllipsis, actionCreateReport]">
-      <nz-card-meta nzTitle="{{survey.name}}" nzDescription="{{description}}"></nz-card-meta>
-      <div class="progress">
-        <div class="desc">
-          <span>Pytania: {{survey.questionsAmount}}</span>
+    <nz-card [nzBordered]="false"  [nzCover]="coverTemplate" [nzActions]="[actionSetting, actionEdit, actionEllipsis, actionCreateReport]">
+      <!--      <nz-card-meta nzTitle="{{report.name}}" nzDescription=""></nz-card-meta>-->
 
-        </div>
-        Zostało jeszcze {{daysLeft}} dni. <br>
-        Ankieta trwa {{totalDays}} dni.
-        <nz-progress [nzPercent]="(+daysAlready)/(+totalDays)*100 | number: '1.0-0'" nzSize="small"></nz-progress>
+      <div class="progress">
+        <i nz-icon nzType="calendar"></i>Utworzono: {{survey.startedOn| date}}
       </div>
+      <div class="progress">
+      <i nz-icon nzType="calendar"></i>Koniec: {{survey.endsOn| date}}
+      </div>
+      <div class="progress">
+      <i nz-icon nzType="calendar"></i>Ukończono: {{daysAlready/(totalDays==0?daysAlready:totalDays) | percent}}
+      </div>
+      <div class="progress">
+        <i nz-icon nzType="calendar"></i>Pytań: {{survey.questionCount}}
+      </div>
+<!--      <div class="progress">-->
+<!--        <i nz-icon nzType="calendar"></i>Odpowiedzi: {{survey.}}-->
+<!--      </div>-->
     </nz-card>
     <ng-template #extra>
-            Ankieta
+
     </ng-template>
     <ng-template #coverTemplate>
-      <app-survey-sparkline-chart [survey]="survey"></app-survey-sparkline-chart>
-<!--      <img alt="example" src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />-->
-      <div class="statistics">
-        <nz-statistic [nzValue]="(1128 | number)!" [nzTitle]="'Wypełniono'" [nzPrefix]="prefixTpl"></nz-statistic>
-        <ng-template #prefixTpl><i nz-icon nzType="line-chart"></i></ng-template>
-<!--        This indicator has to be pulled right by hand. Check the CSS-->
-        <nz-statistic [nzValue]="(survey.startedOn | date)" [nzTitle]="'Aktywna od'" [nzPrefix]="prefixTpl2" class="active-indicator" [nzValueStyle]="{fontSize:'1.5em'}"></nz-statistic>
-        <ng-template #prefixTpl2><i nz-icon nzType="calendar"></i></ng-template>
-      </div>
-      <div class="units">
-        <nz-tag [nzColor]="'magenta'" *ngFor="let unit of survey.targetGroups" class="unit">{{unit}}</nz-tag>
-      </div>
+      <figure class="header-image" style="background-image: url('https://image.freepik.com/free-vector/gradient-shapes-dark-background_52683-32826.jpg');">
+
+      </figure>
+      <span class="card-title">{{survey.name}}</span>
+
+
+<!--      <div class="units">-->
+<!--        <nz-tag [nzColor]="'magenta'" class="connected-survey"></nz-tag>-->
+<!--      </div>-->
 
     </ng-template>
     <ng-template #actionSetting>
@@ -49,44 +54,68 @@ import {DashboardModalsService} from '../dashboard-modals.service';
   `,
   styles: [
     `
-    .statistics{
-        margin-left:1rem;
-      margin-top:0.5rem;
-        margin-right:1rem;
-      display: flex;
+      .statistics {
+        margin-left: 1rem;
+        margin-top: 0.5rem;
+        margin-right: 1rem;
+        display: flex;
 
-    }
-    .active-indicator{
+      }
 
-      margin-left:50px;
-    }
-    .units{
-      margin-top:5px;
-      margin-left:15px;
-      margin-right:15px;
-    }
-    .unit{
-      cursor: pointer;
-      transition: 0.2s all;
-    }
-    .unit:hover{
-      transform: scale(1.03);
-    }
-    nz-card{
-      width:395px;
-      transition: 0.2s all;
-    }
-    nz-card:hover{
+      .active-indicator {
 
-      transform: scale(1.01);
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.1);
-    }
+        margin-left: 70px;
+      }
+
+      .header-image {
+        height: 116px;
+        background-size: cover;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 5px;
+        border-bottom-left-radius: 5px;
+      }
+
+      .card-title {
+        padding-left: 20px;
+        margin-top: -9px;
+        font-family: "Gilroy ExtraBold";
+        font-size: 18px;
+      }
+
+      .connected-survey {
+        cursor: pointer;
+        transition: 0.2s all;
+      }
+
+      .connected-survey:hover {
+        /*transform: scale(1.03);*/
+      }
+
+      .units {
+        margin-top: 5px;
+        margin-left: 15px;
+        margin-right: 15px;
+      }
+
+      nz-card {
+        border-bottom: 5px solid #52e8ed;
+        width: 395px;
+        transition: 0.2s all;
+        height: 425px;
+      }
+
+      nz-card:hover {
+        border-bottom: 8px solid #52e8ed;
+        /*transform: scale(1.01);*/
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+      }
     `
   ]
 })
 export class SurveyTileComponent implements OnInit {
   @Input()
-  survey;
+  survey:SurveyMeta;
   get description():String{
     return `ID: ${this.survey.id}`
   }

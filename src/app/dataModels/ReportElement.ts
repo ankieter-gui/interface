@@ -1,7 +1,8 @@
 import {EChartsOption} from 'echarts';
+import {SurveyQuery} from './Query';
 
 export class ReportElement{
-  type:string;
+  type:"text"|"chart";
   content:TextReportElement|ChartReportElement;
 }
 export class TextReportElement{
@@ -9,7 +10,7 @@ export class TextReportElement{
   text:string;
 
 }
-export class DataQuery{}
+
 export enum ChartTypes{
   bar="bar",
   pie="pie",
@@ -27,7 +28,7 @@ export class ChartConfig{
 }
 export class ChartReportElement{
   name:string;
-  dataQuery:DataQuery;
+  dataQuery:SurveyQuery;
   config:ChartConfig;
   text:string;
 }
