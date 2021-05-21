@@ -10,7 +10,7 @@ export class ReportsService {
 
   constructor(private http:HttpClient) {}
   createNewReport(surveyId, name){
-    return this.http.post(`${BACKEND_URL}/report/new`, {"surveyId":surveyId, "title":name})
+    return this.http.post(`${BACKEND_URL}/report/new`, {"surveyId":surveyId, "title":name}, {withCredentials:true,})
   }
   getReport(id){
     return this.http.get<ReportDefinition>(`${BACKEND_URL}/report/${id}`)

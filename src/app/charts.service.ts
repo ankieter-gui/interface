@@ -45,10 +45,16 @@ export class ChartsService {
     console.log(shareSeries)
     if (chartElement.config.type=='groupedPercentAndData'){
       return {
-        color:"#3b3b3b",
-        legend:{
-          data: Object.keys(shareSeries)
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {            // Use axis to trigger tooltip
+            type: 'shadow'        // 'shadow' as default; can also be 'line' or 'shadow'
+          }
         },
+        color:"#3b3b3b",
+        // legend:{
+        //   data: Object.keys(shareSeries)
+        // },
         grid:{left: '3%',
           right: '4%',
           bottom: '3%',
@@ -57,10 +63,16 @@ export class ChartsService {
         yAxis:{type:'category', show:true, data:indices},
         series:shareSeries.map((d,index)=>({
           data:d,
-          label:"a",
+
           type:this.presetsToTypes[chartElement.config.type],
-          color:this.lengthsToPalettes[d.length][index],
+          color:this.defaultColorPalette[index],
           stack: 'total',
+          label: {
+            show: true
+          },
+          emphasis: {
+            focus: 'series'
+          },
           smooth: false,
           symbol: 'none',
         }))

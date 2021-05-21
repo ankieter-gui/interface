@@ -6,8 +6,22 @@ import {SurveysService} from '../../surveys.service';
 import {ChartsService} from '../../charts.service';
 import {ComplimentQuery} from '../../dataModels/Query';
 import {ChartConfig, ChartReportElement} from '../../dataModels/ReportElement';
+import {animate, state, style, transition, trigger} from '@angular/animations';
 
 @Component({
+  animations:[    trigger('fadeInOut', [
+    state('in', style({ opacity: 1, transform: 'translateY(0)' })),
+    transition('void => *', [
+
+      style({ opacity: 0, transform: 'translateY(15%)' }),
+
+      animate('200ms')
+
+    ]),
+    transition('* => void', [
+      // animate(200, style({ opacity:0,transform: 'translateY(15%)' }))
+    ])
+  ])],
   selector: 'app-chart-editor-view',
   template: `
     <ng-template #suffixIconSearch>
@@ -41,7 +55,7 @@ import {ChartConfig, ChartReportElement} from '../../dataModels/ReportElement';
 
 <!--      <ckeditor  [(ngModel)]="chartData.text" type="inline"></ckeditor>-->
 <!--      </div>-->
-      <section class="query-marker">
+      <section class="query-marker"  *ngIf="chartData.dataQuery.get[0].length>0" [@fadeInOut]>
                 <figure class="indicator-card indicator-card-red" (click)="activeTab=0">
                   <div class="indicator-card-inner">
                   <div class="indicator-card-header">Pytanie</div>
@@ -81,7 +95,7 @@ import {ChartConfig, ChartReportElement} from '../../dataModels/ReportElement';
                   <nz-tabset [(nzSelectedIndex)]="activeTab">
                     <nz-tab nzTitle="Wygląd i układ">
                       <section class="query-marker">
-                        <figure class="indicator-card indicator-card-velvet preset"  nz-tooltip="Wykres przedstawiający procent odpowiedzi tak/nie/nie mam zdania w podziale na wydziały lub etapy studiów" (click)="pickPreset('groupedPercentAndData');">
+                        <figure class="indicator-card indicator-card-velvet preset" nz-tooltip="Wykres przedstawiający procent odpowiedzi tak/nie/nie mam zdania w podziale na wydziały lub etapy studiów" (click)="pickPreset('groupedPercentAndData');">
                           <div class="indicator-card-inner">
                             <div class="indicator-card-header">Zgrupowany procent + dane</div>
                             <div class="indicator-card-content"><img src="/assets/preset1.png" style="width: 100%"></div>
@@ -273,6 +287,7 @@ import {ChartConfig, ChartReportElement} from '../../dataModels/ReportElement';
       }
       .chart-area{
        width:100%;
+        min-height:300px;
       }
       .chart-name{
         display: block;
