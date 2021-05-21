@@ -34,7 +34,7 @@ import {NzInputModule} from 'ng-zorro-antd/input';
 import {NzToolTipModule} from 'ng-zorro-antd/tooltip';
 import { NewReportDialogComponent } from './new-report-dialog/new-report-dialog.component';
 import {NzModalModule} from 'ng-zorro-antd/modal';
-import {FilterByNamePipe, NameFilter} from './filter-by-name.pipe';
+import {FilterByNamePipe, NameFilter, PolskieNazwyFilter, RemoveHtmlFilter} from './filter-by-name.pipe';
 import { ShareDialogComponent } from './share-dialog/share-dialog.component';
 import { GlobalSidemenuComponent } from './global-sidemenu/global-sidemenu.component';
 import {EditorComponent} from './reports/editor/editor.component';
@@ -55,6 +55,9 @@ import { NewGroupDialogComponent } from './new-group-dialog/new-group-dialog.com
 import { UserSearchComboboxComponent } from './user-search-combobox/user-search-combobox.component';
 import {NgxFileDropModule} from 'ngx-file-drop';
 import {NzBadgeModule} from 'ng-zorro-antd/badge';
+import {NzTabsModule} from 'ng-zorro-antd/tabs';
+import {NzCheckboxModule} from 'ng-zorro-antd/checkbox';
+import {NzGridModule} from 'ng-zorro-antd/grid';
 
 registerLocaleData(fr);
 export let commonNZImports = [
@@ -88,7 +91,8 @@ export let commonNZImports = [
   NzInputModule,
   //TODO: lazy loading issue #5
 
-  NzToolTipModule
+  NzToolTipModule,
+  NzGridModule,
 ]
 @NgModule({
   declarations: [
@@ -110,7 +114,9 @@ export let commonNZImports = [
     CreateNewGroupComponent,
     NewGroupDialogComponent,
     UserSearchComboboxComponent,
-  NameFilter
+  NameFilter,
+    RemoveHtmlFilter,
+    PolskieNazwyFilter
 
   ],
   imports: [
@@ -124,7 +130,9 @@ export let commonNZImports = [
     NzCollapseModule,
     NzListModule,
     NgxFileDropModule,
-    NzBadgeModule
+    NzBadgeModule,
+    NzTabsModule,
+    NzCheckboxModule
 
   ],
   providers: [{provide: NZ_I18N, useValue: fr_FR}],

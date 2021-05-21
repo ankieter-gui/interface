@@ -1,6 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
+html, body { height: 100%;-webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 @font-face {
   font-family:"Gilroy ExtraBold";
@@ -55,4 +57,21 @@ nz-card{
 /*}*/
 .ant-collapse{
   background-color: transparent!important;
+}
+.entry .ant-select-selector{
+
+  border: 0px solid black!important;
+  background-color: transparent!important;
+}
+.entry .ant-select{
+  border: 0px solid black!important;
+  font-size: 12px!important;
+
+}
+.entry .ant-select-selection-search{
+
+}
+.force-input-borderless{
+  border:none!important;
+  box-shadow: none!important;
 }

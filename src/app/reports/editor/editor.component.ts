@@ -1,10 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import {ReportDefinition} from '../../dataModels/ReportDefinition';
-import {ChartTypes} from '../../dataModels/ReportElement';
+
 import {SurveyMeta} from '../../dataModels/survey';
 import {addWarning} from '@angular-devkit/build-angular/src/utils/webpack-diagnostics';
 import {SurveysService} from '../../surveys.service';
+import {SurveyQuery} from '../../dataModels/Query';
 
 @Component({
   selector: 'app-editor',
@@ -19,9 +20,10 @@ export class EditorComponent implements OnInit {
   reportDefinition:ReportDefinition = { title:"", elements:[
       { type:"text", content:{text: "<h1>Header 1</h1>Raport testowy o pieczeniu <b>ciastek</b>"}},
       {type:"chart", content: {
-        dataQuery:{"get": [["Price"]], "as": ["mean"],"by": ["Average User Rating"],"filter": [["Age Rating", "in", "4", "9"]]},
+        dataQuery: new SurveyQuery(),
           config:{
-            type:ChartTypes.bar,
+          tableDefinition:{series:[]},
+            type:null,
             orientation:"vertical",
           },
           text:"",

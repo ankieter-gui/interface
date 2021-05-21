@@ -11,20 +11,20 @@ export class TextReportElement{
 
 }
 
-export enum ChartTypes{
-  bar="bar",
-  pie="pie",
-  line="line",
+export class Table{
+  series:string[]
 }
 export class ChartConfig{
+
   static colorSets={
     default:["red", "blue", "green"]
   }
-  type:ChartTypes;
+  type: 'groupedPercentAndData'| 'multipleChoice'| 'multipleChoiceAndData'| 'multipleBars'| 'groupedBars'| 'complex'
   colors?:string[]=ChartConfig.colorSets.default;
   showDataLabels?:boolean=true;
   orientation?:"horizontal"|"vertical"="horizontal";
   extraEChartLiteralObject?:EChartsOption=null;
+  tableDefinition:Table={series:[]};
 }
 export class ChartReportElement{
   name:string;

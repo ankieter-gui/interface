@@ -49,8 +49,8 @@ export class DashboardModalsService {
      autocompleteSurveys: (await (this.dashboardService.getDashobardData().toPromise())).objects.filter(d=>d.type==="survey")
 
    }, async (i, m) => {
-      const id = await this.reports.createNewReport(i.selectedSurvey.id, i.reportNameInputValue);
-
+      const response = await (this.reports.createNewReport(i.selectedSurvey.id, i.reportNameInputValue).toPromise())
+      const id = response['reportId']
       console.log(i.selectedSurvey);
       m.destroy();
       await this.router.navigate(['reports/editor', id] );

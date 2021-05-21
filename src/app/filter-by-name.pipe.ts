@@ -1,4 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import {SurveyQueryNamingDictionary} from './dataModels/Query';
 
 @Pipe({
   name: 'filterByName'
@@ -33,3 +34,28 @@ export class NameFilter implements PipeTransform {
   }
 
 }
+
+
+@Pipe({
+  name: 'RemoveHtml'
+})
+export class RemoveHtmlFilter implements PipeTransform {
+
+ transform(value: string): any {
+   return value.replace(/<[^>]*>/g, '');
+ }
+
+}
+
+@Pipe({
+  name: 'PolskieNazwy'
+})
+export class PolskieNazwyFilter implements PipeTransform {
+
+  transform(value: string): any {
+    return SurveyQueryNamingDictionary[value]??value
+  }
+
+}
+
+

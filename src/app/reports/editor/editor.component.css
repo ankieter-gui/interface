@@ -22,9 +22,9 @@ nz-breadcrumb {
 
 .inner-content {
   padding: 24px;
-
+  background:white;
   min-height: 100vh;
-  max-width: 900px;
+  max-width: 1200px;
 
 }
 
@@ -36,7 +36,7 @@ nz-breadcrumb {
   margin-top:2em;
   padding:3em;
   background-color: white;
-  border: 1px solid rgba(0,0,0,0.03);
+  /*border: 1px solid rgba(0,0,0,0.03);*/
   border-radius: 10px;
 
 }
