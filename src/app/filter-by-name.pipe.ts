@@ -17,6 +17,21 @@ export class FilterByNamePipe implements PipeTransform {
 
 }
 
+@Pipe({
+  name: 'filterByType'
+})
+export class FilterByTypePipe implements PipeTransform {
+
+  transform(items: any[], filter: string): any {
+    if (!items || !filter) {
+      return items;
+    }
+
+
+    return items.filter(item => item.type.toLowerCase().includes(filter.toLowerCase()));
+  }
+
+}
 
 
 @Pipe({

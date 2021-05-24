@@ -1,5 +1,6 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ReportMeta} from '../dataModels/survey';
+import {ReportsService} from '../reports.service';
 
 @Component({
   selector: 'app-report-tile',
@@ -28,10 +29,10 @@ import {ReportMeta} from '../dataModels/survey';
 
     </ng-template>
     <ng-template #actionSetting>
-      <i nz-icon [nzType]="'copy'" nz-tooltip [nzTooltipTitle]="'Duplikuj'"></i>
+      <i nz-icon [nzType]="'copy'" nz-tooltip [nzTooltipTitle]="'Duplikuj'" (click)="copy()"></i>
     </ng-template>
     <ng-template #actionEdit>
-      <i nz-icon nzType="edit" nz-tooltip [nzTooltipTitle]="'Edytuj'"></i>
+      <i nz-icon nzType="edit" nz-tooltip [nzTooltipTitle]="'Edytuj'" [routerLink]="['reports/editor', report.id]"></i>
     </ng-template>
     <ng-template #actionEllipsis>
       <i nz-icon nzType="share-alt" nz-tooltip [nzTooltipTitle]="'Udostępnij'"></i>
@@ -100,9 +101,16 @@ import {ReportMeta} from '../dataModels/survey';
 export class ReportTileComponent implements OnInit {
   @Input()
   report:ReportMeta;
-  constructor() { }
+  @Output()
+  reloadEmitter = new EventEmitter();
+  constructor(private reportService:ReportsService) { }
 
   ngOnInit(): void {
+  }
+  async copy(){
+
+    await (this.reportService.copy(this.report.id).toPromise())
+    this.reloadEmitter.emit()
   }
 
 }

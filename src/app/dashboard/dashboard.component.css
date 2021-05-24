@@ -33,7 +33,7 @@ nz-breadcrumb {
   transition: 1s all;
 }
 .add-new{
-  width:150px;height:150px; color:#3b3b3b; display: flex; flex-direction: column; justify-content: center; justify-items: center; cursor: pointer;
+  width:395px;height:175px; color:#3b3b3b; display: flex; flex-direction: column; justify-content: center; justify-items: center; cursor: pointer;
   transition: 0.2s all;
 }
 .add-new:hover{
@@ -46,6 +46,9 @@ nz-breadcrumb {
 }
 .cards-container-vertical{
   display: flex;
+  width:395px;
+  margin-right:3em;
+
   flex-direction: column;
 }
 nz-footer {

@@ -34,8 +34,8 @@
 
           <div [ngSwitch]="element.type" style="position:relative;">
             <mat-icon cdkDragHandle class="drag-handle">open_with</mat-icon>
-            <app-text-editor-view *ngSwitchCase="'text'" [text]="element.content.text"></app-text-editor-view>
-            <app-chart-editor-view *ngSwitchCase="'chart'" [chartData]="element.content" [questions]="surveyQuestions" ></app-chart-editor-view>
+            <app-text-editor-view *ngSwitchCase="'text'" [(text)]="element.content.text" (focusEvent)="save()"></app-text-editor-view>
+            <app-chart-editor-view *ngSwitchCase="'chart'" [(chartData)]="element.content" (chartDataChange)="save()" [questions]="surveyQuestions"></app-chart-editor-view>
           </div>
 
           </div>
@@ -43,12 +43,12 @@
         <section class="add-more slide-top-enter-animation" (mouseover)="mouseHoveringAddMorePanel=true" (mouseleave)="mouseHoveringAddMorePanel=false">
           <div class="add-more-content add-new"> Dodaj nowy <i nz-icon nzType="plus"></i></div>
           <div class="add-more-content">
-            <span [class.shake]="mouseHoveringAddMorePanel"><span [class.slide-top]="mouseHoveringAddMorePanel"><i  class="recommended" nz-icon nzType="build" [nz-tooltip]="'Proponowany wykres'"></i></span></span>
+            <span [class.shake]="mouseHoveringAddMorePanel" (click)="addNewChartElement()"><span [class.slide-top]="mouseHoveringAddMorePanel"><i  class="recommended" nz-icon nzType="build" [nz-tooltip]="'Proponowany wykres'"></i></span></span>
             <i nz-icon nzType="line-chart" [nz-tooltip]="'Wykres liniowy'"></i>
             <i nz-icon nzType="pie-chart" [nz-tooltip]="'Wykres ciasteczkowy (???)'"></i>
             <i nz-icon nzType="area-chart" [nz-tooltip]="'Wykres liniowy'"></i>
             <i nz-icon nzType="bar-chart" [nz-tooltip]="'Wykres kolumnowy, histogram'"></i>
-            <i nz-icon nzType="font-size" [nz-tooltip]="'Tekst'"></i>
+            <i nz-icon nzType="font-size" [nz-tooltip]="'Tekst'" (click)="addNewTextElement()"></i>
           </div>
         </section>
 

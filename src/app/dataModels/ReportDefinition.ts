@@ -3,4 +3,8 @@ import {ChartReportElement, ReportElement, TextReportElement} from './ReportElem
 export class ReportDefinition{
   title:string;
   elements:ReportElement[];
+  constructor(title) {
+    this.title =title;
+    this.elements=[]
+  }
 }

@@ -7,6 +7,7 @@ import {ReportsService} from './reports.service';
 import {NewGroupDialogComponent} from './new-group-dialog/new-group-dialog.component';
 import {from} from 'rxjs';
 import {DashboardService} from './dashboard.service';
+import {ReportDefinition} from './dataModels/ReportDefinition';
 
 @Injectable({
   providedIn: 'root'
@@ -51,6 +52,7 @@ export class DashboardModalsService {
    }, async (i, m) => {
      const response = await (this.reports.createNewReport(i.selectedSurvey.id, i.reportNameInputValue).toPromise())
       const id = response['reportId']
+     await (this.reports.saveReport(id, new ReportDefinition(i.reportNameInputValue)).toPromise())
      // const id="testoweId"
       console.log(i.selectedSurvey);
       m.destroy();

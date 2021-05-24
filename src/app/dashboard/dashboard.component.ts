@@ -57,13 +57,14 @@ export class DashboardComponent implements OnInit {
   loading = "open"
   dashboardData:DashboardRequestResponse={objects:[]};
   ngOnInit(): void {
-    this.dashboardService.getDashobardData().subscribe(d=>{this.dashboardData = d; console.log(this.dashboardData)});
+    this.dashboardService.getDashobardData().subscribe(d=>{ this.dashboardData = d; console.log(this.dashboardData)});
   }
   changeFilter(criterion: string, animate= true){
     if (this.filter_tmp == criterion) { return; }
     if (animate) {this.hideAndShow();
                   setTimeout(() => {this.filter = criterion}, 200); }
     else{this.filter = criterion}
+    console.log(criterion)
     this.filter_tmp = criterion;
   }
   hideAndShow(){
@@ -78,7 +79,12 @@ export class DashboardComponent implements OnInit {
   randomAvatart(): string{
     return sChance().avatar();
   }
+  reload(){
+    this.dashboardService.getDashobardData().subscribe(d=>{ this.dashboardData = d; console.log(this.dashboardData)});
 
+
+
+  }
 
 
 }

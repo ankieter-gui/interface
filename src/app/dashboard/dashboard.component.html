@@ -77,9 +77,9 @@
               </nz-card>
             </div>
           </div>
-          <div class="card-padding" *ngFor="let dataObject of this.dashboardData.objects | filterByName: inputValue" [@hide]="loading">
+          <div class="card-padding" *ngFor="let dataObject of this.dashboardData.objects | filterByType: this.filter | filterByName: inputValue" [@hide]="loading">
             <app-survey-tile [survey]="dataObject" *ngIf="dataObject.type=='survey'"></app-survey-tile>
-            <app-report-tile [report]="dataObject" *ngIf="dataObject.type=='report'"></app-report-tile>
+            <app-report-tile (reloadEmitter)="reload()" [report]="dataObject" *ngIf="dataObject.type=='report'"></app-report-tile>
           </div>
 
 

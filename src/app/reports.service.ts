@@ -13,12 +13,15 @@ export class ReportsService {
     return this.http.post(`${BACKEND_URL}/report/new`, {"surveyId":surveyId, "title":name}, {withCredentials:true,})
   }
   getReport(id){
-    return this.http.get<ReportDefinition>(`${BACKEND_URL}/report/${id}`)
+    return this.http.get<ReportDefinition>(`${BACKEND_URL}/report/${id}`,{withCredentials:true})
   }
   saveReport(id,content:ReportDefinition){
-    return this.http.post(`${BACKEND_URL}/report/new`, content)
+    return this.http.post(`${BACKEND_URL}/report/${id}`, content ,{withCredentials:true})
   }
   getLinkedSurvey(reportId){
-    return this.http.get(`${BACKEND_URL}/report/${reportId}/survey`)
+    return this.http.get<{surveyId:string}>(`${BACKEND_URL}/report/${reportId}/survey`,{withCredentials:true})
+  }
+  copy(reportId){
+    return this.http.get(`${BACKEND_URL}/report/${reportId}/copy`,{withCredentials:true})
   }
 }

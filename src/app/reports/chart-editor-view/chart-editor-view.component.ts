@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {MockService} from '../../mock.service';
 
 import {SurveyMeta} from '../../dataModels/survey';
@@ -40,8 +40,11 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
       </section>
     <div class="chart-container">
 
-    <section class="chart-area">
+    <section class="chart-area" *ngIf="chartData.config.type=='groupedPercentAndData'">
       <div *ngIf="this.echartOptions" echarts [options]="echartOptions" class="chart"></div>
+      <table *ngIf="chartData.dataQuery.as.length>0">
+<!--  TODO      <tr *ngFor="let group of groupedTableData"><td></td></tr>-->
+      </table>
     </section>
 <!--      <section class="chart-editor">-->
 <!--        <i nz-icon nzType="line-chart" [nz-tooltip]="'Typ wykresu'"></i>-->
@@ -316,6 +319,7 @@ export class ChartEditorViewComponent implements OnInit {
   questions;
 @Input()
 chartData:ChartReportElement;
+@Output() chartDataChange = new EventEmitter<ChartReportElement>()
 activeTab=0;
 questionSearchString:string
 bySearchString:string
@@ -341,6 +345,10 @@ asSearchString:string
     this.chartData.dataQuery.as.splice(i,1)
   this.refreshChart()
   }
+  save(){
+    this.chartDataChange.emit(this.chartData)
+  }
+
   questionPickerClick(question){
     this.onPickQuestion(question);
     // this.chartData.dataQuery.get[0][0]= question;
@@ -370,6 +378,7 @@ asSearchString:string
     this.refreshChart()
   }
   async refreshChart(){
+    this.save()
     try {
       await this.downloadQueryResponse();
       await this.generateChart();

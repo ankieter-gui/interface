@@ -34,7 +34,7 @@ import {NzInputModule} from 'ng-zorro-antd/input';
 import {NzToolTipModule} from 'ng-zorro-antd/tooltip';
 import { NewReportDialogComponent } from './new-report-dialog/new-report-dialog.component';
 import {NzModalModule} from 'ng-zorro-antd/modal';
-import {FilterByNamePipe, NameFilter, PolskieNazwyFilter, RemoveHtmlFilter} from './filter-by-name.pipe';
+import {FilterByNamePipe, FilterByTypePipe, NameFilter, PolskieNazwyFilter, RemoveHtmlFilter} from './filter-by-name.pipe';
 import { ShareDialogComponent } from './share-dialog/share-dialog.component';
 import { GlobalSidemenuComponent } from './global-sidemenu/global-sidemenu.component';
 import {EditorComponent} from './reports/editor/editor.component';
@@ -116,7 +116,8 @@ export let commonNZImports = [
     UserSearchComboboxComponent,
   NameFilter,
     RemoveHtmlFilter,
-    PolskieNazwyFilter
+    PolskieNazwyFilter,
+    FilterByTypePipe,
 
   ],
   imports: [

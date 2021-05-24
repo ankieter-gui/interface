@@ -7,7 +7,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
   selector: 'app-new-report-dialog',
   template: `
     Użyj danych z ankiety:
-    <input placeholder="wybierz ankietę" nz-input [(ngModel)]="surveyInputValue"
+    <input placeholder="wybierz ankietę" nz-input [(ngModel)]="surveyInputValue" (ngModelChange)="change()"
            [nzAutocomplete]="auto"/>
     <nz-autocomplete #auto>
       <nz-auto-option class="global-search-item" *ngFor="let option of autocompleteSurveys|filterByName:surveyInputValue"
@@ -30,8 +30,8 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
       </nz-collapse-panel>
     </nz-collapse>
 
-    <span style="display:block;margin-top:25px;">Nazwa (opcjonalnie, można potem nadać nową):</span>
-    <input placeholder="Nazwa (opcjonalnie)" nz-input [(ngModel)]="reportNameInputValue"/>
+    <span style="display:block;margin-top:25px;">Nazwa:</span>
+    <input placeholder="Nazwa" nz-input [(ngModel)]="reportNameInputValue" (focus)="nameEdited=true"/>
 
   `,
   styles: [
@@ -53,6 +53,12 @@ export class NewReportDialogComponent implements OnInit {
   }
   get selectedSurvey() {
     return this.autocompleteSurveys.filter(e => e.name==this.surveyInputValue)[0]
+  }
+  nameEdited=false;
+  change(){
+    if (!this.nameEdited){
+      this.reportNameInputValue ="Raport: "+this.surveyInputValue
+    }
   }
 
   public files: NgxFileDropEntry[] = [];
