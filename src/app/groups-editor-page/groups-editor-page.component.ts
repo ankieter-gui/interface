@@ -28,7 +28,7 @@ import { Component, OnInit } from '@angular/core';
 
           </div>
         </nz-content>
-        <nz-footer>Ant Design ©2020 Implement By Angular</nz-footer>
+        <nz-footer>UAM - Ankieter+</nz-footer>
       </nz-layout>
     </nz-layout>
 

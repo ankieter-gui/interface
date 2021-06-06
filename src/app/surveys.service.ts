@@ -26,12 +26,13 @@ export class SurveysService {
   getSurveyLinkedToReport(reportId){
 
   }
-  uploadData(file,relativePath){
+  uploadData(file,relativePath, name=undefined){
 
      // You could upload it like this:
      const formData = new FormData()
      formData.append('file', file, relativePath)
-
+     if (name) formData.append('name', name)
+    console.log("sending....")
      return this.http.post(`${BACKEND_URL}/data/new`, formData, {withCredentials:true})
 
   }

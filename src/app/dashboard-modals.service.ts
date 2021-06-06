@@ -10,6 +10,7 @@ import {DashboardService} from './dashboard.service';
 import {ReportDefinition} from './dataModels/ReportDefinition';
 import {ShareReportComponent} from './share-report/share-report.component';
 import {ReportMeta} from './dataModels/survey';
+import {FileSystemFileEntry} from 'ngx-file-drop';
 
 @Injectable({
   providedIn: 'root'
@@ -52,13 +53,44 @@ export class DashboardModalsService {
      autocompleteSurveys: (await (this.dashboardService.getDashobardData().toPromise())).objects.filter(d=>d.type==="survey")
 
    }, async (i, m) => {
-     const response = await (this.reports.createNewReport(i.selectedSurvey.id, i.reportNameInputValue).toPromise())
-      const id = response['reportId']
-     await (this.reports.saveReport(id, new ReportDefinition(i.reportNameInputValue)).toPromise())
-     // const id="testoweId"
-      console.log(i.selectedSurvey);
-      m.destroy();
-      await this.router.navigate(['reports/editor', id] );
+     let selectedSurvey = null;
+     selectedSurvey=i.selectedSurvey
+     if (i.files.length>0) {
+       console.log("1")
+       i.isFileBeingUploaded = true;
+       console.log("1")
+
+       console.log("1")
+       console.log(i.fileEntry)
+
+       i.fileEntry.file(async (file: File) => {
+         console.log("1")
+         // Here you can access the real file
+         console.log(i.files[0].relativePath, file);
+         let d = await (i.surveyService.uploadData(file, i.files[0].relativePath).toPromise())
+         i.isFileBeingUploaded = false;
+           selectedSurvey = d
+
+         const response = await (this.reports.createNewReport(selectedSurvey.id, i.reportNameInputValue).toPromise())
+         const id = response['reportId']
+         await (this.reports.saveReport(id, new ReportDefinition(i.reportNameInputValue)).toPromise())
+         // const id="testoweId"
+         console.log(selectedSurvey);
+         m.destroy();
+         await this.router.navigate(['reports/editor', id] );
+
+       });
+     }else{
+       const response = await (this.reports.createNewReport(selectedSurvey.id, i.reportNameInputValue).toPromise())
+       const id = response['reportId']
+       await (this.reports.saveReport(id, new ReportDefinition(i.reportNameInputValue)).toPromise())
+       // const id="testoweId"
+       console.log(selectedSurvey);
+       m.destroy();
+       await this.router.navigate(['reports/editor', id] );
+     }
+
+
     } );
   }
   async openShareReportDialog(report:ReportMeta){

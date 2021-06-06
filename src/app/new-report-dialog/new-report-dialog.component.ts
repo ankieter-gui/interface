@@ -64,26 +64,14 @@ export class NewReportDialogComponent implements OnInit {
   }
 
   public files: NgxFileDropEntry[] = [];
-
+  public fileEntry:FileSystemFileEntry;
   public dropped(files: NgxFileDropEntry[]) {
     this.files = files;
     for (const droppedFile of files) {
-
+      this.fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
       // Is it a file?
       if (droppedFile.fileEntry.isFile) {
-        this.isFileBeingUploaded=true;
-        const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
-        fileEntry.file((file: File) => {
-
-          // Here you can access the real file
-          console.log(droppedFile.relativePath, file);
-          this.surveyService.uploadData(file,droppedFile.relativePath).subscribe(d=>{
-            this.isFileBeingUploaded=false;
-            console.log('file sent')
-          })
-
-
-        });
+            if (!this.reportNameInputValue || (this.reportNameInputValue && this.files.length>0 && this.reportNameInputValue.includes("Raport z "))) this.reportNameInputValue="Raport z "+droppedFile.fileEntry.name
       } else {
         // It was a directory (empty directories are added, otherwise only files)
         const fileEntry = droppedFile.fileEntry as FileSystemDirectoryEntry;
