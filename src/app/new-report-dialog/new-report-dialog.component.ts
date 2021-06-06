@@ -27,7 +27,7 @@ import {SurveysService} from '../surveys.service';
             <button nz-button (click)="openFileSelector()">{{files.length>0?"Zmień":"Wybierz"}}</button>
           </ng-template>
         </ngx-file-drop>
-        <
+        <nz-spin *ngIf="isFileBeingUploaded" nzSimple [nzSize]="'large'"></nz-spin>
       </nz-collapse-panel>
     </nz-collapse>
 

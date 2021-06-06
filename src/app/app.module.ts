@@ -65,6 +65,7 @@ import {LoginGuard} from './LoginGuard';
 import { UserIndicatorComponent } from './user-indicator/user-indicator.component';
 import { ReportPreviewComponent } from './report-preview/report-preview.component';
 import { ShareReportComponent } from './share-report/share-report.component';
+import {NzSpinModule} from 'ng-zorro-antd/spin';
 
 registerLocaleData(fr);
 export let commonNZImports = [
@@ -147,7 +148,8 @@ export let commonNZImports = [
     NgxFileDropModule,
     NzBadgeModule,
     NzTabsModule,
-    NzCheckboxModule
+    NzCheckboxModule,
+    NzSpinModule
 
   ],
   providers: [{provide: NZ_I18N, useValue: fr_FR},  { provide: Window, useValue: window },LoginGuard],
