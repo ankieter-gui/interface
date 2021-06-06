@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpResponse} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {BACKEND_URL} from './Configuration';
 import {SurveyQuery} from './dataModels/Query';
@@ -23,6 +23,15 @@ export class SurveysService {
     return this.http.post(`${BACKEND_URL}/data/${survey}`, q)
   }
   getSurveyLinkedToReport(reportId){
+
+  }
+  uploadData(file,relativePath){
+
+     // You could upload it like this:
+     const formData = new FormData()
+     formData.append('file', file, relativePath)
+
+     return this.http.post(`${BACKEND_URL}/data/new`, formData, {withCredentials:true})
 
   }
 
