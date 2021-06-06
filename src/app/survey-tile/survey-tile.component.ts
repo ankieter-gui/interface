@@ -44,7 +44,7 @@ import {SurveyMeta} from '../dataModels/survey';
 
     </ng-template>
     <ng-template #coverTemplate>
-      <figure class="header-image" style="background-image: url('https://image.freepik.com/free-vector/gradient-shapes-dark-background_52683-32826.jpg');">
+      <figure class="header-image" [style]="'background-image: url('+report.backgroundImg+');'">
 
       </figure>
       <span class="card-title">{{survey.name}}</span>
