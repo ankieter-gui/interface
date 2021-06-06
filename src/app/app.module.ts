@@ -67,6 +67,7 @@ import { ReportPreviewComponent } from './report-preview/report-preview.componen
 import { ShareReportComponent } from './share-report/share-report.component';
 import {NzSpinModule} from 'ng-zorro-antd/spin';
 
+
 registerLocaleData(fr);
 export let commonNZImports = [
   NgxEchartsModule.forRoot({
@@ -133,6 +134,7 @@ export let commonNZImports = [
     UserIndicatorComponent,
     ReportPreviewComponent,
     ShareReportComponent,
+
 
   ],
   imports: [
