@@ -1,21 +1,19 @@
-import {Component, OnInit} from '@angular/core';
-import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
-import {ReportDefinition} from '../../dataModels/ReportDefinition';
-
-import {SurveyMeta} from '../../dataModels/survey';
-import {addWarning} from '@angular-devkit/build-angular/src/utils/webpack-diagnostics';
-import {SurveysService} from '../../surveys.service';
-import {SurveyQuery} from '../../dataModels/Query';
-import {ReportsService} from '../../reports.service';
+import { Component, OnInit } from '@angular/core';
+import {ReportDefinition} from '../dataModels/ReportDefinition';
+import {SurveysService} from '../surveys.service';
+import {ReportsService} from '../reports.service';
 import {ActivatedRoute} from '@angular/router';
-import {ChartReportElement, TextReportElement} from '../../dataModels/ReportElement';
+import {ChartReportElement, TextReportElement} from '../dataModels/ReportElement';
+import {SurveyQuery} from '../dataModels/Query';
+import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 
 @Component({
-  selector: 'app-editor',
-  templateUrl: './editor.component.html',
-  styleUrls: ['./editor.component.css']
+  selector: 'app-report-preview',
+  templateUrl: './report-preview.component.html',
+  styleUrls: ['./report-preview.component.css']
 })
-export class EditorComponent implements OnInit {
+export class ReportPreviewComponent implements OnInit {
+
   mockChartResponseData = {};
   mouseHoveringAddMorePanel=false;
   surveyQuestions;
@@ -69,4 +67,5 @@ export class EditorComponent implements OnInit {
   rename(){
     this.reportsService.renameReport(this.route.snapshot.paramMap.get('id'), this.reportDefinition.title).subscribe(d=>console.log(d))
   }
+
 }

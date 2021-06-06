@@ -43,6 +43,14 @@ nz-breadcrumb {
 .element-box:hover{
 
 }
+.more{
+  position: absolute;
+  right:-40px;
+  top:-8px;
+  opacity: 0.5;
+  float:right;
+  z-index: 999;
+}
 .drag-handle{
   position: absolute;
   right:0;

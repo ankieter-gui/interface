@@ -24,4 +24,10 @@ export class ReportsService {
   copy(reportId){
     return this.http.get(`${BACKEND_URL}/report/${reportId}/copy`,{withCredentials:true})
   }
+  deleteReport(reportId){
+    return this.http.delete(`${BACKEND_URL}/report/${reportId}`,{withCredentials:true})
+  }
+  renameReport(reportId, newName){
+    return this.http.post(`${BACKEND_URL}/report/${reportId}/rename`,{title:newName},{withCredentials:true})
+  }
 }

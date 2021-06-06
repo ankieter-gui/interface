@@ -8,6 +8,8 @@ import {NewGroupDialogComponent} from './new-group-dialog/new-group-dialog.compo
 import {from} from 'rxjs';
 import {DashboardService} from './dashboard.service';
 import {ReportDefinition} from './dataModels/ReportDefinition';
+import {ShareReportComponent} from './share-report/share-report.component';
+import {ReportMeta} from './dataModels/survey';
 
 @Injectable({
   providedIn: 'root'
@@ -59,7 +61,11 @@ export class DashboardModalsService {
       await this.router.navigate(['reports/editor', id] );
     } );
   }
+  async openShareReportDialog(report:ReportMeta){
+    this.createComponentModal("Udostępnij raport", ShareReportComponent, {report:report}, async (i,m)=>{
 
+    })
+  }
   openNewGroupDialog(fromAdminPanel=false): void{
     this.createComponentModal("Nowa grupa", NewGroupDialogComponent, {placeholder: "Szukaj przez nazwisko", fromAdminPanel:fromAdminPanel}, (i: NewGroupDialogComponent, m) => {
       // TODO: create group

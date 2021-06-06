@@ -13,7 +13,7 @@ export class SurveyQuery{
 export let ComplimentQuery = (query:SurveyQuery):SurveyQuery=>{
   //TODOD: Jak nie zgadzają się liczny agregacji itd
   let q2= new SurveyQuery()
-  Object.assign(q2,  query)
+  q2=JSON.parse(JSON.stringify(query))
   while (q2.as.length>q2.get[0].length){
     q2.get[0].push(q2.get[0][0])
   }

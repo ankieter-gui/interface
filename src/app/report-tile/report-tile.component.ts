@@ -1,11 +1,14 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ReportMeta} from '../dataModels/survey';
 import {ReportsService} from '../reports.service';
+import {setupTestingRouter} from '@angular/router/testing';
+import {Router} from '@angular/router';
+import {DashboardModalsService} from '../dashboard-modals.service';
 
 @Component({
   selector: 'app-report-tile',
   template: `
-    <nz-card [nzBordered]="false"  [nzCover]="coverTemplate" [nzActions]="[actionSetting, actionEdit, actionEllipsis, actionSee, actionDelete]">
+    <nz-card [nzBordered]="false"  [nzCover]="coverTemplate" [nzActions]="[actionSetting, actionEdit, actionEllipsis, actionSee,actionDownload, actionDelete]">
 <!--      <nz-card-meta nzTitle="{{report.name}}" nzDescription=""></nz-card-meta>-->
 
       <div class="progress">
@@ -21,11 +24,21 @@ import {ReportsService} from '../reports.service';
 
 </figure>
       <span class="card-title">{{report.name}}</span>
-
-
-      <div class="units">
-        <nz-tag [nzColor]="'magenta'" class="connected-survey">{{report.connectedSurvey.name}}</nz-tag>
+      <div class="large-indicator">
+        <figure class="indicator-icon"><img src="../../assets/answers_count.png" style="width:70px;"></figure>
+        <div class="indicator-right-side">
+          <div class="indicator-right-side-top small-font">
+            {{this.report.connectedSurvey.name}}
+          </div>
+          <div class="indicator-right-side-bottom">
+            Nazwa ankiety
+          </div>
+        </div>
       </div>
+
+<!--      <div class="units">-->
+<!--        <nz-tag [nzColor]="'magenta'" class="connected-survey">{{report.connectedSurvey.name}}</nz-tag>-->
+<!--      </div>-->
 
     </ng-template>
     <ng-template #actionSetting>
@@ -35,18 +48,61 @@ import {ReportsService} from '../reports.service';
       <i nz-icon nzType="edit" nz-tooltip [nzTooltipTitle]="'Edytuj'" [routerLink]="['reports/editor', report.id]"></i>
     </ng-template>
     <ng-template #actionEllipsis>
-      <i nz-icon nzType="share-alt" nz-tooltip [nzTooltipTitle]="'Udostępnij'"></i>
+      <i nz-icon nzType="share-alt" nz-tooltip [nzTooltipTitle]="'Udostępnij'" (click)="this.modals.openShareReportDialog(this.report)"></i>
     </ng-template>
     <ng-template #actionSee>
-      <i nz-icon nzType="eye" nz-tooltip [nzTooltipTitle]="'Podejrzyj'"></i>
+      <i nz-icon nzType="eye" nz-tooltip [nzTooltipTitle]="'Podejrzyj'" [routerLink]="['/reports/', this.report.id]"></i>
     </ng-template>
     <ng-template #actionDelete>
-      <i nz-icon nzType="delete" nz-tooltip [nzTooltipTitle]="'Usuń'"></i>
+      <i nz-icon nzType="delete" nz-tooltip [nzTooltipTitle]="'Usuń'" (click)="delete()"></i>
+    </ng-template>
+    <ng-template #actionDownload>
+      <i nz-icon nzType="file-pdf" nz-tooltip [nzTooltipTitle]="'Pobierz jako PDF'" (click)="PDF()"></i>
     </ng-template>
   `,
   styles: [
     `
-    .statistics{
+      .large-indicator{
+        display: flex;
+        flex-direction: row;
+      }
+      .indicator-right-side{
+        margin-left:1em;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .indicator-right-side-bottom{
+        margin-top:0.7em;
+        font-family: Gilroy;
+        font-style: normal;
+        font-weight: 300;
+        font-size: 14px;
+        line-height: 16px;
+        letter-spacing: 0.01em;
+
+        color: #A6ACBE;
+
+      }
+      .indicator-right-side-top{
+
+        font-family: Gilroy;
+        font-style: normal;
+        font-weight: 800;
+        font-size: 28px;
+        line-height: 24px;
+
+        /* or 86% */
+        display: flex;
+        align-items: center;
+        letter-spacing: 0.01em;
+
+        color: #000000;
+      }
+      .indicator-right-side-top.small-font{
+        font-size: 17px;
+      }
+      .statistics{
         margin-left:1rem;
       margin-top:0.5rem;
         margin-right:1rem;
@@ -103,14 +159,21 @@ export class ReportTileComponent implements OnInit {
   report:ReportMeta;
   @Output()
   reloadEmitter = new EventEmitter();
-  constructor(private reportService:ReportsService) { }
+  constructor(private reportService:ReportsService, private router:Router, public modals:DashboardModalsService) { }
 
   ngOnInit(): void {
   }
   async copy(){
 
-    await (this.reportService.copy(this.report.id).toPromise())
+    let response = await (this.reportService.copy(this.report.id).toPromise())
+    this.router.navigate(["/reports/editor/",response['reportId']])
+    // this.reloadEmitter.emit()
+  }
+  async delete(){
+    await (this.reportService.deleteReport(this.report.id).toPromise())
     this.reloadEmitter.emit()
   }
+  async PDF(){
 
+  }
 }

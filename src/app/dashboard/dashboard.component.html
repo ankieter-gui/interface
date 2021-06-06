@@ -6,7 +6,7 @@
 
 
   <nz-layout>
-    <nz-header>
+    <nz-header style="justify-content: space-between">
       <img src="assets/logoAnkieter2.png" height="100%" style="margin-left: 1rem;">
       <div style=" width:40vw; margin-left:5vw">
         <nz-input-group nzSearch nzSize="large">
@@ -27,7 +27,9 @@
           </nz-auto-option>
         </nz-autocomplete>
       </div>
-
+    <div>
+      <app-user-indicator></app-user-indicator>
+    </div>
     </nz-header>
     <nz-content>
       <header class="header-container">

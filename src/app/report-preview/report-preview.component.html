@@ -1,0 +1,29 @@
+
+
+
+
+    <nz-content style="width: 90%; margin:auto; max-width: 1200px;">
+      <header class="header-container">
+        <h1 class="breadcrumb-header">{{this.reportDefinition.title}}</h1>
+      </header>
+
+      <div class="inner-content ">
+
+        <div class="report-element">
+          <div class="custom-placeholder"></div>
+
+
+          <div *ngFor="let element of reportDefinition.elements" cdkDrag class="element-box" style="position:relative;">
+
+            <div [ngSwitch]="element.type" style="position:relative;">
+              <app-text-editor-view [isPreview]="true" *ngSwitchCase="'text'" [(text)]="element.content.text" (focusEvent)="save()" ></app-text-editor-view>
+              <app-chart-editor-view [isPreview]="true" *ngSwitchCase="'chart'" [(chartData)]="element.content" (chartDataChange)="save()" [questions]="surveyQuestions" [surveyId]="this.linkedSurveyId"></app-chart-editor-view>
+            </div>
+
+          </div>
+        </div>
+
+
+      </div>
+    </nz-content>
+

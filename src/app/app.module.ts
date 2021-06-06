@@ -58,6 +58,13 @@ import {NzBadgeModule} from 'ng-zorro-antd/badge';
 import {NzTabsModule} from 'ng-zorro-antd/tabs';
 import {NzCheckboxModule} from 'ng-zorro-antd/checkbox';
 import {NzGridModule} from 'ng-zorro-antd/grid';
+import {NzTableModule} from 'ng-zorro-antd/table';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatButtonModule} from '@angular/material/button';
+import {LoginGuard} from './LoginGuard';
+import { UserIndicatorComponent } from './user-indicator/user-indicator.component';
+import { ReportPreviewComponent } from './report-preview/report-preview.component';
+import { ShareReportComponent } from './share-report/share-report.component';
 
 registerLocaleData(fr);
 export let commonNZImports = [
@@ -84,6 +91,10 @@ export let commonNZImports = [
   NzTagModule,
   NzProgressModule,
   NzModalModule,
+  NzTableModule,
+  MatMenuModule,
+  MatIconModule,
+  MatButtonModule,
   FormsModule,
   HttpClientModule,
   NzIconModule,
@@ -114,10 +125,13 @@ export let commonNZImports = [
     CreateNewGroupComponent,
     NewGroupDialogComponent,
     UserSearchComboboxComponent,
-  NameFilter,
+    NameFilter,
     RemoveHtmlFilter,
     PolskieNazwyFilter,
     FilterByTypePipe,
+    UserIndicatorComponent,
+    ReportPreviewComponent,
+    ShareReportComponent,
 
   ],
   imports: [
@@ -136,7 +150,7 @@ export let commonNZImports = [
     NzCheckboxModule
 
   ],
-  providers: [{provide: NZ_I18N, useValue: fr_FR}],
+  providers: [{provide: NZ_I18N, useValue: fr_FR},  { provide: Window, useValue: window },LoginGuard],
   exports: [
     GlobalSidemenuComponent
   ],

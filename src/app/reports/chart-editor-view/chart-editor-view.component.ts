@@ -40,12 +40,18 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
       </section>
     <div class="chart-container">
 
-    <section class="chart-area" *ngIf="chartData.config.type=='groupedPercentAndData'">
-      <div *ngIf="this.echartOptions" echarts [options]="echartOptions" class="chart"></div>
-      <table *ngIf="chartData.dataQuery.as.length>0">
-<!--  TODO      <tr *ngFor="let group of groupedTableData"><td></td></tr>-->
-      </table>
+    <section class="chart-area" *ngIf="chartData.config.type=='groupedPercentAndData' && this.echartOptions">
+      <div echarts [options]="echartOptions" class="chart" ></div>
+      <nz-table *ngIf="chartData.dataQuery.as.includes('share') && chartData.dataQuery.as.length>1 && dataResponse" class="details-table" [nzTemplateMode]="true">
+       <thead> <tr><th *ngFor="let header of tableHeaders">{{header}}</th></tr></thead>
+        <tbody>
+        <tr *ngFor="let row of this.tableData"><td *ngFor="let value of row">{{value | number }}</td></tr>
+        </tbody>
+      </nz-table>
     </section>
+      <section class="chart-area" *ngIf="['multipleChoice', 'groupedBars'].includes(chartData.config.type)  && this.echartOptions">
+        <div echarts [options]="echartOptions" class="chart" style="width: 100%;"></div>
+      </section>
 <!--      <section class="chart-editor">-->
 <!--        <i nz-icon nzType="line-chart" [nz-tooltip]="'Typ wykresu'"></i>-->
 <!--        <i nz-icon nzType="question" [nz-tooltip]="'Pytania'"></i>-->
@@ -58,26 +64,27 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
 
 <!--      <ckeditor  [(ngModel)]="chartData.text" type="inline"></ckeditor>-->
 <!--      </div>-->
+   <ng-container *ngIf="!isPreview">
       <section class="query-marker"  *ngIf="chartData.dataQuery.get[0].length>0" [@fadeInOut]>
                 <figure class="indicator-card indicator-card-red" (click)="activeTab=0">
                   <div class="indicator-card-inner">
                   <div class="indicator-card-header">Pytanie</div>
                   <div class="indicator-card-content">
-                  {{chartData.dataQuery.get[0][0] | RemoveHtml}}
+                  {{question | RemoveHtml}}
 
 
                   </div>
                   </div>
                 </figure>
-        <div class="arrow-container"> <i nz-icon nzType="right"></i></div>
-        <figure class="indicator-card indicator-card-green">
+        <div class="arrow-container" *ngIf="!hideData"> <i nz-icon nzType="right"></i></div>
+        <figure class="indicator-card indicator-card-green"  *ngIf="!hideData">
           <div class="indicator-card-inner">
             <div class="indicator-card-header">Dane</div>
             <div class="indicator-card-content">{{chartData.dataQuery.as.join(', ')}}</div>
           </div>
         </figure>
-        <div class="arrow-container"> <i nz-icon nzType="right"></i></div>
-        <figure class="indicator-card indicator-card-velvet">
+        <div class="arrow-container" *ngIf="!hideGroupBy"> <i nz-icon nzType="right"></i></div>
+        <figure class="indicator-card indicator-card-velvet"  *ngIf="!hideGroupBy">
           <div class="indicator-card-inner">
             <div class="indicator-card-header">Grupowanie</div>
             <div class="indicator-card-content">{{chartData.dataQuery.by[0] | RemoveHtml}}</div>
@@ -92,9 +99,11 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
         </figure>
 
       </section>
+
       <nz-collapse class="chart-editor-dropdown">
         <nz-collapse-panel nzHeader="Prosty edytor" [nzActive]="true">
-                <div class="editor-flex-row">
+                <div>
+                  <input placeholder="Nazwa wykresu" nz-input [(ngModel)]="this.chartData.name" (blur)="refreshChart(); save()"/>
                   <nz-tabset [(nzSelectedIndex)]="activeTab">
                     <nz-tab nzTitle="Wygląd i układ">
                       <section class="query-marker">
@@ -105,20 +114,20 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
                           </div>
                         </figure>
                         <div class="spacer"></div>
-                        <figure class="indicator-card indicator-card-velvet preset" nz-tooltip="Użyj tego wykresu aby przedstawić wyniki z pytań wielokrotnego wyboru. Na przykład: dlaczego poleciłbyś UAM">
+                        <figure class="indicator-card indicator-card-velvet preset" nz-tooltip="Użyj tego wykresu aby przedstawić wyniki z pytań wielokrotnego wyboru. Na przykład: dlaczego poleciłbyś UAM" (click)="pickPreset('multipleChoice');">
                           <div class="indicator-card-inner">
                             <div class="indicator-card-header">Wielokrotny wybór</div>
                             <div class="indicator-card-content"><img src="/assets/preset2.png" style="width: 100%"></div>
                           </div>
                         </figure>
                         <div class="spacer"></div>
-                        <figure class="indicator-card indicator-card-velvet preset"  nz-tooltip="Użyj tego wykresu aby przedstawić wyniki z pytań wielokrotnego wyboru wraz z danymi statystycznymi jak np. odchylenie. Na przykład: dlaczego poleciłbyś UAM">
-                          <div class="indicator-card-inner">
-                            <div class="indicator-card-header">Wielokrotny wybór + dane</div>
-                            <div class="indicator-card-content"><img src="/assets/preset3.png" style="width: 100%"></div>
-                          </div>
-                        </figure>
-                        <div class="spacer"></div>
+<!--                        <figure class="indicator-card indicator-card-velvet preset"  nz-tooltip="Użyj tego wykresu aby przedstawić wyniki z pytań wielokrotnego wyboru wraz z danymi statystycznymi jak np. odchylenie. Na przykład: dlaczego poleciłbyś UAM">-->
+<!--                          <div class="indicator-card-inner">-->
+<!--                            <div class="indicator-card-header">Wielokrotny wybór + dane</div>-->
+<!--                            <div class="indicator-card-content"><img src="/assets/preset3.png" style="width: 100%"></div>-->
+<!--                          </div>-->
+<!--                        </figure>-->
+<!--                        <div class="spacer"></div>-->
                         <figure class="indicator-card indicator-card-velvet preset" [nz-tooltip]="'Kiedy chcesz przedstawić dane z różnych wydziałów obok siebie. Przydatne przy prezentowaniu średniej ocen'">
                           <div class="indicator-card-inner">
                             <div class="indicator-card-header">Wiele słupków</div>
@@ -126,7 +135,7 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
                           </div>
                         </figure>
                         <div class="spacer"></div>
-                        <figure class="indicator-card indicator-card-velvet preset" nz-tooltip="Użyj tego wykresu do prezentacji frekwencji">
+                        <figure class="indicator-card indicator-card-velvet preset" nz-tooltip="Użyj tego wykresu do prezentacji frekwencji" (click)="pickPreset('groupedBars');">
                           <div class="indicator-card-inner">
                             <div class="indicator-card-header">Słupkowy zgrupowany</div>
                             <div class="indicator-card-content"><img src="/assets/wydzialy.png" style="width: 100%"></div>
@@ -135,7 +144,7 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
                       </section>
                     </nz-tab>
                     <nz-tab nzTitle="Pytanie i dane">
-                      <section class="question-selector dane">
+                      <section class="question-selector dane" *ngIf="!hideData">
                         <div style="display: flex;flex-direction: row"> <span style='font-family: "Gilroy ExtraBold", sans-serif; width:50%;'>Dane:</span></div>
                         <div style="display: flex; flex-direction: row">
                           <label *ngFor='let q of ["share","max","min","mode","mean","median","std","var","count","sum"]' nz-checkbox [nzChecked]="chartData.dataQuery.as.includes(q)" (click)="asPickerClick(q);refreshChart()">{{q | PolskieNazwy}}</label>
@@ -151,7 +160,7 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
                       </div>
                       </section>
 
-                        <section class="question-selector pytania">
+                        <section class="question-selector pytania" *ngIf="!hideGroupBy">
                         <div style="display: flex;flex-direction: row"> <span style='font-family: "Gilroy ExtraBold", sans-serif; width:50%;'>Grupuj przez:</span> <nz-input-group class="force-input-borderless" [nzPrefixIcon]="'search'"><input   nzBorderless nz-input placeholder="Wyszukaj..." [(ngModel)]="bySearchString"> </nz-input-group></div>
                         <div style="display: flex; flex-direction: column">
                           <label *ngFor="let q of questionNames|NameFilter: bySearchString" nz-checkbox [nzChecked]="chartData.dataQuery.by[0]==q" (click)="buPickerClick(q);refreshChart()">{{q| RemoveHtml}}</label>
@@ -170,14 +179,19 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
                 </div>
         </nz-collapse-panel>
         <nz-collapse-panel nzHeader="Zaawansowany edytor">
-
+            <input nz-input placeholder="Wpisz query" [(ngModel)]="advancedQuery" (ngModelChange)="refreshChart()">
         </nz-collapse-panel>
       </nz-collapse>
-
+   </ng-container>
     </section>
+
   `,
   styles: [
     `
+      td{
+        padding:15px!important;
+      }
+
       .spacer{
         width:25px;
       }
@@ -217,7 +231,8 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
         width:50%;
       }
       .pytania{
-        width:50%;
+       flex-grow:1;
+        min-width: 50%;
       }
       .query-marker{
         margin-top:2em;
@@ -289,8 +304,18 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
         transform: scale(1.3);
       }
       .chart-area{
-       width:100%;
+        display: flex;
+
+        flex-direction: row;
+       width:1000%;
         min-height:300px;
+      }
+      .chart{
+        min-width: 80%;
+      }
+      .details-table{
+
+        flex-grow: 1;
       }
       .chart-name{
         display: block;
@@ -302,6 +327,10 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
         flex-direction: column;
       }
       .editor-flex-row{
+        display:flex;
+        flex-direction: row;
+      }
+      .editor-flex-column{
         display:flex;
         flex-direction: row;
       }
@@ -317,18 +346,50 @@ export class ChartEditorViewComponent implements OnInit {
   }
   @Input()
   questions;
+  @Input()
+  isPreview=false;
 @Input()
 chartData:ChartReportElement;
 @Output() chartDataChange = new EventEmitter<ChartReportElement>()
 activeTab=0;
 questionSearchString:string
 bySearchString:string
+  advancedQuery:string;
 asSearchString:string
   onPickQuestion;
+
+hideData=false;
+hideGroupBy=false;
+
   pickPreset(name){
     let fun = {
       'groupedPercentAndData':()=>{
+        this.hideData=false;
+        this.hideGroupBy=false;
         this.chartData.dataQuery.as[0]='share'
+        this.onPickQuestion = (question)=>{this.chartData.dataQuery.get[0][0] = question}
+      },
+      'multipleChoice':()=>{
+        this.hideData=true;
+        this.hideGroupBy=true;
+        this.chartData.dataQuery.as[0]='share'
+        this.chartData.dataQuery.by[0] = '*'
+        this.onPickQuestion=(question)=>{
+          let exists = this.chartData.dataQuery.get.filter(d=>d[0]==question).length>0
+          if (exists) {
+            this.chartData.dataQuery.get = this.chartData.dataQuery.get.filter(d => d[0] != question)
+          }
+          else{
+            this.chartData.dataQuery.get.push([question])
+          }
+          this.chartData.dataQuery.get = (this.chartData.dataQuery.get.filter(d=>d[0]!=undefined))
+        }
+      },
+      "groupedBars":()=>{
+        this.hideData=true;
+        this.hideGroupBy=true;
+        this.chartData.dataQuery.as[0] = 'share'
+        this.chartData.dataQuery.by[0] = "*"
         this.onPickQuestion = (question)=>{this.chartData.dataQuery.get[0][0] = question}
       }
     }[name]
@@ -348,7 +409,9 @@ asSearchString:string
   save(){
     this.chartDataChange.emit(this.chartData)
   }
-
+  get question(){
+   return {"groupedPercentAndData": this.chartData.dataQuery.get[0][0], "multipleChoice":this.chartData.dataQuery.get.length>1?this.chartsService.sanitizeLabels(this.chartData.dataQuery.get.map(d=>d[0]))[1]:this.chartData.dataQuery.get[0][0], "groupedBars":this.chartData.dataQuery.get[0][0]}[this.chartData.config.type]
+  }
   questionPickerClick(question){
     this.onPickQuestion(question);
     // this.chartData.dataQuery.get[0][0]= question;
@@ -374,10 +437,13 @@ asSearchString:string
   constructor(private surveyService:SurveysService, private chartsService:ChartsService) { }
 
   ngOnInit(): void {
-
+    if (this.chartData.config.type){
+      this.pickPreset(this.chartData.config.type)
+    }
     this.refreshChart()
   }
   async refreshChart(){
+
     this.save()
     try {
       await this.downloadQueryResponse();
@@ -386,11 +452,12 @@ asSearchString:string
       console.log(e)
     }
   }
-
+  @Input()
+  surveyId
   dataResponse;
   async downloadQueryResponse(){
 
-      let _dataResponse: any = await (this.surveyService.query(1, ComplimentQuery(this.chartData.dataQuery)).toPromise())
+      let _dataResponse: any = await (this.surveyService.query(this.surveyId, this.advancedQuery?JSON.parse(this.advancedQuery):ComplimentQuery(this.chartData.dataQuery)).toPromise())
       console.log(_dataResponse);
       if ("error" in _dataResponse) {
 
@@ -408,6 +475,18 @@ asSearchString:string
       this.echartOptions = this.chartsService.generateChart(this.dataResponse, this.chartData)
 
   }
-
+  get tableHeaders(){
+    let pairs = this.chartsService.transformDataIntoPairs(this.dataResponse)
+    //quite complex fragment dealing with tranforming the data from:
+    //{"mean Price":[20,2,5]}
+    //into
+    //["mean"]
+    return pairs.filter(d=> this.chartData.dataQuery.as.includes(d[0].split(" ")[0]) && d[0].split(" ")[0]!="share").map(d=>d[0].split(" ")[0])
+  }
+  get tableData(){
+    let transpose = m => m[0].map((x,i) => m.map(x => x[i]))
+    let tableContent = this.chartsService.transformDataIntoPairs(this.dataResponse).filter(d=> this.chartData.dataQuery.as.includes(d[0].split(" ")[0]) && d[0].split(" ")[0]!="share").map(d=>d[1])
+    return transpose(tableContent)
+  }
 
 }

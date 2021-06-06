@@ -7,19 +7,35 @@ import {SurveyMeta} from '../dataModels/survey';
   template: `
     <nz-card [nzBordered]="false"  [nzCover]="coverTemplate" [nzActions]="[actionSetting, actionEdit, actionEllipsis, actionCreateReport]">
       <!--      <nz-card-meta nzTitle="{{report.name}}" nzDescription=""></nz-card-meta>-->
-
+      <div class="large-indicator">
+        <figure class="indicator-icon"><img src="../../assets/answers_count.png" style="width:70px;"></figure>
+        <div class="indicator-right-side">
+          <div class="indicator-right-side-top">
+            {{survey.questionCount}}
+          </div>
+          <div class="indicator-right-side-bottom">
+            Pytań
+          </div>
+        </div>
+      </div>
+      <div class="large-indicator">
+        <figure class="indicator-icon"><img src="../../assets/time_left.png" style="width:70px;"></figure>
+        <div class="indicator-right-side">
+          <div class="indicator-right-side-top">
+            {{daysAlready/(totalDays==0?daysAlready:totalDays) | percent}}
+          </div>
+          <div class="indicator-right-side-bottom">
+           Czasu minęło
+          </div>
+        </div>
+      </div>
       <div class="progress">
         <i nz-icon nzType="calendar"></i>Utworzono: {{survey.startedOn| date}}
       </div>
       <div class="progress">
       <i nz-icon nzType="calendar"></i>Koniec: {{survey.endsOn| date}}
       </div>
-      <div class="progress">
-      <i nz-icon nzType="calendar"></i>Ukończono: {{daysAlready/(totalDays==0?daysAlready:totalDays) | percent}}
-      </div>
-      <div class="progress">
-        <i nz-icon nzType="calendar"></i>Pytań: {{survey.questionCount}}
-      </div>
+
 <!--      <div class="progress">-->
 <!--        <i nz-icon nzType="calendar"></i>Odpowiedzi: {{survey.}}-->
 <!--      </div>-->
@@ -54,6 +70,44 @@ import {SurveyMeta} from '../dataModels/survey';
   `,
   styles: [
     `
+      .large-indicator{
+        display: flex;
+        flex-direction: row;
+      }
+      .indicator-right-side{
+        margin-left:1em;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .indicator-right-side-bottom{
+        margin-top:0.7em;
+        font-family: Gilroy;
+        font-style: normal;
+        font-weight: 300;
+        font-size: 14px;
+        line-height: 16px;
+        letter-spacing: 0.01em;
+
+        color: #A6ACBE;
+
+      }
+      .indicator-right-side-top{
+
+        font-family: Gilroy;
+        font-style: normal;
+        font-weight: 800;
+        font-size: 28px;
+        line-height: 24px;
+
+        /* or 86% */
+        display: flex;
+        align-items: center;
+        letter-spacing: 0.01em;
+
+        color: #000000;
+      }
+
       .statistics {
         margin-left: 1rem;
         margin-top: 0.5rem;

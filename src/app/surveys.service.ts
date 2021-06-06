@@ -11,12 +11,15 @@ export class SurveysService {
 
   constructor(private http:HttpClient) {}
   getQuestions(survey){
-    survey=1
+
     return this.http.get(`${BACKEND_URL}/data/${survey}/types`)
   }
   query(survey, q:SurveyQuery){
+    console.log("sending the following:")
     console.log(q)
-    survey=1
+    // if (q.get[0][0] == undefined){
+    //   q.get[0] = q.get[0].splice(0,1)
+    // }
     return this.http.post(`${BACKEND_URL}/data/${survey}`, q)
   }
   getSurveyLinkedToReport(reportId){

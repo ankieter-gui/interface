@@ -7,7 +7,8 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 <!--      <div *ngSwitchCase="true" [innerHTML]="text"></div>-->
 
 <!--    </ng-container>-->
-    <ckeditor  [(ngModel)]="text" (ngModelChange)="textChange.emit(text)" type="inline" (blur)="focused=false; focusEvent.emit([number,focused])" (focus)="focused=true; focusEvent.emit([number,focused])" ></ckeditor>
+    <ckeditor *ngIf="!this.isPreview" [(ngModel)]="text" (ngModelChange)="textChange.emit(text)" type="inline" (blur)="focused=false; focusEvent.emit([number,focused])" (focus)="focused=true; focusEvent.emit([number,focused])" ></ckeditor>
+<div *ngIf="this.isPreview"  [innerHTML]="text"></div>
 
   `,
   styles: [
@@ -20,6 +21,8 @@ export class TextEditorViewComponent implements OnInit {
   focused:boolean=false;
   @Input()
   text:string;
+  @Input()
+  isPreview=false;
   @Output() textChange = new EventEmitter<string>()
   @Input()
   number:number;
