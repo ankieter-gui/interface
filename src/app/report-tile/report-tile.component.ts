@@ -20,7 +20,7 @@ import {DashboardModalsService} from '../dashboard-modals.service';
 
     </ng-template>
     <ng-template #coverTemplate>
-<figure class="header-image" [style]="'background-image: url('+report.backgroundImg+');'">
+<figure class="header-image" [style]="'background-image: url((http://localhost:5000/bkg/'+report.backgroundImg+');'">
 
 </figure>
       <span class="card-title">{{report.name}}</span>
@@ -118,8 +118,8 @@ import {DashboardModalsService} from '../dashboard-modals.service';
       background-size: cover;
       border-top-left-radius: 10px;
       border-top-right-radius: 10px;
-      border-bottom-right-radius: 5px;
-      border-bottom-left-radius: 5px;
+      /*border-bottom-right-radius: 5px;*/
+      /*border-bottom-left-radius: 5px;*/
     }
     .card-title{
       padding-left:20px;

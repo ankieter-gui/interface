@@ -11,10 +11,10 @@ import {SurveyMeta} from '../dataModels/survey';
         <figure class="indicator-icon"><img src="../../assets/answers_count.png" style="width:70px;"></figure>
         <div class="indicator-right-side">
           <div class="indicator-right-side-top">
-            {{survey.questionCount}}
+            {{survey.answersCount}}
           </div>
           <div class="indicator-right-side-bottom">
-            Pytań
+            Odpowiedzi
           </div>
         </div>
       </div>
@@ -44,7 +44,7 @@ import {SurveyMeta} from '../dataModels/survey';
 
     </ng-template>
     <ng-template #coverTemplate>
-      <figure class="header-image" [style]="'background-image: url('+survey.backgroundImg+');'">
+      <figure class="header-image" [style]="'background-image: url(http://localhost:5000/bkg/'+survey.backgroundImg+');'">
 
       </figure>
       <span class="card-title">{{survey.name}}</span>
@@ -126,8 +126,8 @@ import {SurveyMeta} from '../dataModels/survey';
         background-size: cover;
         border-top-left-radius: 10px;
         border-top-right-radius: 10px;
-        border-bottom-right-radius: 5px;
-        border-bottom-left-radius: 5px;
+        /*border-bottom-right-radius: 5px;*/
+        /*border-bottom-left-radius: 5px;*/
       }
 
       .card-title {

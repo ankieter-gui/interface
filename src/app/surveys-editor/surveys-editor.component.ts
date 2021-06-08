@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {SurveyGeneratorService} from '../survey-generator.service';
 
 @Component({
   selector: 'app-surveys-editor',
@@ -6,10 +7,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./surveys-editor.component.css']
 })
 export class SurveysEditorComponent implements OnInit {
-
-  constructor() { }
+  surveyDefinition
+  constructor(private surveyGenerator:SurveyGeneratorService) { }
 
   ngOnInit(): void {
+    console.log(this.surveyGenerator.getNewEmpty())
   }
 
 }

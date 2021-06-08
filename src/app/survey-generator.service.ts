@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import {DeclarationAttributes, QuestionnaireRoot, SurveyDefinition, TextQuestion} from './dataModels/SurveyDefinition';
+import {json2xml} from 'xml-js';
 
 @Injectable({
   providedIn: 'root'
@@ -6,4 +8,9 @@ import { Injectable } from '@angular/core';
 export class SurveyGeneratorService {
 
   constructor() { }
+  getNewEmpty():SurveyDefinition{
+   const u = new SurveyDefinition()
+
+    return u
+  }
 }

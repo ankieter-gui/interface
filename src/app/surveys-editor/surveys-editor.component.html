@@ -1,1 +1,70 @@
-<p>surveys-editor works!</p>
+<nz-layout>
+
+  <nz-sider nzCollapsible nzWidth="200px" nzCollapsible nzBreakpoint="lg" [nzCollapsedWidth]="0">
+    <app-global-sidemenu></app-global-sidemenu>
+  </nz-sider>
+
+
+  <nz-layout>
+    <nz-header style="justify-content: space-between">
+      <img src="assets/logoAnkieter2.png" height="100%" style="margin-left: 1rem;">
+      <div style=" width:40vw; margin-left:5vw">
+
+      </div>
+
+    </nz-header>
+<!--    <nz-content>-->
+<!--      <header class="header-container">-->
+<!--        <h1 class="breadcrumb-header">Edytor raportu</h1>-->
+<!--      </header>-->
+<!--      <nz-breadcrumb>-->
+<!--        <nz-breadcrumb-item><a [routerLink]="'/'">Ekran główny</a> </nz-breadcrumb-item>-->
+<!--        <nz-breadcrumb-item>Edytor raportu</nz-breadcrumb-item>-->
+
+<!--      </nz-breadcrumb>-->
+<!--      <div class="inner-content ">-->
+<!--        <mat-form-field class="title-input">-->
+<!--          <input matInput placeholder="Nazwa raportu" [(ngModel)]="this.reportDefinition.title" (blur)="rename();save()">-->
+<!--        </mat-form-field>-->
+<!--        <div class="report-element" cdkDropList [cdkDropListData]="this.reportDefinition.elements" (cdkDropListDropped)="drop($event)">-->
+<!--          <div class="custom-placeholder" *cdkDragPlaceholder></div>-->
+
+
+<!--          <div *ngFor="let element of reportDefinition.elements" cdkDrag class="element-box" style="position:relative;">-->
+
+<!--            <div [ngSwitch]="element.type" style="position:relative;">-->
+<!--              <mat-icon cdkDragHandle class="drag-handle" [nz-tooltip]="'Przeciągnij aby zmienić kolejność'">open_with</mat-icon>-->
+<!--              <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu" class="more">-->
+<!--                <mat-icon>more_vert</mat-icon>-->
+<!--              </button>-->
+<!--              <mat-menu #menu="matMenu">-->
+<!--                <button mat-menu-item (click)="removeElement(element)">-->
+<!--                  <mat-icon>delete</mat-icon>-->
+<!--                  <span>Usuń</span>-->
+<!--                </button>-->
+
+<!--              </mat-menu>-->
+
+<!--              <app-text-editor-view *ngSwitchCase="'text'" [(text)]="element.content.text" (focusEvent)="save()"></app-text-editor-view>-->
+<!--              <app-chart-editor-view *ngSwitchCase="'chart'" [(chartData)]="element.content" (chartDataChange)="save()" [questions]="surveyQuestions" [surveyId]="this.linkedSurveyId"></app-chart-editor-view>-->
+<!--            </div>-->
+
+<!--          </div>-->
+<!--        </div>-->
+<!--        <section class="add-more slide-top-enter-animation" (mouseover)="mouseHoveringAddMorePanel=true" (mouseleave)="mouseHoveringAddMorePanel=false">-->
+<!--          <div class="add-more-content add-new"> Dodaj nowy <i nz-icon nzType="plus"></i></div>-->
+<!--          <div class="add-more-content">-->
+<!--            <span [class.shake]="mouseHoveringAddMorePanel" (click)="addNewChartElement()"><span [class.slide-top]="mouseHoveringAddMorePanel"><i  class="recommended" nz-icon nzType="bar-chart" [nz-tooltip]="'Wykres'"></i></span></span>-->
+<!--            &lt;!&ndash;            <i nz-icon nzType="line-chart" [nz-tooltip]="'Wykres liniowy'"></i>&ndash;&gt;-->
+<!--            &lt;!&ndash;            <i nz-icon nzType="pie-chart" [nz-tooltip]="'Wykres ciasteczkowy (???)'"></i>&ndash;&gt;-->
+<!--            &lt;!&ndash;            <i nz-icon nzType="area-chart" [nz-tooltip]="'Wykres liniowy'"></i>&ndash;&gt;-->
+<!--            &lt;!&ndash;            <i nz-icon nzType="bar-chart" [nz-tooltip]="'Wykres kolumnowy, histogram'"></i>&ndash;&gt;-->
+<!--            <i nz-icon nzType="font-size" [nz-tooltip]="'Tekst'" (click)="addNewTextElement()"></i>-->
+<!--          </div>-->
+<!--        </section>-->
+
+<!--      </div>-->
+<!--    </nz-content>-->
+<!--    <nz-footer></nz-footer>-->
+<!--  </nz-layout>-->
+</nz-layout>

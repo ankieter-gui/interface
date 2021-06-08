@@ -30,6 +30,8 @@
     "node-lcs": "^1.0.3",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
+    "xml-js": "^1.6.11",
+    "xmlbuilder2": "^2.4.1",
     "zone.js": "~0.11.3"
   },
   "devDependencies": {

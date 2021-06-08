@@ -1,5 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {OtherUser} from '../dataModels/UserGroup';
+import {SurveysService} from '../surveys.service';
+import {SharingService} from '../sharing.service';
 
 @Component({
   selector: 'app-new-group-dialog',
@@ -25,7 +27,7 @@ export class NewGroupDialogComponent implements OnInit {
   fromAdminPanel:boolean;
 @Input()
 placeholder:string;
-  constructor() { }
+  constructor(private sharingService:SharingService) { }
   selected:OtherUser[]=[];
   groupName: string;
 

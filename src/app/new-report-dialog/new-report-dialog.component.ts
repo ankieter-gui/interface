@@ -3,6 +3,7 @@ import {NzModalService} from 'ng-zorro-antd/modal';
 import {FileSystemDirectoryEntry, FileSystemFileEntry, NgxFileDropEntry} from 'ngx-file-drop';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {SurveysService} from '../surveys.service';
+import {SharingService} from '../sharing.service';
 
 @Component({
   selector: 'app-new-report-dialog',
@@ -51,6 +52,7 @@ export class NewReportDialogComponent implements OnInit {
   ngOnInit(): void {
     if (this.survey){
       this.surveyInputValue=this.survey.name;
+      this.reportNameInputValue="Raport: "+this.survey.name
     }
   }
   get selectedSurvey() {

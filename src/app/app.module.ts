@@ -22,7 +22,7 @@ import {NzAvatarModule} from 'ng-zorro-antd/avatar';
 import {NzMenuModule} from 'ng-zorro-antd/menu';
 import { SurveyTileComponent } from './survey-tile/survey-tile.component';
 import {NzStatisticModule} from 'ng-zorro-antd/statistic';
-import { SurveySparklineChartComponent } from './survey-sparkline-chart/survey-sparkline-chart.component';
+
 import {NzTagModule} from 'ng-zorro-antd/tag';
 import {NzProgressModule} from 'ng-zorro-antd/progress';
 import {NzButtonModule} from 'ng-zorro-antd/button';
@@ -66,6 +66,9 @@ import { UserIndicatorComponent } from './user-indicator/user-indicator.componen
 import { ReportPreviewComponent } from './report-preview/report-preview.component';
 import { ShareReportComponent } from './share-report/share-report.component';
 import {NzSpinModule} from 'ng-zorro-antd/spin';
+import {NzDividerModule} from 'ng-zorro-antd/divider';
+import {NzPaginationModule} from 'ng-zorro-antd/pagination';
+import {SurveysEditorComponent} from './surveys-editor/surveys-editor.component';
 
 
 registerLocaleData(fr);
@@ -112,7 +115,7 @@ export let commonNZImports = [
     AppComponent,
     DashboardComponent,
     SurveyTileComponent,
-    SurveySparklineChartComponent,
+
     ReportTileComponent,
     NewReportDialogComponent,
     FilterByNamePipe,
@@ -135,7 +138,7 @@ export let commonNZImports = [
     ReportPreviewComponent,
     ShareReportComponent,
 
-
+    SurveysEditorComponent
   ],
   imports: [
     ...commonNZImports,
@@ -151,7 +154,9 @@ export let commonNZImports = [
     NzBadgeModule,
     NzTabsModule,
     NzCheckboxModule,
-    NzSpinModule
+    NzSpinModule,
+    NzDividerModule,
+    NzPaginationModule
 
   ],
   providers: [{provide: NZ_I18N, useValue: fr_FR},  { provide: Window, useValue: window },LoginGuard],

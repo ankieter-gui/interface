@@ -14,11 +14,12 @@ export class UserService {
   get username():string{
     return this._username
   }
-  constructor(private http:HttpClient) {
+  constructor(private http:HttpClient, private window:Window) {
     this.downloadUserData()
   }
   async downloadUserData(){
     let result = await (this.http.get<{logged:boolean, id:string, username:string}>(`${BACKEND_URL}/user`,{withCredentials:true}).toPromise())
+    if (!result.logged) this.window.location.href = "http://localhost:5000"
     this._userId = result.id
     this._username =  result.username
   }

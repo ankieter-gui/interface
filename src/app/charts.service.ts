@@ -4,6 +4,7 @@ import {EChartsOption} from 'echarts';
 import * as lcs from 'node-lcs'
 import * as Chance from 'chance'
 import {commonSubstring} from './lcs';
+import {SeriesLabelOption} from 'echarts/types/src/util/types';
 @Injectable({
   providedIn: 'root'
 })
@@ -222,6 +223,9 @@ export class ChartsService {
       console.log(categories)
       console.log("barSeries")
       console.log(barSeries)
+      let o = zip(categories,barSeries).sort((a,b)=>a[1]-b[1])
+      categories=o.map(d=>d[0])
+      barSeries=o.map(d=>d[1])
       return {
         title: {text: chartName},
         tooltip: {
@@ -242,6 +246,7 @@ export class ChartsService {
         //@ts-ignore
         yAxis:{type:'category', show:true, data:categories, axisLabel:{overflow:"break"}},
         series:[{
+
           data:barSeries,
           name:"Procent odpowiedzi",
           type:'bar',
@@ -301,6 +306,125 @@ export class ChartsService {
         }]
       }
     }
+    else if (chartElement.config.type=="multipleBars") {
+      const xAxisLabels = series.index
+      let shareElement=this.transformDataIntoPairs(series).filter(d=>d[0].includes("share"))[0][1]
+      let seriesList = this.generateSeriesList(shareElement)
+      //get only values and transpose
+      const transpose = m => m[0].map((x,i) => m.map(x => x[i]))
+      let barSeries = transpose(Object.values(seriesList))
+      console.log(shareElement)
+      console.log(seriesList)
+      console.log(this.getAllShareLabels(shareElement))
+      console.log(barSeries)
+      const posList = [
+        'left', 'right', 'top', 'bottom',
+        'inside',
+        'insideTop', 'insideLeft', 'insideRight', 'insideBottom',
+        'insideTopLeft', 'insideTopRight', 'insideBottomLeft', 'insideBottomRight'
+      ];
+
+      const configParameters = {
+        rotate: {
+          min: -90,
+          max: 90
+        },
+        align: {
+          options: {
+            left: 'left',
+            center: 'center',
+            right: 'right'
+          }
+        },
+        verticalAlign: {
+          options: {
+            top: 'top',
+            middle: 'middle',
+            bottom: 'bottom'
+          }
+        },
+        position: {
+          options: posList.reduce(function (map, pos) {
+            map[pos] = pos;
+            return map;
+          }, {})
+        },
+        distance: {
+          min: 0,
+          max: 100
+        }
+      };
+
+      const config = {
+        rotate: 90,
+        align: 'left',
+        verticalAlign: 'middle',
+        position: 'insideBottom',
+        distance: 15,
+      };
+
+
+      var labelOption = <SeriesLabelOption>{
+        show: true,
+        position: config.position,
+        distance: config.distance,
+        align: config.align,
+        verticalAlign: config.verticalAlign,
+        rotate: config.rotate,
+        formatter: '{c}  {name|{a}}',
+        fontSize: 16,
+        rich: {
+          name: {
+          }
+        }
+      };
+
+      return {
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'shadow'
+          }
+        },
+        legend: {
+          data: this.getAllShareLabels(shareElement)
+        },
+
+        xAxis: [
+          {
+            type: 'category',
+            axisTick: {show: false},
+            //rok, stopień lub kierunek
+            data: xAxisLabels
+          }
+        ],
+        yAxis: [
+          {
+            type: 'value'
+          }
+        ],
+        grid:{left: '3%',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true},
+        series:
+          //każda seria to jeden słupek w tej samej pozycji ale w różnych grupach
+         zip(this.getAllShareLabels(shareElement), barSeries).map(d=>({
+            name: d[0],
+            type: 'bar',
+            barGap: 0,
+            label: labelOption,
+            emphasis: {
+              focus: 'series'
+            },
+            data: d[1]
+          }))
+
+
+
+
+
+    }}
     // if (include)
     //   values = Object.fromEntries(
     //     Object.entries(values)

@@ -23,7 +23,7 @@ export class SurveyMeta extends  GenericObjectMeta{
   questionCount: number;
   startedOn: number; // linux timestamp
   endsOn: number;
-  responses: SurveyResponsesAmountTimepoint[];
+  answersCount:number;
 
 }
 

@@ -5,7 +5,7 @@ import { SurveysEditorComponent } from './surveys-editor.component';
 
 
 @NgModule({
-  declarations: [SurveysEditorComponent],
+  declarations: [],//[SurveysEditorComponent],
   imports: [
     CommonModule
   ]

@@ -49,7 +49,7 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
         </tbody>
       </nz-table>
     </section>
-      <section class="chart-area" *ngIf="['multipleChoice', 'groupedBars'].includes(chartData.config.type)  && this.echartOptions">
+      <section class="chart-area" *ngIf="['multipleChoice', 'groupedBars', 'multipleBars'].includes(chartData.config.type)  && this.echartOptions">
         <div echarts [options]="echartOptions" class="chart" style="width: 100%;"></div>
       </section>
 <!--      <section class="chart-editor">-->
@@ -128,7 +128,7 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
 <!--                          </div>-->
 <!--                        </figure>-->
 <!--                        <div class="spacer"></div>-->
-                        <figure class="indicator-card indicator-card-velvet preset" [nz-tooltip]="'Kiedy chcesz przedstawić dane z różnych wydziałów obok siebie. Przydatne przy prezentowaniu średniej ocen'">
+                        <figure class="indicator-card indicator-card-velvet preset" [nz-tooltip]="'Kiedy chcesz przedstawić dane z różnych wydziałów obok siebie. Przydatne przy prezentowaniu średniej ocen'" (click)="pickPreset('multipleBars')">
                           <div class="indicator-card-inner">
                             <div class="indicator-card-header">Wiele słupków</div>
                             <div class="indicator-card-content"><img src="/assets/preset4.png" style="width: 100%"></div>
@@ -391,6 +391,12 @@ hideGroupBy=false;
         this.chartData.dataQuery.as[0] = 'share'
         this.chartData.dataQuery.by[0] = "*"
         this.onPickQuestion = (question)=>{this.chartData.dataQuery.get[0][0] = question}
+      },
+      "multipleBars":()=>{
+        this.hideData=true;
+        this.hideGroupBy=false;
+        this.chartData.dataQuery.as[0]='share'
+        this.onPickQuestion = (question)=>{this.chartData.dataQuery.get[0][0] = question}
       }
     }[name]
     this.chartData.config.type=name;
@@ -410,7 +416,7 @@ hideGroupBy=false;
     this.chartDataChange.emit(this.chartData)
   }
   get question(){
-   return {"groupedPercentAndData": this.chartData.dataQuery.get[0][0], "multipleChoice":this.chartData.dataQuery.get.length>1?this.chartsService.sanitizeLabels(this.chartData.dataQuery.get.map(d=>d[0]))[1]:this.chartData.dataQuery.get[0][0], "groupedBars":this.chartData.dataQuery.get[0][0]}[this.chartData.config.type]
+   return {"groupedPercentAndData": this.chartData.dataQuery.get[0][0], "multipleBars": this.chartData.dataQuery.get[0][0], "multipleChoice":this.chartData.dataQuery.get.length>1?this.chartsService.sanitizeLabels(this.chartData.dataQuery.get.map(d=>d[0]))[1]:this.chartData.dataQuery.get[0][0], "groupedBars":this.chartData.dataQuery.get[0][0]}[this.chartData.config.type]
   }
   questionPickerClick(question){
     this.onPickQuestion(question);
