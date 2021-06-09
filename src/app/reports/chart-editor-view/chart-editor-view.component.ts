@@ -362,6 +362,8 @@ hideData=false;
 hideGroupBy=false;
 
   pickPreset(name){
+    this.byPickerClick=(type)=>{}
+    this.onPickQuestion = ()=>{}
     let fun = {
       'groupedPercentAndData':()=>{
         this.hideData=false;
@@ -397,6 +399,7 @@ hideGroupBy=false;
         this.hideGroupBy=false;
         this.chartData.dataQuery.as[0]='share'
         this.onPickQuestion = (question)=>{this.chartData.dataQuery.get[0][0] = question}
+        this.byPickerClick = (by)=>{this.chartData.dataQuery.by[0] = by; this.chartData.dataQuery.by[1]= "*"}
       }
     }[name]
     this.chartData.config.type=name;
@@ -438,8 +441,9 @@ hideGroupBy=false;
   }
   buPickerClick(type){
     this.chartData.dataQuery.by[0] = type
+    this.byPickerClick(type)
   }
-
+  byPickerClick=(type:string)=>{}
   constructor(private surveyService:SurveysService, private chartsService:ChartsService) { }
 
   ngOnInit(): void {

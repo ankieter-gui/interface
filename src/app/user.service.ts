@@ -15,7 +15,7 @@ export class UserService {
     return this._username
   }
   constructor(private http:HttpClient, private window:Window) {
-    this.downloadUserData()
+
   }
   async downloadUserData(){
     let result = await (this.http.get<{logged:boolean, id:string, username:string}>(`${BACKEND_URL}/user`,{withCredentials:true}).toPromise())

@@ -312,11 +312,24 @@ export class ChartsService {
       let seriesList = this.generateSeriesList(shareElement)
       //get only values and transpose
       const transpose = m => m[0].map((x,i) => m.map(x => x[i]))
-      let barSeries = transpose(Object.values(seriesList))
+      let barSeries = Object.values(seriesList).map((d:number[])=>{
+        let sum=0;
+        try {
+          sum = d.reduce((previousValue: number, currentValue: number, index, array) => previousValue + currentValue) as number
+        }
+        catch (e){
+          console.log("could not count responses amount")
+          console.log(e)
+        }
+        console.log(d)
+        console.log(sum)
+        return (JSON.parse(JSON.stringify(d)) as number[]).map(i=>Math.round(i/sum*100))
+      })
       console.log(shareElement)
       console.log(seriesList)
       console.log(this.getAllShareLabels(shareElement))
       console.log(barSeries)
+      console.log(zip(this.getAllShareLabels(shareElement), barSeries))
       const posList = [
         'left', 'right', 'top', 'bottom',
         'inside',
@@ -356,11 +369,11 @@ export class ChartsService {
       };
 
       const config = {
-        rotate: 90,
+        rotate: 45,
         align: 'left',
         verticalAlign: 'middle',
-        position: 'insideBottom',
-        distance: 15,
+        position: 'top',
+        distance: 5,
       };
 
 
@@ -371,8 +384,9 @@ export class ChartsService {
         align: config.align,
         verticalAlign: config.verticalAlign,
         rotate: config.rotate,
-        formatter: '{c}  {name|{a}}',
-        fontSize: 16,
+        // formatter: '{c}%  {name|{a}}',
+         formatter: '{c}%',
+        fontSize: 12,
         rich: {
           name: {
           }

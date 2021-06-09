@@ -8,9 +8,12 @@ import {UserService} from '../user.service';
 })
 export class UserIndicatorComponent implements OnInit {
 
-  constructor(public user:UserService) { }
+  constructor(public user:UserService, private window:Window) { }
 
   ngOnInit(): void {
+  }
+  logout(){
+    this.window.location.href = "http://localhost:5000/logout"
   }
 
 }
