@@ -73,4 +73,37 @@ export class PolskieNazwyFilter implements PipeTransform {
 
 }
 
+@Pipe({
+  name: 'filterByField'
+})
+export class FilterByFieldPipe implements PipeTransform {
+
+  transform(items: any[],field:string, filter: string): any {
+    if (!items || !filter) {
+      return items;
+    }
+
+
+    return items.filter(item => item[field].toLowerCase().includes(filter.toLowerCase()));
+  }
+
+}
+
+@Pipe({
+  name: 'filterString'
+})
+export class FilterStringPipe implements PipeTransform {
+
+  transform(items: any[],filter: string): any {
+    if (!items || !filter) {
+      return items;
+    }
+
+
+    return items.filter(item => item.toLowerCase().includes(filter.toLowerCase()));
+  }
+
+}
+
+
 

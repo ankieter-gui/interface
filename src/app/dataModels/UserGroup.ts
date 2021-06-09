@@ -4,8 +4,8 @@ export class UserGroup{
 }
 
 export class OtherUser{
-  name:string;
-  uid:string;
+  CasLogin:string;
+  id:string;
 }
 
 export class UserGroupsResponse{

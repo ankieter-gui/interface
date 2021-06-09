@@ -1,15 +1,17 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {OtherUser} from '../dataModels/UserGroup';
+import {UserService} from '../user.service';
+import {SharingService} from '../sharing.service';
 
 @Component({
   selector: 'app-user-search-combobox',
   template: `
-    <input placeholder="{{placeholder}}" nz-input [(ngModel)]="searchModel" (ngModelChange)="updateUsersListCacheByName(searchModel)"
+    <input placeholder="{{placeholder}}" nz-input [(ngModel)]="searchModel" (ngModelChange)="null"
            [nzAutocomplete]="auto"/>
     <nz-autocomplete #auto>
-      <nz-auto-option class="global-search-item" *ngFor="let user of currentUsersList"
-                      [nzValue]="user.name" (click)="onSelect.emit(user)">
-        {{ user.name }}
+      <nz-auto-option class="global-search-item" *ngFor="let user of share.users() | filterByField: 'CasLogin':searchModel"
+                      [nzValue]="user.id" (click)="searchModel=user.CasLogin; onSelect.emit(user)">
+        {{ user.CasLogin }}
 
       </nz-auto-option>
     </nz-autocomplete>
@@ -20,18 +22,16 @@ import {OtherUser} from '../dataModels/UserGroup';
 export class UserSearchComboboxComponent implements OnInit {
   selected: OtherUser[] = [];
   searchModel: string;
-  currentUsersList: OtherUser[] = [];
+
   @Input()
   placeholder:string;
   @Output()
   onSelect:EventEmitter<OtherUser> = new EventEmitter<OtherUser>();
   //TODO: cast event upwards
-  constructor() { }
+  constructor(public user:UserService, public share:SharingService) { }
 
   ngOnInit(): void {
+    console.log(this.share.users())
   }
-  updateUsersListCacheByName(name:string): void{
-    if (name.length==0){ this.currentUsersList=[]; return;}
-    this.currentUsersList = [{name: "Stefan Janecki", uid: "xxx-yyy"}]
-  }
+
 }

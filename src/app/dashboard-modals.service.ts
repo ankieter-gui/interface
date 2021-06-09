@@ -11,13 +11,14 @@ import {ReportDefinition} from './dataModels/ReportDefinition';
 import {ShareReportComponent} from './share-report/share-report.component';
 import {ReportMeta} from './dataModels/survey';
 import {FileSystemFileEntry} from 'ngx-file-drop';
+import {SharingService} from './sharing.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DashboardModalsService {
 
-  constructor(private modal: NzModalService, private mockService: MockService, private router: Router, private reports: ReportsService, private dashboardService:DashboardService) { }
+  constructor(private modal: NzModalService, private mockService: MockService, private router: Router, private reports: ReportsService,private sharing:SharingService, private dashboardService:DashboardService) { }
   createComponentModal(title, component, params, onOk= (instance, modal) => null): void{
     const modal = this.modal.create({
       nzTitle: title,
@@ -31,7 +32,7 @@ export class DashboardModalsService {
           onClick: () => modal.destroy()
         },
         {
-          label: 'OK',
+          label: params.okText??'OK',
           type: 'primary',
           onClick: () => onOk(instance, modal) ,
         },
@@ -94,14 +95,17 @@ export class DashboardModalsService {
     } );
   }
   async openShareReportDialog(report:ReportMeta){
-    this.createComponentModal("Udostępnij raport", ShareReportComponent, {report:report}, async (i,m)=>{
-
+    this.createComponentModal("Udostępnij raport", ShareReportComponent, {report:report, okText:"Udostępnij"}, async (i:ShareReportComponent,m)=>{
+        await this.sharing.shareReportToUsers(i.report.id, [], i.selected, []).toPromise()
+        m.destroy()
     })
   }
   openNewGroupDialog(fromAdminPanel=false): void{
-    this.createComponentModal("Nowa grupa", NewGroupDialogComponent, {placeholder: "Szukaj przez nazwisko", fromAdminPanel:fromAdminPanel}, (i: NewGroupDialogComponent, m) => {
+    this.createComponentModal("Nowa grupa", NewGroupDialogComponent, {placeholder: "Szukaj przez nazwisko", fromAdminPanel:fromAdminPanel}, async (i: NewGroupDialogComponent, m) => {
       // TODO: create group
-
+      i.updating=true;
+      await this.sharing.updateGroup(i.groupName, i.selected.map(d=>d.id)).toPromise()
+      await this.sharing.downloadAllGroups()
       m.destroy();
     } )
   }

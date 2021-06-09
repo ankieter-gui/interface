@@ -34,7 +34,14 @@ import {NzInputModule} from 'ng-zorro-antd/input';
 import {NzToolTipModule} from 'ng-zorro-antd/tooltip';
 import { NewReportDialogComponent } from './new-report-dialog/new-report-dialog.component';
 import {NzModalModule} from 'ng-zorro-antd/modal';
-import {FilterByNamePipe, FilterByTypePipe, NameFilter, PolskieNazwyFilter, RemoveHtmlFilter} from './filter-by-name.pipe';
+import {
+  FilterByFieldPipe,
+  FilterByNamePipe,
+  FilterByTypePipe, FilterStringPipe,
+  NameFilter,
+  PolskieNazwyFilter,
+  RemoveHtmlFilter
+} from './filter-by-name.pipe';
 import { ShareDialogComponent } from './share-dialog/share-dialog.component';
 import { GlobalSidemenuComponent } from './global-sidemenu/global-sidemenu.component';
 import {EditorComponent} from './reports/editor/editor.component';
@@ -69,6 +76,7 @@ import {NzSpinModule} from 'ng-zorro-antd/spin';
 import {NzDividerModule} from 'ng-zorro-antd/divider';
 import {NzPaginationModule} from 'ng-zorro-antd/pagination';
 import {SurveysEditorComponent} from './surveys-editor/surveys-editor.component';
+import {NzDropDownModule} from 'ng-zorro-antd/dropdown';
 
 
 registerLocaleData(fr);
@@ -115,7 +123,8 @@ export let commonNZImports = [
     AppComponent,
     DashboardComponent,
     SurveyTileComponent,
-
+    FilterByFieldPipe,
+    FilterStringPipe,
     ReportTileComponent,
     NewReportDialogComponent,
     FilterByNamePipe,
@@ -156,7 +165,8 @@ export let commonNZImports = [
     NzCheckboxModule,
     NzSpinModule,
     NzDividerModule,
-    NzPaginationModule
+    NzPaginationModule,
+    NzDropDownModule
 
   ],
   providers: [{provide: NZ_I18N, useValue: fr_FR},  { provide: Window, useValue: window },LoginGuard],

@@ -12,7 +12,7 @@ export class CachedDataDownloadSynchronizerService {
   }
   async download(){
     await  this.user.downloadUserData();
-    await  this.sharing.downloadAllUsers()
+    // await  this.sharing.downloadAllUsers()
     await this.sharing.downloadMyGroups()
   }
 }
