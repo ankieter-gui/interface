@@ -70,12 +70,17 @@ export class SharingService {
   }
 
   shareReportToUsers(reportId,usersRead=[], usersWrite=[], usersNone=[]){
-    return this.http.post(`${BACKEND_URL}/report/${reportId}/mod`, {"r":usersRead, "w":usersWrite, "n":usersNone}, {withCredentials:true})
+    return this.http.post(`${BACKEND_URL}/report/${reportId}/share`, {"r":usersRead, "w":usersWrite, "n":usersNone}, {withCredentials:true})
   }
   updateGroup(groupName, userIds){
     const body = {}
     body[groupName] = userIds
     return this.http.post(`${BACKEND_URL}/group/change`, body, {withCredentials:true})
+  }
+  removeUserFromGroup(groupName, userIds){
+    const body = {}
+    body[groupName] = userIds
+    return this.http.request("delete",`${BACKEND_URL}/group/change`,  {body:body, withCredentials:true})
   }
 
 }

@@ -3,6 +3,7 @@ import {MockService} from '../mock.service';
 import {DashboardModalsService} from '../dashboard-modals.service';
 import {SharingService} from '../sharing.service';
 import {UserService} from '../user.service';
+import {OtherUser} from '../dataModels/UserGroup';
 
 @Component({
   selector: 'app-groups-editor',
@@ -28,7 +29,7 @@ import {UserService} from '../user.service';
              <nz-list-item>
                <div class="add-container"><div>
                  Dodaj nowe osoby<i nz-icon nzType="plus" nzTheme="outline"></i></div>
-                 <app-user-search-combobox style="margin-top:5px" placeholder="Szukaj po nazwisku..."></app-user-search-combobox>
+                 <app-user-search-combobox style="margin-top:5px" placeholder="Szukaj po nazwisku..." (onSelect)="addUserToGroup(groupName, $event)"></app-user-search-combobox>
                </div>
 
              </nz-list-item>
@@ -108,8 +109,12 @@ export class GroupsEditorComponent implements OnInit {
   ngOnInit(): void {
     this.sharing.downloadAllGroups()
   }
+  async addUserToGroup(groupName, user:OtherUser){
+    await this.sharing.updateGroup(groupName, [...this.sharing.allGroups[groupName], user.id]).toPromise()
+    await this.sharing.downloadAllGroups()
+  }
  async excludeUser(groupName, user){
-      await this.sharing.updateGroup(groupName, this.sharing.allGroups[groupName].filter(d=>d!=user)).toPromise()
+      await this.sharing.removeUserFromGroup(groupName,[user]).toPromise()
     await this.sharing.downloadAllGroups()
   }
 

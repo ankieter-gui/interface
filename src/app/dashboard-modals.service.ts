@@ -96,7 +96,7 @@ export class DashboardModalsService {
   }
   async openShareReportDialog(report:ReportMeta){
     this.createComponentModal("Udostępnij raport", ShareReportComponent, {report:report, okText:"Udostępnij"}, async (i:ShareReportComponent,m)=>{
-        await this.sharing.shareReportToUsers(i.report.id, [], i.selected, []).toPromise()
+        await this.sharing.shareReportToUsers(i.report.id, [], i.selected.map(d=>d.id), []).toPromise()
         m.destroy()
     })
   }
