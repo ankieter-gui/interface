@@ -10,7 +10,7 @@ import {SharingService} from '../sharing.service';
            [nzAutocomplete]="auto"/>
     <nz-autocomplete #auto>
       <nz-auto-option class="global-search-item" *ngFor="let user of share.users() | filterByField: 'CasLogin':searchModel"
-                      [nzValue]="user.id" (click)="searchModel=user.CasLogin; onSelect.emit(user)">
+                      [nzValue]="user.id" (click)="searchModel=''; onSelect.emit(user)">
         {{ user.CasLogin }}
 
       </nz-auto-option>
