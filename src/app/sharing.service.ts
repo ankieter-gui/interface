@@ -70,7 +70,7 @@ export class SharingService {
   }
 
   shareReportToUsers(reportId,usersRead=[], usersWrite=[], usersNone=[]){
-    return this.http.post(`${BACKEND_URL}/report/mod/${reportId}`, {"r":usersRead, "w":usersWrite, "n":usersNone})
+    return this.http.post(`${BACKEND_URL}/report/${reportId}/mod`, {"r":usersRead, "w":usersWrite, "n":usersNone})
   }
   updateGroup(groupName, userIds){
     const body = {}
