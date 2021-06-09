@@ -108,8 +108,9 @@ export class GroupsEditorComponent implements OnInit {
   ngOnInit(): void {
     this.sharing.downloadAllGroups()
   }
-  excludeUser(groupName, user){
-
+ async excludeUser(groupName, user){
+      await this.sharing.updateGroup(groupName, this.sharing.allGroups[groupName].filter(d=>d!=user)).toPromise()
+    await this.sharing.downloadAllGroups()
   }
 
 }

@@ -174,6 +174,8 @@ export class ReportTileComponent implements OnInit {
     this.reloadEmitter.emit()
   }
   async PDF(){
-
+    this.router.navigateByUrl(`/reports/${this.report.id}`, {
+      state: {shallPrint:true}
+    });
   }
 }

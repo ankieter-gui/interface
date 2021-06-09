@@ -2,11 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import {ReportDefinition} from '../dataModels/ReportDefinition';
 import {SurveysService} from '../surveys.service';
 import {ReportsService} from '../reports.service';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {ChartReportElement, TextReportElement} from '../dataModels/ReportElement';
 import {SurveyQuery} from '../dataModels/Query';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
-
+import * as jspdf from 'jspdf';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 @Component({
   selector: 'app-report-preview',
   templateUrl: './report-preview.component.html',
@@ -30,7 +32,12 @@ export class ReportPreviewComponent implements OnInit {
     this.reportDefinition.elements = this.reportDefinition.elements.filter(d=>d!=element)
     this.save()
   }
-  constructor(private surveysService:SurveysService,private reportsService:ReportsService,private route: ActivatedRoute) { }
+  constructor(private surveysService:SurveysService,private reportsService:ReportsService,private route: ActivatedRoute, private router:Router, private window:Window) {
+    //https://stackoverflow.com/questions/55019343/how-to-generate-a-pdf-using-angular-7
+    if( this.router.getCurrentNavigation().extras.state.shallPrint){
+      setTimeout(()=>{this.exportAsPDF("main")}, 2000)
+    }
+  }
   addNewTextElement(){
     this.reportDefinition.elements.push({type:"text", content: {text:""} as TextReportElement})
   }
@@ -47,6 +54,9 @@ export class ReportPreviewComponent implements OnInit {
       this.linkedSurveyId = d.surveyId; console.log(this.linkedSurveyId)
       this.downloadSurveyQuestions()
       this.reportsService.getReport(this.route.snapshot.paramMap.get('id')).subscribe(d=>this.reportDefinition=d)
+
+
+
     });
 
 
@@ -67,5 +77,10 @@ export class ReportPreviewComponent implements OnInit {
   rename(){
     this.reportsService.renameReport(this.route.snapshot.paramMap.get('id'), this.reportDefinition.title).subscribe(d=>console.log(d))
   }
+  exportAsPDF(divId)
+  {
+   this.window.print()
+    }
+
 
 }

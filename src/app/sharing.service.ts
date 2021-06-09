@@ -70,12 +70,12 @@ export class SharingService {
   }
 
   shareReportToUsers(reportId,usersRead=[], usersWrite=[], usersNone=[]){
-    return this.http.post(`${BACKEND_URL}/report/${reportId}/mod`, {"r":usersRead, "w":usersWrite, "n":usersNone})
+    return this.http.post(`${BACKEND_URL}/report/${reportId}/mod`, {"r":usersRead, "w":usersWrite, "n":usersNone}, {withCredentials:true})
   }
   updateGroup(groupName, userIds){
     const body = {}
     body[groupName] = userIds
-    return this.http.post(`${BACKEND_URL}/group/change`, body)
+    return this.http.post(`${BACKEND_URL}/group/change`, body, {withCredentials:true})
   }
 
 }
