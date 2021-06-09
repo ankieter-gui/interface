@@ -7,8 +7,8 @@ import {fadeInOut} from '../commonAnimations'
   selector: 'app-share-report',
   template: `
 <!--    <div class="header">Udostępnij raport: {{this.report.name}}</div>-->
-    <div class="input-with-label"><span class="label">Link do poglądu</span><input nz-input [value]="getPublicUrl()"></div>
-    <div class="input-with-label"><span class="label">Link do edycji</span><input nz-input [value]="getEditUrl()"></div>
+    <div class="input-with-label"><span class="label">Link do poglądu</span><input nz-input [value]="this.shareLinkRead"></div>
+    <div class="input-with-label"><span class="label">Link do edycji</span><input nz-input [value]="this.shareLinkEdit"></div>
 <nz-tabset>
   <nz-tab nzTitle="Użytkownicy">
 <!--<nz-divider nzText="Indywidualni użytkownicy"></nz-divider>-->
@@ -89,10 +89,18 @@ export class ShareReportComponent implements OnInit {
   report:ReportMeta
   selected=[]
   selectedGroups=[]
+  shareLinkRead;
+  shareLinkEdit;
   constructor(public sharingService:SharingService) { }
 
   ngOnInit(): void {
     setTimeout(()=>{  console.log(this.sharingService.allGroupNames)}, 1000)
+    this.sharingService.getReportSharingLink(this.report.id, 'r').subscribe(d=>{
+      this.shareLinkRead = d['link']
+    })
+    this.sharingService.getReportSharingLink(this.report.id, 'w').subscribe(d=>{
+      this.shareLinkEdit = d['link']
+    })
 
   }
   getPublicUrl(){

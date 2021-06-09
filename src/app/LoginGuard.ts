@@ -14,7 +14,7 @@ export class LoginGuard implements CanActivate {
    if (this.user.logged()){ return true;}else {
 
      // not logged in so redirect to login page with the return url
-   //  this.window.location.href = 'http://localhost:5000';
+     //this.window.location.href = 'http://localhost:5000';
      return false;
    }
   }

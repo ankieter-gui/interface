@@ -82,5 +82,8 @@ export class SharingService {
     body[groupName] = userIds
     return this.http.request("delete",`${BACKEND_URL}/group/change`,  {body:body, withCredentials:true})
   }
+  getReportSharingLink(reportId, permission:"r"|"w"){
+    return this.http.post(`${BACKEND_URL}/report/${reportId}/link`, {reportId:reportId, permission:permission}, {withCredentials:true})
+  }
 
 }

@@ -17,6 +17,7 @@ export class UserService {
   constructor(private http:HttpClient, private window:Window) {
 
   }
+
   async downloadUserData(){
     let result = await (this.http.get<{logged:boolean, id:string, username:string}>(`${BACKEND_URL}/user`,{withCredentials:true}).toPromise())
     if (!result.logged) this.window.location.href = "http://localhost:5000"
