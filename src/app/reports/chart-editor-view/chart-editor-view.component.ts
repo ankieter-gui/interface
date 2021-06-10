@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import { saveAs } from 'file-saver';
 import {MockService} from '../../mock.service';
 
 import {SurveyMeta} from '../../dataModels/survey';
@@ -41,7 +42,7 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
     <div class="chart-container">
 
     <section class="chart-area" *ngIf="chartData.config.type=='groupedPercentAndData' && this.echartOptions">
-      <div echarts [options]="echartOptions" class="chart" ></div>
+      <div echarts (chartInit)="onChartInit($event)" [options]="echartOptions" class="chart" #chartInstance></div>
       <nz-table *ngIf="chartData.dataQuery.as.includes('share') && chartData.dataQuery.as.length>1 && dataResponse" class="details-table" [nzTemplateMode]="true">
        <thead> <tr><th *ngFor="let header of tableHeaders">{{header}}</th></tr></thead>
         <tbody>
@@ -50,7 +51,7 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
       </nz-table>
     </section>
       <section class="chart-area" *ngIf="['multipleChoice', 'groupedBars', 'multipleBars'].includes(chartData.config.type)  && this.echartOptions">
-        <div echarts [options]="echartOptions" class="chart" style="width: 100%;"></div>
+        <div echarts  (chartInit)="onChartInit($event)" [options]="echartOptions" class="chart" style="width: 100%;"></div>
       </section>
 <!--      <section class="chart-editor">-->
 <!--        <i nz-icon nzType="line-chart" [nz-tooltip]="'Typ wykresu'"></i>-->
@@ -183,6 +184,7 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
         </nz-collapse-panel>
       </nz-collapse>
    </ng-container>
+      <button nz-button (click)="saveAsPng()">Zapisz jako png</button>
     </section>
 
   `,
@@ -465,6 +467,40 @@ hideGroupBy=false;
   @Input()
   surveyId
   dataResponse;
+  chartInstance;
+onChartInit(e){
+  this.chartInstance=e
+}
+ base64toBlob(base64Data, contentType) {
+    contentType = contentType || '';
+    var sliceSize = 1024;
+    var byteCharacters = atob(base64Data);
+    var bytesLength = byteCharacters.length;
+    var slicesCount = Math.ceil(bytesLength / sliceSize);
+    var byteArrays = new Array(slicesCount);
+
+    for (var sliceIndex = 0; sliceIndex < slicesCount; ++sliceIndex) {
+      var begin = sliceIndex * sliceSize;
+      var end = Math.min(begin + sliceSize, bytesLength);
+
+      var bytes = new Array(end - begin);
+      for (var offset = begin, i = 0; offset < end; ++i, ++offset) {
+        bytes[i] = byteCharacters[offset].charCodeAt(0);
+      }
+      byteArrays[sliceIndex] = new Uint8Array(bytes);
+    }
+    return new Blob(byteArrays, { type: contentType });
+  }
+saveAsPng(){
+
+  let src = this.chartInstance.getDataURL({
+    pixelRatio: 2,
+    backgroundColor: '#fff'
+  });
+  console.log(decodeURIComponent(src.replace(/^data:image\/(png|jpeg|jpg);base64,/, '')))
+  var blob = this.base64toBlob(decodeURIComponent(src.replace(/^data:image\/(png|jpeg|jpg);base64,/, '')), "image/png")
+  saveAs(blob, "wykres_"+this.chartData.name+".png")
+}
   async downloadQueryResponse(){
 
       let _dataResponse: any = await (this.surveyService.query(this.surveyId, this.advancedQuery?JSON.parse(this.advancedQuery):ComplimentQuery(this.chartData.dataQuery)).toPromise())

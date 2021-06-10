@@ -35,7 +35,8 @@ import {NzToolTipModule} from 'ng-zorro-antd/tooltip';
 import { NewReportDialogComponent } from './new-report-dialog/new-report-dialog.component';
 import {NzModalModule} from 'ng-zorro-antd/modal';
 import {
-  FilterByFieldPipe,
+  FilterByEquality,
+  FilterByFieldPipe, FilterByInequality,
   FilterByNamePipe,
   FilterByTypePipe, FilterStringPipe,
   NameFilter,
@@ -77,6 +78,7 @@ import {NzDividerModule} from 'ng-zorro-antd/divider';
 import {NzPaginationModule} from 'ng-zorro-antd/pagination';
 import {SurveysEditorComponent} from './surveys-editor/surveys-editor.component';
 import {NzDropDownModule} from 'ng-zorro-antd/dropdown';
+import {NzRadioModule} from 'ng-zorro-antd/radio';
 
 
 registerLocaleData(fr);
@@ -124,6 +126,8 @@ export let commonNZImports = [
     DashboardComponent,
     SurveyTileComponent,
     FilterByFieldPipe,
+    FilterByEquality,
+    FilterByInequality,
     FilterStringPipe,
     ReportTileComponent,
     NewReportDialogComponent,
@@ -166,7 +170,8 @@ export let commonNZImports = [
     NzSpinModule,
     NzDividerModule,
     NzPaginationModule,
-    NzDropDownModule
+    NzDropDownModule,
+    NzRadioModule
 
   ],
   providers: [{provide: NZ_I18N, useValue: fr_FR},  { provide: Window, useValue: window },LoginGuard],

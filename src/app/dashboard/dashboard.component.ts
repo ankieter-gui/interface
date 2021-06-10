@@ -8,6 +8,7 @@ import {NewReportDialogComponent} from '../new-report-dialog/new-report-dialog.c
 import {Router} from '@angular/router';
 import {DashboardService} from '../dashboard.service';
 import {DashboardRequestResponse} from '../dataModels/DashboardRequestResponse';
+import {UserService} from '../user.service';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -47,7 +48,7 @@ import {DashboardRequestResponse} from '../dataModels/DashboardRequestResponse';
   ]
 })
 export class DashboardComponent implements OnInit {
-  constructor(public mockService: MockService, public dashboardModals: DashboardModalsService, public router: Router, public dashboardService:DashboardService) {
+  constructor(public mockService: MockService, public dashboardModals: DashboardModalsService, public router: Router, public dashboardService:DashboardService, public user:UserService) {
     console.log(this.router.getCurrentNavigation().extras?.state?.example);
   }
   @ViewChild('sidenav', {static: true}) sidenav;
@@ -76,6 +77,8 @@ export class DashboardComponent implements OnInit {
       this.changeFilter('', false);
     }
   }
+  onlyMine=false;
+  onlyNotMine=false
   randomAvatart(): string{
     return sChance().avatar();
   }

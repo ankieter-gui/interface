@@ -57,6 +57,16 @@
                                                                                                            nzType="folder"></i>Tylko ankiety
             </button>
           </nz-button-group>
+          <nz-button-group style="margin-left: 1.5em">
+            <button nz-button [nzType]="onlyMine?'primary':'default'" (click)="onlyMine=!onlyMine; onlyNotMine=false"><i nz-icon
+                                                                                                          nzType="user"></i>
+              Tylko moje
+            </button>
+            <button nz-button [nzType]="onlyNotMine?'primary':'default'" (click)="onlyNotMine=!onlyNotMine; onlyMine=false"><i nz-icon
+                                                                                                      nzType="user"></i>
+              Tylko mi udostępnione
+            </button>
+          </nz-button-group>
           <div class="search-term-indicator" *ngIf="inputValue">
            <span class="search-term-indicator-label">Tylko o nazwie:</span> <nz-tag class="search-term-indicator-tag" nzMode="closeable" [nzColor]="'magenta'" (nzOnClose)="hideAndShow();inputValue=''" >{{inputValue}}</nz-tag>
 
@@ -79,7 +89,7 @@
               </nz-card>
             </div>
           </div>
-          <div class="card-padding" *ngFor="let dataObject of this.dashboardData.objects | filterByType: this.filter | filterByName: inputValue" [@hide]="loading">
+          <div class="card-padding" *ngFor="let dataObject of this.dashboardData.objects | filterByType: this.filter | filterByName: inputValue | ifEqual: 'userId':(onlyMine?user.userId:null) | ifNotEqual: 'userId':(onlyNotMine?user.userId:null)" [@hide]="loading"  >
             <app-survey-tile [survey]="dataObject" *ngIf="dataObject.type=='survey'"></app-survey-tile>
             <app-report-tile (reloadEmitter)="reload()" [report]="dataObject" *ngIf="dataObject.type=='report'"></app-report-tile>
           </div>

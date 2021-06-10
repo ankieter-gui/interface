@@ -20,7 +20,7 @@ import {DashboardModalsService} from '../dashboard-modals.service';
 
     </ng-template>
     <ng-template #coverTemplate>
-<figure class="header-image" [style]="'background-image: url((http://localhost:5000/bkg/'+report.backgroundImg+');'">
+<figure class="header-image" [style]="'background-image: url(http://localhost:5000/bkg/'+report.backgroundImg+');'">
 
 </figure>
       <span class="card-title">{{report.name}}</span>

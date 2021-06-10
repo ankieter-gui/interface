@@ -107,3 +107,33 @@ export class FilterStringPipe implements PipeTransform {
 
 
 
+@Pipe({
+  name: 'ifEqual'
+})
+export class FilterByEquality implements PipeTransform {
+
+  transform(items: any[], field: string, compareTo:any): any {
+    if (!items || !compareTo) {
+      return items;
+    }
+
+
+    return items.filter(item => item[field] == compareTo);
+  }
+
+}
+@Pipe({
+  name: 'ifNotEqual'
+})
+export class FilterByInequality implements PipeTransform {
+
+  transform(items: any[], field: string, compareTo:any): any {
+    if (!items || !compareTo) {
+      return items;
+    }
+
+
+    return items.filter(item => item[field] != compareTo);
+  }
+
+}
