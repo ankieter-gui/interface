@@ -4,7 +4,7 @@ export class UserGroup{
 }
 
 export class OtherUser{
-  CasLogin:string;
+  casLogin:string;
   id:string;
 }
 

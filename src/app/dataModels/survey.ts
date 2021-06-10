@@ -12,6 +12,7 @@ export class SurveyResponsesAmountTimepoint{
 export class GenericObjectMeta{
   type: string;
   name: string;
+  userId:string
   backgroundImg:string;
   createdOn: number; // linux timestamp
   isPublic: boolean;

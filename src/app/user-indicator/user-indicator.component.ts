@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {UserService} from '../user.service';
+import {LOGIN_SERVICE_URL} from '../Configuration';
 
 @Component({
   selector: 'app-user-indicator',
@@ -13,7 +14,7 @@ export class UserIndicatorComponent implements OnInit {
   ngOnInit(): void {
   }
   logout(){
-    this.window.location.href = "http://localhost:5000/logout"
+    this.window.location.href = `${LOGIN_SERVICE_URL}/logout`
   }
 
 }

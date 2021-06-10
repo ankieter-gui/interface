@@ -14,7 +14,7 @@ import {SharingService} from '../sharing.service';
    </ng-container>
     <app-user-search-combobox (onSelect)="appendUser($event)" [placeholder]="placeholder"> </app-user-search-combobox>
 <section class="tags">
-    <nz-tag nzMode="closeable" *ngFor="let user of this.selected" (nzOnClose)="removeUser(user)">{{user.CasLogin}}</nz-tag>
+    <nz-tag nzMode="closeable" *ngFor="let user of this.selected" (nzOnClose)="removeUser(user)">{{user.casLogin}}</nz-tag>
 </section>
    </ng-container>
   `,

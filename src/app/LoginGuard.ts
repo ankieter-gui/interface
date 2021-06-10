@@ -19,3 +19,22 @@ export class LoginGuard implements CanActivate {
    }
   }
 }
+
+
+
+@Injectable()
+export class OnlyAdminGuard implements CanActivate {
+
+  constructor(private router: Router, private user: UserService, private window: Window) { }
+
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+
+
+    if (this.user.userResponse.role=="s"){ return true;}else {
+
+      // not logged in so redirect to login page with the return url
+      //this.window.location.href = 'http://localhost:5000';
+      return false;
+    }
+  }
+}

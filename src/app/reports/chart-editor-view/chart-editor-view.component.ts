@@ -184,7 +184,7 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
         </nz-collapse-panel>
       </nz-collapse>
    </ng-container>
-      <button nz-button (click)="saveAsPng()">Zapisz jako png</button>
+      <button *ngIf="this.isPreview" nz-button (click)="saveAsPng()">Zapisz jako png</button>
     </section>
 
   `,

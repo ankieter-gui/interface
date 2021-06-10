@@ -20,7 +20,7 @@ import {OtherUser} from '../dataModels/UserGroup';
          <nz-collapse-panel *ngFor="let groupName of sharing.allGroupNames | filterString: groupSearchValue" [nzHeader]="groupName + ' ('+sharing.allGroups[groupName].length+')' | titlecase">
            <nz-list>
              <nz-list-item *ngFor="let user of sharing.allGroups[groupName]">
-               <span nz-typography>{{user}}</span>
+               <span nz-typography>{{user.casLogin}}</span>
                <ul nz-list-item-actions>
                  <nz-list-item-action><a (click)="excludeUser(groupName, user)">Usuń <i nz-icon nzType="delete"></i> </a></nz-list-item-action>
 
@@ -40,7 +40,7 @@ import {OtherUser} from '../dataModels/UserGroup';
      <section class="users-list-container column">
        <h1 style="font-family: Gilroy ExtraBold, sans-serif">Użytkownicy</h1>
        <input nz-input [(ngModel)]="userNameSearchValue" placeholder="Wyszukaj po nazwie...">
-       <nz-table #basicTable [nzData]="this.sharing.users() | filterByField: 'CasLogin':userNameSearchValue" nzShowPagination [nzPageSize]="10" style="margin-top:1.5em;">
+       <nz-table #basicTable [nzData]="this.sharing.users() | filterByField: 'casLogin':userNameSearchValue" nzShowPagination [nzPageSize]="10" style="margin-top:1.5em;">
          <thead>
          <tr>
            <th nzCustomFilter>
@@ -57,7 +57,7 @@ import {OtherUser} from '../dataModels/UserGroup';
          </thead>
          <tbody>
          <tr *ngFor="let data of basicTable.data">
-           <td>{{data.CasLogin}}</td>
+           <td>{{data.casLogin}}</td>
            <!--            <td>{{data.age}}</td>-->
            <!--            <td>{{data.address}}</td>-->
            <td>
@@ -110,11 +110,11 @@ export class GroupsEditorComponent implements OnInit {
     this.sharing.downloadAllGroups()
   }
   async addUserToGroup(groupName, user:OtherUser){
-    await this.sharing.updateGroup(groupName, [...this.sharing.allGroups[groupName], user.id]).toPromise()
+    await this.sharing.updateGroup(groupName, [...this.sharing.allGroups[groupName].map(d=>d.id), user.id]).toPromise()
     await this.sharing.downloadAllGroups()
   }
  async excludeUser(groupName, user){
-      await this.sharing.removeUserFromGroup(groupName,[user]).toPromise()
+      await this.sharing.removeUserFromGroup(groupName,[user.id]).toPromise()
     await this.sharing.downloadAllGroups()
   }
 

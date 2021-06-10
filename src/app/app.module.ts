@@ -69,7 +69,7 @@ import {NzGridModule} from 'ng-zorro-antd/grid';
 import {NzTableModule} from 'ng-zorro-antd/table';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatButtonModule} from '@angular/material/button';
-import {LoginGuard} from './LoginGuard';
+import {LoginGuard, OnlyAdminGuard} from './LoginGuard';
 import { UserIndicatorComponent } from './user-indicator/user-indicator.component';
 import { ReportPreviewComponent } from './report-preview/report-preview.component';
 import { ShareReportComponent } from './share-report/share-report.component';
@@ -79,6 +79,7 @@ import {NzPaginationModule} from 'ng-zorro-antd/pagination';
 import {SurveysEditorComponent} from './surveys-editor/surveys-editor.component';
 import {NzDropDownModule} from 'ng-zorro-antd/dropdown';
 import {NzRadioModule} from 'ng-zorro-antd/radio';
+import { LinkActivatorComponent } from './link-activator/link-activator.component';
 
 
 registerLocaleData(fr);
@@ -133,6 +134,7 @@ export let commonNZImports = [
     NewReportDialogComponent,
     FilterByNamePipe,
     ShareDialogComponent,
+
     GlobalSidemenuComponent,
     //TODO: lazy loading issue #4
     EditorComponent,
@@ -151,7 +153,9 @@ export let commonNZImports = [
     ReportPreviewComponent,
     ShareReportComponent,
 
-    SurveysEditorComponent
+    SurveysEditorComponent,
+
+    LinkActivatorComponent
   ],
   imports: [
     ...commonNZImports,
@@ -174,7 +178,7 @@ export let commonNZImports = [
     NzRadioModule
 
   ],
-  providers: [{provide: NZ_I18N, useValue: fr_FR},  { provide: Window, useValue: window },LoginGuard],
+  providers: [{provide: NZ_I18N, useValue: fr_FR},  { provide: Window, useValue: window },LoginGuard, OnlyAdminGuard],
   exports: [
     GlobalSidemenuComponent
   ],

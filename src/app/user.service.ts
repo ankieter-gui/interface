@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {BACKEND_URL} from './Configuration';
+import {BACKEND_URL, LOGIN_SERVICE_URL} from './Configuration';
 import {HttpClient} from '@angular/common/http';
 
 @Injectable({
@@ -17,12 +17,15 @@ export class UserService {
   constructor(private http:HttpClient, private window:Window) {
 
   }
-
+  userResponse;
   async downloadUserData(){
     let result = await (this.http.get<{logged:boolean, id:string, username:string}>(`${BACKEND_URL}/user`,{withCredentials:true}).toPromise())
-    if (!result.logged) this.window.location.href = "http://localhost:5000"
+    if (!result.logged) this.window.location.href = LOGIN_SERVICE_URL
     this._userId = result.id
     this._username =  result.username
+
+    this.userResponse=result
+    console.log(this.userResponse)
   }
   logged(): boolean{
     console.log(document.cookie)

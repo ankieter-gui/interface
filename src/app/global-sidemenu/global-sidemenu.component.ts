@@ -1,4 +1,5 @@
 import {Component, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
+import {UserService} from '../user.service';
 
 @Component({
   selector: 'app-global-sidemenu',
@@ -12,7 +13,7 @@ import {Component, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
           <i nz-icon nzType="folder"></i>
           <span>Ankiety i raporty</span>
         </li>
-        <li nz-menu-item [routerLink]="['groups']">
+        <li *ngIf="user.userResponse.role=='s'" nz-menu-item [routerLink]="['groups']">
           <i nz-icon nzType="user"></i>
           <span>Grupy udostępniania</span>
         </li>
@@ -25,7 +26,7 @@ import {Component, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 })
 export class GlobalSidemenuComponent implements OnInit {
  // @ViewChild('template', {static: true}) template;
-  constructor( private viewContainerRef: ViewContainerRef) { }
+  constructor( private viewContainerRef: ViewContainerRef, public user:UserService) { }
 
   ngOnInit(): void {
    // this.viewContainerRef.createEmbeddedView(this.template);

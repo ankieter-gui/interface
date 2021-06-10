@@ -34,7 +34,7 @@ export class ReportPreviewComponent implements OnInit {
   }
   constructor(private surveysService:SurveysService,private reportsService:ReportsService,private route: ActivatedRoute, private router:Router, private window:Window) {
     //https://stackoverflow.com/questions/55019343/how-to-generate-a-pdf-using-angular-7
-    if( this.router.getCurrentNavigation().extras.state.shallPrint){
+    if( this.router.getCurrentNavigation() && this.router.getCurrentNavigation().extras && this.router.getCurrentNavigation().extras.state && this.router.getCurrentNavigation().extras.state.shallPrint){
       setTimeout(()=>{this.exportAsPDF("main")}, 2000)
     }
   }

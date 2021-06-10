@@ -4,11 +4,12 @@ import {ReportsService} from '../reports.service';
 import {setupTestingRouter} from '@angular/router/testing';
 import {Router} from '@angular/router';
 import {DashboardModalsService} from '../dashboard-modals.service';
+import {UserService} from '../user.service';
 
 @Component({
   selector: 'app-report-tile',
   template: `
-    <nz-card [nzBordered]="false"  [nzCover]="coverTemplate" [nzActions]="[actionSetting, actionEdit, actionEllipsis, actionSee,actionDownload, actionDelete]">
+    <nz-card [nzBordered]="false"  [nzCover]="coverTemplate" [nzActions]="this.report.userId==this.user.userId?[actionSetting, actionEdit, actionEllipsis, actionSee,actionDownload, this.actionDelete]:[actionSetting, actionEdit, actionEllipsis, actionSee,actionDownload]">
 <!--      <nz-card-meta nzTitle="{{report.name}}" nzDescription=""></nz-card-meta>-->
 
       <div class="progress">
@@ -51,7 +52,7 @@ import {DashboardModalsService} from '../dashboard-modals.service';
       <i nz-icon nzType="share-alt" nz-tooltip [nzTooltipTitle]="'Udostępnij'" (click)="this.modals.openShareReportDialog(this.report)"></i>
     </ng-template>
     <ng-template #actionSee>
-      <i nz-icon nzType="eye" nz-tooltip [nzTooltipTitle]="'Podejrzyj'" [routerLink]="['/reports/', this.report.id]"></i>
+      <i nz-icon nzType="eye" nz-tooltip [nzTooltipTitle]="'Podejrzyj'" (click)="preview()"></i>
     </ng-template>
     <ng-template #actionDelete>
       <i nz-icon nzType="delete" nz-tooltip [nzTooltipTitle]="'Usuń'" (click)="delete()"></i>
@@ -159,7 +160,7 @@ export class ReportTileComponent implements OnInit {
   report:ReportMeta;
   @Output()
   reloadEmitter = new EventEmitter();
-  constructor(private reportService:ReportsService, private router:Router, public modals:DashboardModalsService) { }
+  constructor(private reportService:ReportsService, private router:Router, public modals:DashboardModalsService, public user:UserService) { }
 
   ngOnInit(): void {
   }
@@ -176,6 +177,11 @@ export class ReportTileComponent implements OnInit {
   async PDF(){
     this.router.navigateByUrl(`/reports/${this.report.id}`, {
       state: {shallPrint:true}
+    });
+  }
+  async preview(){
+    this.router.navigateByUrl(`/reports/${this.report.id}`,{
+      state: {shallPrint:false}
     });
   }
 }
