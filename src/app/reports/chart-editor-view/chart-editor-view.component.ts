@@ -53,7 +53,7 @@ import {Subject} from 'rxjs';
         </tbody>
       </nz-table>
     </section>
-      <section class="chart-area" *ngIf="['multipleChoice', 'groupedBars', 'multipleBars'].includes(chartData.config.type)  && this.echartOptions">
+      <section class="chart-area" *ngIf="['multipleChoice', 'groupedBars', 'multipleBars', 'linearCustomData'].includes(chartData.config.type)  && this.echartOptions">
         <div echarts  (chartInit)="onChartInit($event)" [options]="echartOptions" class="chart" style="width: 100%;"></div>
       </section>
 <!--      <section class="chart-editor">-->
@@ -145,9 +145,15 @@ import {Subject} from 'rxjs';
                             <div class="indicator-card-content"><img src="/assets/wydzialy.png" style="width: 100%"></div>
                           </div>
                         </figure>
+                        <figure class="indicator-card indicator-card-velvet preset" nz-tooltip="Prezentacja frekwencji na przestrzeni lat" (click)="pickPreset('linearCustomData');">
+                          <div class="indicator-card-inner">
+                            <div class="indicator-card-header">Linowy z własnymi danymi</div>
+                            <div class="indicator-card-content"><img src="/assets/wydzialy.png" style="width: 100%"></div>
+                          </div>
+                        </figure>
                       </section>
                     </nz-tab>
-                    <nz-tab nzTitle="Pytanie i dane">
+                    <nz-tab nzTitle="Pytanie i dane" *ngIf="!showLinearPicker">
                       <section class="question-selector dane" *ngIf="!hideData">
                         <div style="display: flex;flex-direction: row"> <span style='font-family: "Gilroy ExtraBold", sans-serif; width:50%;'>Dane:</span></div>
                         <div style="display: flex; flex-direction: row">
@@ -173,9 +179,13 @@ import {Subject} from 'rxjs';
                         </section>
                       </section>
                     </nz-tab>
-                    <nz-tab nzTitle="Filtry">
+                    <nz-tab nzTitle="Dane" *ngIf="showLinearPicker">
+                      <app-line-chart-custom-data-picker (saveEmitter)="refreshChart()" [reportId]="reportId" [chart]="this.chartData"></app-line-chart-custom-data-picker>
+                    </nz-tab>
+                    <nz-tab nzTitle="Filtry" *ngIf="!showLinearPicker">
 
                     </nz-tab>
+
 
                   </nz-tabset>
 
@@ -366,6 +376,7 @@ asSearchString:string
 @Input()
 reportId
 hideData=false;
+showLinearPicker=false;
 hideGroupBy=false;
 @Input()
 globalFilter:GlobalFilter
@@ -374,6 +385,7 @@ globalFilter:GlobalFilter
   pickPreset(name){
     this.byPickerClick=(type)=>{}
     this.onPickQuestion = ()=>{}
+    this.showLinearPicker=false;
     let fun = {
       'groupedPercentAndData':()=>{
         this.hideData=false;
@@ -410,7 +422,11 @@ globalFilter:GlobalFilter
         this.chartData.dataQuery.as[0]='share'
         this.onPickQuestion = (question)=>{this.chartData.dataQuery.get[0][0] = question}
         this.byPickerClick = (by)=>{this.chartData.dataQuery.by[0] = by; this.chartData.dataQuery.by[1]= "*"}
+      },
+      "linearCustomData":()=>{
+       this.showLinearPicker = true;
       }
+
     }[name]
     this.chartData.config.type=name;
     fun()

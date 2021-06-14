@@ -15,11 +15,11 @@ export class Table{
   series:string[]
 }
 export class ChartConfig{
-
+  handCodedData:{value:string, label:string}[]=[ {label:"", value:""} ]
   static colorSets={
     default:["red", "blue", "green"]
   }
-  type: 'groupedPercentAndData'| 'multipleChoice'| 'multipleChoiceAndData'| 'multipleBars'| 'groupedBars'| 'complex'
+  type: 'groupedPercentAndData'| 'multipleChoice'| 'multipleChoiceAndData'| 'multipleBars'| 'groupedBars'| 'complex' | 'linearCustomData'
   colors?:string[]=ChartConfig.colorSets.default;
   showDataLabels?:boolean=true;
   orientation?:"horizontal"|"vertical"="horizontal";

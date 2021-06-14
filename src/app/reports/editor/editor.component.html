@@ -27,7 +27,7 @@
       </section>
         <section class="header-right slide-top-enter-animation" >
           <div style="display: flex;flex-direction: row">
-            <nz-tag *ngIf="globalFilter" nzMode="closeable" (nzOnClose)="this.globalFilter=null; refresh(); filterSelector.reset()">{{globalFilter.question}} - {{globalFilter.answer}}</nz-tag>
+            <nz-tag *ngIf="reportDefinition.globalFilter" nzMode="closeable" (nzOnClose)="this.reportDefinition.globalFilter=null; refresh(); filterSelector.reset()">{{this.reportDefinition.globalFilter.question}} - {{this.reportDefinition.globalFilter.answer}}</nz-tag>
           <button nz-button nz-dropdown [nzDropdownMenu]="menu4" nzTrigger="click">
             Filtruj ankietę przez odpowiedź
             <i nz-icon nzType="down"></i>
@@ -37,7 +37,7 @@
            <section nz-menu class="global-filter-container">
               <h3>Filtruj ankietę przez odpowiedź</h3>
              <p>Wybierz pytanie i odpowiedź na nie aby cały raport brał pod uwagę tylko respondentów którzy udzieli na nią takiej odpowiedzi</p>
-             <app-filters-selector [namingDictionary]="namingDictionary" #filterSelector (globalFilterChange)="refresh()" [(globalFilter)]="globalFilter" [allQuestions]="surveyQuestions" [reportId]="reportId" [report]="reportDefinition"></app-filters-selector>
+             <app-filters-selector [namingDictionary]="namingDictionary" #filterSelector (globalFilterChange)="refresh()" [(globalFilter)]="this.reportDefinition.globalFilter" [allQuestions]="surveyQuestions" [reportId]="reportId" [report]="reportDefinition"></app-filters-selector>
            </section>
           </nz-dropdown-menu>
         </section>
@@ -66,7 +66,7 @@
             </mat-menu>
 
             <app-text-editor-view *ngSwitchCase="'text'" [(text)]="element.content.text" (focusEvent)="save()"></app-text-editor-view>
-            <app-chart-editor-view *ngSwitchCase="'chart'" [namingDictionary]="namingDictionary" [globalFilter]="globalFilter" [forceUpdate]="forceUpdate" [reportId]="this.reportId" [(chartData)]="element.content" (chartDataChange)="save()" [questions]="surveyQuestions" [surveyId]="this.linkedSurveyId"></app-chart-editor-view>
+            <app-chart-editor-view *ngSwitchCase="'chart'" [namingDictionary]="namingDictionary" [globalFilter]="this.reportDefinition.globalFilter" [forceUpdate]="forceUpdate" [reportId]="this.reportId" [(chartData)]="element.content" (chartDataChange)="save()" [questions]="surveyQuestions" [surveyId]="this.linkedSurveyId"></app-chart-editor-view>
           </div>
 
           </div>

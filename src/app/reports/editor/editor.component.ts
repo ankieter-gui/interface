@@ -21,11 +21,11 @@ export class EditorComponent implements OnInit {
   mouseHoveringAddMorePanel=false;
   surveyQuestions;
   namingDictionary;
-  globalFilter:GlobalFilter = null
+
   linkedSurveyId;
   reportId;
   reportDefinition:ReportDefinition = { title:"", elements:[
-    ]};
+    ], globalFilter:null};
   queryData(charData){
     return this.mockChartResponseData;
   }
@@ -38,8 +38,9 @@ export class EditorComponent implements OnInit {
   }
   forceUpdate= new Subject();
   refresh(){
+
     //TODO: there should be a better way to do this. The chart was not updating without setTimeout
-    setTimeout(()=>{this.forceUpdate.next();}, 100)
+    setTimeout(()=>{this.save(); this.forceUpdate.next();}, 100)
 
   }
   constructor(private surveysService:SurveysService,private reportsService:ReportsService,private route: ActivatedRoute) { }

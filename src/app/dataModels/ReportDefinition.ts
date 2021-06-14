@@ -2,6 +2,7 @@ import {ChartReportElement, ReportElement, TextReportElement} from './ReportElem
 
 export class ReportDefinition{
   title:string;
+  globalFilter:GlobalFilter=null
   elements:ReportElement[];
   constructor(title) {
     this.title =title;

@@ -439,6 +439,32 @@ export class ChartsService {
 
 
     }}
+    else if (chartElement.config.type=="linearCustomData"){
+      return {
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'cross',
+            label: {
+              backgroundColor: '#6a7985'
+            }
+          }
+        },
+
+        xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          data: chartElement.config.handCodedData.map(d=>d.label)
+        },
+        yAxis: {
+          type: 'value'
+        },
+        series: [{
+          data: chartElement.config.handCodedData.map(d=>d.value),
+          type: 'line'
+        }]
+      };
+    }
     // if (include)
     //   values = Object.fromEntries(
     //     Object.entries(values)

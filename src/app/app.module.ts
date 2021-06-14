@@ -83,6 +83,7 @@ import { LinkActivatorComponent } from './link-activator/link-activator.componen
 import { AddNewUserComponent } from './add-new-user/add-new-user.component';
 import { LoginPanelComponent } from './login-panel/login-panel.component';
 import { FiltersSelectorComponent } from './filters-selector/filters-selector.component';
+import { LineChartCustomDataPickerComponent } from './line-chart-custom-data-picker/line-chart-custom-data-picker.component';
 
 
 registerLocaleData(fr);
@@ -164,7 +165,9 @@ export let commonNZImports = [
 
     LoginPanelComponent,
 
-    FiltersSelectorComponent
+    FiltersSelectorComponent,
+
+    LineChartCustomDataPickerComponent
   ],
   imports: [
     ...commonNZImports,

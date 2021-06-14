@@ -21,7 +21,7 @@ export class ReportPreviewComponent implements OnInit {
   surveyQuestions;
   linkedSurveyId;
   reportDefinition:ReportDefinition = { title:"", elements:[
-    ]};
+    ], globalFilter:null};
   queryData(charData){
     return this.mockChartResponseData;
   }
