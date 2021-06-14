@@ -93,4 +93,9 @@ export class SharingService {
     return this.http.get(`${BACKEND_URL}/link/${hash}`, {withCredentials:true})
   }
 
+
+  createNewUser(casLogin,role){
+    return this.http.post(`${BACKEND_URL}/user/new`, {casLogin:casLogin, role:role}, {withCredentials:true})
+  }
+
 }

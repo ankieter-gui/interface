@@ -32,6 +32,7 @@ export class ReportPreviewComponent implements OnInit {
     this.reportDefinition.elements = this.reportDefinition.elements.filter(d=>d!=element)
     this.save()
   }
+  reportId;
   constructor(private surveysService:SurveysService,private reportsService:ReportsService,private route: ActivatedRoute, private router:Router, private window:Window) {
     //https://stackoverflow.com/questions/55019343/how-to-generate-a-pdf-using-angular-7
     if( this.router.getCurrentNavigation() && this.router.getCurrentNavigation().extras && this.router.getCurrentNavigation().extras.state && this.router.getCurrentNavigation().extras.state.shallPrint){
@@ -50,6 +51,7 @@ export class ReportPreviewComponent implements OnInit {
     this.reportsService.saveReport(this.route.snapshot.paramMap.get('id'), this.reportDefinition).subscribe(d=>console.log("saved"));
   }
   ngOnInit(): void {
+    this.reportId = this.route.snapshot.paramMap.get('id')
     this.reportsService.getLinkedSurvey(this.route.snapshot.paramMap.get('id')).subscribe((d)=> {
       this.linkedSurveyId = d.surveyId; console.log(this.linkedSurveyId)
       this.downloadSurveyQuestions()

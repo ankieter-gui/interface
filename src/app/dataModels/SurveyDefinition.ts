@@ -21,6 +21,7 @@ export class CommonAttributes{
 export class Question extends GenericElement{
   header;
   id;
+
   commonAttributes?
   constructor(header) {
     super();
@@ -36,6 +37,7 @@ export class TextQuestion extends  Question{
   }
 }
 export class SingleChoiceQuestion extends Question{
+  questionType="single"
   options:string[]=[]
   constructor(header, options:string[]=[]) {
     super(header);
@@ -43,6 +45,7 @@ export class SingleChoiceQuestion extends Question{
   }
 }
 export class MultipleChoiceQuestion extends Question{
+  questionType="multi"
   options:string[]=[]
   range?:boolean=false
   maxAnswers=3
@@ -55,6 +58,7 @@ export class MultipleChoiceQuestion extends Question{
   }
 }
 export class ScaleQuestion extends Question{
+  questionType="scale"
   options:{value?:string, code:number}[]=[]
   constructor(header, options:{value?:string, code:number}[]=[]) {
     super(header);
@@ -69,6 +73,7 @@ export class QuestionnaireRoot extends  GenericElement{
  }
 export class SurveyDefinition{
   root:QuestionnaireRoot=new QuestionnaireRoot()
+  title:string;
   get questions():Question[]{
     return this.root.elements
   }

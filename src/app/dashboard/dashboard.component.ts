@@ -49,7 +49,7 @@ import {UserService} from '../user.service';
 })
 export class DashboardComponent implements OnInit {
   constructor(public mockService: MockService, public dashboardModals: DashboardModalsService, public router: Router, public dashboardService:DashboardService, public user:UserService) {
-    console.log(this.router.getCurrentNavigation().extras?.state?.example);
+
   }
   @ViewChild('sidenav', {static: true}) sidenav;
   inputValue;

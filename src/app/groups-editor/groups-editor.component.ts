@@ -8,8 +8,10 @@ import {OtherUser} from '../dataModels/UserGroup';
 @Component({
   selector: 'app-groups-editor',
   template: `
-
+<section style="display:flex; flex-direction: row">
      <button nz-button nzType="default" style="margin-bottom:2rem" (click)="dashboardModals.openNewGroupDialog()"> <i nz-icon nzType="folder-add"></i>Utwórz nową grupę</button>
+     <button nz-button nzType="default" style="margin-bottom:2rem;margin-left:1rem" (click)="dashboardModals.openNewUserDialog()"> <i nz-icon nzType="user"></i>Nowy użytkownik</button>
+</section>
      <section class="container">
      <section class="groups-list-container column">
 

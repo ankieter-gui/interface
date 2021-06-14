@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {ReportMeta} from '../dataModels/survey';
 import {SharingService} from '../sharing.service';
 import {fadeInOut} from '../commonAnimations'
+import {FRONTEND_URL} from '../Configuration';
 @Component({
   animations:[fadeInOut],
   selector: 'app-share-report',
@@ -113,10 +114,10 @@ export class ShareReportComponent implements OnInit {
   ngOnInit(): void {
     setTimeout(()=>{  console.log(this.sharingService.allGroupNames)}, 1000)
     this.sharingService.getReportSharingLink(this.report.id, 'r').subscribe(d=>{
-      this.shareLinkRead = d['link']
+      this.shareLinkRead = `${FRONTEND_URL}/shared/${d['link']}`
     })
     this.sharingService.getReportSharingLink(this.report.id, 'w').subscribe(d=>{
-      this.shareLinkEdit = d['link']
+      this.shareLinkEdit = `${FRONTEND_URL}/shared/${d['link']}`
     })
 
   }

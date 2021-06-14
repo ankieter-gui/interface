@@ -7,6 +7,6 @@ import {CachedDataDownloadSynchronizerService} from './cached-data-download-sync
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  constructor(private cached:CachedDataDownloadSynchronizerService) {
+  constructor(public cached:CachedDataDownloadSynchronizerService) {
   }
 }

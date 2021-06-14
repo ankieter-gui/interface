@@ -37,6 +37,9 @@ export class UserService {
     return false;
 
   }
+  redirectToCASLogin(){
+    window.location.href = `${BACKEND_URL}/login`
+  }
   getCookie(name):string {
     var dc = document.cookie;
     var prefix = name + "=";

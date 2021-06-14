@@ -80,6 +80,9 @@ import {SurveysEditorComponent} from './surveys-editor/surveys-editor.component'
 import {NzDropDownModule} from 'ng-zorro-antd/dropdown';
 import {NzRadioModule} from 'ng-zorro-antd/radio';
 import { LinkActivatorComponent } from './link-activator/link-activator.component';
+import { AddNewUserComponent } from './add-new-user/add-new-user.component';
+import { LoginPanelComponent } from './login-panel/login-panel.component';
+import { FiltersSelectorComponent } from './filters-selector/filters-selector.component';
 
 
 registerLocaleData(fr);
@@ -155,7 +158,13 @@ export let commonNZImports = [
 
     SurveysEditorComponent,
 
-    LinkActivatorComponent
+    LinkActivatorComponent,
+
+    AddNewUserComponent,
+
+    LoginPanelComponent,
+
+    FiltersSelectorComponent
   ],
   imports: [
     ...commonNZImports,

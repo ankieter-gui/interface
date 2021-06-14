@@ -12,6 +12,7 @@ import {ShareReportComponent} from './share-report/share-report.component';
 import {ReportMeta} from './dataModels/survey';
 import {FileSystemFileEntry} from 'ngx-file-drop';
 import {SharingService} from './sharing.service';
+import {AddNewUserComponent} from './add-new-user/add-new-user.component';
 
 @Injectable({
   providedIn: 'root'
@@ -113,6 +114,15 @@ export class DashboardModalsService {
     } )
   }
 
+  openNewUserDialog(): void{
+    this.createComponentModal("Nowy użytkownik", AddNewUserComponent, {}, async (i: AddNewUserComponent, m) => {
+      // TODO: create group
+
+      await this.sharing.createNewUser(i.casLogin, i.role).toPromise();
+      this.sharing.downloadAllUsers()
+      m.destroy();
+    } )
+  }
 
 
 

@@ -38,7 +38,7 @@ export class ChartsService {
   }
   constructor() { }
 
-
+   zip = (a, b) => a.map((k, i) => [k, b[i]]);
   transformDataIntoPairs(series){
     const zip = (a, b) => a.map((k, i) => [k, b[i]]);
     let indices = series["index"]

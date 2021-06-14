@@ -8,3 +8,7 @@ export class ReportDefinition{
     this.elements=[]
   }
 }
+export class GlobalFilter{
+  question:string
+  answer:string
+}

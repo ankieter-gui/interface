@@ -2,12 +2,15 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { saveAs } from 'file-saver';
 import {MockService} from '../../mock.service';
 
-import {SurveyMeta} from '../../dataModels/survey';
+import {ReportMeta, SurveyMeta} from '../../dataModels/survey';
 import {SurveysService} from '../../surveys.service';
 import {ChartsService} from '../../charts.service';
 import {ComplimentQuery} from '../../dataModels/Query';
 import {ChartConfig, ChartReportElement} from '../../dataModels/ReportElement';
 import {animate, state, style, transition, trigger} from '@angular/animations';
+import {ReportsService} from '../../reports.service';
+import {GlobalFilter} from '../../dataModels/ReportDefinition';
+import {Subject} from 'rxjs';
 
 @Component({
   animations:[    trigger('fadeInOut', [
@@ -44,7 +47,7 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
     <section class="chart-area" *ngIf="chartData.config.type=='groupedPercentAndData' && this.echartOptions">
       <div echarts (chartInit)="onChartInit($event)" [options]="echartOptions" class="chart" #chartInstance></div>
       <nz-table *ngIf="chartData.dataQuery.as.includes('share') && chartData.dataQuery.as.length>1 && dataResponse" class="details-table" [nzTemplateMode]="true">
-       <thead> <tr><th *ngFor="let header of tableHeaders">{{header}}</th></tr></thead>
+       <thead> <tr><th *ngFor="let header of tableHeaders">{{header | PolskieNazwy}}</th></tr></thead>
         <tbody>
         <tr *ngFor="let row of this.tableData"><td *ngFor="let value of row">{{value | number }}</td></tr>
         </tbody>
@@ -148,7 +151,7 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
                       <section class="question-selector dane" *ngIf="!hideData">
                         <div style="display: flex;flex-direction: row"> <span style='font-family: "Gilroy ExtraBold", sans-serif; width:50%;'>Dane:</span></div>
                         <div style="display: flex; flex-direction: row">
-                          <label *ngFor='let q of ["share","max","min","mode","mean","median","std","var","count","sum"]' nz-checkbox [nzChecked]="chartData.dataQuery.as.includes(q)" (click)="asPickerClick(q);refreshChart()">{{q | PolskieNazwy}}</label>
+                          <label *ngFor='let q of ["share","max","min","mode","mean","median","std","var","count","sum"]' nz-checkbox [nzChecked]="chartData.dataQuery.as.includes(q)" (click)="asPickerClick(q);refreshChart()">{{q | PolskieNazwy | titlecase}}</label>
 
                         </div>
                       </section>
@@ -184,7 +187,7 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
         </nz-collapse-panel>
       </nz-collapse>
    </ng-container>
-      <button *ngIf="this.isPreview" nz-button (click)="saveAsPng()">Zapisz jako png</button>
+      <button *ngIf="!this.isPreview" nz-button (click)="saveAsPng()">Zapisz jako png</button>
     </section>
 
   `,
@@ -346,6 +349,7 @@ export class ChartEditorViewComponent implements OnInit {
   get questionNames(){
     return this.questions?Object.keys(this.questions):[];
   }
+  @Input() forceUpdate;
   @Input()
   questions;
   @Input()
@@ -359,10 +363,14 @@ bySearchString:string
   advancedQuery:string;
 asSearchString:string
   onPickQuestion;
-
+@Input()
+reportId
 hideData=false;
 hideGroupBy=false;
-
+@Input()
+globalFilter:GlobalFilter
+  @Input()
+  namingDictionary
   pickPreset(name){
     this.byPickerClick=(type)=>{}
     this.onPickQuestion = ()=>{}
@@ -446,17 +454,20 @@ hideGroupBy=false;
     this.byPickerClick(type)
   }
   byPickerClick=(type:string)=>{}
-  constructor(private surveyService:SurveysService, private chartsService:ChartsService) { }
+  constructor(private surveyService:SurveysService, private chartsService:ChartsService, public reportsService:ReportsService) { }
 
   ngOnInit(): void {
+    this.forceUpdate.subscribe(async (v) => {
+      await this.refreshChart(false)
+    });
     if (this.chartData.config.type){
       this.pickPreset(this.chartData.config.type)
     }
     this.refreshChart()
   }
-  async refreshChart(){
+  async refreshChart(shallSave=true){
 
-    this.save()
+    if (shallSave) this.save()
     try {
       await this.downloadQueryResponse();
       await this.generateChart();
@@ -503,7 +514,7 @@ saveAsPng(){
 }
   async downloadQueryResponse(){
 
-      let _dataResponse: any = await (this.surveyService.query(this.surveyId, this.advancedQuery?JSON.parse(this.advancedQuery):ComplimentQuery(this.chartData.dataQuery)).toPromise())
+      let _dataResponse: any = await (this.reportsService.getData(this.reportId, this.advancedQuery?JSON.parse(this.advancedQuery):ComplimentQuery(this.chartData.dataQuery, this.globalFilter)).toPromise())
       console.log(_dataResponse);
       if ("error" in _dataResponse) {
 

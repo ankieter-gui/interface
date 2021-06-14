@@ -187,3 +187,20 @@ nz-breadcrumb {
     opacity: 0;
   }
 }
+
+.header-flex{
+
+  max-width: 1200px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.global-filter-container{
+  padding:2em;
+  width:80vw;
+
+}
+.global-filter-container h3 {
+  font-family: "Gilroy ExtraBold";
+}

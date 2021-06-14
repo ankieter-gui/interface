@@ -7,7 +7,7 @@ import {SharingService} from './sharing.service';
 })
 export class CachedDataDownloadSynchronizerService {
 
-  constructor(private user:UserService, private sharing:SharingService) {
+  constructor(public user:UserService, public sharing:SharingService) {
     this.download()
   }
   async download(){
