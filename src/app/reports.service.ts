@@ -10,7 +10,7 @@ import {ChartsService} from './charts.service';
 })
 export class ReportsService {
 
-  constructor(private http:HttpClient, private chartsService:ChartsService) {}
+  constructor(private http:HttpClient) {}
   createNewReport(surveyId, name){
     return this.http.post(`${BACKEND_URL}/report/new`, {"surveyId":surveyId, "title":name}, {withCredentials:true,})
   }
@@ -35,26 +35,42 @@ export class ReportsService {
   getData(reportId, query){
     return this.http.post(`${BACKEND_URL}/report/${reportId}/data`, query, {withCredentials:true})
   }
-  async getResponsesForQuestion(reportId, questionName){
-    let query:SurveyQuery = {
-      get: [[questionName]],
-      as:["share"],
-      by:["*"],
-      filter:[]
+  getAllShareLabels(shareElement){
+    let l = []
+    for (let series of shareElement){
+      l= [...l, ...Object.keys(series)]
     }
-    let dataResponse = await (this.getData(reportId, query).toPromise())
-    let shareElement = this.chartsService.zip(Object.keys(dataResponse), Object.values(dataResponse)).filter(d=>d[0].includes("share"))[0][1]
-    console.log(shareElement)
-    let answers = this.chartsService.getAllShareLabels(shareElement)
-    console.log(answers)
-    return answers
+    return [...new Set(l)];
   }
-  getNamingDictionary(reportId){
+
+
+
+  getSurveyStructure(reportId){
     return this.http.get(`${BACKEND_URL}/report/${reportId}/answers`,{withCredentials:true})
   }
+  getNamingDictionary(structure){
+    let dict = {}
+    let questionsCore = Object.keys(structure)
+    for (let questionCore of questionsCore){
+
+      let obj = structure[questionCore]
+      let sub = obj['sub_questions']
+      let values = obj['values']
+      if (sub.length>0) {
+        for (let subQuestion of sub) {
+          let keyName = questionCore+" - "+subQuestion
+          dict[keyName] = values
+        }
+      }
+      else{
+        dict[questionCore] = values
+      }
+    }
+    console.log(dict)
+    return dict
+  }
   getLabelFor(dictionary, question, value){
-    console.log(dictionary)
-    console.log(question)
-    return dictionary[question][value]
+    if (dictionary[question]) return dictionary[question][value]
+    return value
   }
 }

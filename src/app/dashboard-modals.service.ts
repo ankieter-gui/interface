@@ -13,13 +13,14 @@ import {ReportMeta} from './dataModels/survey';
 import {FileSystemFileEntry} from 'ngx-file-drop';
 import {SharingService} from './sharing.service';
 import {AddNewUserComponent} from './add-new-user/add-new-user.component';
+import {SurveysService} from './surveys.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DashboardModalsService {
 
-  constructor(private modal: NzModalService, private mockService: MockService, private router: Router, private reports: ReportsService,private sharing:SharingService, private dashboardService:DashboardService) { }
+  constructor(private modal: NzModalService, private mockService: MockService, private surveys:SurveysService, private router: Router, private reports: ReportsService,private sharing:SharingService, private dashboardService:DashboardService) { }
   createComponentModal(title, component, params, onOk= (instance, modal) => null): void{
     const modal = this.modal.create({
       nzTitle: title,
@@ -64,24 +65,48 @@ export class DashboardModalsService {
 
        console.log("1")
        console.log(i.fileEntry)
-
+       let newSurveyId=null
        i.fileEntry.file(async (file: File) => {
          console.log("1")
          // Here you can access the real file
          console.log(i.files[0].relativePath, file);
-         let d = await (i.surveyService.uploadData(file, i.files[0].relativePath).toPromise())
-         i.isFileBeingUploaded = false;
-           selectedSurvey = d
+         let rsp = await (i.surveyService.uploadData(file, i.files[0].relativePath).toPromise())
+         newSurveyId=rsp.id
+         console.log(newSurveyId)
+         console.log(rsp)
 
-         const response = await (this.reports.createNewReport(selectedSurvey.id, i.reportNameInputValue).toPromise())
+
+
+         const response = await (this.reports.createNewReport(newSurveyId, i.reportNameInputValue).toPromise())
          const id = response['reportId']
          await (this.reports.saveReport(id, new ReportDefinition(i.reportNameInputValue)).toPromise())
          // const id="testoweId"
          console.log(selectedSurvey);
-         m.destroy();
-         await this.router.navigate(['reports/editor', id] );
+
+
+         if (i.filesXML.length>0) {
+           i.fileEntryXML.file(async (file: File) => {
+
+
+             console.log(i.files[0].relativePath, file);
+             console.log("sending XML...")
+             console.log(newSurveyId)
+             let d = await (i.surveyService.uploadXML(newSurveyId, file, i.files[0].relativePath).toPromise())
+             i.isFileBeingUploaded = false;
+             selectedSurvey = d
+
+             m.destroy();
+             await this.router.navigate(['reports/editor', id]);
+
+           });
+         }
+         else{
+           m.destroy();
+           await this.router.navigate(['reports/editor', id] );
+         }
 
        });
+
      }else{
        const response = await (this.reports.createNewReport(selectedSurvey.id, i.reportNameInputValue).toPromise())
        const id = response['reportId']

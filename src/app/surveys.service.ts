@@ -36,6 +36,16 @@ export class SurveysService {
      return this.http.post(`${BACKEND_URL}/data/new`, formData, {withCredentials:true})
 
   }
+  uploadXML(surveyId, file,relativePath){
+    const formData = new FormData()
+    formData.append('file', file, relativePath)
+    console.log("sending....")
+    return this.http.post(`${BACKEND_URL}/survey/${surveyId}/upload`, formData, {withCredentials:true})
+  }
+
+  createSurvey(name, meta=null){
+    return this.http.post(`${BACKEND_URL}/survey/new`, {name:name, meta:meta!=null?meta:{}}, {withCredentials:true})
+  }
 
 
 }

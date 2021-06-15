@@ -18,7 +18,7 @@ import {ReportsService} from '../reports.service';
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let entry of questionsTable.data" (click)="selectQuestion(entry)">
+      <tr  style="cursor: pointer" *ngFor="let entry of questionsTable.data" (click)="selectQuestion(entry)">
         <td>  <label nz-checkbox [ngModel]="selectedQuestionName==entry"></label></td>
         <td>{{entry}}</td>
 
@@ -38,7 +38,7 @@ import {ReportsService} from '../reports.service';
           </tr>
           </thead>
           <tbody>
-          <tr *ngFor="let entry of answersTable.data" (click)="selectAnswer(entry)">
+          <tr style="cursor: pointer" *ngFor="let entry of answersTable.data" (click)="selectAnswer(entry)">
             <td>  <label nz-checkbox [ngModel]="selectedAnswer==entry"></label></td>
             <td>{{this.reportService.getLabelFor(this.namingDictionary, this.selectedQuestionName, entry)}}</td>
 
@@ -75,6 +75,8 @@ export class FiltersSelectorComponent implements OnInit {
   selectedAnswer;
   @Input()
   namingDictionary;
+  @Input()
+  structure
   index=0;
 
   get questionNames(){
@@ -88,7 +90,7 @@ export class FiltersSelectorComponent implements OnInit {
     this.index=1
   }
   async downloadAnswers(){
-    this.answers = await this.reportService.getResponsesForQuestion(this.reportId, this.selectedQuestionName)
+    this.answers = Object.keys(this.namingDictionary[this.selectedQuestionName])
   }
   selectAnswer(entry){
     this.selectedAnswer=this.selectedAnswer!=entry?entry:null

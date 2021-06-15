@@ -21,6 +21,7 @@ export class EditorComponent implements OnInit {
   mouseHoveringAddMorePanel=false;
   surveyQuestions;
   namingDictionary;
+  surveyStructure;
 
   linkedSurveyId;
   reportId;
@@ -48,7 +49,9 @@ export class EditorComponent implements OnInit {
     this.reportDefinition.elements.push({type:"text", content: {text:""} as TextReportElement})
   }
   async downloadNamingDictionary(){
-    this.namingDictionary = await (this.reportsService.getNamingDictionary(this.reportId).toPromise())
+    console.log("downloading structure")
+    this.surveyStructure = await (this.reportsService.getSurveyStructure(this.reportId).toPromise())
+    this.namingDictionary =  (this.reportsService.getNamingDictionary(this.surveyStructure))
   }
   addNewChartElement(){
     this.reportDefinition.elements.push({type:"chart", content: {name:"", dataQuery: new SurveyQuery(), config: { tableDefinition:{series:[]},

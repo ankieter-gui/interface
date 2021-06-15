@@ -5,7 +5,7 @@ import {MockService} from '../../mock.service';
 import {ReportMeta, SurveyMeta} from '../../dataModels/survey';
 import {SurveysService} from '../../surveys.service';
 import {ChartsService} from '../../charts.service';
-import {ComplimentQuery} from '../../dataModels/Query';
+import {ComplimentQuery, SurveyQueryNamingDictionary} from '../../dataModels/Query';
 import {ChartConfig, ChartReportElement} from '../../dataModels/ReportElement';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {ReportsService} from '../../reports.service';
@@ -45,7 +45,7 @@ import {Subject} from 'rxjs';
     <div class="chart-container">
 
     <section class="chart-area" *ngIf="chartData.config.type=='groupedPercentAndData' && this.echartOptions">
-      <div echarts (chartInit)="onChartInit($event)" [options]="echartOptions" class="chart" #chartInstance></div>
+      <div echarts (chartInit)="onChartInit($event)" [options]="echartOptions" class="chart" [class.fullWidth]="!(chartData.dataQuery.as.includes('share') && chartData.dataQuery.as.length>1 && dataResponse)" #chartInstance></div>
       <nz-table *ngIf="chartData.dataQuery.as.includes('share') && chartData.dataQuery.as.length>1 && dataResponse" class="details-table" [nzTemplateMode]="true">
        <thead> <tr><th *ngFor="let header of tableHeaders">{{header | PolskieNazwy}}</th></tr></thead>
         <tbody>
@@ -69,7 +69,7 @@ import {Subject} from 'rxjs';
 <!--      <ckeditor  [(ngModel)]="chartData.text" type="inline"></ckeditor>-->
 <!--      </div>-->
    <ng-container *ngIf="!isPreview">
-      <section class="query-marker"  *ngIf="chartData.dataQuery.get[0].length>0" [@fadeInOut]>
+      <section class="query-marker"  *ngIf="chartData.dataQuery.get[0].length>0 && !showLinearPicker" [@fadeInOut]>
                 <figure class="indicator-card indicator-card-red" (click)="activeTab=0">
                   <div class="indicator-card-inner">
                   <div class="indicator-card-header">Pytanie</div>
@@ -84,7 +84,7 @@ import {Subject} from 'rxjs';
         <figure class="indicator-card indicator-card-green"  *ngIf="!hideData">
           <div class="indicator-card-inner">
             <div class="indicator-card-header">Dane</div>
-            <div class="indicator-card-content">{{chartData.dataQuery.as.join(', ')}}</div>
+            <div class="indicator-card-content">{{jointAs | titlecase}}</div>
           </div>
         </figure>
         <div class="arrow-container" *ngIf="!hideGroupBy"> <i nz-icon nzType="right"></i></div>
@@ -156,8 +156,16 @@ import {Subject} from 'rxjs';
                     <nz-tab nzTitle="Pytanie i dane" *ngIf="!showLinearPicker">
                       <section class="question-selector dane" *ngIf="!hideData">
                         <div style="display: flex;flex-direction: row"> <span style='font-family: "Gilroy ExtraBold", sans-serif; width:50%;'>Dane:</span></div>
-                        <div style="display: flex; flex-direction: row">
-                          <label *ngFor='let q of ["share","max","min","mode","mean","median","std","var","count","sum"]' nz-checkbox [nzChecked]="chartData.dataQuery.as.includes(q)" (click)="asPickerClick(q);refreshChart()">{{q | PolskieNazwy | titlecase}}</label>
+                        <div style="display: flex; flex-direction: row; width: 100%">
+                          <nz-table #aggregationTable nzTemplateMode>
+                            <thead>
+
+                            </thead>
+                            <tbody>
+                            <tr><td style="cursor: pointer!important;" *ngFor='let q of ["max","min","mode","mean","median","std","var","count","sum"]'  (click)="$event.preventDefault();$event.stopPropagation();asPickerClick(q);refreshChart()"> <label><input style="pointer-events:none" type="checkbox" (click)="$event.preventDefault()" [checked]="chartData.dataQuery.as.includes(q)"> {{q |  PolskieNazwy | titlecase}}</label></td></tr>
+                            </tbody>
+                          </nz-table>
+<!--                          <label  nz-checkbox [nzChecked]="chartData.dataQuery.as.includes(q)" (click)="asPickerClick(q);refreshChart()">{{q | PolskieNazwy | titlecase}}</label>-->
 
                         </div>
                       </section>
@@ -165,7 +173,23 @@ import {Subject} from 'rxjs';
                       <section class="question-selector pytania">
                       <div style="display: flex;flex-direction: row"> <span style='font-family: "Gilroy ExtraBold", sans-serif; width:50%;'>Odpowiedzi na pytanie:</span> <nz-input-group class="force-input-borderless" [nzPrefixIcon]="'search'"><input   nzBorderless nz-input placeholder="Wyszukaj..." [(ngModel)]="questionSearchString"> </nz-input-group></div>
                       <div style="display: flex; flex-direction: column">
-                        <label *ngFor="let q of questionNames|NameFilter: questionSearchString" nz-checkbox [nzChecked]="chartData.dataQuery.get[0].includes(q)" (click)="questionPickerClick(q);refreshChart()">{{q| RemoveHtml}}</label>
+                        <nz-table #questionTable [nzData]="questionNames|NameFilter: questionSearchString">
+                          <thead>
+                          <tr>
+                            <th>Zaznaczono</th>
+                            <th>Pytanie</th>
+
+                          </tr>
+                          </thead>
+                          <tbody>
+                          <tr *ngFor="let q of questionTable.data" (click)="questionPickerClick(q);refreshChart()" style="cursor: pointer">
+                            <td>  <label style="pointer-events: none" nz-checkbox [nzChecked]="chartData.dataQuery.get[0].includes(q)"></label></td>
+                            <td>{{q}}</td>
+
+
+                          </tr>
+                          </tbody>
+                        </nz-table>
 
                       </div>
                       </section>
@@ -173,7 +197,24 @@ import {Subject} from 'rxjs';
                         <section class="question-selector pytania" *ngIf="!hideGroupBy">
                         <div style="display: flex;flex-direction: row"> <span style='font-family: "Gilroy ExtraBold", sans-serif; width:50%;'>Grupuj przez:</span> <nz-input-group class="force-input-borderless" [nzPrefixIcon]="'search'"><input   nzBorderless nz-input placeholder="Wyszukaj..." [(ngModel)]="bySearchString"> </nz-input-group></div>
                         <div style="display: flex; flex-direction: column">
-                          <label *ngFor="let q of questionNames|NameFilter: bySearchString" nz-checkbox [nzChecked]="chartData.dataQuery.by[0]==q" (click)="buPickerClick(q);refreshChart()">{{q| RemoveHtml}}</label>
+                          <nz-table #groupTable [nzData]="questionNames|NameFilter: bySearchString">
+                            <thead>
+                            <tr>
+                              <th>Zaznaczono</th>
+                              <th>Pytanie</th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr *ngFor="let q of groupTable.data" (click)="buPickerClick(q);refreshChart()" style="cursor: pointer">
+                              <td>  <label style="pointer-events: none" nz-checkbox [nzChecked]="chartData.dataQuery.by[0]==q"></label></td>
+                              <td>{{q}}</td>
+
+
+                            </tr>
+                            </tbody>
+                          </nz-table>
+<!--                          <label *ngFor="let q of questionNames|NameFilter: bySearchString" nz-checkbox [nzChecked]="chartData.dataQuery.by[0]==q" (click)="buPickerClick(q);refreshChart()">{{q| RemoveHtml}}</label>-->
 
                         </div>
                         </section>
@@ -248,6 +289,9 @@ import {Subject} from 'rxjs';
       .pytania{
        flex-grow:1;
         min-width: 50%;
+      }
+      .fullWidth{
+        width:100%;
       }
       .query-marker{
         margin-top:2em;
@@ -399,7 +443,7 @@ globalFilter:GlobalFilter
         this.chartData.dataQuery.as[0]='share'
         this.chartData.dataQuery.by[0] = '*'
         this.onPickQuestion=(question)=>{
-          let exists = this.chartData.dataQuery.get.filter(d=>d[0]==question).length>0
+          const exists = this.chartData.dataQuery.get.filter(d=>d[0]==question).length>0
           if (exists) {
             this.chartData.dataQuery.get = this.chartData.dataQuery.get.filter(d => d[0] != question)
           }
@@ -457,6 +501,9 @@ globalFilter:GlobalFilter
     // if (this.chartData.dataQuery.by.length==0){
     //   this.chartData.dataQuery.by.push(question)
     // }
+  }
+  get jointAs(){
+   return  this.chartData.dataQuery.as.map(d=>SurveyQueryNamingDictionary[d]??d).join(', ')
   }
   asPickerClick(type){
    if (this.chartData.dataQuery.as.includes(type)){
@@ -544,8 +591,8 @@ saveAsPng(){
   echartOptions;
   generateChart(){
 
-      console.log(this.chartsService.generateChart(this.dataResponse, this.chartData))
-      this.echartOptions = this.chartsService.generateChart(this.dataResponse, this.chartData)
+
+      this.echartOptions = this.chartsService.generateChart(this.dataResponse, this.chartData, this.reportId, this.namingDictionary)
 
   }
   get tableHeaders(){

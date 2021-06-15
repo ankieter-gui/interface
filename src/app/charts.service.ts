@@ -5,6 +5,7 @@ import * as lcs from 'node-lcs'
 import * as Chance from 'chance'
 import {commonSubstring} from './lcs';
 import {SeriesLabelOption} from 'echarts/types/src/util/types';
+import {ReportsService} from './reports.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -36,7 +37,7 @@ export class ChartsService {
     }
     return [...new Set(l)];
   }
-  constructor() { }
+  constructor(private reportService:ReportsService) { }
 
    zip = (a, b) => a.map((k, i) => [k, b[i]]);
   transformDataIntoPairs(series){
@@ -77,7 +78,7 @@ export class ChartsService {
     return [list.map(d=>d.replace(prefix, '')), prefix]
   }
 
-  generateChart(series:any, chartElement:ChartReportElement, include:string[]=undefined):EChartsOption{
+  generateChart(series:any, chartElement:ChartReportElement, reportId, namingDictioanry):EChartsOption{
     let chartName = chartElement.name;
     const zip = (a, b) => a.map((k, i) => [k, b[i]]);
     let indices = series["index"]
@@ -87,7 +88,7 @@ export class ChartsService {
       let seriesList = this.generateSeriesList(shareElement)
       console.log(shareElement)
       console.log(seriesList)
-      console.log(this.getAllShareLabels(shareElement))
+
       let y= {
         title: {text: chartName},
         tooltip: {
@@ -98,17 +99,17 @@ export class ChartsService {
         },
         color:"#3b3b3b",
          legend:{
-           data:this.getAllShareLabels(shareElement)
+           data:this.getAllShareLabels(shareElement).map(d=>this.reportService.getLabelFor(namingDictioanry,chartElement.dataQuery.get[0][0],d))
          },
         grid:{left: '3%',
           right: '4%',
           bottom: '3%',
           containLabel: true},
         xAxis:{type:'value', show:true, animation:true},
-        yAxis:{type:'category', show:true, data:indices},
+        yAxis:{type:'category', show:true, data:indices.map(d=>this.reportService.getLabelFor(namingDictioanry,chartElement.dataQuery.by[0], d))},
         series:zip(Object.keys(seriesList), Object.values(seriesList)).map((d,index)=>({
           data:d[1],
-          name:d[0],
+          name:this.reportService.getLabelFor(namingDictioanry,chartElement.dataQuery.get[0][0], d[0]),
           type:this.presetsToTypes[chartElement.config.type],
           color:this.defaultColorPalette[index],
           stack: 'total',
@@ -269,8 +270,11 @@ export class ChartsService {
       console.log(shareElement)
       let categories =Object.keys(shareElement)
       let values = Object.values(shareElement)
+      let o = zip(categories,values).sort((a,b)=>a[1]-b[1])
+      categories=o.map(d=>d[0]).map(d=>this.reportService.getLabelFor(namingDictioanry, chartElement.dataQuery.get[0][0], d))
+      values=o.map(d=>d[1])
       return {
-        title: {text: chartName},
+        title: {text: chartName.length==0?chartElement.dataQuery.get[0][0]:chartName},
         tooltip: {
           trigger: 'axis',
           axisPointer: {            // Use axis to trigger tooltip
@@ -401,15 +405,16 @@ export class ChartsService {
           }
         },
         legend: {
-          data: this.getAllShareLabels(shareElement)
+          data: this.getAllShareLabels(shareElement).map(d=>this.reportService.getLabelFor(namingDictioanry, chartElement.dataQuery.get[0][0], d))
         },
 
         xAxis: [
           {
+            boundaryGap: false,
             type: 'category',
             axisTick: {show: false},
             //rok, stopień lub kierunek
-            data: xAxisLabels
+            data: xAxisLabels.map(d=>this.reportService.getLabelFor(namingDictioanry, chartElement.dataQuery.by[0], d))
           }
         ],
         yAxis: [
@@ -424,7 +429,7 @@ export class ChartsService {
         series:
           //każda seria to jeden słupek w tej samej pozycji ale w różnych grupach
          zip(this.getAllShareLabels(shareElement), barSeries).map(d=>({
-            name: d[0],
+            name: this.reportService.getLabelFor(namingDictioanry, chartElement.dataQuery.get[0][0], d[0]),
             type: 'bar',
             barGap: 0,
             label: labelOption,
