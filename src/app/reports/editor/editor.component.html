@@ -27,7 +27,7 @@
       </section>
         <section class="header-right slide-top-enter-animation" >
           <div style="display: flex;flex-direction: row">
-            <nz-tag *ngIf="reportDefinition.globalFilter" nzMode="closeable" (nzOnClose)="this.reportDefinition.globalFilter=null; refresh(); filterSelector.reset()">{{this.reportDefinition.globalFilter.question}} - {{this.reportDefinition.globalFilter.answer}}</nz-tag>
+            <nz-tag *ngIf="reportDefinition.globalFilter" nzMode="closeable" (nzOnClose)="this.reportDefinition.globalFilter=null; refresh(); filterSelector.reset()">{{this.reportDefinition.globalFilter.question}} - {{this.reportsService.getLabelFor(this.namingDictionary, this.reportDefinition.globalFilter.question,  this.reportDefinition.globalFilter.answer)}}</nz-tag>
           <button nz-button nz-dropdown [nzDropdownMenu]="menu4" nzTrigger="click">
             Filtruj ankietę przez odpowiedź
             <i nz-icon nzType="down"></i>

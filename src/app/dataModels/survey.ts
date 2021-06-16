@@ -11,6 +11,7 @@ export class SurveyResponsesAmountTimepoint{
 // base class for surveys and reports
 export class GenericObjectMeta{
   type: string;
+  authorName:string;
   name: string;
   userId:string
   backgroundImg:string;

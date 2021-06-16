@@ -56,15 +56,20 @@ export class ReportPreviewComponent implements OnInit {
       this.linkedSurveyId = d.surveyId; console.log(this.linkedSurveyId)
       this.downloadSurveyQuestions()
       this.reportsService.getReport(this.route.snapshot.paramMap.get('id')).subscribe(d=>this.reportDefinition=d)
-
-
-
     });
+    this.downloadNamingDictionary()
 
 
   }
+  surveyStructure;
+  namingDictionary;
   async downloadSurveyQuestions(){
     this.surveyQuestions = await this.surveysService.getQuestions(this.linkedSurveyId).toPromise();
+  }
+  async downloadNamingDictionary(){
+    console.log("downloading structure")
+    this.surveyStructure = await (this.reportsService.getSurveyStructure(this.reportId).toPromise())
+    this.namingDictionary =  (this.reportsService.getNamingDictionary(this.surveyStructure))
   }
   drop(event: CdkDragDrop<string[]>) {
     if (event.previousContainer === event.container) {

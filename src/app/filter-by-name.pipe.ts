@@ -1,5 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import {SurveyQueryNamingDictionary} from './dataModels/Query';
+import {SurveysService} from './surveys.service';
+import {ReportsService} from './reports.service';
 
 @Pipe({
   name: 'filterByName'
@@ -105,6 +107,23 @@ export class FilterStringPipe implements PipeTransform {
 
 }
 
+@Pipe({
+  name: 'filterDict'
+})
+export class FilterDictPipe implements PipeTransform {
+  constructor(private rs:ReportsService) {
+
+  }
+  transform(items: any[],filter: string, dict, question): any {
+    if (!items || !filter) {
+      return items;
+    }
+
+
+    return items.filter(item => this.rs.getLabelFor(dict, question, item).toLowerCase().includes(filter.toLowerCase()));
+  }
+
+}
 
 
 @Pipe({

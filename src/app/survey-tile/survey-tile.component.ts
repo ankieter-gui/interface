@@ -1,14 +1,16 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {DashboardModalsService} from '../dashboard-modals.service';
 import {SurveyMeta} from '../dataModels/survey';
+import {SurveysService} from '../surveys.service';
+import {UserService} from '../user.service';
 
 @Component({
   selector: 'app-survey-tile',
   template: `
-    <nz-card [nzBordered]="false"  [nzCover]="coverTemplate" [nzActions]="[actionSetting, actionEdit, actionEllipsis, actionCreateReport]">
+    <nz-card [nzBordered]="false"  [nzCover]="coverTemplate" [nzActions]="this.survey.userId==this.user.userId?[actionDelete,actionShare, actionCreateReport]:[actionCreateReport]">
       <!--      <nz-card-meta nzTitle="{{report.name}}" nzDescription=""></nz-card-meta>-->
       <div class="large-indicator">
-        <figure class="indicator-icon"><img src="../../assets/answers_count.png" style="width:70px;"></figure>
+        <figure class="indicator-icon"><img src="./assets/answers_count.png" style="width:70px;"></figure>
         <div class="indicator-right-side">
           <div class="indicator-right-side-top">
             {{survey.answersCount}}
@@ -19,7 +21,7 @@ import {SurveyMeta} from '../dataModels/survey';
         </div>
       </div>
       <div class="large-indicator">
-        <figure class="indicator-icon"><img src="../../assets/time_left.png" style="width:70px;"></figure>
+        <figure class="indicator-icon"><img src="./assets/time_left.png" style="width:70px;"></figure>
         <div class="indicator-right-side">
           <div class="indicator-right-side-top">
             {{daysAlready/(totalDays==0?daysAlready:totalDays) | percent}}
@@ -29,12 +31,15 @@ import {SurveyMeta} from '../dataModels/survey';
           </div>
         </div>
       </div>
-      <div class="progress">
-        <i nz-icon nzType="calendar"></i>Utworzono: {{survey.startedOn| date}}
-      </div>
-      <div class="progress">
-      <i nz-icon nzType="calendar"></i>Koniec: {{survey.endsOn| date}}
-      </div>
+      <div class="progress" style="margin:1em">
+                <i nz-icon nzType="user" style="margin-right: 1em"></i>Autor: {{survey.authorName}}
+              </div>
+<!--      <div class="progress">-->
+<!--        <i nz-icon nzType="calendar"></i>Utworzono: {{survey.startedOn| date}}-->
+<!--      </div>-->
+<!--      <div class="progress">-->
+<!--      <i nz-icon nzType="calendar"></i>Koniec: {{survey.endsOn| date}}-->
+<!--      </div>-->
 
 <!--      <div class="progress">-->
 <!--        <i nz-icon nzType="calendar"></i>Odpowiedzi: {{survey.}}-->
@@ -44,7 +49,7 @@ import {SurveyMeta} from '../dataModels/survey';
 
     </ng-template>
     <ng-template #coverTemplate>
-      <figure class="header-image" [style]="'background-image: url(http://localhost:5000/bkg/'+survey.backgroundImg+');'">
+      <figure class="header-image" [style]="'background-image: url(/bkg/'+survey.backgroundImg+');'">
 
       </figure>
       <span class="card-title">{{survey.name}}</span>
@@ -56,7 +61,13 @@ import {SurveyMeta} from '../dataModels/survey';
 
     </ng-template>
     <ng-template #actionSetting>
-      <i nz-icon [nzType]="'copy'" nz-tooltip [nzTooltipTitle]="'duplikuj'"></i>
+      <i nz-icon [nzType]="'copy'" nz-tooltip [nzTooltipTitle]="'Duplikuj'"></i>
+    </ng-template>
+    <ng-template #actionDelete>
+      <i nz-icon [nzType]="'delete'" nz-tooltip [nzTooltipTitle]="'Usuń'" (click)="deleteSurvey()"></i>
+    </ng-template>
+    <ng-template #actionShare>
+      <i nz-icon [nzType]="'share-alt'" nz-tooltip [nzTooltipTitle]="'Udostępnij'" (click)="this.dashboardModals.openShareSurveyDialog(this.survey)"></i>
     </ng-template>
     <ng-template #actionEdit>
       <i nz-icon nzType="edit" nz-tooltip [nzTooltipTitle]="'Edytuj ankietę'"></i>
@@ -82,7 +93,7 @@ import {SurveyMeta} from '../dataModels/survey';
       }
       .indicator-right-side-bottom{
         margin-top:0.7em;
-        font-family: Gilroy;
+        font-family: "Gilroy Light";
         font-style: normal;
         font-weight: 300;
         font-size: 14px;
@@ -94,7 +105,7 @@ import {SurveyMeta} from '../dataModels/survey';
       }
       .indicator-right-side-top{
 
-        font-family: Gilroy;
+        font-family:"Gilroy ExtraBold";
         font-style: normal;
         font-weight: 800;
         font-size: 28px;
@@ -168,6 +179,7 @@ import {SurveyMeta} from '../dataModels/survey';
   ]
 })
 export class SurveyTileComponent implements OnInit {
+
   @Input()
   survey:SurveyMeta;
   get description():String{
@@ -182,8 +194,13 @@ export class SurveyTileComponent implements OnInit {
   get daysAlready(){
     return  Math.round(Math.abs((+this.survey.startedOn) - (+new Date()))/8.64e7);
   }
-  constructor( public dashboardModals:DashboardModalsService) { }
-
+  constructor( public dashboardModals:DashboardModalsService, public surveyService:SurveysService, public user:UserService) { }
+  @Output()
+  reloadEmitter = new EventEmitter();
+  async deleteSurvey(){
+    await this.surveyService.deleteSurvey(this.survey.id).toPromise()
+    this.reloadEmitter.emit()
+  }
   ngOnInit(): void {
   }
 

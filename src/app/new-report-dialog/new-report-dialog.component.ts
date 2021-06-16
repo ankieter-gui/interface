@@ -22,7 +22,7 @@ import {SharingService} from '../sharing.service';
       <nz-collapse-panel [nzHeader]="'Lub użyj własnych danych z pliku .csv'">
         CSV:
         <ngx-file-drop *ngIf="!isFileBeingUploaded" dropZoneLabel="Upuść plik tutaj" (onFileDrop)="dropped($event)"
-                       (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)">
+                       (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)" accept=".csv">
           <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
             <span style="display:block;" *ngIf="files.length>0">Wybrano: {{files[0].relativePath}}</span>
             <button nz-button (click)="openFileSelector()">{{files.length>0?"Zmień":"Wybierz"}}</button>
@@ -30,7 +30,7 @@ import {SharingService} from '../sharing.service';
         </ngx-file-drop>
         XML:
         <ngx-file-drop *ngIf="!isFileBeingUploaded" dropZoneLabel="Upuść plik tutaj" (onFileDrop)="droppedXML($event)"
-                       (onFileOver)="fileOverXML($event)" (onFileLeave)="fileLeaveXML($event)">
+                       (onFileOver)="fileOverXML($event)" (onFileLeave)="fileLeaveXML($event)" accept=".xml">
           <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
             <span style="display:block;" *ngIf="filesXML.length>0">Wybrano: {{filesXML[0].relativePath}}</span>
             <button nz-button (click)="openFileSelector()">{{filesXML.length>0?"Zmień":"Wybierz"}}</button>

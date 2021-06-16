@@ -38,7 +38,7 @@ import {
   FilterByEquality,
   FilterByFieldPipe, FilterByInequality,
   FilterByNamePipe,
-  FilterByTypePipe, FilterStringPipe,
+  FilterByTypePipe, FilterDictPipe, FilterStringPipe,
   NameFilter,
   PolskieNazwyFilter,
   RemoveHtmlFilter
@@ -84,6 +84,8 @@ import { AddNewUserComponent } from './add-new-user/add-new-user.component';
 import { LoginPanelComponent } from './login-panel/login-panel.component';
 import { FiltersSelectorComponent } from './filters-selector/filters-selector.component';
 import { LineChartCustomDataPickerComponent } from './line-chart-custom-data-picker/line-chart-custom-data-picker.component';
+import { NewSurveyDialogComponent } from './new-survey-dialog/new-survey-dialog.component';
+import { AccountNotExistsComponent } from './account-not-exists/account-not-exists.component';
 
 
 registerLocaleData(fr);
@@ -156,7 +158,7 @@ export let commonNZImports = [
     UserIndicatorComponent,
     ReportPreviewComponent,
     ShareReportComponent,
-
+    FilterDictPipe,
     SurveysEditorComponent,
 
     LinkActivatorComponent,
@@ -167,7 +169,11 @@ export let commonNZImports = [
 
     FiltersSelectorComponent,
 
-    LineChartCustomDataPickerComponent
+    LineChartCustomDataPickerComponent,
+
+    NewSurveyDialogComponent,
+
+    AccountNotExistsComponent
   ],
   imports: [
     ...commonNZImports,

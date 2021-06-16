@@ -42,7 +42,9 @@ export class SurveysService {
     console.log("sending....")
     return this.http.post(`${BACKEND_URL}/survey/${surveyId}/upload`, formData, {withCredentials:true})
   }
-
+  deleteSurvey(surveyId){
+    return this.http.delete(`${BACKEND_URL}/survey/${surveyId}`,  {withCredentials:true})
+  }
   createSurvey(name, meta=null){
     return this.http.post(`${BACKEND_URL}/survey/new`, {name:name, meta:meta!=null?meta:{}}, {withCredentials:true})
   }

@@ -84,9 +84,6 @@ export class DashboardComponent implements OnInit {
   }
   reload(){
     this.dashboardService.getDashobardData().subscribe(d=>{ this.dashboardData = d; console.log(this.dashboardData)});
-
-
-
   }
 
 

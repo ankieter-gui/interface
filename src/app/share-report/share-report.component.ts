@@ -15,9 +15,9 @@ import {FRONTEND_URL} from '../Configuration';
 <!--<nz-divider nzText="Indywidualni użytkownicy"></nz-divider>-->
 
 
-        <input nz-input placeholder="Wyszukaj...">
+        <input nz-input placeholder="Wyszukaj..." [(ngModel)]="usersSearchString">
 
-        <nz-table #basicTable [nzData]="this.sharingService.users()" nzShowPagination [nzPageSize]="4">
+        <nz-table #basicTable [nzData]="this.sharingService.users() | filterByField: 'casLogin': usersSearchString " nzShowPagination [nzPageSize]="4">
           <thead>
           <tr>
             <th>Nazwa</th>
@@ -46,9 +46,9 @@ import {FRONTEND_URL} from '../Configuration';
 <!--<nz-divider nzText="Grupy"></nz-divider>-->
 
 
-    <input nz-input placeholder="Wyszukaj...">
+    <input nz-input placeholder="Wyszukaj..." [(ngModel)]="groupSearchString">
 
-    <nz-table #basicTable2 [nzData]="this.sharingService.allGroupNames" nzShowPagination [nzPageSize]="4">
+    <nz-table #basicTable2 [nzData]="this.sharingService.allGroupNames | filterString: groupSearchString" nzShowPagination [nzPageSize]="4">
       <thead>
       <tr>
         <th>Nazwa</th>
@@ -104,21 +104,34 @@ import {FRONTEND_URL} from '../Configuration';
 })
 export class ShareReportComponent implements OnInit {
   @Input()
+  type
+  @Input()
   report:ReportMeta
   selected=[]
   selectedGroups=[]
+  usersSearchString;
+  groupSearchString;
   shareLinkRead;
   shareLinkEdit;
   constructor(public sharingService:SharingService) { }
 
   ngOnInit(): void {
     setTimeout(()=>{  console.log(this.sharingService.allGroupNames)}, 1000)
+    console.log(this.type)
+    if (this.type=="report"){
     this.sharingService.getReportSharingLink(this.report.id, 'r').subscribe(d=>{
       this.shareLinkRead = `${FRONTEND_URL}/shared/${d['link']}`
     })
     this.sharingService.getReportSharingLink(this.report.id, 'w').subscribe(d=>{
       this.shareLinkEdit = `${FRONTEND_URL}/shared/${d['link']}`
-    })
+    })}
+    else if (this.type=="survey"){
+      this.sharingService.getSurveySharingLink(this.report.id, 'r').subscribe(d=>{
+        this.shareLinkRead = `${FRONTEND_URL}/shared/${d['link']}`
+      })
+      this.sharingService.getSurveySharingLink(this.report.id, 'w').subscribe(d=>{
+        this.shareLinkEdit = `${FRONTEND_URL}/shared/${d['link']}`
+      })}
 
   }
 

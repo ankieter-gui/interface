@@ -114,41 +114,41 @@ import {Subject} from 'rxjs';
                         <figure class="indicator-card indicator-card-velvet preset" nz-tooltip="Wykres przedstawiający procent odpowiedzi tak/nie/nie mam zdania w podziale na wydziały lub etapy studiów" (click)="pickPreset('groupedPercentAndData');">
                           <div class="indicator-card-inner">
                             <div class="indicator-card-header">Zgrupowany procent + dane</div>
-                            <div class="indicator-card-content"><img src="/assets/preset1.png" style="width: 100%"></div>
+                            <div class="indicator-card-content"><img src="./assets/preset1.png" style="width: 100%"></div>
                           </div>
                         </figure>
                         <div class="spacer"></div>
                         <figure class="indicator-card indicator-card-velvet preset" nz-tooltip="Użyj tego wykresu aby przedstawić wyniki z pytań wielokrotnego wyboru. Na przykład: dlaczego poleciłbyś UAM" (click)="pickPreset('multipleChoice');">
                           <div class="indicator-card-inner">
                             <div class="indicator-card-header">Wielokrotny wybór</div>
-                            <div class="indicator-card-content"><img src="/assets/preset2.png" style="width: 100%"></div>
+                            <div class="indicator-card-content"><img src="./assets/preset2.png" style="width: 100%"></div>
                           </div>
                         </figure>
                         <div class="spacer"></div>
 <!--                        <figure class="indicator-card indicator-card-velvet preset"  nz-tooltip="Użyj tego wykresu aby przedstawić wyniki z pytań wielokrotnego wyboru wraz z danymi statystycznymi jak np. odchylenie. Na przykład: dlaczego poleciłbyś UAM">-->
 <!--                          <div class="indicator-card-inner">-->
 <!--                            <div class="indicator-card-header">Wielokrotny wybór + dane</div>-->
-<!--                            <div class="indicator-card-content"><img src="/assets/preset3.png" style="width: 100%"></div>-->
+<!--                            <div class="indicator-card-content"><img src="./assets/preset3.png" style="width: 100%"></div>-->
 <!--                          </div>-->
 <!--                        </figure>-->
 <!--                        <div class="spacer"></div>-->
                         <figure class="indicator-card indicator-card-velvet preset" [nz-tooltip]="'Kiedy chcesz przedstawić dane z różnych wydziałów obok siebie. Przydatne przy prezentowaniu średniej ocen'" (click)="pickPreset('multipleBars')">
                           <div class="indicator-card-inner">
                             <div class="indicator-card-header">Wiele słupków</div>
-                            <div class="indicator-card-content"><img src="/assets/preset4.png" style="width: 100%"></div>
+                            <div class="indicator-card-content"><img src="./assets/preset4.png" style="width: 100%"></div>
                           </div>
                         </figure>
                         <div class="spacer"></div>
                         <figure class="indicator-card indicator-card-velvet preset" nz-tooltip="Użyj tego wykresu do prezentacji frekwencji" (click)="pickPreset('groupedBars');">
                           <div class="indicator-card-inner">
                             <div class="indicator-card-header">Słupkowy zgrupowany</div>
-                            <div class="indicator-card-content"><img src="/assets/wydzialy.png" style="width: 100%"></div>
+                            <div class="indicator-card-content"><img src="./assets/wydzialy.png" style="width: 100%"></div>
                           </div>
                         </figure>
                         <figure class="indicator-card indicator-card-velvet preset" nz-tooltip="Prezentacja frekwencji na przestrzeni lat" (click)="pickPreset('linearCustomData');">
                           <div class="indicator-card-inner">
-                            <div class="indicator-card-header">Linowy z własnymi danymi</div>
-                            <div class="indicator-card-content"><img src="/assets/wydzialy.png" style="width: 100%"></div>
+                            <div class="indicator-card-header">Liniowy z własnymi danymi</div>
+                            <div class="indicator-card-content"><img src="./assets/ocena_lata.png" style="width: 100%"></div>
                           </div>
                         </figure>
                       </section>

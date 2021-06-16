@@ -29,7 +29,7 @@ import {ReportsService} from '../reports.service';
     </nz-tab>
       <nz-tab nzTitle="Odpowiedzi">
         <input nz-input [(ngModel)]="answerSearchString" placeholder="Szukaj..." style="margin-bottom: 1em">
-        <nz-table #answersTable [nzData]="this.answers | filterString: answerSearchString" *ngIf="this.selectedQuestionName">
+        <nz-table #answersTable [nzData]="this.answers | filterDict: answerSearchString: namingDictionary: this.selectedQuestionName" *ngIf="this.selectedQuestionName">
           <thead>
           <tr>
             <th>Zaznaczono</th>
@@ -78,7 +78,7 @@ export class FiltersSelectorComponent implements OnInit {
   @Input()
   structure
   index=0;
-
+  reverseAnswers
   get questionNames(){
     return this.allQuestions?Object.keys(this.allQuestions):[]
   }
@@ -90,9 +90,14 @@ export class FiltersSelectorComponent implements OnInit {
     this.index=1
   }
   async downloadAnswers(){
-    this.answers = Object.keys(this.namingDictionary[this.selectedQuestionName])
+    this.answers = Object.keys(this.namingDictionary[this.selectedQuestionName])//.map(d=>this.reportService.getLabelFor(this.namingDictionary, this.selectedQuestionName,d))
+    //flips the obejct
+    // @ts-ignore
+    // Object.assign(this.reverseAnswers, ...Object.entries(this.namingDictionary[this.selectedQuestionName]).map(([a,b]) => ({ [b]: a })))
+
   }
   selectAnswer(entry){
+
     this.selectedAnswer=this.selectedAnswer!=entry?entry:null
     this.globalFilter = {question: this.selectedQuestionName, answer:this.selectedAnswer}
     this.globalFilterChange.emit(this.globalFilter)

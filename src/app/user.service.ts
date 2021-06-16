@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {BACKEND_URL, LOGIN_SERVICE_URL} from './Configuration';
 import {HttpClient} from '@angular/common/http';
+import {Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -14,15 +15,21 @@ export class UserService {
   get username():string{
     return this._username
   }
-  constructor(private http:HttpClient, private window:Window) {
+  constructor(private http:HttpClient, private window:Window, private router:Router) {
 
   }
   userResponse;
   async downloadUserData(){
-    let result = await (this.http.get<{logged:boolean, id:string, username:string}>(`${BACKEND_URL}/user`,{withCredentials:true}).toPromise())
-    if (!result.logged) this.window.location.href = LOGIN_SERVICE_URL
+    let result = await (this.http.get<{logged:boolean, id:string, casLogin:string, error?:string}>(`${BACKEND_URL}/user`,{withCredentials:true}).toPromise())
+    if (!result.logged) {
+      if (result.error && result.error.includes("could not obtain user data") ){
+          this.router.navigate(['/unauthorized'])
+      }else {
+        this.window.location.href = LOGIN_SERVICE_URL
+      }
+    }
     this._userId = result.id
-    this._username =  result.username
+    this._username =  result.casLogin
 
     this.userResponse=result
     console.log(this.userResponse)
@@ -60,5 +67,7 @@ export class UserService {
     //return unescape(dc.substring(begin + prefix.length, end));
     return decodeURI(dc.substring(begin + prefix.length, end));
   }
-
+  logout(){
+    this.window.location.href = `${BACKEND_URL}/logout`
+  }
 }

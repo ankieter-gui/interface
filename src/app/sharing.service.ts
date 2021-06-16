@@ -76,6 +76,13 @@ export class SharingService {
     return this.http.post(`${BACKEND_URL}/report/${reportId}/share`, {"r":groupsRead.map(g=>this.allGroups[g].map(d=>d.id)).flat(), "w":groupsWrite.map(g=>this.allGroups[g].map(d=>d.id)).flat(), "n":groupsNone.map(g=>this.allGroups[g].map(d=>d.id)).flat()}, {withCredentials:true})
 
   }
+  shareSurveyToUsers(surveyId,usersRead=[], usersWrite=[], usersNone=[]){
+    return this.http.post(`${BACKEND_URL}/report/${surveyId}/share`, {"r":usersRead, "w":usersWrite, "n":usersNone}, {withCredentials:true})
+  }
+  shareSurveyToGroups(surveyId, groupsRead:string[]=[],groupsWrite:string[]=[], groupsNone:string[]=[] ){
+    return this.http.post(`${BACKEND_URL}/report/${surveyId}/share`, {"r":groupsRead.map(g=>this.allGroups[g].map(d=>d.id)).flat(), "w":groupsWrite.map(g=>this.allGroups[g].map(d=>d.id)).flat(), "n":groupsNone.map(g=>this.allGroups[g].map(d=>d.id)).flat()}, {withCredentials:true})
+
+  }
   updateGroup(groupName, userIds){
     const body = {}
     body[groupName] = userIds
@@ -89,13 +96,16 @@ export class SharingService {
   getReportSharingLink(reportId, permission:"r"|"w"){
     return this.http.post(`${BACKEND_URL}/report/${reportId}/link`, {reportId:reportId, permission:permission}, {withCredentials:true})
   }
+  getSurveySharingLink(surveyId, permission:"r"|"w"){
+    return this.http.post(`${BACKEND_URL}/survey/${surveyId}/link`, {surveyId:surveyId, permission:permission}, {withCredentials:true})
+  }
   activateLink(hash){
     return this.http.get(`${BACKEND_URL}/link/${hash}`, {withCredentials:true})
   }
 
 
-  createNewUser(casLogin,role){
-    return this.http.post(`${BACKEND_URL}/user/new`, {casLogin:casLogin, role:role}, {withCredentials:true})
+  createNewUser(casLogin,role,pesel=null){
+    return this.http.post(`${BACKEND_URL}/user/new`, {casLogin:casLogin, role:role, pesel:pesel}, {withCredentials:true})
   }
 
 }

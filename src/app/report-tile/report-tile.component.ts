@@ -9,24 +9,10 @@ import {UserService} from '../user.service';
 @Component({
   selector: 'app-report-tile',
   template: `
-    <nz-card [nzBordered]="false"  [nzCover]="coverTemplate" [nzActions]="this.report.userId==this.user.userId?[actionSetting, actionEdit, actionEllipsis, actionSee,actionDownload, this.actionDelete]:[actionSetting, actionEdit, actionEllipsis, actionSee,actionDownload]">
+    <nz-card [nzBordered]="false"  [nzCover]="coverTemplate" [nzActions]="this.report.userId==this.user.userId?[actionSetting, actionEdit, actionEllipsis, actionSee,actionDownload, this.actionDelete]:[actionSetting, actionEdit, actionSee,actionDownload]">
 <!--      <nz-card-meta nzTitle="{{report.name}}" nzDescription=""></nz-card-meta>-->
-
-      <div class="progress">
-        <i nz-icon nzType="calendar"></i> {{report.createdOn | date}}
-
-      </div>
-    </nz-card>
-    <ng-template #extra>
-
-    </ng-template>
-    <ng-template #coverTemplate>
-<figure class="header-image" [style]="'background-image: url(http://localhost:5000/bkg/'+report.backgroundImg+');'">
-
-</figure>
-      <span class="card-title">{{report.name}}</span>
       <div class="large-indicator">
-        <figure class="indicator-icon"><img src="../../assets/answers_count.png" style="width:70px;"></figure>
+        <figure class="indicator-icon"><img src="./assets/answers_count.png" style="width:70px;"></figure>
         <div class="indicator-right-side">
           <div class="indicator-right-side-top small-font">
             {{this.report.connectedSurvey.name}}
@@ -36,12 +22,37 @@ import {UserService} from '../user.service';
           </div>
         </div>
       </div>
+      <div class="large-indicator">
+        <figure class="indicator-icon"><img src="./assets/answers_count.png" style="width:70px;"></figure>
+        <div class="indicator-right-side">
+          <div class="indicator-right-side-top small-font">
+            {{sharedToCount}}
+          </div>
+          <div class="indicator-right-side-bottom">
+            Użytkownicy z dostępem
+          </div>
+        </div>
+      </div>
+      <div class="progress" style="margin:1em">
+        <i nz-icon nzType="user" style="margin-right: 1em"></i>Autor: {{report.authorName}}
+      </div>
+    </nz-card>
+    <ng-template #extra>
+
+    </ng-template>
+    <ng-template #coverTemplate>
+<figure class="header-image" [style]="'background-image: url(/bkg/'+report.backgroundImg+');'">
+
+</figure>
+      <span class="card-title">{{report.name}}</span>
+
 
 <!--      <div class="units">-->
 <!--        <nz-tag [nzColor]="'magenta'" class="connected-survey">{{report.connectedSurvey.name}}</nz-tag>-->
 <!--      </div>-->
 
     </ng-template>
+
     <ng-template #actionSetting>
       <i nz-icon [nzType]="'copy'" nz-tooltip [nzTooltipTitle]="'Duplikuj'" (click)="copy()"></i>
     </ng-template>
@@ -75,7 +86,7 @@ import {UserService} from '../user.service';
       }
       .indicator-right-side-bottom{
         margin-top:0.7em;
-        font-family: Gilroy;
+        font-family: "Gilroy Light";
         font-style: normal;
         font-weight: 300;
         font-size: 14px;
@@ -87,7 +98,7 @@ import {UserService} from '../user.service';
       }
       .indicator-right-side-top{
 
-        font-family: Gilroy;
+        font-family: "Gilroy ExtraBold";
         font-style: normal;
         font-weight: 800;
         font-size: 28px;
@@ -161,7 +172,9 @@ export class ReportTileComponent implements OnInit {
   @Output()
   reloadEmitter = new EventEmitter();
   constructor(private reportService:ReportsService, private router:Router, public modals:DashboardModalsService, public user:UserService) { }
-
+  get sharedToCount(){
+    return Object.keys(this.report.sharedTo).length
+  }
   ngOnInit(): void {
   }
   async copy(){
