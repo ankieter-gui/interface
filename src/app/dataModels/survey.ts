@@ -13,6 +13,7 @@ export class GenericObjectMeta{
   type: string;
   authorName:string;
   name: string;
+  authorId;
   userId:string
   backgroundImg:string;
   createdOn: number; // linux timestamp

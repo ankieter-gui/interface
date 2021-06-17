@@ -104,7 +104,7 @@ export class SharingService {
   }
 
 
-  createNewUser(casLogin,role,pesel=null){
+  createNewUser(casLogin,role,pesel=""){
     return this.http.post(`${BACKEND_URL}/user/new`, {casLogin:casLogin, role:role, pesel:pesel}, {withCredentials:true})
   }
 

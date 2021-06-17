@@ -70,4 +70,7 @@ export class UserService {
   logout(){
     this.window.location.href = `${BACKEND_URL}/logout`
   }
+ async removeUser(id){
+    await (this.http.delete(`${BACKEND_URL}/user/${id}`, {withCredentials:true}).toPromise())
+  }
 }

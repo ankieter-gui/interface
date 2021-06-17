@@ -89,5 +89,7 @@ export class ReportPreviewComponent implements OnInit {
    this.window.print()
     }
 
+  forceUpdate(){
 
+  }
 }

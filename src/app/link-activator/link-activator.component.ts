@@ -19,10 +19,13 @@ export class LinkActivatorComponent implements OnInit {
        if (d.permission == "r") this.router.navigate(['/reports/', d.id])
      }
      else if (d.object == "survey"){
-
+       this.router.navigate(['/'])
      }
 
-   }});
+   }else{
+     this.router.navigate(['/'])
+   }
+   });
   }
 
 }

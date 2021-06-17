@@ -59,7 +59,7 @@ import {OtherUser} from '../dataModels/UserGroup';
          </thead>
          <tbody>
          <tr *ngFor="let data of basicTable.data">
-           <td>{{data.casLogin}}</td>
+           <td>{{data.casLogin}} <i nz-icon nzType="delete" style="margin-left:1em" (click)="remove(data.id)"></i> </td>
            <!--            <td>{{data.age}}</td>-->
            <!--            <td>{{data.address}}</td>-->
            <td>
@@ -119,5 +119,9 @@ export class GroupsEditorComponent implements OnInit {
       await this.sharing.removeUserFromGroup(groupName,[user.id]).toPromise()
     await this.sharing.downloadAllGroups()
   }
+async remove(id){
+  await this.user.removeUser(id);
+  setTimeout(async()=>{ await this.sharing.downloadAllGroups()}, 100)
 
+}
 }

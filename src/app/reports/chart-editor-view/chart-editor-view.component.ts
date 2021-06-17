@@ -520,6 +520,7 @@ globalFilter:GlobalFilter
   constructor(private surveyService:SurveysService, private chartsService:ChartsService, public reportsService:ReportsService) { }
 
   ngOnInit(): void {
+  if (this.forceUpdate)
     this.forceUpdate.subscribe(async (v) => {
       await this.refreshChart(false)
     });

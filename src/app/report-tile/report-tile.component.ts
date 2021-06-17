@@ -9,7 +9,7 @@ import {UserService} from '../user.service';
 @Component({
   selector: 'app-report-tile',
   template: `
-    <nz-card [nzBordered]="false"  [nzCover]="coverTemplate" [nzActions]="this.report.userId==this.user.userId?[actionSetting, actionEdit, actionEllipsis, actionSee,actionDownload, this.actionDelete]:[actionSetting, actionEdit, actionSee,actionDownload]">
+    <nz-card [nzBordered]="false"  [nzCover]="coverTemplate" [nzActions]="this.report.authorId==this.user.userId?[actionSetting, actionEdit, actionEllipsis, actionSee,actionDownload, this.actionDelete]:[actionSetting, actionEdit, actionSee,actionDownload]">
 <!--      <nz-card-meta nzTitle="{{report.name}}" nzDescription=""></nz-card-meta>-->
       <div class="large-indicator">
         <figure class="indicator-icon"><img src="./assets/answers_count.png" style="width:70px;"></figure>
