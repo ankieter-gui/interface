@@ -98,7 +98,8 @@ import {Subject} from 'rxjs';
         <figure class="indicator-card indicator-card-purple">
           <div class="indicator-card-inner">
             <div class="indicator-card-header">Filtry</div>
-            <div class="indicator-card-content">Brak</div>
+            <div class="indicator-card-content" *ngIf="chartData.config.filter">{{chartData.config.filter.question}} = {{chartData.config.filter.answer}}</div>
+            <div class="indicator-card-content" *ngIf="!chartData.config.filter">Brak</div>
           </div>
         </figure>
 
