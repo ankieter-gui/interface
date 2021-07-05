@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {BACKEND_URL, LOGIN_SERVICE_URL} from './Configuration';
 import {HttpClient} from '@angular/common/http';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,7 @@ export class UserService {
   get username():string{
     return this._username
   }
-  constructor(private http:HttpClient, private window:Window, private router:Router) {
+  constructor(private http:HttpClient, private window:Window, private router:Router, private route:ActivatedRoute) {
 
   }
   userResponse;
@@ -25,7 +25,11 @@ export class UserService {
       if (result.error && result.error.includes("could not obtain user data") ){
           this.router.navigate(['/unauthorized'])
       }else {
-        this.window.location.href = LOGIN_SERVICE_URL
+        //TODO: could this be done better?
+        if (!(this.router.url.includes("reports/")||this.router.url.includes("share"))){
+          this.window.location.href = LOGIN_SERVICE_URL
+        }
+
       }
     }
     this._userId = result.id

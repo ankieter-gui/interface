@@ -1,5 +1,9 @@
-<router-outlet *ngIf="cached.user.userResponse && cached.user.userResponse.role!='g'"></router-outlet>
-<nz-spin nzSize="large" style="margin-top: 40vh" *ngIf="!cached.user.userResponse"></nz-spin>
-<div *ngIf="cached.user.userResponse && cached.user.userResponse.role=='g'">
-  <app-login-panel></app-login-panel>
-</div>
+
+  <router-outlet *ngIf="true || (cached.user.userResponse && cached.user.userResponse.role!='g')"></router-outlet>
+  <nz-spin nzSize="large" style="margin-top: 40vh" *ngIf="!cached.user.userResponse"></nz-spin>
+<!--  <div *ngIf="cached.user.userResponse && cached.user.userResponse.role=='g'">-->
+<!--    <app-login-panel></app-login-panel>-->
+<!--  </div>-->
+
+
+

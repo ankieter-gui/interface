@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {CachedDataDownloadSynchronizerService} from './cached-data-download-synchronizer.service';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -7,6 +8,7 @@ import {CachedDataDownloadSynchronizerService} from './cached-data-download-sync
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  constructor(public cached:CachedDataDownloadSynchronizerService) {
+  constructor(public cached:CachedDataDownloadSynchronizerService, public route:ActivatedRoute) {
   }
+
 }
