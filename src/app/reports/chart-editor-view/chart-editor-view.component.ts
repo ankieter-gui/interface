@@ -224,6 +224,7 @@ import {Subject} from 'rxjs';
                       <app-line-chart-custom-data-picker (saveEmitter)="refreshChart()" [reportId]="reportId" [chart]="this.chartData"></app-line-chart-custom-data-picker>
                     </nz-tab>
                     <nz-tab nzTitle="Filtry" *ngIf="!showLinearPicker">
+                      <app-filters-selector [namingDictionary]="namingDictionary" [allQuestions]="namingDictionary" (globalFilterChange)="refreshFilter($event)" [(globalFilter)]="this.chartData.config.filter"  [reportId]="reportId"></app-filters-selector>
 
                     </nz-tab>
 
@@ -480,6 +481,10 @@ globalFilter:GlobalFilter
   this.chartData.dataQuery.by.splice(i,1)
   this.refreshChart()
   }
+  refreshFilter(filter){
+  this.chartData.config.filter=filter
+  this.refreshChart(true);
+  }
   removeGet(i){
     this.chartData.dataQuery.get[0].splice(i,1)
     this.chartData.dataQuery.as.splice(i,1)
@@ -578,7 +583,7 @@ saveAsPng(){
 }
   async downloadQueryResponse(){
 
-      let _dataResponse: any = await (this.reportsService.getData(this.reportId, this.advancedQuery?JSON.parse(this.advancedQuery):ComplimentQuery(this.chartData.dataQuery, this.globalFilter)).toPromise())
+      let _dataResponse: any = await (this.reportsService.getData(this.reportId, this.advancedQuery?JSON.parse(this.advancedQuery):ComplimentQuery(this.chartData.dataQuery, this.globalFilter, this.chartData.config.filter)).toPromise())
       console.log(_dataResponse);
       if ("error" in _dataResponse) {
 

@@ -1,5 +1,6 @@
 import {EChartsOption} from 'echarts';
 import {SurveyQuery} from './Query';
+import {GlobalFilter} from './ReportDefinition';
 
 export class ReportElement{
   type:"text"|"chart";
@@ -25,6 +26,7 @@ export class ChartConfig{
   orientation?:"horizontal"|"vertical"="horizontal";
   extraEChartLiteralObject?:EChartsOption=null;
   tableDefinition:Table={series:[]};
+  filter:GlobalFilter;
 }
 export class ChartReportElement{
   name:string;

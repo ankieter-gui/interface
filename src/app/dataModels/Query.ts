@@ -12,7 +12,7 @@ export class SurveyQuery{
     this.filter=[]
   }
 }
-export let ComplimentQuery = (query:SurveyQuery, globalFilter:GlobalFilter=null):SurveyQuery=>{
+export let ComplimentQuery = (query:SurveyQuery, globalFilter:GlobalFilter=null, localFilter:GlobalFilter=null):SurveyQuery=>{
 
   let q2= new SurveyQuery()
   q2=JSON.parse(JSON.stringify(query))
@@ -23,6 +23,10 @@ export let ComplimentQuery = (query:SurveyQuery, globalFilter:GlobalFilter=null)
   if (globalFilter){
     if (!q2.filter) q2.filter=[]
     q2.filter.push([globalFilter.question, '=', globalFilter.answer])
+  }
+  if (localFilter){
+    if (!q2.filter) q2.filter=[]
+    q2.filter.push([localFilter.question, '=', localFilter.answer])
   }
   if (q2.filter) q2['if'] = q2.filter
 

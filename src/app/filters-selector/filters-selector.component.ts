@@ -28,6 +28,7 @@ import {ReportsService} from '../reports.service';
     </nz-table>
     </nz-tab>
       <nz-tab nzTitle="Odpowiedzi">
+        <nz-tag style="margin:1em;">{{this.selectedQuestionName}}</nz-tag>
         <input nz-input [(ngModel)]="answerSearchString" placeholder="Szukaj..." style="margin-bottom: 1em">
         <nz-table #answersTable [nzData]="this.answers | filterDict: answerSearchString: namingDictionary: this.selectedQuestionName" *ngIf="this.selectedQuestionName">
           <thead>
@@ -86,8 +87,13 @@ export class FiltersSelectorComponent implements OnInit {
   async selectQuestion(entry){
     this.selectedQuestionName=this.selectedQuestionName!=entry?entry:null
     this.selectedAnswer=null
-    await this.downloadAnswers()
-    this.index=1
+    if(this.selectedQuestionName) {
+      await this.downloadAnswers()
+      this.index = 1
+    }else{
+      this.globalFilter=null;
+      this.globalFilterChange.emit(this.globalFilter)
+    }
   }
   async downloadAnswers(){
     this.answers = Object.keys(this.namingDictionary[this.selectedQuestionName])//.map(d=>this.reportService.getLabelFor(this.namingDictionary, this.selectedQuestionName,d))
@@ -103,7 +109,11 @@ export class FiltersSelectorComponent implements OnInit {
     this.globalFilterChange.emit(this.globalFilter)
   }
   ngOnInit(): void {
-
+    if (this.globalFilter){
+      this.selectedQuestionName=this.globalFilter.question
+      this.selectedAnswer=this.globalFilter.answer
+      this.downloadAnswers()
+    }
   }
   reset(){
     this.selectedAnswer=null
