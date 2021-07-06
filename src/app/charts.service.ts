@@ -266,8 +266,19 @@ export class ChartsService {
       }
     }
     else if (chartElement.config.type == "groupedBars"){
+      let zip2 = (a,b)=> {
+        let x = []
+        for (let i =0; i<a.length; i++){
+
+          console.log(a[i], b[i])
+
+          x[i] = [a[i], b[i]]
+
+        }
 
 
+        return x
+      }
       let shareElement=this.transformDataIntoPairs(series).filter(d=>d[0].includes("share"))[0][1][0]
       console.log(shareElement)
 
@@ -275,15 +286,23 @@ export class ChartsService {
       let values = Object.values(shareElement)
       console.log(categories)
       console.log(values)
-      let o = zip(categories,values).sort((a,b)=>a[1]-b[1])
-
+      console.log("o before")
+      console.log(categories,values)
+      let o = zip2(categories,values).sort((a,b)=>a[1]-b[1])
+     // o=o.filter(i=>i)
+      console.log("o after sort")
+      console.log(JSON.stringify(o))
       categories=o.map(d=>d[0]).map(d=>this.reportService.getLabelFor(namingDictioanry, chartElement.dataQuery.get[0][0], d))
-
+      let idToCategories_tmp = zip(o.map(d=>d[0]), categories)
+      let idToCategories={}
+      for (let h of idToCategories_tmp){
+        idToCategories[h[1]] = h[0]
+      }
       values=o.map(d=>d[1])
 
       let wereAllValuesFilled=false;
       let wasAnyValueFilled=false;
-
+      console.log(JSON.stringify(o))
       if(chartElement.config.handCodedData){
         //if any value was filled
         console.log("handcoded data detected")
@@ -300,10 +319,12 @@ export class ChartsService {
       }
 console.log(wereAllValuesFilled)
 
-
+      let percentShares={}
+      console.log("this is o")
+      console.log(JSON.stringify(o))
       if (wereAllValuesFilled) {
-        console.log("this is o")
-        console.log(JSON.stringify(o))
+
+
         for (let j of o) {
           console.log("this is j")
           if (!j) continue //IDK what happens here
@@ -314,9 +335,10 @@ console.log(wereAllValuesFilled)
           console.log(chartElement.config.handCodedData)
           console.log(category)
 
-            let share = Math.round(value / Number(chartElement.config.handCodedData.filter(d=>d.label===category)[0].value))
-          o[category] = share
+            let share = Math.round(value / Number(chartElement.config.handCodedData.filter(d=>d.label===category)[0].value) * 100)
+          percentShares[category] = share
         }
+
       }
 
       return {
@@ -347,7 +369,7 @@ console.log(wereAllValuesFilled)
           label: {
             show: true,
             //TODO: co z tym?
-            formatter: wereAllValuesFilled?(options)=>`${options.value}% (N={c})`:"{c}"
+            formatter: wereAllValuesFilled?(options)=>`${percentShares[idToCategories[options.name]]}% (N=${options.value})`:"{c}"
           },
           emphasis: {
             focus: 'series'
