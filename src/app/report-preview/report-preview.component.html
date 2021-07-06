@@ -13,7 +13,7 @@
           <div class="custom-placeholder"></div>
 
 
-          <div *ngFor="let element of reportDefinition.elements" cdkDrag class="element-box" style="position:relative;">
+          <div *ngFor="let element of reportDefinition.elements" class="element-box" style="position:relative;">
 
             <div [ngSwitch]="element.type" style="position:relative;">
               <app-text-editor-view [isPreview]="true" *ngSwitchCase="'text'" [(text)]="element.content.text" (focusEvent)="save()" ></app-text-editor-view>

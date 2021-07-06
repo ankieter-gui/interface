@@ -24,7 +24,7 @@ export let ComplimentQuery = (query:SurveyQuery, globalFilter:GlobalFilter=null,
     if (!q2.filter) q2.filter=[]
     q2.filter.push([globalFilter.question, '=', globalFilter.answer])
   }
-  if (localFilter){
+  if (localFilter && localFilter.question && localFilter.answer){
     if (!q2.filter) q2.filter=[]
     q2.filter.push([localFilter.question, '=', localFilter.answer])
   }

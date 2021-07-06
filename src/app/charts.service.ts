@@ -90,7 +90,7 @@ export class ChartsService {
       console.log(seriesList)
 
       let y= {
-        title: {text: chartName},
+        title: {text: chartName,textStyle:{overflow:'break'}},
         tooltip: {
           trigger: 'axis',
           axisPointer: {            // Use axis to trigger tooltip
@@ -228,7 +228,7 @@ export class ChartsService {
       categories=o.map(d=>d[0])
       barSeries=o.map(d=>d[1])
       return {
-        title: {text: chartName},
+        title: {text: chartName, textStyle:{overflow:'break'}},
         tooltip: {
           trigger: 'axis',
           axisPointer: {            // Use axis to trigger tooltip
@@ -274,7 +274,7 @@ export class ChartsService {
       categories=o.map(d=>d[0]).map(d=>this.reportService.getLabelFor(namingDictioanry, chartElement.dataQuery.get[0][0], d))
       values=o.map(d=>d[1])
       return {
-        title: {text: chartName.length==0?chartElement.dataQuery.get[0][0]:chartName},
+        title: {text: chartName.length==0?chartElement.dataQuery.get[0][0]:chartName,textStyle:{overflow:'break'}},
         tooltip: {
           trigger: 'axis',
           axisPointer: {            // Use axis to trigger tooltip

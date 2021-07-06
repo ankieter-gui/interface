@@ -237,10 +237,12 @@ import {Subject} from 'rxjs';
         </nz-collapse-panel>
         <nz-collapse-panel nzHeader="Zaawansowany edytor">
             <input nz-input placeholder="Wpisz query" [(ngModel)]="advancedQuery" (ngModelChange)="refreshChart()">
+          <hr>
+          <p>Wykresy z całkowicie własnymi, wpisanymi ręcznie danymi</p>
         </nz-collapse-panel>
       </nz-collapse>
    </ng-container>
-      <button *ngIf="!this.isPreview" nz-button (click)="saveAsPng()">Zapisz jako png</button>
+      <button style="margin:1em; width:50%" *ngIf="!this.isPreview" nz-button (click)="saveAsPng()">Zapisz wykres jako png</button>
     </section>
 
   `,
