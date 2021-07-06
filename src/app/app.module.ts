@@ -86,6 +86,8 @@ import { FiltersSelectorComponent } from './filters-selector/filters-selector.co
 import { LineChartCustomDataPickerComponent } from './line-chart-custom-data-picker/line-chart-custom-data-picker.component';
 import { NewSurveyDialogComponent } from './new-survey-dialog/new-survey-dialog.component';
 import { AccountNotExistsComponent } from './account-not-exists/account-not-exists.component';
+import { GroupedBarsPercentageDataPickerComponent } from './grouped-bars-percentage-data-picker/grouped-bars-percentage-data-picker.component';
+import {NzAlertModule} from 'ng-zorro-antd/alert';
 
 
 registerLocaleData(fr);
@@ -173,29 +175,32 @@ export let commonNZImports = [
 
     NewSurveyDialogComponent,
 
-    AccountNotExistsComponent
-  ],
-  imports: [
-    ...commonNZImports,
-    DragDropModule,
-    MatFormFieldModule,
-    MatInputModule,
-    ReportsModule,
-    CKEditorModule,
-    MatIconModule,
-    NzCollapseModule,
-    NzListModule,
-    NgxFileDropModule,
-    NzBadgeModule,
-    NzTabsModule,
-    NzCheckboxModule,
-    NzSpinModule,
-    NzDividerModule,
-    NzPaginationModule,
-    NzDropDownModule,
-    NzRadioModule
+    AccountNotExistsComponent,
 
+    GroupedBarsPercentageDataPickerComponent
   ],
+    imports: [
+        ...commonNZImports,
+        DragDropModule,
+        MatFormFieldModule,
+        MatInputModule,
+        ReportsModule,
+        CKEditorModule,
+        MatIconModule,
+        NzCollapseModule,
+        NzListModule,
+        NgxFileDropModule,
+        NzBadgeModule,
+        NzTabsModule,
+        NzCheckboxModule,
+        NzSpinModule,
+        NzDividerModule,
+        NzPaginationModule,
+        NzDropDownModule,
+        NzRadioModule,
+        NzAlertModule
+
+    ],
   providers: [{provide: NZ_I18N, useValue: fr_FR},  { provide: Window, useValue: window },LoginGuard, OnlyAdminGuard],
   exports: [
     GlobalSidemenuComponent

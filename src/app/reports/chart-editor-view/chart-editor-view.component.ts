@@ -224,6 +224,9 @@ import {Subject} from 'rxjs';
                     <nz-tab nzTitle="Dane" *ngIf="showLinearPicker">
                       <app-line-chart-custom-data-picker (saveEmitter)="refreshChart()" [reportId]="reportId" [chart]="this.chartData"></app-line-chart-custom-data-picker>
                     </nz-tab>
+                    <nz-tab nzTitle="Dane do wykresu frekwencji" *ngIf="chartData.config.type=='groupedBars'" (nzClick)="barsPicker.updateFields()">
+                      <app-grouped-bars-percentage-data-picker #barsPicker [dataResponse]="dataResponse" [namingDictionary]="namingDictionary" (saveEmitter)="refreshChart()" [reportId]="reportId" [chart]="this.chartData"></app-grouped-bars-percentage-data-picker>
+                    </nz-tab>
                     <nz-tab nzTitle="Filtry" *ngIf="!showLinearPicker">
                       <app-filters-selector [namingDictionary]="namingDictionary" [allQuestions]="namingDictionary" (globalFilterChange)="refreshFilter($event)" [(globalFilter)]="this.chartData.config.filter"  [reportId]="reportId"></app-filters-selector>
 

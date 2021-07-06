@@ -37,6 +37,7 @@ export class LineChartCustomDataPickerComponent implements OnInit {
 
   ngOnInit(): void {
     if (!this.chart.config.handCodedData){
+
       this.chart.config.handCodedData = [ {label:"", value:""} ]
     }
 
