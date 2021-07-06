@@ -59,7 +59,7 @@ this.updateFields()
         if (this.chart.config.handCodedData.map(d => d.label).includes(possibleAnswer)) {
         } else {
           console.log("adding...")
-          this.chart.config.handCodedData.push({label: possibleAnswer, value: ""})
+          this.chart.config.handCodedData = [...this.chart.config.handCodedData, {label: possibleAnswer, value: ""}]
         }
       }
     }else{

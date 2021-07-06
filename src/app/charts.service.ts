@@ -266,13 +266,58 @@ export class ChartsService {
       }
     }
     else if (chartElement.config.type == "groupedBars"){
+
+
       let shareElement=this.transformDataIntoPairs(series).filter(d=>d[0].includes("share"))[0][1][0]
       console.log(shareElement)
+
       let categories =Object.keys(shareElement)
       let values = Object.values(shareElement)
+      console.log(categories)
+      console.log(values)
       let o = zip(categories,values).sort((a,b)=>a[1]-b[1])
+
       categories=o.map(d=>d[0]).map(d=>this.reportService.getLabelFor(namingDictioanry, chartElement.dataQuery.get[0][0], d))
+
       values=o.map(d=>d[1])
+
+      let wereAllValuesFilled=false;
+      let wasAnyValueFilled=false;
+
+      if(chartElement.config.handCodedData){
+        //if any value was filled
+        console.log("handcoded data detected")
+        //TODO:could this be done with filter and map?
+        for (let i of chartElement.config.handCodedData){
+          if (i.label!="") {wasAnyValueFilled=true;break}
+        }
+
+      }
+      for (let i of chartElement.config.handCodedData){
+        if (i.label==="") {wereAllValuesFilled=false;break}
+        wereAllValuesFilled=true;
+      }
+
+
+
+      if (wereAllValuesFilled) {
+        console.log("this is o")
+        console.log(JSON.stringify(o))
+        for (let j of o) {
+          console.log("this is j")
+          if (!j) continue //IDK what happens here
+          console.log(j)
+          let category=j[0]
+          let value=j[1]
+
+          console.log(chartElement.config.handCodedData)
+          console.log(category)
+
+            let share = Math.round(value / Number(chartElement.config.handCodedData.filter(d=>d.label===category)[0].value))
+          o[category] = share
+        }
+      }
+
       return {
         title: {text: chartName.length==0?chartElement.dataQuery.get[0][0]:chartName,textStyle:{overflow:'break'}},
         tooltip: {
@@ -300,7 +345,8 @@ export class ChartsService {
           stack: 'total',
           label: {
             show: true,
-            formatter: "{c}"
+            //TODO: co z tym?
+            formatter: wereAllValuesFilled?(options)=>`${options.value}% (N={c})`:"{c}"
           },
           emphasis: {
             focus: 'series'
