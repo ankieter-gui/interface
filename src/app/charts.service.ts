@@ -289,15 +289,16 @@ export class ChartsService {
         console.log("handcoded data detected")
         //TODO:could this be done with filter and map?
         for (let i of chartElement.config.handCodedData){
-          if (i.label!="") {wasAnyValueFilled=true;break}
+          if (i.value) {wasAnyValueFilled=true;break}
         }
 
       }
       for (let i of chartElement.config.handCodedData){
-        if (i.label==="") {wereAllValuesFilled=false;break}
+      console.log(i.label)
+        if (!i.value) {wereAllValuesFilled=false;break}
         wereAllValuesFilled=true;
       }
-
+console.log(wereAllValuesFilled)
 
 
       if (wereAllValuesFilled) {
