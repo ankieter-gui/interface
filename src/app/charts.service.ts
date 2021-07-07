@@ -72,7 +72,7 @@ export class ChartsService {
       for (let key of allKeys){
         let val =0;
         // console.log("key: "+key)
-        if (key in valuesMap) val =Math.round(valuesMap[key]/sum*100)
+        if (key in valuesMap) val =valuesMap[key]/sum*100
         if (key in resultingMap){
           resultingMap[key].push(val)
         }else{
@@ -109,12 +109,13 @@ export class ChartsService {
       chartName = chartName?chartName:chartElement.dataQuery.get[0][0]
       let y= {
      //   title: {text: chartName,textStyle:{overflow:'break', width:800}},
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: {            // Use axis to trigger tooltip
-            type: 'shadow'        // 'shadow' as default; can also be 'line' or 'shadow'
-          }
-        },
+     //    tooltip: {
+     //      trigger: 'axis',
+     //
+     //      // axisPointer: {            // Use axis to trigger tooltip
+     //      //   type: 'line'        // 'shadow' as default; can also be 'line' or 'shadow'
+     //      // }
+     //    },
         color:"#3b3b3b",
          legend:{
           // top: 1+chartName.length*0.1+"%",
@@ -140,11 +141,11 @@ export class ChartsService {
           stack: 'total',
           label: {
             show: true,
-            formatter: "{c}%"
+            formatter: (options)=> options.value!=0?`${Math.round(options.value)}%`:""
           },
-          emphasis: {
-            focus: 'series'
-          },
+          // emphasis: {
+          //   focus: 'series'
+          // },
           smooth: false,
           symbol: 'none',
         }))
@@ -254,12 +255,12 @@ export class ChartsService {
       barSeries=o.map(d=>d[1])
       return {
        // title: {text: chartName, textStyle:{overflow:'break'}},
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: {            // Use axis to trigger tooltip
-            type: 'shadow'        // 'shadow' as default; can also be 'line' or 'shadow'
-          }
-        },
+       //  tooltip: {
+       //    trigger: 'axis',
+       //    axisPointer: {            // Use axis to trigger tooltip
+       //      type: 'shadow'        // 'shadow' as default; can also be 'line' or 'shadow'
+       //    }
+       //  },
         color:"#1964d9",
         // legend:{
         //  data:this.getAllShareLabels(shareElement)
@@ -372,12 +373,12 @@ console.log(wereAllValuesFilled)
         categories = [...categories, "łącznie"]
       return {
       //  title: {text: chartName.length==0?chartElement.dataQuery.get[0][0]:chartName,textStyle:{overflow:'break'}},
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: {            // Use axis to trigger tooltip
-            type: 'shadow'        // 'shadow' as default; can also be 'line' or 'shadow'
-          }
-        },
+      //   tooltip: {
+      //     trigger: 'axis',
+      //     axisPointer: {            // Use axis to trigger tooltip
+      //       type: 'shadow'        // 'shadow' as default; can also be 'line' or 'shadow'
+      //     }
+      //   },
         color:"#3b3b3b",
         // legend:{
         //  data:this.getAllShareLabels(shareElement)
@@ -496,12 +497,12 @@ console.log(wereAllValuesFilled)
       };
 
       return {
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: {
-            type: 'shadow'
-          }
-        },
+        // tooltip: {
+        //   trigger: 'axis',
+        //   axisPointer: {
+        //     type: 'shadow'
+        //   }
+        // },
         legend: {
           data: this.getAllShareLabels(shareElement).map(d=>this.reportService.getLabelFor(namingDictioanry, chartElement.dataQuery.get[0][0], d))
         },

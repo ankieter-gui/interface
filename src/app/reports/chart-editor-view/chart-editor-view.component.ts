@@ -107,7 +107,7 @@ import {Subject} from 'rxjs';
       </section>
 
       <nz-collapse class="chart-editor-dropdown">
-        <nz-collapse-panel nzHeader="Prosty edytor" [nzActive]="true">
+        <nz-collapse-panel nzHeader="Prosty edytor">
                 <div>
                   <input placeholder="Nazwa wykresu" nz-input [(ngModel)]="this.chartData.name" (blur)="refreshChart(); save()"/>
                   <nz-tabset [(nzSelectedIndex)]="activeTab">

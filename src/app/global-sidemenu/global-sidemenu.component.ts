@@ -22,7 +22,7 @@ import {DashboardModalsService} from '../dashboard-modals.service';
           <i nz-icon nzType="folder"></i>
           <span>Edytor raportów</span>
         </li>
-        <li *ngIf="user.userResponse.role=='s'" nz-menu-item [routerLink]="['groups']">
+        <li *ngIf="user.userResponse && user.userResponse.role=='s'" nz-menu-item [routerLink]="['groups']">
           <i nz-icon nzType="user"></i>
           <span>Grupy udostępniania</span>
         </li>
