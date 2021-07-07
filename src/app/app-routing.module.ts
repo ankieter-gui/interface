@@ -9,6 +9,7 @@ import {LoginGuard, OnlyAdminGuard} from './LoginGuard';
 import {ReportPreviewComponent} from './report-preview/report-preview.component';
 import {LinkActivatorComponent} from './link-activator/link-activator.component';
 import {AccountNotExistsComponent} from './account-not-exists/account-not-exists.component';
+import {LoginPanelComponent} from './login-panel/login-panel.component';
 
 
 
@@ -20,7 +21,8 @@ const routes: Routes = [
   {path: 'surveysEditor/:id', component: SurveysEditorComponent, canActivate: [LoginGuard] },
   {path: 'reports/:id', component: ReportPreviewComponent },
   {path: 'shared/:hash', component: LinkActivatorComponent },
-  {path: 'unauthorized', component: AccountNotExistsComponent }
+  {path: 'unauthorized', component: AccountNotExistsComponent },
+  {path:"login", component: LoginPanelComponent}
 ]
 
 @NgModule({

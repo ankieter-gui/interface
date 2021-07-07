@@ -22,7 +22,11 @@ export class EditorComponent implements OnInit {
   surveyQuestions;
   namingDictionary;
   surveyStructure;
-
+  codeModel;
+  useCode(){
+    this.reportDefinition = JSON.parse(this.codeModel)
+    this.save()
+  }
   linkedSurveyId;
   reportId;
   reportDefinition:ReportDefinition = { title:"", elements:[

@@ -13,7 +13,7 @@ export class SurveysService {
   constructor(private http:HttpClient, public generator:SurveyGeneratorService) {}
   getQuestions(survey){
 
-    return this.http.get(`${BACKEND_URL}/data/${survey}/types`)
+    return this.http.get(`${BACKEND_URL}/data/${survey}/types`, {withCredentials:true})
   }
   query(survey, q:SurveyQuery){
     console.log("sending the following:")
@@ -21,7 +21,7 @@ export class SurveysService {
     // if (q.get[0][0] == undefined){
     //   q.get[0] = q.get[0].splice(0,1)
     // }
-    return this.http.post(`${BACKEND_URL}/data/${survey}`, q)
+    return this.http.post(`${BACKEND_URL}/data/${survey}`, q, {withCredentials:true})
   }
   getSurveyLinkedToReport(reportId){
 

@@ -42,12 +42,13 @@ import {Subject} from 'rxjs';
 <!--        <nz-tag [nzColor]="'red'" class="unit">wydział</nz-tag>-->
 <!--        <nz-tag [nzColor]="'red'" class="unit">średnia</nz-tag>-->
       </section>
+      <h2>{{this.chartData.name?this.chartData.name:this.chartData.dataQuery.get[0][0]}}</h2>
     <div class="chart-container">
 
     <section class="chart-area" *ngIf="chartData.config.type=='groupedPercentAndData' && this.echartOptions">
       <div echarts (chartInit)="onChartInit($event)" [options]="echartOptions" class="chart" [class.fullWidth]="!(chartData.dataQuery.as.includes('share') && chartData.dataQuery.as.length>1 && dataResponse)" #chartInstance></div>
-      <nz-table *ngIf="chartData.dataQuery.as.includes('share') && chartData.dataQuery.as.length>1 && dataResponse" class="details-table" [nzTemplateMode]="true">
-       <thead> <tr><th *ngFor="let header of tableHeaders">{{header | PolskieNazwy}}</th></tr></thead>
+      <nz-table style="min-height: 300px" *ngIf="chartData.dataQuery.as.includes('share') && chartData.dataQuery.as.length>1 && dataResponse" class="details-table" [nzTemplateMode]="true">
+       <thead> <tr><th *ngFor="let header of tableHeaders">{{header | PolskieNazwy | titlecase}}</th></tr></thead>
         <tbody>
         <tr *ngFor="let row of this.tableData"><td *ngFor="let value of row">{{value | number }}</td></tr>
         </tbody>
@@ -372,8 +373,8 @@ import {Subject} from 'rxjs';
       .chart-area{
         display: flex;
 
-        flex-direction: row;
-       width:1000%;
+        flex-direction: column;
+       width:100%;
         min-height:300px;
       }
       .chart{

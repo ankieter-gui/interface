@@ -18,10 +18,27 @@ export class ChartsService {
   "#bc5090",
   "#ff6361",
   "#ffa600"]
-
+  numberToStringScale = {
+    5 : 'bardzo dobrze', 4:'raczej dobrze', 3:'średnio', 2:'raczej źle', 1:'bardzo źle'
+  }
+  getNumberToStringScale(n){
+    if (Number(n) in this.numberToStringScale) return this.numberToStringScale[Number(n)]
+    else return n
+  }
   fiveColorPalette=[
-    "#c01f50","#cc5a29","#bb900c", "#92bf42", "#37e79a", "#9F9F9F"
+    "#ff0000","#ffe107","#dff570", "#4fd91e", "#078202", "#9F9F9F"
   ]
+  rateToColorGrade(index,n){
+    let y = {
+      'bardzo dobrze': "#078202",
+      'raczej dobrze':"#4fd91e",
+      'średnio':"#dff570",
+      'raczej źle':"#ffe107",
+      'bardzo źle':"#ff0000"
+    }
+    if (n in y) return y[n]
+    else return this.fiveColorPalette[index]
+  }
   sevenColorPalette=[
     "#c01f50","#cc5a29","#bb900c","#CAF259", "#92bf42", "#37e79a","#59B0F2", "#9F9F9F"
   ]
@@ -81,16 +98,17 @@ export class ChartsService {
   generateChart(series:any, chartElement:ChartReportElement, reportId, namingDictioanry):EChartsOption{
     let chartName = chartElement.name;
     const zip = (a, b) => a.map((k, i) => [k, b[i]]);
-    let indices = series["index"]
+    let indices;
+    if (series) indices = series["index"]
 
     if (chartElement.config.type=='groupedPercentAndData'){
       let shareElement=this.transformDataIntoPairs(series).filter(d=>d[0].includes("share"))[0][1]
       let seriesList = this.generateSeriesList(shareElement)
       console.log(shareElement)
       console.log(seriesList)
-
+      chartName = chartName?chartName:chartElement.dataQuery.get[0][0]
       let y= {
-        title: {text: chartName,textStyle:{overflow:'break'}},
+     //   title: {text: chartName,textStyle:{overflow:'break', width:800}},
         tooltip: {
           trigger: 'axis',
           axisPointer: {            // Use axis to trigger tooltip
@@ -99,19 +117,26 @@ export class ChartsService {
         },
         color:"#3b3b3b",
          legend:{
-           data:this.getAllShareLabels(shareElement).map(d=>this.reportService.getLabelFor(namingDictioanry,chartElement.dataQuery.get[0][0],d))
+          // top: 1+chartName.length*0.1+"%",
+           data:this.getAllShareLabels(shareElement).map(d=>this.getNumberToStringScale(this.reportService.getLabelFor(namingDictioanry,chartElement.dataQuery.get[0][0],d)))
+           //data:this.getAllShareLabels(shareElement).map(d=>this.numberToStringScale[Number(d)])
          },
         grid:{left: '3%',
           right: '4%',
-          bottom: '3%',
+          bottom: "3%",
           containLabel: true},
         xAxis:{type:'value', show:true, animation:true},
-        yAxis:{type:'category', show:true, data:indices.map(d=>this.reportService.getLabelFor(namingDictioanry,chartElement.dataQuery.by[0], d))},
+        yAxis:{type:'category', show:true, data:
+            indices.map(d=>this.getNumberToStringScale(this.reportService.getLabelFor(namingDictioanry,chartElement.dataQuery.by[0], d)))
+           // indices.map(d=>this.numberToStringScale[Number(d)])
+        },
         series:zip(Object.keys(seriesList), Object.values(seriesList)).map((d,index)=>({
           data:d[1],
-          name:this.reportService.getLabelFor(namingDictioanry,chartElement.dataQuery.get[0][0], d[0]),
+
+          name:this.getNumberToStringScale(this.reportService.getLabelFor(namingDictioanry,chartElement.dataQuery.get[0][0], d[0])),
+         // name:this.numberToStringScale[d[0]],
           type:this.presetsToTypes[chartElement.config.type],
-          color:this.defaultColorPalette[index],
+          color:this.rateToColorGrade(index,this.getNumberToStringScale(this.reportService.getLabelFor(namingDictioanry,chartElement.dataQuery.get[0][0], d[0]))),
           stack: 'total',
           label: {
             show: true,
@@ -228,14 +253,14 @@ export class ChartsService {
       categories=o.map(d=>d[0])
       barSeries=o.map(d=>d[1])
       return {
-        title: {text: chartName, textStyle:{overflow:'break'}},
+       // title: {text: chartName, textStyle:{overflow:'break'}},
         tooltip: {
           trigger: 'axis',
           axisPointer: {            // Use axis to trigger tooltip
             type: 'shadow'        // 'shadow' as default; can also be 'line' or 'shadow'
           }
         },
-        color:"#3b3b3b",
+        color:"#1964d9",
         // legend:{
         //  data:this.getAllShareLabels(shareElement)
         // },
@@ -338,11 +363,15 @@ console.log(wereAllValuesFilled)
             let share = Math.round(value / Number(chartElement.config.handCodedData.filter(d=>d.label===category)[0].value) * 100)
           percentShares[category] = share
         }
+        //dodawanie pola z ogółem studentów
+        percentShares["łącznie"] =Math.round(Number(values.reduce((a:number, b:number) => a + b))/ Number(chartElement.config.handCodedData.map(d=>Number(d.value)).reduce((a:number,b:number)=>a+b))*100)
 
       }
-
+      console.log(percentShares)
+        values = [...values, Number(values.reduce((a:number, b:number) => a + b))]
+        categories = [...categories, "łącznie"]
       return {
-        title: {text: chartName.length==0?chartElement.dataQuery.get[0][0]:chartName,textStyle:{overflow:'break'}},
+      //  title: {text: chartName.length==0?chartElement.dataQuery.get[0][0]:chartName,textStyle:{overflow:'break'}},
         tooltip: {
           trigger: 'axis',
           axisPointer: {            // Use axis to trigger tooltip
@@ -362,14 +391,14 @@ console.log(wereAllValuesFilled)
         yAxis:{type:'category', show:true, data:categories, axisLabel:{overflow:"break"}},
         series:[{
           data:values,
-          name:"Ilość odpowiedzi",
+          name:"Liczba odpowiedzi",
           type:'bar',
           color:"red",
           stack: 'total',
           label: {
             show: true,
             //TODO: co z tym?
-            formatter: wereAllValuesFilled?(options)=>`${percentShares[idToCategories[options.name]]}% (N=${options.value})`:"{c}"
+            formatter: wereAllValuesFilled?(options)=>`${options.name!="łącznie"?percentShares[idToCategories[options.name]]:percentShares[options.name]}% (N=${options.value})`:"{c}"
           },
           emphasis: {
             focus: 'series'
@@ -488,6 +517,7 @@ console.log(wereAllValuesFilled)
         ],
         yAxis: [
           {
+
             type: 'value'
           }
         ],
@@ -528,13 +558,15 @@ console.log(wereAllValuesFilled)
         xAxis: {
           type: 'category',
           boundaryGap: false,
+          minorTick:{show:true},
           data: chartElement.config.handCodedData.map(d=>d.label)
         },
         yAxis: {
+          min:Number(Math.min(...chartElement.config.handCodedData.map(d=>Number(d.value))))-0.05*Number(Math.min(...chartElement.config.handCodedData.map(d=>Number(d.value)))),
           type: 'value'
         },
         series: [{
-          data: chartElement.config.handCodedData.map(d=>d.value),
+          data: chartElement.config.handCodedData.map(d=>Number(d.value)),
           type: 'line'
         }]
       };

@@ -26,8 +26,10 @@ export class UserService {
           this.router.navigate(['/unauthorized'])
       }else {
         //TODO: could this be done better?
-        if (!(this.router.url.includes("reports/")||this.router.url.includes("share"))){
-          this.window.location.href = LOGIN_SERVICE_URL
+        if (!this.isUnrestrictedPage){
+          this.router.navigate(['/login'])
+
+          // this.window.location.href = LOGIN_SERVICE_URL
         }
 
       }
@@ -47,6 +49,9 @@ export class UserService {
     }
     return false;
 
+  }
+  get isUnrestrictedPage(){
+    return (this.router.url.includes("reports/")||this.router.url.includes("share"))
   }
   redirectToCASLogin(){
     window.location.href = `${BACKEND_URL}/login`
