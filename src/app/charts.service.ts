@@ -244,7 +244,7 @@ export class ChartsService {
           console.log(e)
         }
         //dont touch ;(((
-        return sum!=0?(1 in d[1][0])?Math.round(d[1][0]['1']/sum*100):0:0
+        return sum!=0?(1 in d[1][0])?d[1][0]['1']/sum*100:0:0
       })
       console.log("categories")
       console.log(categories)
@@ -261,7 +261,7 @@ export class ChartsService {
        //      type: 'shadow'        // 'shadow' as default; can also be 'line' or 'shadow'
        //    }
        //  },
-        color:"#1964d9",
+        color:"#64B5CD",
         // legend:{
         //  data:this.getAllShareLabels(shareElement)
         // },
@@ -281,7 +281,7 @@ export class ChartsService {
           stack: 'total',
           label: {
             show: true,
-            formatter: "{c}%"
+            formatter: (options)=>`${Math.round(Number(options.value))}%`
           },
           emphasis: {
             focus: 'series'
@@ -394,7 +394,7 @@ console.log(wereAllValuesFilled)
           data:values,
           name:"Liczba odpowiedzi",
           type:'bar',
-          color:"red",
+          color:"#64B5CD",
           stack: 'total',
           label: {
             show: true,
