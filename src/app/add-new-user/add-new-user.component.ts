@@ -5,7 +5,7 @@ import { Component, OnInit } from '@angular/core';
   template: `
    <input nz-input [(ngModel)]="casLogin" placeholder="cas login...">
 
-   <p>Mail jest wymagany, aby użytkownik mógł logowac się nim w CAS</p>
+   <p>Mail jest wymagany, aby użytkownik mógł logować się nim w CAS</p>
    <input nz-input [(ngModel)]="pesel" placeholder="PESEL">
    <nz-select [(ngModel)]="role" style="width:100%;margin-top:1rem;">
      <nz-option nzValue="u" nzLabel="Użytkownik" ></nz-option>
