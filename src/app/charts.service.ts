@@ -25,19 +25,26 @@ export class ChartsService {
     if (Number(n) in this.numberToStringScale) return this.numberToStringScale[Number(n)]
     else return n
   }
-  fiveColorPalette=[
-    "#ff0000","#ffe107","#dff570", "#4fd91e", "#078202", "#9F9F9F"
+  fourColorPalette=[
+    "#F46D43","#FEE08B","#D8EE8A", "#66BD63", "#078202", "#9F9F9F"
   ]
+  fiveColorPalette=[
+    "#F46D43","#FEE08B","#FDFEBD", "#D8EE8A", "#66BD63", "#078202", "#9F9F9F"
+  ]
+  lightBlue="#1e6adb"
+  darkBlue="#043b8b"
+  horizontalBarHeight=40;
+
   rateToColorGrade(index,n){
     let y = {
-      'bardzo dobrze': "#078202",
-      'raczej dobrze':"#4fd91e",
-      'średnio':"#dff570",
-      'raczej źle':"#ffe107",
-      'bardzo źle':"#ff0000"
+      'bardzo dobrze': "#4AAF5B",
+      'raczej dobrze':"#B7E075",
+      'średnio':"#FDFEBD",
+      'raczej źle':"#FDBE6F",
+      'bardzo źle':"#E95638"
     }
     if (n in y) return y[n]
-    else return this.fiveColorPalette[index]
+    else return this.fourColorPalette[index]
   }
   sevenColorPalette=[
     "#c01f50","#cc5a29","#bb900c","#CAF259", "#92bf42", "#37e79a","#59B0F2", "#9F9F9F"
@@ -117,6 +124,7 @@ export class ChartsService {
      //      // }
      //    },
         color:"#3b3b3b",
+        pxHeight: 200,
          legend:{
           // top: 1+chartName.length*0.1+"%",
            data:this.getAllShareLabels(shareElement).map(d=>this.getNumberToStringScale(this.reportService.getLabelFor(namingDictioanry,chartElement.dataQuery.get[0][0],d)))
@@ -253,6 +261,7 @@ export class ChartsService {
       let o = zip(categories,barSeries).sort((a,b)=>a[1]-b[1])
       categories=o.map(d=>d[0])
       barSeries=o.map(d=>d[1])
+
       return {
        // title: {text: chartName, textStyle:{overflow:'break'}},
        //  tooltip: {
@@ -262,12 +271,14 @@ export class ChartsService {
        //    }
        //  },
         color:"#64B5CD",
+        pxHeight: categories.length*this.horizontalBarHeight,
         // legend:{
         //  data:this.getAllShareLabels(shareElement)
         // },
         grid:{left: '3%',
           right: '4%',
           bottom: '3%',
+          top:"0%",
           containLabel: true},
         xAxis:{type:'value', show:true, animation:true},
         //@ts-ignore
@@ -277,7 +288,7 @@ export class ChartsService {
           data:barSeries,
           name:"Procent odpowiedzi",
           type:'bar',
-          color:"red",
+          color:this.lightBlue,
           stack: 'total',
           label: {
             show: true,
@@ -369,7 +380,7 @@ console.log(wereAllValuesFilled)
 
       }
       console.log(percentShares)
-        values = [...values, Number(values.reduce((a:number, b:number) => a + b))]
+        values = [...values, {value: Number(values.reduce((a:number, b:number) => a + b)), itemStyle:{color:this.darkBlue}}]
         categories = [...categories, "łącznie"]
       return {
       //  title: {text: chartName.length==0?chartElement.dataQuery.get[0][0]:chartName,textStyle:{overflow:'break'}},
@@ -380,21 +391,24 @@ console.log(wereAllValuesFilled)
       //     }
       //   },
         color:"#3b3b3b",
+        pxHeight: categories.length*this.horizontalBarHeight,
         // legend:{
         //  data:this.getAllShareLabels(shareElement)
         // },
         grid:{left: '3%',
           right: '4%',
           bottom: '3%',
+          top:"-10%",
           containLabel: true},
         xAxis:{type:'value', show:true, animation:true},
         //@ts-ignore
         yAxis:{type:'category', show:true, data:categories, axisLabel:{overflow:"break"}},
         series:[{
+          //barMinHeight:this.horizontalBarHeight,
           data:values,
           name:"Liczba odpowiedzi",
           type:'bar',
-          color:"#64B5CD",
+          color:this.lightBlue,
           stack: 'total',
           label: {
             show: true,
@@ -506,7 +520,7 @@ console.log(wereAllValuesFilled)
         legend: {
           data: this.getAllShareLabels(shareElement).map(d=>this.reportService.getLabelFor(namingDictioanry, chartElement.dataQuery.get[0][0], d))
         },
-
+        pxHeight:300,
         xAxis: [
           {
             boundaryGap: false,
@@ -533,9 +547,9 @@ console.log(wereAllValuesFilled)
             type: 'bar',
             barGap: 0,
             label: labelOption,
-            emphasis: {
-              focus: 'series'
-            },
+            // emphasis: {
+            //   focus: 'series'
+            // },
             data: d[1]
           }))
 
@@ -546,6 +560,7 @@ console.log(wereAllValuesFilled)
     }}
     else if (chartElement.config.type=="linearCustomData"){
       return {
+        pxHeight:250,
         tooltip: {
           trigger: 'axis',
           axisPointer: {

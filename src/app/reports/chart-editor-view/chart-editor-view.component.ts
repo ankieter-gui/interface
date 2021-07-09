@@ -42,11 +42,11 @@ import {Subject} from 'rxjs';
 <!--        <nz-tag [nzColor]="'red'" class="unit">wydział</nz-tag>-->
 <!--        <nz-tag [nzColor]="'red'" class="unit">średnia</nz-tag>-->
       </section>
-      <h2>{{this.chartData.name?this.chartData.name:this.chartData.dataQuery.get[0][0]}}</h2>
+      <p><b>{{this.chartData.name?this.chartData.name:this.chartData.dataQuery.get[0][0]}}</b></p>
     <div class="chart-container">
 
     <section class="chart-area" *ngIf="chartData.config.type=='groupedPercentAndData' && this.echartOptions">
-      <div echarts (chartInit)="onChartInit($event)" [options]="echartOptions" class="chart" [class.fullWidth]="!(chartData.dataQuery.as.includes('share') && chartData.dataQuery.as.length>1 && dataResponse)" #chartInstance></div>
+      <div [style.height.px]="echartOptions.pxHeight" echarts (chartInit)="onChartInit($event)" [options]="echartOptions" class="chart" [class.fullWidth]="!(chartData.dataQuery.as.includes('share') && chartData.dataQuery.as.length>1 && dataResponse)" #chartInstance></div>
       <nz-table style="min-height: 300px" *ngIf="chartData.dataQuery.as.includes('share') && chartData.dataQuery.as.length>1 && dataResponse" class="details-table" [nzTemplateMode]="true">
        <thead> <tr><th *ngFor="let header of tableHeaders">{{header | PolskieNazwy | titlecase}}</th></tr></thead>
         <tbody>
@@ -55,7 +55,7 @@ import {Subject} from 'rxjs';
       </nz-table>
     </section>
       <section class="chart-area" *ngIf="['multipleChoice', 'groupedBars', 'multipleBars', 'linearCustomData'].includes(chartData.config.type)  && this.echartOptions">
-        <div echarts  (chartInit)="onChartInit($event)" [options]="echartOptions" class="chart" style="width: 100%;"></div>
+        <div echarts [style.height.px]="echartOptions.pxHeight" (chartInit)="onChartInit($event)" [options]="echartOptions" class="chart" style="width: 100%;"></div>
       </section>
 <!--      <section class="chart-editor">-->
 <!--        <i nz-icon nzType="line-chart" [nz-tooltip]="'Typ wykresu'"></i>-->
@@ -375,8 +375,9 @@ import {Subject} from 'rxjs';
 
         flex-direction: column;
        width:100%;
-        min-height:300px;
+
       }
+
       .chart{
         min-width: 80%;
       }

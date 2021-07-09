@@ -75,3 +75,8 @@ nz-card{
   border:none!important;
   box-shadow: none!important;
 }
+
+
+
+  .dont-break{page-break-inside: avoid;}
+
