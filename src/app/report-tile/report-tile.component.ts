@@ -34,7 +34,7 @@ import {UserService} from '../user.service';
         </div>
       </div>
       <div class="progress" style="margin:1em">
-        <i nz-icon nzType="user" style="margin-right: 1em"></i>Autor: {{report.authorName}}
+<!--        <i nz-icon nzType="user" style="margin-right: 1em"></i>Autor: {{report.authorName}}-->
       </div>
     </nz-card>
     <ng-template #extra>

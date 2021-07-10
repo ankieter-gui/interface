@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import {GlobalFilter, ReportDefinition} from '../../dataModels/ReportDefinition';
 
@@ -10,6 +10,7 @@ import {ReportsService} from '../../reports.service';
 import {ActivatedRoute} from '@angular/router';
 import {ChartReportElement, TextReportElement} from '../../dataModels/ReportElement';
 import {Subject} from 'rxjs';
+import {NzMessageService} from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'app-editor',
@@ -48,7 +49,7 @@ export class EditorComponent implements OnInit {
     setTimeout(()=>{this.save(); this.forceUpdate.next();}, 100)
 
   }
-  constructor(private surveysService:SurveysService,private reportsService:ReportsService,private route: ActivatedRoute) { }
+  constructor(private surveysService:SurveysService,private reportsService:ReportsService,private route: ActivatedRoute, private message: NzMessageService) { }
   addNewTextElement(){
     this.reportDefinition.elements.push({type:"text", content: {text:""} as TextReportElement})
   }
@@ -62,10 +63,18 @@ export class EditorComponent implements OnInit {
           type:null,
           orientation:"vertical",}} as ChartReportElement})
   }
-  save(){
-    this.reportsService.saveReport(this.route.snapshot.paramMap.get('id'), this.reportDefinition).subscribe(d=>console.log("saved"));
+
+
+  save(manual=false){
+    if (manual)  this.message.info('Zapisano')
+    this.reportsService.saveReport(this.route.snapshot.paramMap.get('id'), this.reportDefinition).subscribe(d=>null );
+  }
+  @HostListener('document:keydown.control.s', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+    console.log('Save Performed');
+    event.preventDefault();
   }
   ngOnInit(): void {
+
     this.reportId = this.route.snapshot.paramMap.get('id')
     this.reportsService.getLinkedSurvey(this.route.snapshot.paramMap.get('id')).subscribe((d)=> {
       this.linkedSurveyId = d.surveyId; console.log(this.linkedSurveyId)

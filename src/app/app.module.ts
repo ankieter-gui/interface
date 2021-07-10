@@ -88,6 +88,7 @@ import { NewSurveyDialogComponent } from './new-survey-dialog/new-survey-dialog.
 import { AccountNotExistsComponent } from './account-not-exists/account-not-exists.component';
 import { GroupedBarsPercentageDataPickerComponent } from './grouped-bars-percentage-data-picker/grouped-bars-percentage-data-picker.component';
 import {NzAlertModule} from 'ng-zorro-antd/alert';
+import {NzMessageModule} from 'ng-zorro-antd/message';
 
 
 registerLocaleData(fr);
@@ -117,6 +118,7 @@ export let commonNZImports = [
   NzModalModule,
   NzTableModule,
   MatMenuModule,
+  NzMessageModule,
   MatIconModule,
   MatButtonModule,
   FormsModule,

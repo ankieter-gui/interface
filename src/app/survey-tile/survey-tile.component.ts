@@ -32,7 +32,7 @@ import {UserService} from '../user.service';
         </div>
       </div>
       <div class="progress" style="margin:1em">
-                <i nz-icon nzType="user" style="margin-right: 1em"></i>Autor: {{survey.authorName}}
+<!--                <i nz-icon nzType="user" style="margin-right: 1em"></i>Autor: {{survey.authorName}}-->
               </div>
 <!--      <div class="progress">-->
 <!--        <i nz-icon nzType="calendar"></i>Utworzono: {{survey.startedOn| date}}-->
