@@ -32,6 +32,10 @@ export class ChartsService {
   fiveColorPalette=[
     "#F46D43","#FEE08B","#FDFEBD", "#D8EE8A", "#66BD63", "#078202", "#9F9F9F"
   ]
+  graySubstrings = ["brak zmian"]
+  darkGraySubstrings = ["nie wiem", "nie dotyczy"]
+  gray="#9F9F9F"
+  darkGray="#5e5e5e"
   lightBlue="#1e6adb"
   darkBlue="#043b8b"
   horizontalBarHeight=40;
@@ -44,8 +48,16 @@ export class ChartsService {
       'raczej źle':"#FDBE6F",
       'bardzo źle':"#E95638"
     }
-    if (n in y) return y[n]
-    else return this.fourColorPalette[index]
+    if (n.toLowerCase() in y) return y[n.toLowerCase()]
+    else {
+      if (this.graySubstrings.some(v=>n.toLowerCase().includes(v))){
+        return this.gray
+      }
+      if (this.darkGraySubstrings.some(v=>n.toLowerCase().includes(v))){
+        return this.darkGray
+      }
+      return this.fourColorPalette[index]
+    }
   }
   sevenColorPalette=[
     "#c01f50","#cc5a29","#bb900c","#CAF259", "#92bf42", "#37e79a","#59B0F2", "#9F9F9F"
@@ -432,8 +444,9 @@ console.log(wereAllValuesFilled)
       const transpose = m => m[0].map((x,i) => m.map(x => x[i]))
       let barSeries = Object.values(seriesList).map((d:number[])=>{
         let sum=0;
+        console.log(d)
         try {
-          sum = d.reduce((previousValue: number, currentValue: number, index, array) => previousValue + currentValue) as number
+          sum = d.reduce((previousValue: number, currentValue: number, index, array) => previousValue + currentValue,0) as number
         }
         catch (e){
           console.log("could not count responses amount")
@@ -441,13 +454,10 @@ console.log(wereAllValuesFilled)
         }
         console.log(d)
         console.log(sum)
-        return (JSON.parse(JSON.stringify(d)) as number[]).map(i=>Math.round(i/sum*100))
+        return d;
+        return (JSON.parse(JSON.stringify(d)) as number[]).map(i=>i/sum*100)
       })
-      console.log(shareElement)
-      console.log(seriesList)
-      console.log(this.getAllShareLabels(shareElement))
-      console.log(barSeries)
-      console.log(zip(this.getAllShareLabels(shareElement), barSeries))
+
       const posList = [
         'left', 'right', 'top', 'bottom',
         'inside',
@@ -495,21 +505,7 @@ console.log(wereAllValuesFilled)
       };
 
 
-      var labelOption = <SeriesLabelOption>{
-        show: true,
-        position: config.position,
-        distance: config.distance,
-        align: config.align,
-        verticalAlign: config.verticalAlign,
-        rotate: config.rotate,
-        // formatter: '{c}%  {name|{a}}',
-         formatter: '{c}%',
-        fontSize: 12,
-        rich: {
-          name: {
-          }
-        }
-      };
+
 
       return {
         // tooltip: {
@@ -524,7 +520,7 @@ console.log(wereAllValuesFilled)
         pxHeight:300,
         xAxis: [
           {
-            boundaryGap: false,
+            boundaryGap: true,
             type: 'category',
             axisTick: {show: false},
             //rok, stopień lub kierunek
@@ -537,17 +533,32 @@ console.log(wereAllValuesFilled)
             type: 'value'
           }
         ],
-        grid:{left: '3%',
-          right: '4%',
+        grid:{left: '0%',
+          right: '0%',
           bottom: '3%',
           containLabel: true},
         series:
           //każda seria to jeden słupek w tej samej pozycji ale w różnych grupach
-         zip(this.getAllShareLabels(shareElement), barSeries).map(d=>({
+         zip(this.getAllShareLabels(shareElement), barSeries).map((d,index)=>({
             name: this.reportService.getLabelFor(namingDictioanry, chartElement.dataQuery.get[0][0], d[0]),
             type: 'bar',
+           color:this.rateToColorGrade(index,this.getNumberToStringScale(this.reportService.getLabelFor(namingDictioanry, chartElement.dataQuery.get[0][0], d[0]))),
             barGap: 0,
-            label: labelOption,
+            label: {
+              show: true,
+              position: config.position,
+              distance: config.distance,
+              align: config.align,
+              verticalAlign: config.verticalAlign,
+              rotate: config.rotate,
+              // formatter: '{c}%  {name|{a}}',
+              formatter: (options)=>`${Math.round(options.value)}%`,
+              fontSize: 12,
+              rich: {
+                name: {
+                }
+              }
+            },
             // emphasis: {
             //   focus: 'series'
             // },

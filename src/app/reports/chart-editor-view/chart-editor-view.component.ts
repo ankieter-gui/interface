@@ -155,7 +155,7 @@ import {Subject} from 'rxjs';
                         </figure>
                       </section>
                     </nz-tab>
-                    <nz-tab nzTitle="Pytanie i dane" *ngIf="!showLinearPicker">
+                    <nz-tab nzTitle="Pytanie i dane" *ngIf="!showLinearPicker && this.chartData.config.type">
                       <section class="question-selector dane" *ngIf="!hideData">
                         <div style="display: flex;flex-direction: row"> <span style='font-family: "Gilroy ExtraBold", sans-serif; width:50%;'>Dane:</span></div>
                         <div style="display: flex; flex-direction: row; width: 100%">
@@ -228,7 +228,7 @@ import {Subject} from 'rxjs';
                     <nz-tab nzTitle="Dane do wykresu frekwencji" *ngIf="chartData.config.type=='groupedBars'" (nzClick)="barsPicker.updateFields()">
                       <app-grouped-bars-percentage-data-picker #barsPicker [dataResponse]="dataResponse" [namingDictionary]="namingDictionary" (saveEmitter)="refreshChart()" [reportId]="reportId" [chart]="this.chartData"></app-grouped-bars-percentage-data-picker>
                     </nz-tab>
-                    <nz-tab nzTitle="Filtry" *ngIf="!showLinearPicker">
+                    <nz-tab nzTitle="Filtry" *ngIf="!showLinearPicker && this.chartData.config.type">
                       <app-filters-selector [namingDictionary]="namingDictionary" [allQuestions]="namingDictionary" (globalFilterChange)="refreshFilter($event)" [(globalFilter)]="this.chartData.config.filter"  [reportId]="reportId"></app-filters-selector>
 
                     </nz-tab>
