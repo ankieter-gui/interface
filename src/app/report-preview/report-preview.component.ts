@@ -56,6 +56,10 @@ export class ReportPreviewComponent implements OnInit {
 
     this.reportId = this.idFromExternalSource?this.idFromExternalSource:this.route.snapshot.paramMap.get('id')
     this.reportsService.getLinkedSurvey(this.reportId).subscribe((d)=> {
+      if (d.error){
+        this.router.navigate(['/'])
+        return;
+      }
       this.linkedSurveyId = d.surveyId; console.log(this.linkedSurveyId)
       this.downloadSurveyQuestions()
       this.reportsService.getReport(this.reportId).subscribe(d=>this.reportDefinition=d)
@@ -68,6 +72,7 @@ export class ReportPreviewComponent implements OnInit {
   namingDictionary;
   async downloadSurveyQuestions(){
     this.surveyQuestions = await this.surveysService.getQuestions(this.linkedSurveyId).toPromise();
+
   }
   async downloadNamingDictionary(){
     console.log("downloading structure")

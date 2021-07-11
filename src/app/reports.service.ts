@@ -21,7 +21,7 @@ export class ReportsService {
     return this.http.post(`${BACKEND_URL}/report/${id}`, content ,{withCredentials:true})
   }
   getLinkedSurvey(reportId){
-    return this.http.get<{surveyId:string}>(`${BACKEND_URL}/report/${reportId}/survey`,{withCredentials:true})
+    return this.http.get<{surveyId:string, error?:string}>(`${BACKEND_URL}/report/${reportId}/survey`,{withCredentials:true})
   }
   copy(reportId){
     return this.http.get(`${BACKEND_URL}/report/${reportId}/copy`,{withCredentials:true})
@@ -70,6 +70,7 @@ export class ReportsService {
     return dict
   }
   getLabelFor(dictionary, question, value){
+    if (value==9999) return "Pominięto"
     if (value == "*") return "Razem"
     if (dictionary[question]) return dictionary[question][value]
     return value

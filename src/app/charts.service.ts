@@ -50,6 +50,7 @@ export class ChartsService {
       'bardzo źle':"#E95638",
       "tak":"#4AAF5B",
       "nie":"#E95638",
+      "pominięto":this.darkGray,
     }
     if (n.toLowerCase() in y) return y[n.toLowerCase()]
     else {
@@ -126,7 +127,7 @@ export class ChartsService {
 
     if (chartElement.config.type=='groupedPercentAndData'){
       let shareElement=this.transformDataIntoPairs(series).filter(d=>d[0].includes("share") || d[0].includes("*"))[0][1]
-      for (let x of shareElement) delete x[9999]
+      // for (let x of shareElement) delete x[9999]
       let seriesList = this.generateSeriesList(shareElement)
       console.log(shareElement)
 
