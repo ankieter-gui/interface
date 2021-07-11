@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {UserService} from '../user.service';
+import {DashboardService} from '../dashboard.service';
 
 @Component({
   selector: 'app-login-panel',
@@ -8,9 +9,10 @@ import {UserService} from '../user.service';
 })
 export class LoginPanelComponent implements OnInit {
 
-  constructor(public user:UserService) { }
-
+  constructor(public user:UserService, public dashobard:DashboardService) { }
+  dashboardData;
   ngOnInit(): void {
+    this.dashobard.getDashobardData().subscribe(d=>this.dashboardData=d['objects'])
   }
 
 }

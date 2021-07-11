@@ -15,13 +15,14 @@ import {SharingService} from './sharing.service';
 import {AddNewUserComponent} from './add-new-user/add-new-user.component';
 import {SurveysService} from './surveys.service';
 import {NewSurveyDialogComponent} from './new-survey-dialog/new-survey-dialog.component';
+import {NzMessageService} from 'ng-zorro-antd/message';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DashboardModalsService {
 
-  constructor(private modal: NzModalService,private window:Window, private mockService: MockService, private surveys:SurveysService, private router: Router, private reports: ReportsService,private sharing:SharingService, private dashboardService:DashboardService) { }
+  constructor(private modal: NzModalService,private window:Window,public message:NzMessageService, private mockService: MockService, private surveys:SurveysService, private router: Router, private reports: ReportsService,private sharing:SharingService, private dashboardService:DashboardService) { }
   createComponentModal(title, component, params, onOk= (instance, modal) => null): void{
     const modal = this.modal.create({
       nzTitle: title,
@@ -153,6 +154,7 @@ export class DashboardModalsService {
     this.createComponentModal("Udostępnij raport", ShareReportComponent, {report:report, okText:"Udostępnij", type:"report"}, async (i:ShareReportComponent,m)=>{
       console.log(i.selected)
       console.log(i.selectedGroups)
+      this.message.info('Udostępniono')
       await this.sharing.shareReportToUsers(i.report.id, [], i.selected.map(d=>d.id), []).toPromise()
         await this.sharing.shareReportToGroups(i.report.id, [], i.selectedGroups, []).toPromise()
         m.destroy()

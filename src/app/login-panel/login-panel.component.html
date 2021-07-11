@@ -1,9 +1,54 @@
-<div class="container">
-<section class="welcome-panel">
-  <img src="assets/logoAnkieter2.png" style="width: 100%;">
+<nz-layout>
 
-  <div style="display: flex; justify-content: center;align-items: center; margin-top:7em">
-  <button class="btn-hover color-9" (click)="this.user.redirectToCASLogin()">Zaloguj się</button>
-  </div>
-</section>
-</div>
+
+
+
+  <nz-layout>
+    <nz-header style="justify-content: space-between">
+      <img src="assets/logoAnkieter2.png" height="100%" style="margin-left: 1rem;">
+      <div style=" width:40vw; margin-left:5vw">
+        <nz-input-group nzSearch nzSize="large">
+
+        </nz-input-group>
+        <ng-template #suffixIconButton>
+          <button nz-button nzType="primary" nzSize="large" nzSearch>
+            <i nz-icon nzType="search" nzTheme="outline"></i>
+          </button>
+        </ng-template>
+
+      </div>
+      <div>
+        <button style="margin:1em" nz-button (click)="this.user.redirectToCASLogin()">Zaloguj <i  nz-icon nzType="login"></i></button>
+      </div>
+    </nz-header>
+    <nz-content *ngIf="!dashboardData || dashboardData.length==0">
+      <div class="inner-content">
+      <button style="position: absolute;left:50%;top:50%;transform: translate(-50%,-50%)" class="btn-hover color-9" (click)="this.user.redirectToCASLogin()">Zaloguj się</button>
+      </div>
+    </nz-content>
+    <nz-content *ngIf="dashboardData && dashboardData.length!=0 ">
+      <header class="header-container">
+        <h1 class="breadcrumb-header">Publicznie dostępne raporty</h1>
+      </header>
+
+
+      <div class="inner-content">
+
+        <section class="filters">
+
+        </section>
+
+        <div class="cards-container">
+
+          <div class="card-padding" *ngFor="let dataObject of this.dashboardData.objects" >
+            <span>Test</span>
+            <app-report-tile [report]="dataObject" *ngIf="dataObject.type=='report'"></app-report-tile>
+          </div>
+
+
+        </div>
+      </div>
+    </nz-content>
+    <nz-footer>UAM - Ankieter+</nz-footer>
+  </nz-layout>
+</nz-layout>

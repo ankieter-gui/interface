@@ -1,6 +1,6 @@
 
-  <router-outlet *ngIf="true"></router-outlet>
-  <nz-spin nzSize="large" style="margin-top: 40vh" *ngIf="!cached.user.userResponse"></nz-spin>
+  <router-outlet *ngIf="!userService.isUserDataBeingDownloaded"></router-outlet>
+  <nz-spin nzSize="large" style="margin-top: 40vh" *ngIf="!cached.user.userResponse || userService.isUserDataBeingDownloaded"></nz-spin>
 <!--  <div *ngIf="!this.userService.isUnrestrictedPage &&( cached.user.userResponse && cached.user.userResponse.role=='g') ">-->
 <!--    <app-login-panel></app-login-panel>-->
 <!--  </div>-->

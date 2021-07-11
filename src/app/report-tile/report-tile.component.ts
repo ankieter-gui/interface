@@ -5,6 +5,7 @@ import {setupTestingRouter} from '@angular/router/testing';
 import {Router} from '@angular/router';
 import {DashboardModalsService} from '../dashboard-modals.service';
 import {UserService} from '../user.service';
+import {NzMessageService} from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'app-report-tile',
@@ -171,14 +172,14 @@ export class ReportTileComponent implements OnInit {
   report:ReportMeta;
   @Output()
   reloadEmitter = new EventEmitter();
-  constructor(private reportService:ReportsService, private router:Router, public modals:DashboardModalsService, public user:UserService) { }
+  constructor(private reportService:ReportsService, private router:Router, public modals:DashboardModalsService, public user:UserService, public message:NzMessageService) { }
   get sharedToCount(){
     return Object.keys(this.report.sharedTo).length
   }
   ngOnInit(): void {
   }
   async copy(){
-
+    this.message.info('Skopiowano')
     let response = await (this.reportService.copy(this.report.id).toPromise())
     this.router.navigate(["/reports/editor/",response['reportId']])
     // this.reloadEmitter.emit()
@@ -186,6 +187,7 @@ export class ReportTileComponent implements OnInit {
   async delete(){
     await (this.reportService.deleteReport(this.report.id).toPromise())
     this.reloadEmitter.emit()
+    this.message.info('Usunięto')
   }
   async PDF(){
     this.router.navigateByUrl(`/reports/${this.report.id}`, {

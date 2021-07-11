@@ -19,15 +19,19 @@ export class UserService {
 
   }
   userResponse;
+  isUserDataBeingDownloaded=false;
   async downloadUserData(){
+    this.isUserDataBeingDownloaded=true;
     let result = await (this.http.get<{logged:boolean, id:string, casLogin:string, error?:string}>(`${BACKEND_URL}/user`,{withCredentials:true}).toPromise())
     if (!result.logged) {
       if (result.error && result.error.includes("could not obtain user data") ){
           this.router.navigate(['/unauthorized'])
+        this.isUserDataBeingDownloaded=false;
       }else {
         //TODO: could this be done better?
         if (!this.isUnrestrictedPage){
           this.router.navigate(['/login'])
+          this.isUserDataBeingDownloaded=false;
 
           // this.window.location.href = LOGIN_SERVICE_URL
         }
@@ -36,7 +40,7 @@ export class UserService {
     }
     this._userId = result.id
     this._username =  result.casLogin
-
+    this.isUserDataBeingDownloaded=false;
     this.userResponse=result
     console.log(this.userResponse)
   }

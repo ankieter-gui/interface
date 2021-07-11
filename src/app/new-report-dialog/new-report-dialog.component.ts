@@ -4,6 +4,7 @@ import {FileSystemDirectoryEntry, FileSystemFileEntry, NgxFileDropEntry} from 'n
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {SurveysService} from '../surveys.service';
 import {SharingService} from '../sharing.service';
+import {NzMessageService} from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'app-new-report-dialog',
@@ -51,7 +52,7 @@ export class NewReportDialogComponent implements OnInit {
   isFileBeingUploaded=false;
   reportNameInputValue;
   surveyInputValue;
-  constructor(private http:HttpClient, private  surveyService:SurveysService) { }
+  constructor(private http:HttpClient, private  surveyService:SurveysService, public message:NzMessageService) { }
   @Input()
   autocompleteSurveys;
   @Input()
