@@ -70,6 +70,7 @@ export class ReportsService {
     return dict
   }
   getLabelFor(dictionary, question, value){
+    if (value == "*") return "Razem"
     if (dictionary[question]) return dictionary[question][value]
     return value
   }

@@ -71,7 +71,7 @@ import {Subject} from 'rxjs';
 <!--      </div>-->
    <ng-container *ngIf="!isPreview">
       <section class="query-marker"  *ngIf="chartData.dataQuery.get[0].length>0 && !showLinearPicker" [@fadeInOut]>
-                <figure class="indicator-card indicator-card-red" (click)="activeTab=0">
+                <figure class="indicator-card indicator-card-red" style="width: 290px" (click)="activeTab=0">
                   <div class="indicator-card-inner">
                   <div class="indicator-card-header">Pytanie</div>
                   <div class="indicator-card-content">
@@ -107,7 +107,7 @@ import {Subject} from 'rxjs';
       </section>
 
       <nz-collapse class="chart-editor-dropdown">
-        <nz-collapse-panel nzHeader="Prosty edytor">
+        <nz-collapse-panel nzHeader="Edytor">
                 <div>
                   <input placeholder="Nazwa wykresu" nz-input [(ngModel)]="this.chartData.name" (blur)="refreshChart(); save()"/>
                   <nz-tabset [(nzSelectedIndex)]="activeTab">
@@ -238,15 +238,17 @@ import {Subject} from 'rxjs';
 
 
                 </div>
+          <button style="margin:1em; width:50%" *ngIf="!this.isPreview" nz-button (click)="saveAsPng()">Zapisz wykres jako png</button>
+<!--          <input nz-input placeholder="Wpisz query" [(ngModel)]="advancedQuery" (ngModelChange)="refreshChart()">-->
         </nz-collapse-panel>
-        <nz-collapse-panel nzHeader="Zaawansowany edytor">
-            <input nz-input placeholder="Wpisz query" [(ngModel)]="advancedQuery" (ngModelChange)="refreshChart()">
-          <hr>
-          <p>Wykresy z całkowicie własnymi, wpisanymi ręcznie danymi</p>
-        </nz-collapse-panel>
+<!--        <nz-collapse-panel nzHeader="Zaawansowany edytor">-->
+<!--            <input nz-input placeholder="Wpisz query" [(ngModel)]="advancedQuery" (ngModelChange)="refreshChart()">-->
+<!--          <hr>-->
+<!--          <p>Wykresy z całkowicie własnymi, wpisanymi ręcznie danymi</p>-->
+<!--        </nz-collapse-panel>-->
       </nz-collapse>
    </ng-container>
-      <button style="margin:1em; width:50%" *ngIf="!this.isPreview" nz-button (click)="saveAsPng()">Zapisz wykres jako png</button>
+
     </section>
 
   `,
@@ -322,8 +324,8 @@ import {Subject} from 'rxjs';
         align-items: center; /* align vertical */
       }
       .indicator-card{
-        width:210px;
-        min-height: 153px;
+        width:140px;
+        min-height: 100px;
         box-shadow: 0 0 8px 0 rgba(0,0,0,0.05);
         border-radius: 7px;
 
@@ -335,7 +337,7 @@ import {Subject} from 'rxjs';
       .indicator-card .indicator-card-content{
         font-family: "Gilroy Light";
         padding-top:25px;
-        font-size:12pt;
+        font-size:8pt;
       }
       .indicator-card-inner{
         padding:15px;
@@ -445,6 +447,10 @@ globalFilter:GlobalFilter
         this.hideGroupBy=false;
         this.chartData.dataQuery.as[0]='share'
         this.onPickQuestion = (question)=>{this.chartData.dataQuery.get[0][0] = question}
+        this.byPickerClick= (q)=>{
+          this.chartData.dataQuery.by[0] = q;
+          this.chartData.dataQuery.by[1] = "*"
+        }
       },
       'multipleChoice':()=>{
         this.hideData=true;

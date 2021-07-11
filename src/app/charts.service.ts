@@ -22,7 +22,8 @@ export class ChartsService {
     5 : 'bardzo dobrze', 4:'raczej dobrze', 3:'średnio', 2:'raczej źle', 1:'bardzo źle'
   }
   getNumberToStringScale(n){
-    if (Number(n) in this.numberToStringScale) return this.numberToStringScale[Number(n)]
+    console.log(n)
+    if ( Number(n) in this.numberToStringScale) return this.numberToStringScale[Number(n)]
     else return n
   }
   fourColorPalette=[
@@ -109,7 +110,7 @@ export class ChartsService {
     if (series) indices = series["index"]
 
     if (chartElement.config.type=='groupedPercentAndData'){
-      let shareElement=this.transformDataIntoPairs(series).filter(d=>d[0].includes("share"))[0][1]
+      let shareElement=this.transformDataIntoPairs(series).filter(d=>d[0].includes("share") || d[0].includes("*"))[0][1]
       let seriesList = this.generateSeriesList(shareElement)
       console.log(shareElement)
       console.log(seriesList)

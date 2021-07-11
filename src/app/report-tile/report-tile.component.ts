@@ -10,7 +10,7 @@ import {NzMessageService} from 'ng-zorro-antd/message';
 @Component({
   selector: 'app-report-tile',
   template: `
-    <nz-card [nzBordered]="false"  [nzCover]="coverTemplate" [nzActions]="this.fromLogin?[]:this.report.authorId==this.user.userId?[actionSetting, actionEdit, actionEllipsis, actionSee,actionDownload, this.actionDelete]:[actionSetting, actionEdit, actionSee,actionDownload]">
+    <nz-card (click)="fromLogin?this.preview():null" [class.fromLogin]="fromLogin" [nzBordered]="false"  [nzCover]="coverTemplate" [nzActions]="this.fromLogin?[]:this.report.authorId==this.user.userId?[actionSetting, actionEdit, actionEllipsis, actionSee,actionDownload, this.actionDelete]:[actionSetting, actionEdit, actionSee,actionDownload]">
 <!--      <nz-card-meta nzTitle="{{report.name}}" nzDescription=""></nz-card-meta>-->
       <div class="large-indicator">
         <figure class="indicator-icon"><img src="./assets/answers_count.png" style="width:70px;"></figure>
@@ -96,6 +96,9 @@ import {NzMessageService} from 'ng-zorro-antd/message';
 
         color: #A6ACBE;
 
+      }
+      .fromLogin{
+        cursor: pointer;
       }
       .indicator-right-side-top{
 
