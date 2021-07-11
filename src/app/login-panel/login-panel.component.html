@@ -40,9 +40,9 @@
 
         <div class="cards-container">
 
-          <div class="card-padding" *ngFor="let dataObject of this.dashboardData.objects" >
-            <span>Test</span>
-            <app-report-tile [report]="dataObject" *ngIf="dataObject.type=='report'"></app-report-tile>
+          <div class="card-padding" *ngFor="let dataObject of this.dashboardData" >
+
+            <app-report-tile [report]="dataObject" *ngIf="dataObject.type=='report'" [fromLogin]="true"></app-report-tile>
           </div>
 
 
