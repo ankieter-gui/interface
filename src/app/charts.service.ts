@@ -46,7 +46,9 @@ export class ChartsService {
       'raczej dobrze':"#B7E075",
       'średnio':"#FDFEBD",
       'raczej źle':"#FDBE6F",
-      'bardzo źle':"#E95638"
+      'bardzo źle':"#E95638",
+      "tak":"#4AAF5B",
+      "nie":"#E95638",
     }
     if (n.toLowerCase() in y) return y[n.toLowerCase()]
     else {
@@ -552,7 +554,7 @@ console.log(wereAllValuesFilled)
               verticalAlign: config.verticalAlign,
               rotate: config.rotate,
               // formatter: '{c}%  {name|{a}}',
-              formatter: (options)=>`${Math.round(options.value)}%`,
+              formatter: (options)=>Math.round(options.value)!=0?`${Math.round(options.value)}%`:"",
               fontSize: 12,
               rich: {
                 name: {

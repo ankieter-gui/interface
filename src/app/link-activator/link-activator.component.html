@@ -1,1 +1,2 @@
-<nz-spin style="margin-top:20vh" nzSize="large"></nz-spin>
+<nz-spin style="margin-top:20vh" nzSize="large" *ngIf="!renderPreview"></nz-spin>
+<app-report-preview [idFromExternalSource]="this.reportId" *ngIf="renderPreview"></app-report-preview>

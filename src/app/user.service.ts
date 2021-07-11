@@ -55,7 +55,7 @@ export class UserService {
 
   }
   get isUnrestrictedPage(){
-    return (this.router.url.includes("reports/")||this.router.url.includes("share"))
+    return (this.router.url.includes("share"))
   }
   redirectToCASLogin(){
     window.location.href = `${BACKEND_URL}/login`

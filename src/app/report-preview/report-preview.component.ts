@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {ReportDefinition} from '../dataModels/ReportDefinition';
 import {SurveysService} from '../surveys.service';
 import {ReportsService} from '../reports.service';
@@ -48,14 +48,17 @@ export class ReportPreviewComponent implements OnInit {
           orientation:"vertical",}} as ChartReportElement})
   }
   save(){
-    this.reportsService.saveReport(this.route.snapshot.paramMap.get('id'), this.reportDefinition).subscribe(d=>console.log("saved"));
+    this.reportsService.saveReport(this.reportId, this.reportDefinition).subscribe(d=>console.log("saved"));
   }
+  @Input()
+  idFromExternalSource;
   ngOnInit(): void {
-    this.reportId = this.route.snapshot.paramMap.get('id')
-    this.reportsService.getLinkedSurvey(this.route.snapshot.paramMap.get('id')).subscribe((d)=> {
+
+    this.reportId = this.idFromExternalSource?this.idFromExternalSource:this.route.snapshot.paramMap.get('id')
+    this.reportsService.getLinkedSurvey(this.reportId).subscribe((d)=> {
       this.linkedSurveyId = d.surveyId; console.log(this.linkedSurveyId)
       this.downloadSurveyQuestions()
-      this.reportsService.getReport(this.route.snapshot.paramMap.get('id')).subscribe(d=>this.reportDefinition=d)
+      this.reportsService.getReport(this.reportId).subscribe(d=>this.reportDefinition=d)
     });
     this.downloadNamingDictionary()
 
@@ -82,7 +85,7 @@ export class ReportPreviewComponent implements OnInit {
     }
   }
   rename(){
-    this.reportsService.renameReport(this.route.snapshot.paramMap.get('id'), this.reportDefinition.title).subscribe(d=>console.log(d))
+    this.reportsService.renameReport(this.reportId, this.reportDefinition.title).subscribe(d=>console.log(d))
   }
   exportAsPDF(divId)
   {
