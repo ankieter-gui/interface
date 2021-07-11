@@ -6,6 +6,7 @@ import {Router} from '@angular/router';
 import {DashboardModalsService} from '../dashboard-modals.service';
 import {UserService} from '../user.service';
 import {NzMessageService} from 'ng-zorro-antd/message';
+import {SharingService} from '../sharing.service';
 
 @Component({
   selector: 'app-report-tile',
@@ -175,7 +176,7 @@ export class ReportTileComponent implements OnInit {
   report:ReportMeta;
   @Output()
   reloadEmitter = new EventEmitter();
-  constructor(private reportService:ReportsService, private router:Router, public modals:DashboardModalsService, public user:UserService, public message:NzMessageService) { }
+  constructor(public sharing:SharingService, private reportService:ReportsService, private router:Router, public modals:DashboardModalsService, public user:UserService, public message:NzMessageService) { }
   get sharedToCount(){
     return Object.keys(this.report.sharedTo).length
   }
@@ -203,5 +204,12 @@ export class ReportTileComponent implements OnInit {
     this.router.navigateByUrl(`/reports/${this.report.id}`,{
       state: {shallPrint:false}
     });
+  }
+  async previewFromLink(){
+    let r = await this.sharing.getReportSharingLink(this.report.id, 'r').toPromise()
+    console.log(r)
+    // this.router.navigateByUrl(`/reports/${this.report.id}`,{
+    //   state: {shallPrint:false}
+    // });
   }
 }

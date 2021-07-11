@@ -41,6 +41,7 @@ export class ChartsService {
   horizontalBarHeight=40;
 
   rateToColorGrade(index,n){
+    if (n==undefined) return this.darkGray
     let y = {
       'bardzo dobrze': "#4AAF5B",
       'raczej dobrze':"#B7E075",
@@ -125,9 +126,12 @@ export class ChartsService {
 
     if (chartElement.config.type=='groupedPercentAndData'){
       let shareElement=this.transformDataIntoPairs(series).filter(d=>d[0].includes("share") || d[0].includes("*"))[0][1]
+      for (let x of shareElement) delete x[9999]
       let seriesList = this.generateSeriesList(shareElement)
       console.log(shareElement)
+
       console.log(seriesList)
+
       chartName = chartName?chartName:chartElement.dataQuery.get[0][0]
       let y= {
      //   title: {text: chartName,textStyle:{overflow:'break', width:800}},
