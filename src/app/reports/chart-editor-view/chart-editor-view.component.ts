@@ -624,9 +624,12 @@ saveAsPng(){
     return pairs.filter(d=> this.chartData.dataQuery.as.includes(d[0].split(" ")[0]) && d[0].split(" ")[0]!="share").map(d=>d[0].split(" ")[0])
   }
   get tableData(){
-    let transpose = m => m[0].map((x,i) => m.map(x => x[i]))
-    let tableContent = this.chartsService.transformDataIntoPairs(this.dataResponse).filter(d=> this.chartData.dataQuery.as.includes(d[0].split(" ")[0]) && d[0].split(" ")[0]!="share").map(d=>d[1])
+    let transpose = m => m[0].map((x,i) => m.map(x => x[i])).reverse()
+    let pairs = this.chartsService.transformDataIntoPairs(this.dataResponse,true)
+    console.log(pairs)
+      let tableContent = pairs.filter(d=> this.chartData.dataQuery.as.includes(d[0].split(" ")[0]) && d[0].split(" ")[0]!="share").map(d=>d[1])
     return transpose(tableContent)
+    // return tableContent
   }
 
 }

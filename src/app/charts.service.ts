@@ -81,11 +81,20 @@ export class ChartsService {
   constructor(private reportService:ReportsService) { }
 
    zip = (a, b) => a.map((k, i) => [k, b[i]]);
-  transformDataIntoPairs(series){
+  transformDataIntoPairs(series,remove9999=false){
     const zip = (a, b) => a.map((k, i) => [k, b[i]]);
     let indices = series["index"]
     var values = Object.assign({}, series);
     delete values['index'];
+    if (remove9999){
+      let indicesOfDefaultValues = indices.map((d,i)=>[d,i]).filter(d=>d[0]==999 || d[0]==9999).map(d=>d[1])
+      for (let key in values){
+
+        let res:[] = values[key].filter((d,i)=>!indicesOfDefaultValues.includes(i))
+        values[key]=res;
+      }
+    }
+
     return zip(Object.keys(values), Object.values(values))
   }
   generateSeriesList(shareElement:object[]){
@@ -124,10 +133,13 @@ export class ChartsService {
     const zip = (a, b) => a.map((k, i) => [k, b[i]]);
     let indices;
     if (series) indices = series["index"]
+    // indices = indices.filter(d=>d!=999 && d!=9999)
 
     if (chartElement.config.type=='groupedPercentAndData'){
-      let shareElement=this.transformDataIntoPairs(series).filter(d=>d[0].includes("share") || d[0].includes("*"))[0][1]
-      // for (let x of shareElement) delete x[9999]
+      let shareElement=this.transformDataIntoPairs(series,true).filter(d=>d[0].includes("share") || d[0].includes("*"))[0][1]
+      indices = indices.filter(d=>d!=999 && d!=9999)
+      for (let x of shareElement) delete x[9999]
+      for (let x of shareElement) delete x[999]
       let seriesList = this.generateSeriesList(shareElement)
       console.log(shareElement)
 
@@ -144,7 +156,7 @@ export class ChartsService {
      //      // }
      //    },
         color:"#3b3b3b",
-        pxHeight: 200,
+        pxHeight: indices.length * (120/3) + 80,
          legend:{
           // top: 1+chartName.length*0.1+"%",
            data:this.getAllShareLabels(shareElement).map(d=>this.getNumberToStringScale(this.reportService.getLabelFor(namingDictioanry,chartElement.dataQuery.get[0][0],d)))
