@@ -255,7 +255,7 @@ import {Subject} from 'rxjs';
   styles: [
     `
       td{
-        padding:15px!important;
+        padding:9px!important;
       }
 
       .spacer{
@@ -375,7 +375,7 @@ import {Subject} from 'rxjs';
       .chart-area{
         display: flex;
 
-        flex-direction: column;
+        flex-direction: row;
        width:100%;
 
       }
