@@ -446,11 +446,23 @@ globalFilter:GlobalFilter
         this.hideData=false;
         this.hideGroupBy=false;
         this.chartData.dataQuery.as[0]='share'
-        this.onPickQuestion = (question)=>{this.chartData.dataQuery.get[0][0] = question}
+        this.onPickQuestion = (question)=>{
+          if (this.chartData.dataQuery.get[0].length > 0 && this.chartData.dataQuery.get[0][0] == question) {
+            console.log("equals")
+            this.chartData.dataQuery.get = [[]]
+          }else {
+            this.chartData.dataQuery.get[0][0] = question
+          }
+        }
         this.byPickerClick= (q)=>{
+         console.log(this.chartData.dataQuery.by)
+          if (this.chartData.dataQuery.by.length > 0 && this.chartData.dataQuery.by[0] == q){
+            console.log("equals")
+            this.chartData.dataQuery.by = []
+          }else{
           this.chartData.dataQuery.by[0] = q;
           this.chartData.dataQuery.by[1] = "*"
-        }
+        }}
       },
       'multipleChoice':()=>{
         this.hideData=true;
@@ -532,7 +544,7 @@ globalFilter:GlobalFilter
    }
   }
   buPickerClick(type){
-    this.chartData.dataQuery.by[0] = type
+    if (!this.byPickerClick) this.chartData.dataQuery.by[0] = type
     this.byPickerClick(type)
   }
   byPickerClick=(type:string)=>{}
@@ -626,7 +638,7 @@ saveAsPng(){
   get tableData(){
     let transpose = m => m[0].map((x,i) => m.map(x => x[i])).reverse()
     let pairs = this.chartsService.transformDataIntoPairs(this.dataResponse,true)
-    console.log(pairs)
+   // console.log(pairs)
       let tableContent = pairs.filter(d=> this.chartData.dataQuery.as.includes(d[0].split(" ")[0]) && d[0].split(" ")[0]!="share").map(d=>d[1])
     return transpose(tableContent)
     // return tableContent

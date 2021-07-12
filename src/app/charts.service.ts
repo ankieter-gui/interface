@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import {ChartReportElement} from './dataModels/ReportElement';
 import {EChartsOption} from 'echarts';
-import * as lcs from 'node-lcs'
 import * as Chance from 'chance'
+import * as lcs from 'node-lcs'
+
 import {commonSubstring} from './lcs';
 import {SeriesLabelOption} from 'echarts/types/src/util/types';
 import {ReportsService} from './reports.service';
@@ -41,6 +42,7 @@ export class ChartsService {
   horizontalBarHeight=40;
 
   rateToColorGrade(index,n){
+
     if (n==undefined) return this.darkGray
     let y = {
       'bardzo dobrze': "#4AAF5B",
@@ -51,6 +53,7 @@ export class ChartsService {
       "tak":"#4AAF5B",
       "nie":"#E95638",
       "pominięto":this.darkGray,
+      'odmowa odpowiedzi':this.darkGray
     }
     if (n.toLowerCase() in y) return y[n.toLowerCase()]
     else {
@@ -60,7 +63,10 @@ export class ChartsService {
       if (this.darkGraySubstrings.some(v=>n.toLowerCase().includes(v))){
         return this.darkGray
       }
+      if (index<this.fourColorPalette.length-1)
       return this.fourColorPalette[index]
+      else
+        return Chance().color()
     }
   }
   sevenColorPalette=[
