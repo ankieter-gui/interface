@@ -70,6 +70,8 @@ export class ReportsService {
     return dict
   }
   getLabelFor(dictionary, question, value){
+console.log(dictionary[question])
+    console.log(question);console.log(value)
 
     if (value==9999) return "Pominięto"
     if (value == "*") return "Razem"

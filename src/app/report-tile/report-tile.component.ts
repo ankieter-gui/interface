@@ -24,7 +24,7 @@ import {SharingService} from '../sharing.service';
           </div>
         </div>
       </div>
-      <div class="large-indicator">
+      <div class="large-indicator" *ngIf="!fromLogin">
         <figure class="indicator-icon"><img src="./assets/answers_count.png" style="width:70px;"></figure>
         <div class="indicator-right-side">
           <div class="indicator-right-side-top small-font">

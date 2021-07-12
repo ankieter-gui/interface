@@ -4,6 +4,7 @@ import {DashboardModalsService} from '../dashboard-modals.service';
 import {SharingService} from '../sharing.service';
 import {UserService} from '../user.service';
 import {OtherUser} from '../dataModels/UserGroup';
+import {NzMessageService} from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'app-groups-editor',
@@ -51,6 +52,7 @@ import {OtherUser} from '../dataModels/UserGroup';
                <i nz-icon nzType="search"></i>
              </nz-filter-trigger>
            </th>
+           <th></th>
            <th>Grupy</th>
            <!--            <th>Age</th>-->
            <!--            <th>Address</th>-->
@@ -59,7 +61,7 @@ import {OtherUser} from '../dataModels/UserGroup';
          </thead>
          <tbody>
          <tr *ngFor="let data of basicTable.data">
-           <td>{{data.casLogin}} <i nz-icon nzType="delete" style="margin-left:1em" (click)="remove(data.id)"></i> </td>
+           <td>{{data.casLogin}} </td> <td> <i nz-icon nzType="delete" style="margin-left:1em;cursor: pointer" (click)="remove(data.id)"></i></td>
            <!--            <td>{{data.age}}</td>-->
            <!--            <td>{{data.address}}</td>-->
            <td>
@@ -106,7 +108,7 @@ export class GroupsEditorComponent implements OnInit {
   userNameSearchValue=""
   groupSearchValue=""
   visible=false;
-  constructor( public dashboardModals:DashboardModalsService, public sharing:SharingService, public user:UserService) { }
+  constructor( public dashboardModals:DashboardModalsService, public sharing:SharingService, public user:UserService, public message:NzMessageService) { }
 
   ngOnInit(): void {
     this.sharing.downloadAllGroups()
@@ -121,6 +123,8 @@ export class GroupsEditorComponent implements OnInit {
   }
 async remove(id){
   await this.user.removeUser(id);
+  this.sharing._allUsersCache = this.sharing._allUsersCache.filter(d=>d.id!=id)
+  this.message.success("Usunięto")
   setTimeout(async()=>{ await this.sharing.downloadAllGroups()}, 100)
 
 }
