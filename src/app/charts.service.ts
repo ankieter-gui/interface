@@ -7,6 +7,7 @@ import * as lcs from 'node-lcs'
 import {commonSubstring} from './lcs';
 import {SeriesLabelOption} from 'echarts/types/src/util/types';
 import {ReportsService} from './reports.service';
+import {share} from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
@@ -548,6 +549,10 @@ console.log(wereAllValuesFilled)
             boundaryGap: true,
             type: 'category',
             axisTick: {show: false},
+            axisLabel: {
+              interval: 0,
+              rotate: shareElement.length> 4?30:0 //If the label names are too long you can manage this by rotating the label.
+            },
             //rok, stopień lub kierunek
             data: xAxisLabels.map(d=>this.reportService.getLabelFor(namingDictioanry, chartElement.dataQuery.by[0], d))
           }

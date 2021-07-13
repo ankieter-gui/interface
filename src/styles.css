@@ -79,4 +79,9 @@ nz-card{
 
 
   .dont-break{page-break-inside: avoid;}
+  @media print {
+    .print-wide{
+      width: 1400px!important;
+    }
+  }
 

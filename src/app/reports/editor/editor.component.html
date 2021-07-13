@@ -28,6 +28,7 @@
         <section class="header-right slide-top-enter-animation" >
           <div style="display: flex;flex-direction: row">
             <button nz-button nzType="link" (click)="save(true)" nz-tooltip="Zapisywanie jest automatyczne!">Zapisz</button>
+            <button nz-button nzType="link" (click)="preview()" nz-tooltip="Zapisywanie jest automatyczne!">Podgląd</button>
             <nz-tag *ngIf="reportDefinition.globalFilter" nzMode="closeable" (nzOnClose)="this.reportDefinition.globalFilter=null; refresh(); filterSelector.reset()">{{this.reportDefinition.globalFilter.question}} - {{this.reportsService.getLabelFor(this.namingDictionary, this.reportDefinition.globalFilter.question,  this.reportDefinition.globalFilter.answer)}}</nz-tag>
           <button nz-button nz-dropdown [nzDropdownMenu]="menu4" nzTrigger="click">
             Filtruj ankietę przez odpowiedź

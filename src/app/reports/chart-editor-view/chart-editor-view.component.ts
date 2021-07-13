@@ -254,8 +254,17 @@ import {Subject} from 'rxjs';
   `,
   styles: [
     `
-      td{
-        padding:9px!important;
+      .chart-area td{
+        padding-top:9px!important;
+        padding-bottom:9px!important;
+        padding-left:0px!important;
+        padding-right:0px!important;
+      }
+      .chart-area th{
+        max-width: 30px;
+
+        padding-left:0px!important;
+        padding-right:0px!important;
       }
 
       .spacer{

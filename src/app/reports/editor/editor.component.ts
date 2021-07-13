@@ -11,6 +11,7 @@ import {ActivatedRoute} from '@angular/router';
 import {ChartReportElement, TextReportElement} from '../../dataModels/ReportElement';
 import {Subject} from 'rxjs';
 import {NzMessageService} from 'ng-zorro-antd/message';
+import {FRONTEND_URL} from '../../Configuration';
 
 @Component({
   selector: 'app-editor',
@@ -24,6 +25,9 @@ export class EditorComponent implements OnInit {
   namingDictionary;
   surveyStructure;
   codeModel;
+  preview(){
+    this.window.open(`${FRONTEND_URL}/reports/${this.reportId}`, "_blank");
+  }
   useCode(){
     this.reportDefinition = JSON.parse(this.codeModel)
     this.save()
@@ -49,7 +53,7 @@ export class EditorComponent implements OnInit {
     setTimeout(()=>{this.save(); this.forceUpdate.next();}, 100)
 
   }
-  constructor(private surveysService:SurveysService,private reportsService:ReportsService,private route: ActivatedRoute, private message: NzMessageService) { }
+  constructor(private surveysService:SurveysService,private reportsService:ReportsService,private route: ActivatedRoute, private message: NzMessageService, public window:Window) { }
   addNewTextElement(){
     this.reportDefinition.elements.push({type:"text", content: {text:""} as TextReportElement})
   }
