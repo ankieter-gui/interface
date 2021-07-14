@@ -16,6 +16,7 @@ import {AddNewUserComponent} from './add-new-user/add-new-user.component';
 import {SurveysService} from './surveys.service';
 import {NewSurveyDialogComponent} from './new-survey-dialog/new-survey-dialog.component';
 import {NzMessageService} from 'ng-zorro-antd/message';
+import {DeleteConfirmModalComponent} from './delete-confirm-modal/delete-confirm-modal.component';
 
 @Injectable({
   providedIn: 'root'
@@ -50,6 +51,12 @@ export class DashboardModalsService {
     // Return a result when closed
     modal.afterClose.subscribe(result => console.log('[afterClose] The result is:', result));
     return instance;
+  }
+  async openDeleteConfirmationDialog(name, callback){
+    this.createComponentModal("Potwierdź", DeleteConfirmModalComponent, {name:name}, (i,m)=>{
+      callback()
+      m.destroy()
+    })
   }
   async openNewSurveyDialog(refreshDashboard){
     this.createComponentModal("Nowa ankieta", NewSurveyDialogComponent, {}, async (i:NewSurveyDialogComponent,m)=>{

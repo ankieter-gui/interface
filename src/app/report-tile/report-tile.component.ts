@@ -191,9 +191,12 @@ export class ReportTileComponent implements OnInit {
     // this.reloadEmitter.emit()
   }
   async delete(){
-    await (this.reportService.deleteReport(this.report.id).toPromise())
-    this.reloadEmitter.emit()
-    this.message.info('Usunięto')
+    this.modals.openDeleteConfirmationDialog(this.report.name, async ()=>{
+      await (this.reportService.deleteReport(this.report.id).toPromise())
+      this.reloadEmitter.emit()
+      this.message.info('Usunięto')
+    })
+
   }
   async PDF(){
     this.router.navigateByUrl(`/reports/${this.report.id}`, {

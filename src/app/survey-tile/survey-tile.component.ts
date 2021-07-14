@@ -7,7 +7,7 @@ import {UserService} from '../user.service';
 @Component({
   selector: 'app-survey-tile',
   template: `
-    <nz-card [nzBordered]="false"  [nzCover]="coverTemplate" [nzActions]="this.survey.authorId==this.user.userId?[actionDelete,actionShare, actionCreateReport]:[actionCreateReport]">
+    <nz-card [nzBordered]="false"  [nzCover]="coverTemplate" [nzActions]="this.survey.authorId==this.user.userId?[actionShare, actionCreateReport,actionDelete]:[actionCreateReport]">
       <!--      <nz-card-meta nzTitle="{{report.name}}" nzDescription=""></nz-card-meta>-->
       <div class="large-indicator">
         <figure class="indicator-icon"><img src="./assets/answers_count.png" style="width:70px;"></figure>
@@ -198,8 +198,11 @@ export class SurveyTileComponent implements OnInit {
   @Output()
   reloadEmitter = new EventEmitter();
   async deleteSurvey(){
-    await this.surveyService.deleteSurvey(this.survey.id).toPromise()
-    this.reloadEmitter.emit()
+    this.dashboardModals.openDeleteConfirmationDialog(this.survey.name, async ()=>{
+      await this.surveyService.deleteSurvey(this.survey.id).toPromise()
+      this.reloadEmitter.emit()
+    })
+
   }
   ngOnInit(): void {
   }

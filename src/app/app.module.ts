@@ -89,6 +89,7 @@ import { AccountNotExistsComponent } from './account-not-exists/account-not-exis
 import { GroupedBarsPercentageDataPickerComponent } from './grouped-bars-percentage-data-picker/grouped-bars-percentage-data-picker.component';
 import {NzAlertModule} from 'ng-zorro-antd/alert';
 import {NzMessageModule} from 'ng-zorro-antd/message';
+import { DeleteConfirmModalComponent } from './delete-confirm-modal/delete-confirm-modal.component';
 
 
 registerLocaleData(fr);
@@ -179,7 +180,9 @@ export let commonNZImports = [
 
     AccountNotExistsComponent,
 
-    GroupedBarsPercentageDataPickerComponent
+    GroupedBarsPercentageDataPickerComponent,
+
+    DeleteConfirmModalComponent
   ],
     imports: [
         ...commonNZImports,

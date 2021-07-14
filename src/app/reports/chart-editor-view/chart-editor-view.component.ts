@@ -48,7 +48,7 @@ import {Subject} from 'rxjs';
     <section class="chart-area" *ngIf="chartData.config.type=='groupedPercentAndData' && this.echartOptions">
       <div [style.height.px]="echartOptions.pxHeight" echarts (chartInit)="onChartInit($event)" [options]="echartOptions" class="chart" [class.fullWidth]="!(chartData.dataQuery.as.includes('share') && chartData.dataQuery.as.length>1 && dataResponse)" #chartInstance></div>
       <nz-table style="min-height: 300px" *ngIf="chartData.dataQuery.as.includes('share') && chartData.dataQuery.as.length>1 && dataResponse" class="details-table" [nzTemplateMode]="true">
-       <thead> <tr><th *ngFor="let header of tableHeaders">{{header | PolskieNazwy | titlecase}}</th></tr></thead>
+       <thead style="white-space: nowrap"> <tr><th style="white-space: nowrap;" *ngFor="let header of tableHeaders">{{header | PolskieNazwy | titlecase}}</th></tr></thead>
         <tbody>
         <tr *ngFor="let row of this.tableData"><td *ngFor="let value of row">{{value | number }}</td></tr>
         </tbody>
