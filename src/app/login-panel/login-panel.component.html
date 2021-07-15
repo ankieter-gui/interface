@@ -21,12 +21,12 @@
         <button style="margin:1em" nz-button (click)="this.user.redirectToCASLogin()">Zaloguj <i  nz-icon nzType="login"></i></button>
       </div>
     </nz-header>
-    <nz-content *ngIf="!dashboardData || dashboardData.length==0">
+    <nz-content *ngIf="!canDisplayDashboard">
       <div class="inner-content">
       <button style="position: absolute;left:50%;top:50%;transform: translate(-50%,-50%)" class="btn-hover color-9" (click)="this.user.redirectToCASLogin()">Zaloguj się</button>
       </div>
     </nz-content>
-    <nz-content *ngIf="dashboardData && dashboardData.length!=0 ">
+    <nz-content *ngIf="canDisplayDashboard">
       <header class="header-container">
         <h1 class="breadcrumb-header">Publicznie dostępne raporty</h1>
       </header>

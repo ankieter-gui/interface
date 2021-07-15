@@ -14,5 +14,7 @@ export class LoginPanelComponent implements OnInit {
   ngOnInit(): void {
     this.dashobard.getDashobardData().subscribe(d=>this.dashboardData=d['objects'])
   }
-
+get canDisplayDashboard(){
+  return this.dashboardData && this.dashboardData.filter(d=>d.type=='report').length!=0
+}
 }
