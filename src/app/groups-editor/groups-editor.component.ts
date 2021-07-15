@@ -61,7 +61,7 @@ import {NzMessageService} from 'ng-zorro-antd/message';
          </thead>
          <tbody>
          <tr *ngFor="let data of basicTable.data">
-           <td>{{data.casLogin}} </td> <td> <i nz-icon nzType="delete" style="margin-left:1em;cursor: pointer" (click)="remove(data.id)"></i></td>
+           <td>{{data.casLogin}} </td> <td> <i nz-icon nzType="delete" style="margin-left:1em;cursor: pointer" (click)="remove(data)"></i></td>
            <!--            <td>{{data.age}}</td>-->
            <!--            <td>{{data.address}}</td>-->
            <td>
@@ -121,11 +121,15 @@ export class GroupsEditorComponent implements OnInit {
       await this.sharing.removeUserFromGroup(groupName,[user.id]).toPromise()
     await this.sharing.downloadAllGroups()
   }
-async remove(id){
-  await this.user.removeUser(id);
-  this.sharing._allUsersCache = this.sharing._allUsersCache.filter(d=>d.id!=id)
-  this.message.success("Usunięto")
-  setTimeout(async()=>{ await this.sharing.downloadAllGroups()}, 100)
+async remove(user){
+    this.dashboardModals.openDeleteConfirmationDialog(user.name, async (i,m)=>{
+      await this.user.removeUser(user.id);
+      this.sharing._allUsersCache = this.sharing._allUsersCache.filter(d=>d.id!=user.id)
+      this.message.success("Usunięto")
+      m.destroy()
+
+    })
+
 
 }
 }
