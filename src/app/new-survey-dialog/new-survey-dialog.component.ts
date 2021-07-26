@@ -7,9 +7,9 @@ import {SurveysService} from '../surveys.service';
   selector: 'app-new-survey-dialog',
   template: `
     <input nz-input [(ngModel)]="name" placeholder="Nazwa ankiety...">
-    CSV:
+    CSV/XLSX:
     <ngx-file-drop *ngIf="!isFileBeingUploaded" dropZoneLabel="Upuść plik tutaj" (onFileDrop)="dropped($event)"
-                   (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)" accept=".csv">
+                   (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)" accept=".csv,.xlsx">
       <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
         <span style="display:block;" *ngIf="files.length>0">Wybrano: {{files[0].relativePath}}</span>
         <button nz-button (click)="openFileSelector()">{{files.length>0?"Zmień":"Wybierz"}}</button>
