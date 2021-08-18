@@ -61,14 +61,25 @@ export class DashboardModalsService {
   async openNewSurveyDialog(refreshDashboard){
     this.createComponentModal("Nowa ankieta", NewSurveyDialogComponent, {}, async (i:NewSurveyDialogComponent,m)=>{
       this.createNewSurveyFromDialogInstance(i.name, i,m,(csvResponse, xmlResponse)=>{
-        //TODO: to nie powinno tak być robione. Przekazywanie funkcji z dashboardu robi błąd z this
-        this.window.location.reload();
-        m.destroy()
+        console.log(i)
+        if (i.filesXML.length>0&& i.files.length>0) {
+          //TODO: to nie powinno tak być robione. Przekazywanie funkcji z dashboardu robi błąd z this
+          this.window.location.reload();
+          m.destroy()
+        }
+        else{
+          i.message.error("Musisz wybrać plik .csv i .xml")
+        }
       })
 
     })
   }
   private async createNewSurveyFromDialogInstance(name, i,m,callback){
+    console.log(i)
+    if ((i.filesXML.length==1 && i.files.length==0) ||(i.filesXML.length==0 && i.files.length==1)){
+      i.message.error("Musisz wybrać plik .csv i .xml")
+      return;
+    }
     let selectedSurvey = null;
     selectedSurvey=i.selectedSurvey
 

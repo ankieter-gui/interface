@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {FileSystemDirectoryEntry, FileSystemFileEntry, NgxFileDropEntry} from 'ngx-file-drop';
 import {HttpClient} from '@angular/common/http';
 import {SurveysService} from '../surveys.service';
+import {NzMessageService} from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'app-new-survey-dialog',
@@ -23,6 +24,7 @@ import {SurveysService} from '../surveys.service';
         <button nz-button (click)="openFileSelector()">{{filesXML.length>0?"Zmień":"Wybierz"}}</button>
       </ng-template>
     </ngx-file-drop>
+    <nz-alert *ngIf="filesXML.length==0 || files.length==0" nzType="warning" nzMessage="Musisz wybrać plik .csv i .xml!" style="margin-top:2em"></nz-alert>
     <nz-spin *ngIf="isFileBeingUploaded" nzSimple [nzSize]="'large'"></nz-spin>
   `,
   styles: [`
@@ -32,7 +34,7 @@ import {SurveysService} from '../surveys.service';
 })
 export class NewSurveyDialogComponent implements OnInit {
 
-  constructor(private http:HttpClient, private  surveyService:SurveysService) { }
+  constructor(private http:HttpClient, private  surveyService:SurveysService,public message: NzMessageService) { }
   public files: NgxFileDropEntry[] = [];
   public filesXML: NgxFileDropEntry[] = [];
   public fileEntry:FileSystemFileEntry;

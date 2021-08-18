@@ -37,6 +37,7 @@ import {NzMessageService} from 'ng-zorro-antd/message';
             <button nz-button (click)="openFileSelector()">{{filesXML.length>0?"Zmień":"Wybierz"}}</button>
           </ng-template>
         </ngx-file-drop>
+        <nz-alert *ngIf="(filesXML.length==1 && files.length==0) ||(filesXML.length==0 && files.length==1) " nzType="warning" nzMessage="Musisz wybrać plik .csv i .xml!" style="margin-top:2em"></nz-alert>
         <nz-spin *ngIf="isFileBeingUploaded" nzSimple [nzSize]="'large'"></nz-spin>
       </nz-collapse-panel>
     </nz-collapse>
