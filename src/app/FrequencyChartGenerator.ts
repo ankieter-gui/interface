@@ -20,6 +20,14 @@ export class FrequencyChartGenerator extends AbstractChartGenerator {
     let u = {
       true: () => {
         //therefore we count percentages
+        //we need to delete 999 and 9999 as there is no way to represent it meaningfuly when displaying %
+        chartValuesPairs=chartValuesPairs.filter(d=>d[0]!="9999" && d[0]!="999")
+        for (let pair of chartValuesPairs){
+          let category = pair[0]
+          let handcodedValue = Number(this.chartElement.config.handCodedData.filter(d=>d.label===category)[0].value)
+          pair.push(Math.round(pair[1]/ handcodedValue * 100))
+        }
+        chartValuesPairs = chartValuesPairs.sort((a,b)=>a[2]-b[2])
       },
       false: () => {
         //we can't calculate percent. Stick with N only
