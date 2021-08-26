@@ -32,6 +32,11 @@ export interface DataPair{
 
 }
 export abstract class AbstractChartGenerator {
+  horizontalBarHeight=40;
+  gray="#9F9F9F"
+  darkGray="#5e5e5e"
+  lightBlue="#1e6adb"
+  darkBlue="#043b8b"
   static valuesToOmit = [999,9999]
   zip = (a, b) => a.map((k, i) => [k, b[i]]);
   abstract asJSONConfig(): EChartsOption;
@@ -52,6 +57,9 @@ export abstract class AbstractChartGenerator {
       l= [...l, ...Object.keys(series)]
     }
     return [...new Set(l)];
+  }
+  get questions():string[]{
+    return this.chartElement.dataQuery.get.flat()
   }
   generateSeriesList(shareElement:object[]){
     let resultingMap={}

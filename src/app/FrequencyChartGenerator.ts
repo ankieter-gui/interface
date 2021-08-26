@@ -2,13 +2,24 @@ import {AbstractChartGenerator} from './AbstractChartGenerator';
 import {EChartsOption} from 'echarts';
 import {ChartReportElement} from './dataModels/ReportElement';
 import {ReportsService} from './reports.service';
+import {CallbackDataParams} from 'echarts/types/src/util/types';
 
 //groupedBars string type
 export class FrequencyChartGenerator extends AbstractChartGenerator {
+  chartValuesPairs;
+  wereAllValuesFilledByHand: boolean = false;
   constructor(series: any, chartElement: ChartReportElement, namingDictionary, public reportsService: ReportsService) {
     super(series, chartElement, namingDictionary, reportsService);
   }
-
+  getWereAllValuesFilled():boolean{
+    let wereAllValuesFilled;
+    for (let i of this.chartElement.config.handCodedData){
+      console.log(i.label)
+      if (!i.value) {wereAllValuesFilled=false;break}
+      wereAllValuesFilled=true;
+    }
+    return wereAllValuesFilled
+  }
   generate(): FrequencyChartGenerator {
     console.log(this.series);
     this.shareElement = AbstractChartGenerator.transformDataIntoPairs(this.series).filter(d => d[0].includes('share'))[0][1][0];
@@ -16,7 +27,7 @@ export class FrequencyChartGenerator extends AbstractChartGenerator {
     let values = Object.values(this.shareElement);
     //make it into pairs [key,value][] so we can sort it later
     let chartValuesPairs = this.zip(categories, values);
-    let wereAllValuesFilledByHand: boolean = false;
+    this.wereAllValuesFilledByHand = this.getWereAllValuesFilled();
     let u = {
       true: () => {
         //therefore we count percentages
@@ -34,17 +45,35 @@ export class FrequencyChartGenerator extends AbstractChartGenerator {
       }
       //@ts-ignore
     }[wereAllValuesFilledByHand]();
+    this.chartValuesPairs=chartValuesPairs
     return this;
   }
-
+  private getData(){
+    if (this.wereAllValuesFilledByHand){
+      return this.chartValuesPairs.map(d=>d[2])
+    }else{
+      return this.chartValuesPairs.map(d=>d[1])
+    }
+  }
+  private getLabels(){
+    return this.chartValuesPairs.map(d=>d[0]).map(d=>this.getLabelFor(this.questions[0], d))
+  }
+  private getN(name){
+    return this.chartValuesPairs.filter(d=>d[0]==name)[0]
+  }
+  private getFormatter(){
+    if (this.wereAllValuesFilledByHand){
+      return (options:CallbackDataParams)=>`${options.value}% (N=${this.getN(options.name)})`
+    }else{
+      return (options:CallbackDataParams)=>`${options.value}`
+    }
+  }
   asJSONConfig(): EChartsOption {
     return {
 
       color: '#3b3b3b',
-      // pxHeight: categories.length*this.horizontalBarHeight,
-      // legend:{
-      //  data:this.getAllShareLabels(shareElement)
-      // },
+       pxHeight: this.getLabels().length*this.horizontalBarHeight,
+
       grid: {
         left: '3%',
         right: '4%',
@@ -54,18 +83,18 @@ export class FrequencyChartGenerator extends AbstractChartGenerator {
       },
       xAxis: {type: 'value', show: true, animation: true},
       //@ts-ignore
-      yAxis: {type: 'category', show: true, data: categories, axisLabel: {overflow: 'break'}},
+      yAxis: {type: 'category', show: true, data: this.getLabels(), axisLabel: {overflow: 'break'}},
       series: [{
         //barMinHeight:this.horizontalBarHeight,
-        // data:values,
+        data:this.getData(),
         name: 'Liczba odpowiedzi',
         type: 'bar',
-        // color:this.lightBlue,
+        color:this.lightBlue,
         stack: 'total',
         label: {
           show: true,
-          //TODO: co z tym?
-          // formatter: wereAllValuesFilled?(options)=>`${options.name!="łącznie"?options.value:percentShares[options.name]}% (N=${options.value})`:"{c}"
+
+           formatter: this.getFormatter()
         },
         emphasis: {
           focus: 'series'
