@@ -23,6 +23,7 @@ export class ChartConfig{
   type: 'groupedPercentAndData'| 'multipleChoice'| 'multipleChoiceAndData'| 'multipleBars'| 'groupedBars'| 'complex' | 'linearCustomData'
   colors?:string[]=ChartConfig.colorSets.default;
   showDataLabels?:boolean=true;
+  allTogetherLabel="Razem"
   orientation?:"horizontal"|"vertical"="horizontal";
   extraEChartLiteralObject?:EChartsOption=null;
   tableDefinition:Table={series:[]};

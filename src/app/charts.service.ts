@@ -8,6 +8,8 @@ import {commonSubstring} from './lcs';
 import {SeriesLabelOption} from 'echarts/types/src/util/types';
 import {ReportsService} from './reports.service';
 import {share} from 'rxjs/operators';
+import {FrequencyChartGenerator} from './FrequencyChartGenerator';
+import {AbstractChartGenerator} from './AbstractChartGenerator';
 @Injectable({
   providedIn: 'root'
 })
@@ -136,6 +138,11 @@ export class ChartsService {
   }
 
   generateChart(series:any, chartElement:ChartReportElement, reportId, namingDictioanry):EChartsOption{
+    let strategy:AbstractChartGenerator =new {"groupedBars":FrequencyChartGenerator}[chartElement.config.type](series,chartElement,namingDictioanry, this.reportService)
+    console.log(strategy)
+    strategy.generate()
+    return strategy.asJSONConfig()
+
     let chartName = chartElement.name;
     const zip = (a, b) => a.map((k, i) => [k, b[i]]);
     let indices;
@@ -143,6 +150,7 @@ export class ChartsService {
     // indices = indices.filter(d=>d!=999 && d!=9999)
 
     if (chartElement.config.type=='groupedPercentAndData'){
+      console.log(this.transformDataIntoPairs(series))
       let shareElement=this.transformDataIntoPairs(series,true).filter(d=>d[0].includes("share") || d[0].includes("*"))[0][1]
       indices = indices.filter(d=>d!=999 && d!=9999)
       for (let x of shareElement) delete x[9999]
@@ -389,17 +397,19 @@ export class ChartsService {
 
       }
       for (let i of chartElement.config.handCodedData){
-      console.log(i.label)
+        console.log(i.label)
         if (!i.value) {wereAllValuesFilled=false;break}
         wereAllValuesFilled=true;
       }
-console.log(wereAllValuesFilled)
+console.log("Were all values filled:"+ wereAllValuesFilled)
 
       let percentShares={}
       console.log("this is o")
       console.log(JSON.stringify(o))
       if (wereAllValuesFilled) {
 
+        //we need to delete 999 and 9999 as there is no way to represent it meaningfuly when displaying %
+        o=o.filter(d=>d[0]!="9999" && d[0]!="999")
 
         for (let j of o) {
           console.log("this is j")
@@ -418,17 +428,26 @@ console.log(wereAllValuesFilled)
         percentShares["łącznie"] =Math.round(Number(values.reduce((a:number, b:number) => a + b))/ Number(chartElement.config.handCodedData.map(d=>Number(d.value)).reduce((a:number,b:number)=>a+b))*100)
 
       }
-      console.log(percentShares)
+
         values = [...values, {value: Number(values.reduce((a:number, b:number) => a + b)), itemStyle:{color:this.darkBlue}}]
         categories = [...categories, "łącznie"]
+      console.log(percentShares)
+      //sorting by percent
+      let counts=JSON.parse(JSON.stringify(values))
+      if (wereAllValuesFilled){
+        let temporarDataStructure = zip(Object.keys(percentShares),Object.values(percentShares))
+        // for (let j of temporarDataStructure){
+        //   j.push(values[categories.indexOf(j[0])])
+        // }
+        console.log("tmp data structure")
+        console.log(temporarDataStructure)
+        temporarDataStructure  = temporarDataStructure.sort((a,b)=>a[1]-b[1])
+        categories = temporarDataStructure.map(d=>d[0])
+
+        values = temporarDataStructure.map(d=>d[1])
+      }
       return {
-      //  title: {text: chartName.length==0?chartElement.dataQuery.get[0][0]:chartName,textStyle:{overflow:'break'}},
-      //   tooltip: {
-      //     trigger: 'axis',
-      //     axisPointer: {            // Use axis to trigger tooltip
-      //       type: 'shadow'        // 'shadow' as default; can also be 'line' or 'shadow'
-      //     }
-      //   },
+
         color:"#3b3b3b",
         pxHeight: categories.length*this.horizontalBarHeight,
         // legend:{
@@ -437,7 +456,7 @@ console.log(wereAllValuesFilled)
         grid:{left: '3%',
           right: '4%',
           bottom: '3%',
-          top:"-10%",
+          top:"0%",
           containLabel: true},
         xAxis:{type:'value', show:true, animation:true},
         //@ts-ignore
@@ -452,7 +471,7 @@ console.log(wereAllValuesFilled)
           label: {
             show: true,
             //TODO: co z tym?
-            formatter: wereAllValuesFilled?(options)=>`${options.name!="łącznie"?percentShares[idToCategories[options.name]]:percentShares[options.name]}% (N=${options.value})`:"{c}"
+            formatter: wereAllValuesFilled?(options)=>`${options.name!="łącznie"?options.value:percentShares[options.name]}% (N=${options.value})`:"{c}"
           },
           emphasis: {
             focus: 'series'
