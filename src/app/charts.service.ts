@@ -10,6 +10,8 @@ import {ReportsService} from './reports.service';
 import {share} from 'rxjs/operators';
 import {FrequencyChartGenerator} from './FrequencyChartGenerator';
 import {AbstractChartGenerator} from './AbstractChartGenerator';
+import {MultipleChoiceChartGenerator} from './MultipleChoiceChartGenerator';
+import {GroupedPercentAndDataChartGenerator} from './GroupedPercentAndDataChartGenerator';
 @Injectable({
   providedIn: 'root'
 })
@@ -138,7 +140,11 @@ export class ChartsService {
   }
 
   generateChart(series:any, chartElement:ChartReportElement, reportId, namingDictioanry):EChartsOption{
-    let strategy:AbstractChartGenerator =new {"groupedBars":FrequencyChartGenerator}[chartElement.config.type](series,chartElement,namingDictioanry, this.reportService)
+    let strategy:AbstractChartGenerator =new {
+      "groupedBars":FrequencyChartGenerator,
+      'groupedPercentAndData':GroupedPercentAndDataChartGenerator,
+    "multipleChoice":MultipleChoiceChartGenerator
+    }[chartElement.config.type](series,chartElement,namingDictioanry, this.reportService)
     console.log(strategy)
     strategy.generate()
     return strategy.asJSONConfig()
@@ -162,14 +168,7 @@ export class ChartsService {
 
       chartName = chartName?chartName:chartElement.dataQuery.get[0][0]
       let y= {
-     //   title: {text: chartName,textStyle:{overflow:'break', width:800}},
-     //    tooltip: {
-     //      trigger: 'axis',
-     //
-     //      // axisPointer: {            // Use axis to trigger tooltip
-     //      //   type: 'line'        // 'shadow' as default; can also be 'line' or 'shadow'
-     //      // }
-     //    },
+
         color:"#3b3b3b",
         pxHeight: indices.length * (120/3) + 80,
          legend:{
@@ -310,18 +309,9 @@ export class ChartsService {
       barSeries=o.map(d=>d[1])
 
       return {
-       // title: {text: chartName, textStyle:{overflow:'break'}},
-       //  tooltip: {
-       //    trigger: 'axis',
-       //    axisPointer: {            // Use axis to trigger tooltip
-       //      type: 'shadow'        // 'shadow' as default; can also be 'line' or 'shadow'
-       //    }
-       //  },
         color:"#64B5CD",
         pxHeight: categories.length*this.horizontalBarHeight,
-        // legend:{
-        //  data:this.getAllShareLabels(shareElement)
-        // },
+
         grid:{left: '3%',
           right: '4%',
           bottom: '3%',

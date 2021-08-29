@@ -34,6 +34,7 @@ export let ComplimentQuery = (query:SurveyQuery, globalFilter:GlobalFilter=null,
     delete q2['if'];
   }
   delete q2['filter'];
+  q2['if'] = q2.get.flat().map(d=>[d, 'notin', '9999', '999'])
   return q2;
 }
 export let SurveyQueryNamingDictionary = {

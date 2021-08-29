@@ -239,7 +239,8 @@ import {Subject} from 'rxjs';
 
                 </div>
           <button style="margin:1em; width:50%" *ngIf="!this.isPreview" nz-button (click)="saveAsPng()">Zapisz wykres jako png</button>
-<!--          <input nz-input placeholder="Wpisz query" [(ngModel)]="advancedQuery" (ngModelChange)="refreshChart()">-->
+            <input nz-input placeholder="Nazwa dla zagregowanych wyników - może to być 'Razem', 'łącznie' itd" [(ngModel)]="chartData.config.allTogetherLabel">
+          <!--          <input nz-input placeholder="Wpisz query" [(ngModel)]="advancedQuery" (ngModelChange)="refreshChart()">-->
         </nz-collapse-panel>
 <!--        <nz-collapse-panel nzHeader="Zaawansowany edytor">-->
 <!--            <input nz-input placeholder="Wpisz query" [(ngModel)]="advancedQuery" (ngModelChange)="refreshChart()">-->

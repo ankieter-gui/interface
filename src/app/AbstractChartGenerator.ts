@@ -2,6 +2,8 @@ import {EChartsOption} from 'echarts';
 import {ChartReportElement} from './dataModels/ReportElement';
 import {Data} from '@angular/router';
 import {ReportsService} from './reports.service';
+import {commonSubstring} from './lcs';
+import * as Chance from 'chance'
 export interface DataPair{
   // [
   //   [
@@ -41,6 +43,7 @@ export abstract class AbstractChartGenerator {
   zip = (a, b) => a.map((k, i) => [k, b[i]]);
   abstract asJSONConfig(): EChartsOption;
   series:any;
+  indices
   chartElement:ChartReportElement
   namingDictionary;
   shareElement:DataPair[];
@@ -50,6 +53,8 @@ export abstract class AbstractChartGenerator {
     this.series=series;
     this.namingDictionary=namingDictionary;
     this.reportsService=reportsService
+
+    if (series) this.indices = series["index"]
   }
   getAllShareLabels(shareElement){
     let l = []
@@ -60,6 +65,56 @@ export abstract class AbstractChartGenerator {
   }
   get questions():string[]{
     return this.chartElement.dataQuery.get.flat()
+  }
+  graySubstrings = ["brak zmian"]
+  darkGraySubstrings = ["nie wiem", "nie dotyczy"]
+  rateToColorGrade(index,n){
+
+    if (n==undefined) return this.darkGray
+    let y = {
+      'bardzo dobrze': "#4AAF5B",
+      'raczej dobrze':"#B7E075",
+      'średnio':"#FDFEBD",
+      'raczej źle':"#FDBE6F",
+      'bardzo źle':"#E95638",
+      "tak":"#4AAF5B",
+      "nie":"#E95638",
+      "pominięto":this.darkGray,
+      'odmowa odpowiedzi':this.darkGray
+    }
+    if (n.toLowerCase() in y) return y[n.toLowerCase()]
+    else {
+      if (this.graySubstrings.some(v=>n.toLowerCase().includes(v))){
+        return this.gray
+      }
+      if (this.darkGraySubstrings.some(v=>n.toLowerCase().includes(v))){
+        return this.darkGray
+      }
+      if (index<this.fourColorPalette.length-1)
+        return this.fourColorPalette[index]
+      else
+        return Chance().color()
+    }
+  }
+  fourColorPalette=[
+    "#F46D43","#FEE08B","#D8EE8A", "#66BD63", "#078202", "#9F9F9F"
+  ]
+  fiveColorPalette=[
+    "#F46D43","#FEE08B","#FDFEBD", "#D8EE8A", "#66BD63", "#078202", "#9F9F9F"
+  ]
+  numberToStringScale = {
+    5 : 'bardzo dobrze', 4:'raczej dobrze', 3:'średnio', 2:'raczej źle', 1:'bardzo źle'
+  }
+  getNumberToStringScale(n){
+    console.log(n)
+    if ( Number(n) in this.numberToStringScale) return this.numberToStringScale[Number(n)]
+    else return n
+  }
+  sanitizeLabels(list){
+    if (list.length==1) return [list, ""];
+    const prefix = commonSubstring(list);
+    console.log(prefix)
+    return [list.map(d=>d.replace(prefix, '')), prefix]
   }
   generateSeriesList(shareElement:object[]){
     let resultingMap={}
@@ -95,8 +150,13 @@ export abstract class AbstractChartGenerator {
 
     return zip(Object.keys(values), Object.values(values))
   }
-  getLabelFor(question:string,value:string):string{
-    return this.reportsService.getLabelFor(this.namingDictionary, question,value)
+  getLabelFor(question:string,value):string{
+    let r;
+    if (value==9999) return "Pominięto"
+    if (value == "*") return this.chartElement.config.allTogetherLabel
+    if (question in this.namingDictionary && this.namingDictionary[question]) r=  this.namingDictionary[question][value]
+    if (!r) {return value} else {return r}
+   // return this.reportsService.getLabelFor(this.namingDictionary, question,value)
   }
   abstract generate():AbstractChartGenerator;
 }

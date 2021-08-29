@@ -50,7 +50,12 @@ this.updateFields()
     let shareElement=this.chartService.transformDataIntoPairs(JSON.parse(JSON.stringify(this.dataResponse))).filter(d=>d[0].includes("share"))[0][1][0]
     console.log(shareElement)
     let categories =Object.keys(shareElement)
+
     let possibleAnswers = Object.keys(this.namingDictionary[this.chart.dataQuery.get[0][0]]).filter(d=>categories.includes(d))
+    // if (this.chart.config.allTogetherLabel) {
+    //   categories.push(this.chart.config.allTogetherLabel)
+    //   possibleAnswers.push("")
+    // }
     if (this.chart.config.handCodedData) {
       this.chart.config.handCodedData = this.chart.config.handCodedData.filter(d => possibleAnswers.includes(d.label))
       console.log("possible answers...")

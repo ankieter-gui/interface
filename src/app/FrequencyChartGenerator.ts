@@ -14,7 +14,7 @@ export class FrequencyChartGenerator extends AbstractChartGenerator {
   getWereAllValuesFilled():boolean{
     let wereAllValuesFilled;
     for (let i of this.chartElement.config.handCodedData){
-      console.log(i.label)
+      console.log(i)
       if (!i.value) {wereAllValuesFilled=false;break}
       wereAllValuesFilled=true;
     }
@@ -27,24 +27,26 @@ export class FrequencyChartGenerator extends AbstractChartGenerator {
     let values = Object.values(this.shareElement);
     //make it into pairs [key,value][] so we can sort it later
     let chartValuesPairs = this.zip(categories, values);
+    chartValuesPairs=chartValuesPairs.filter(d=>d[0]!="9999" && d[0]!="999")
     this.wereAllValuesFilledByHand = this.getWereAllValuesFilled();
-    let u = {
-      true: () => {
+    if (this.wereAllValuesFilledByHand){
+
         //therefore we count percentages
         //we need to delete 999 and 9999 as there is no way to represent it meaningfuly when displaying %
-        chartValuesPairs=chartValuesPairs.filter(d=>d[0]!="9999" && d[0]!="999")
+
         for (let pair of chartValuesPairs){
           let category = pair[0]
           let handcodedValue = Number(this.chartElement.config.handCodedData.filter(d=>d.label===category)[0].value)
           pair.push(Math.round(pair[1]/ handcodedValue * 100))
         }
         chartValuesPairs = chartValuesPairs.sort((a,b)=>a[2]-b[2])
-      },
-      false: () => {
+      chartValuesPairs = [[this.chartElement.config.allTogetherLabel, ], ...chartValuesPairs]
+      }else {
         //we can't calculate percent. Stick with N only
+        chartValuesPairs = chartValuesPairs.sort((a,b)=>a[1]-b[1])
       }
-      //@ts-ignore
-    }[wereAllValuesFilledByHand]();
+
+
     this.chartValuesPairs=chartValuesPairs
     return this;
   }
@@ -59,7 +61,9 @@ export class FrequencyChartGenerator extends AbstractChartGenerator {
     return this.chartValuesPairs.map(d=>d[0]).map(d=>this.getLabelFor(this.questions[0], d))
   }
   private getN(name){
-    return this.chartValuesPairs.filter(d=>d[0]==name)[0]
+    console.log(name)
+    console.log(this.chartValuesPairs)
+    return this.chartValuesPairs.filter(d=>this.getLabelFor(this.questions[0],d[0])==name)[0][1]
   }
   private getFormatter(){
     if (this.wereAllValuesFilledByHand){
