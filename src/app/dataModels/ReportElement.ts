@@ -28,7 +28,6 @@ export class ChartConfig{
   extraEChartLiteralObject?:EChartsOption=null;
   tableDefinition:Table={series:[]};
   filter:GlobalFilter;
-
 }
 export class ChartReportElement{
   name:string;
