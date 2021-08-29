@@ -27,7 +27,8 @@ export class ChartConfig{
   orientation?:"horizontal"|"vertical"="horizontal";
   extraEChartLiteralObject?:EChartsOption=null;
   tableDefinition:Table={series:[]};
-  filter:GlobalFilter;
+  filter: GlobalFilter;
+  allTogetherValue = '';
 }
 export class ChartReportElement{
   name:string;

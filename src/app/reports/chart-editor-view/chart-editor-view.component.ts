@@ -242,7 +242,7 @@ import {Subject} from 'rxjs';
                 </div>
           <button style="margin:1em; width:50%" *ngIf="!this.isPreview" nz-button (click)="saveAsPng()">Zapisz wykres jako png</button>
           <div>Nazwa całego zestawu danych (np.: łącznie, razem, UAM):
-            <input nz-input placeholder="Nazwa dla zagregowanych wyników - może to być 'Razem', 'łącznie' itd"
+            <input nz-input (blur)="refreshChart(true)" placeholder="Nazwa dla zagregowanych wyników - może to być 'Razem', 'łącznie' itd"
                    [(ngModel)]="chartData.config.allTogetherLabel">
           </div>
           <!--          <input nz-input placeholder="Wpisz query" [(ngModel)]="advancedQuery" (ngModelChange)="refreshChart()">-->

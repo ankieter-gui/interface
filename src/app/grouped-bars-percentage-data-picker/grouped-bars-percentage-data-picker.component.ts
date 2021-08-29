@@ -8,17 +8,32 @@ import {ChartsService} from '../charts.service';
   template: `
     <nz-alert style="margin:1em" nzType="info" nzMessage="Wpisanie poniższych danych jest nieobowiązkowe. Uzupełnienie pól pozwoli na przedstawienie frekwencji na wydziale jako %"></nz-alert>
     <nz-alert style="margin:1em" nzType="warning" nzMessage="Trzeba wpisać dane dla każdego wydziału widoczengo na wykresie! Inaczej wykres będzie niewidoczny!"></nz-alert>
-    <nz-alert style="margin:1em" nzType="error" nzMessage="Należy wpisać wartości po przefiltrowaniu. Jeżeli wykres przez filtry przedstawia tylko wyniki dla studentów stopnia pierwszego - wpisz liczby studentów pierwszego stopnia na każdym wydziale."></nz-alert>
+    <nz-alert style="margin:1em" nzType="error"
+              nzMessage="Należy wpisać wartości po przefiltrowaniu. Jeżeli wykres przez filtry przedstawia tylko wyniki dla studentów stopnia pierwszego - wpisz liczby studentów pierwszego stopnia na każdym wydziale."></nz-alert>
 
     <nz-table #dataTable [nzData]="this.chart.config.handCodedData">
 
 
       <thead>
-      <tr><th>Wydział</th><th>Całkowita liczba studentów (po zastosowaniu filtrów obecnych na wykresie!)</th></tr>
+      <tr>
+        <th>Wydział</th>
+        <th>Całkowita liczba studentów (po zastosowaniu filtrów obecnych na wykresie!)</th>
+      </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let entry of dataTable.data"> <td>{{this.reportService.getLabelFor(namingDictionary,chart.dataQuery.get[0][0],entry.label)}}</td><td><input nz-input (blur)="save()" [(ngModel)]="entry.value"></td></tr>
-
+      <tr *ngFor="let entry of dataTable.data">
+        <td>{{this.reportService.getLabelFor(namingDictionary, chart.dataQuery.get[0][0], entry.label)}}</td>
+        <td><input nz-input (blur)="save()" [(ngModel)]="entry.value"></td>
+      </tr>
+      <tr>
+        <td>
+          Razem:
+          <input nz-input (blur)="save()" [(ngModel)]="chart.config.allTogetherLabel">
+        </td>
+        <td>
+          <input nz-input [(ngModel)]="chart.config.allTogetherValue">
+        </td>
+      </tr>
       </tbody>
     </nz-table>
   `,

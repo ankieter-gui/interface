@@ -31,17 +31,19 @@ export class FrequencyChartGenerator extends AbstractChartGenerator {
     this.wereAllValuesFilledByHand = this.getWereAllValuesFilled();
     if (this.wereAllValuesFilledByHand){
 
-        //therefore we count percentages
-        //we need to delete 999 and 9999 as there is no way to represent it meaningfuly when displaying %
+      //therefore we count percentages
+      //we need to delete 999 and 9999 as there is no way to represent it meaningfuly when displaying %
 
-        for (let pair of chartValuesPairs){
-          let category = pair[0]
-          let handcodedValue = Number(this.chartElement.config.handCodedData.filter(d=>d.label===category)[0].value)
-          pair.push(Math.round(pair[1]/ handcodedValue * 100))
-        }
-        chartValuesPairs = chartValuesPairs.sort((a,b)=>a[2]-b[2])
-      chartValuesPairs = [[this.chartElement.config.allTogetherLabel, ], ...chartValuesPairs]
-      }else {
+      for (let pair of chartValuesPairs) {
+        let category = pair[0];
+        let handcodedValue = Number(this.chartElement.config.handCodedData.filter(d => d.label === category)[0].value);
+        pair.push(Math.round(pair[1] / handcodedValue * 100));
+      }
+      chartValuesPairs = chartValuesPairs.sort((a, b) => a[2] - b[2]);
+      chartValuesPairs = [[this.chartElement.config.allTogetherLabel,
+        this.chartElement.config.allTogetherValue,
+        chartValuesPairs.reduce((previousValue: number, currentValue: number, index, array) => previousValue + currentValue) / Number(this.chartElement.config.allTogetherValue) * 100], ...chartValuesPairs];
+    }else {
         //we can't calculate percent. Stick with N only
         chartValuesPairs = chartValuesPairs.sort((a,b)=>a[1]-b[1])
       }
