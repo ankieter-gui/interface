@@ -154,9 +154,15 @@ export abstract class AbstractChartGenerator {
     let r;
     if (value==9999) return "Pominięto"
     if (value == "*") return this.chartElement.config.allTogetherLabel
-    if (question in this.namingDictionary && this.namingDictionary[question]) r=  this.namingDictionary[question][value]
-    if (!r) {return value} else {return r}
-   // return this.reportsService.getLabelFor(this.namingDictionary, question,value)
+    if (question in this.namingDictionary && this.namingDictionary[question]) {
+      r = this.namingDictionary[question][value];
+    }
+    if (!r) {
+      return String(value);
+    } else {
+      return String(r)
+    }
+    // return this.reportsService.getLabelFor(this.namingDictionary, question,value)
   }
   abstract generate():AbstractChartGenerator;
 }

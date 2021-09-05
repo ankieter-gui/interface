@@ -54,14 +54,14 @@ export class MultipleChoiceChartGenerator extends AbstractChartGenerator{
       yAxis:{type:'category', show:true, data:categories, axisLabel:{overflow:"break"}},
       series:[{
 
-        data:this.barSeries,
-        name:"Procent odpowiedzi",
-        type:'bar',
-        color:this.lightBlue,
+        data: this.barSeries,
+        name: 'Procent odpowiedzi',
+        type: 'bar',
+        color: undefined,
         stack: 'total',
         label: {
           show: true,
-          formatter: (options)=>`${Math.round(Number(options.value))}%`
+          formatter: (options) => `${Math.round(Number(options.value))}%`
         },
         emphasis: {
           focus: 'series'

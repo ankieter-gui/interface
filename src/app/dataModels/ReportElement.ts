@@ -18,21 +18,23 @@ export class Table{
 export class ChartConfig{
   handCodedData:{value:string, label:string}[]=[ {label:"", value:""} ]
   static colorSets={
-    default:["red", "blue", "green"]
+    default: ['red', 'blue', 'green']
   }
-  type: 'groupedPercentAndData'| 'multipleChoice'| 'multipleChoiceAndData'| 'multipleBars'| 'groupedBars'| 'complex' | 'linearCustomData'
-  colors?:string[]=ChartConfig.colorSets.default;
-  showDataLabels?:boolean=true;
-  allTogetherLabel="Razem"
-  orientation?:"horizontal"|"vertical"="horizontal";
-  extraEChartLiteralObject?:EChartsOption=null;
-  tableDefinition:Table={series:[]};
+  type: 'groupedPercentAndData' | 'multipleChoice' | 'multipleChoiceAndData' | 'multipleBars' | 'groupedBars' | 'complex' | 'linearCustomData';
+  colors?: string[] = ChartConfig.colorSets.default;
+  showDataLabels?: boolean = true;
+  allTogetherLabel = 'UAM';
+  orientation?: 'horizontal' | 'vertical' = 'horizontal';
+  extraEChartLiteralObject?: EChartsOption = null;
+  tableDefinition: Table = {series: []};
   filter: GlobalFilter;
-  allTogetherValue = '';
+  allTogetherValue = 'UAM';
+  shortLabels = false;
 }
-export class ChartReportElement{
-  name:string;
-  dataQuery:SurveyQuery;
-  config:ChartConfig;
-  text:string;
+
+export class ChartReportElement {
+  name: string;
+  dataQuery: SurveyQuery;
+  config: ChartConfig;
+  text: string;
 }

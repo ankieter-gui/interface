@@ -14,6 +14,7 @@ import {MultipleChoiceChartGenerator} from './MultipleChoiceChartGenerator';
 import {GroupedPercentAndDataChartGenerator} from './GroupedPercentAndDataChartGenerator';
 import {MultipleBarsChartGenerator} from './MultipleBarsChartGenerator';
 import {LinearCustomDataChartGenerator} from './LinearCustomDataChartGenerator';
+import {ColorsGenerator} from './ColorsGenerator';
 
 @Injectable({
   providedIn: 'root'
@@ -149,15 +150,18 @@ export class ChartsService {
   }
 
   generateChart(series: any, chartElement: ChartReportElement, reportId, namingDictioanry): EChartsOption {
-    let strategy: AbstractChartGenerator = new {
+    let strategyType = {
       'groupedBars': FrequencyChartGenerator,
       'multipleBars': MultipleBarsChartGenerator,
       'groupedPercentAndData': GroupedPercentAndDataChartGenerator,
       'multipleChoice': MultipleChoiceChartGenerator,
       'linearCustomData': LinearCustomDataChartGenerator
-    }[chartElement.config.type](series, chartElement, namingDictioanry, this.reportService);
+    }[chartElement.config.type];
+    let strategy = new strategyType(series, chartElement, namingDictioanry, this.reportService);
+
     strategy.generate();
-    return strategy.asJSONConfig()
+    let generator = new ColorsGenerator(chartElement, strategyType, strategy);
+    return generator.generateColors(strategy.asJSONConfig());
 
 
   }

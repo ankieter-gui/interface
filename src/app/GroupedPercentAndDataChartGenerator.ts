@@ -14,46 +14,64 @@ export class GroupedPercentAndDataChartGenerator extends AbstractChartGenerator{
   generate(): AbstractChartGenerator {
   console.log(this.series)
 
-    this.shareElement=AbstractChartGenerator.transformDataIntoPairs(this.series,true).filter(d=>d[0].includes("share") || d[0].includes("*"))[0][1]
-    this.indices = this.indices.filter(d=>d!=999 && d!=9999)
-    for (let x of this.shareElement) delete x[9999]
-    for (let x of this.shareElement) delete x[999]
-    this.seriesList = this.generateSeriesList(this.shareElement)
+    this.shareElement = AbstractChartGenerator.transformDataIntoPairs(this.series, true).filter(d => d[0].includes('share') || d[0].includes('*'))[0][1];
+    this.indices = this.indices.filter(d => d != 999 && d != 9999);
+    for (let x of this.shareElement) {
+      delete x[9999];
+    }
+    for (let x of this.shareElement) {
+      delete x[999];
+    }
+    this.seriesList = this.generateSeriesList(this.shareElement);
 
-    this.chartName = this.chartName?this.chartName:this.chartElement.dataQuery.get[0][0]
+    this.chartName = this.chartName ? this.chartName : this.chartElement.dataQuery.get[0][0];
     return this;
   }
+
+  shortenLabel(label: string) {
+    console.log(label);
+    if (this.chartElement.config.shortLabels) {
+      return label.replace('Wydział', 'W.');
+    }
+    return label;
+  }
+
   asJSONConfig(): EChartsOption {
 
     return {
 
-      color:"#3b3b3b",
-      pxHeight: this.indices.length * (120/3) + 80,
-      legend:{
+      color: '#3b3b3b',
+      pxHeight: this.indices.length * (120 / 3) + 80,
+      legend: {
         // top: 1+chartName.length*0.1+"%",
-        data:this.getAllShareLabels(this.shareElement).map(d=>this.getNumberToStringScale(this.getLabelFor(this.chartElement.dataQuery.get[0][0],d)))
+        data: this.getAllShareLabels(this.shareElement).map(d => this.getNumberToStringScale(this.getLabelFor(this.chartElement.dataQuery.get[0][0], d)))
         //data:this.getAllShareLabels(shareElement).map(d=>this.numberToStringScale[Number(d)])
       },
-      grid:{left: '3%',
+      grid: {
+        left: '3%',
         right: '4%',
-        bottom: "3%",
-        containLabel: true},
-      xAxis:{type:'value', show:true, animation:true},
-      yAxis:{type:'category', show:true, data:
-          this.indices.map(d=>this.getNumberToStringScale(this.getLabelFor(this.chartElement.dataQuery.by[0], d)))
+        bottom: '3%',
+        containLabel: true
+      },
+      xAxis: {type: 'value', show: true, animation: true, max: 100},
+      yAxis: {
+        type: 'category', show: true, data:
+          this.indices.map(d =>
+            this.shortenLabel(this.getLabelFor(this.chartElement.dataQuery.by[0], d)))
         // indices.map(d=>this.numberToStringScale[Number(d)])
       },
-      series:this.zip(Object.keys(this.seriesList), Object.values(this.seriesList)).map((d,index)=>({
-        data:d[1],
-
-        name:this.getNumberToStringScale(this.getLabelFor(this.chartElement.dataQuery.get[0][0], d[0])),
+      series: this.zip(Object.keys(this.seriesList), Object.values(this.seriesList)).map((d, index) => ({
+        data: d[1],
+        d: d,
+        index: index,
+        name: this.shortenLabel(this.getLabelFor(this.chartElement.dataQuery.get[0][0], d[0])),
         // name:this.numberToStringScale[d[0]],
-        type:"bar",
-        color:this.rateToColorGrade(index,this.getNumberToStringScale(this.getLabelFor(this.chartElement.dataQuery.get[0][0], d[0]))),
+        type: 'bar',
+        color: undefined,
         stack: 'total',
         label: {
           show: true,
-          formatter: (options)=> options.value!=0?`${Math.round(options.value)}%`:""
+          formatter: (options) => options.value != 0 ? `${Math.round(options.value)}%` : ''
         },
         // emphasis: {
         //   focus: 'series'

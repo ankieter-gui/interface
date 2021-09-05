@@ -39,28 +39,41 @@ import {Subject} from 'rxjs';
 <!--        <nz-tag [nzColor]="'blue'" class="unit">Pytanie 1</nz-tag><i nz-icon nzType="right"></i>-->
 <!--        <nz-tag [nzColor]="'blue'" class="unit">Wszystkie odpowiedzi</nz-tag><i nz-icon nzType="right"></i>-->
 <!--        <nz-tag [nzColor]="'magenta'" class="unit">jako procent</nz-tag>-->
-<!--        <nz-tag [nzColor]="'red'" class="unit">wydział</nz-tag>-->
-<!--        <nz-tag [nzColor]="'red'" class="unit">średnia</nz-tag>-->
+        <!--        <nz-tag [nzColor]="'red'" class="unit">wydział</nz-tag>-->
+        <!--        <nz-tag [nzColor]="'red'" class="unit">średnia</nz-tag>-->
       </section>
-      <p><b>{{this.chartData.name?this.chartData.name:this.chartData.dataQuery.get[0][0]}}</b></p>
-    <div class="chart-container">
+      <p><b>{{this.chartData.name ? this.chartData.name : this.chartData.dataQuery.get[0][0]}}</b></p>
+      <div class="chart-container">
 
-    <section class="chart-area" *ngIf="chartData.config.type=='groupedPercentAndData' && this.echartOptions">
-      <div [style.height.px]="echartOptions.pxHeight" echarts (chartInit)="onChartInit($event)" [options]="echartOptions" class="chart" [class.fullWidth]="!(chartData.dataQuery.as.includes('share') && chartData.dataQuery.as.length>1 && dataResponse)" #chartInstance></div>
-      <nz-table style="min-height: 300px" *ngIf="chartData.dataQuery.as.includes('share') && chartData.dataQuery.as.length>1 && dataResponse" class="details-table" [nzTemplateMode]="true">
-       <thead style="white-space: nowrap"> <tr><th style="white-space: nowrap;" *ngFor="let header of tableHeaders">{{header | PolskieNazwy | titlecase}}</th></tr></thead>
-        <tbody>
-        <tr *ngFor="let row of this.tableData"><td *ngFor="let value of row">{{value | number }}</td></tr>
-        </tbody>
-      </nz-table>
-    </section>
-      <section class="chart-area" *ngIf="['multipleChoice', 'groupedBars', 'multipleBars', 'linearCustomData'].includes(chartData.config.type)  && this.echartOptions">
-        <div echarts [style.height.px]="echartOptions.pxHeight" (chartInit)="onChartInit($event)" [options]="echartOptions" class="chart" style="width: 100%;"></div>
-      </section>
-<!--      <section class="chart-editor">-->
-<!--        <i nz-icon nzType="line-chart" [nz-tooltip]="'Typ wykresu'"></i>-->
-<!--        <i nz-icon nzType="question" [nz-tooltip]="'Pytania'"></i>-->
-<!--        <i nz-icon nzType="database" [nz-tooltip]="'Agregacje'"></i>-->
+        <section class="chart-area" *ngIf="chartData.config.type=='groupedPercentAndData' && this.echartOptions">
+          <div [style.height.px]="echartOptions.pxHeight" echarts (chartInit)="onChartInit($event)" [options]="echartOptions" class="chart"
+               [class.fullWidth]="!(chartData.dataQuery.as.includes('share') && chartData.dataQuery.as.length>1 && dataResponse)"
+               #chartInstance></div>
+          <nz-table style="min-height: 300px"
+                    *ngIf="chartData.dataQuery.as.includes('share') && chartData.dataQuery.as.length>1 && dataResponse"
+                    class="details-table" [nzTemplateMode]="true">
+            <thead style="white-space: nowrap;">
+            <tr>
+              <th style="white-space: nowrap; background:transparent!important;"
+                  *ngFor="let header of tableHeaders">{{header | PolskieNazwy | titlecase}}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr style="line-height: 1.428!important;" *ngFor="let row of this.tableData">
+              <td *ngFor="let value of row">{{value |  number:'':'fr-FR' }}</td>
+            </tr>
+            </tbody>
+          </nz-table>
+        </section>
+        <section class="chart-area"
+                 *ngIf="['multipleChoice', 'groupedBars', 'multipleBars', 'linearCustomData'].includes(chartData.config.type)  && this.echartOptions">
+          <div echarts [style.height.px]="echartOptions.pxHeight" (chartInit)="onChartInit($event)" [options]="echartOptions" class="chart"
+               style="width: 100%;"></div>
+        </section>
+        <!--      <section class="chart-editor">-->
+        <!--        <i nz-icon nzType="line-chart" [nz-tooltip]="'Typ wykresu'"></i>-->
+        <!--        <i nz-icon nzType="question" [nz-tooltip]="'Pytania'"></i>-->
+        <!--        <i nz-icon nzType="database" [nz-tooltip]="'Agregacje'"></i>-->
 <!--        <i nz-icon nzType="bar-chart" [nz-tooltip]="'Wykres kolumnowy, histogram'"></i>-->
 <!--        <i nz-icon nzType="font-size" [nz-tooltip]="'Tekst'"></i>-->
 <!--      </section>-->
@@ -245,6 +258,7 @@ import {Subject} from 'rxjs';
             <input nz-input (blur)="refreshChart(true)" placeholder="Nazwa dla zagregowanych wyników - może to być 'Razem', 'łącznie' itd"
                    [(ngModel)]="chartData.config.allTogetherLabel">
           </div>
+          <div><label nz-checkbox [(ngModel)]="this.chartData.config.shortLabels">Krótkie etykiety</label></div>
           <!--          <input nz-input placeholder="Wpisz query" [(ngModel)]="advancedQuery" (ngModelChange)="refreshChart()">-->
         </nz-collapse-panel>
         <!--        <nz-collapse-panel nzHeader="Zaawansowany edytor">-->
@@ -395,23 +409,31 @@ import {Subject} from 'rxjs';
 
       }
 
-      .chart{
+      .chart {
         min-width: 80%;
       }
-      .details-table{
+
+      .details-table {
 
         flex-grow: 1;
       }
-      .chart-name{
+
+      .ant-table-thead > tr > th {
+        background: transparent !important;
+      }
+
+      .chart-name {
         display: block;
         text-align: center;
       }
-      .chart-column-container{
+
+      .chart-column-container {
         display: flex;
 
         flex-direction: column;
       }
-      .editor-flex-row{
+
+      .editor-flex-row {
         display:flex;
         flex-direction: row;
       }

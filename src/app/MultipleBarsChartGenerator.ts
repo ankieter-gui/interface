@@ -117,6 +117,8 @@ export class MultipleBarsChartGenerator extends AbstractChartGenerator {
       //każda seria to jeden słupek w tej samej pozycji ale w różnych grupach
         this.zip(this.getAllShareLabels(this.shareElement), this.barSeries).map((d, index) => ({
           name: this.getLabelFor(this.chartElement.dataQuery.get[0][0], d[0]),
+          d: d,
+          index: index,
           type: 'bar',
           color: this.rateToColorGrade(index, this.getNumberToStringScale(this.getLabelFor(this.chartElement.dataQuery.get[0][0], d[0]))),
           barGap: 0,
