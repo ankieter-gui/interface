@@ -80,16 +80,18 @@ import {SurveysEditorComponent} from './surveys-editor/surveys-editor.component'
 import {NzDropDownModule} from 'ng-zorro-antd/dropdown';
 import {NzRadioModule} from 'ng-zorro-antd/radio';
 import { LinkActivatorComponent } from './link-activator/link-activator.component';
-import { AddNewUserComponent } from './add-new-user/add-new-user.component';
-import { LoginPanelComponent } from './login-panel/login-panel.component';
-import { FiltersSelectorComponent } from './filters-selector/filters-selector.component';
-import { LineChartCustomDataPickerComponent } from './line-chart-custom-data-picker/line-chart-custom-data-picker.component';
-import { NewSurveyDialogComponent } from './new-survey-dialog/new-survey-dialog.component';
-import { AccountNotExistsComponent } from './account-not-exists/account-not-exists.component';
-import { GroupedBarsPercentageDataPickerComponent } from './grouped-bars-percentage-data-picker/grouped-bars-percentage-data-picker.component';
+import {AddNewUserComponent} from './add-new-user/add-new-user.component';
+import {LoginPanelComponent} from './login-panel/login-panel.component';
+import {FiltersSelectorComponent} from './filters-selector/filters-selector.component';
+import {LineChartCustomDataPickerComponent} from './line-chart-custom-data-picker/line-chart-custom-data-picker.component';
+import {NewSurveyDialogComponent} from './new-survey-dialog/new-survey-dialog.component';
+import {AccountNotExistsComponent} from './account-not-exists/account-not-exists.component';
+import {GroupedBarsPercentageDataPickerComponent} from './grouped-bars-percentage-data-picker/grouped-bars-percentage-data-picker.component';
 import {NzAlertModule} from 'ng-zorro-antd/alert';
 import {NzMessageModule} from 'ng-zorro-antd/message';
-import { DeleteConfirmModalComponent } from './delete-confirm-modal/delete-confirm-modal.component';
+import {DeleteConfirmModalComponent} from './delete-confirm-modal/delete-confirm-modal.component';
+import {DummyChartComponent} from './dummy-chart/dummy-chart.component';
+import {EscapeHtmlPipe} from './keep-html.pipe';
 
 
 registerLocaleData(fr);
@@ -135,6 +137,7 @@ export let commonNZImports = [
 @NgModule({
   declarations: [
     AppComponent,
+    EscapeHtmlPipe,
     DashboardComponent,
     SurveyTileComponent,
     FilterByFieldPipe,
@@ -182,7 +185,9 @@ export let commonNZImports = [
 
     GroupedBarsPercentageDataPickerComponent,
 
-    DeleteConfirmModalComponent
+    DeleteConfirmModalComponent,
+
+    DummyChartComponent
   ],
     imports: [
         ...commonNZImports,

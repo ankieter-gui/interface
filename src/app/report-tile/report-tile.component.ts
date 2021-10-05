@@ -11,8 +11,9 @@ import {SharingService} from '../sharing.service';
 @Component({
   selector: 'app-report-tile',
   template: `
-    <nz-card (click)="fromLogin?this.preview():null" [class.fromLogin]="fromLogin" [nzBordered]="false"  [nzCover]="coverTemplate" [nzActions]="this.fromLogin?[]:this.report.authorId==this.user.userId?[actionSetting, actionEdit, actionEllipsis, actionSee, this.actionDelete]:[actionSetting, actionEdit, actionSee]">
-<!--      <nz-card-meta nzTitle="{{report.name}}" nzDescription=""></nz-card-meta>-->
+    <nz-card (click)="fromLogin?this.preview():this.openEditor()" [class.fromLogin]="true" [nzBordered]="false" [nzCover]="coverTemplate"
+             [nzActions]="this.fromLogin?[]:this.report.authorId==this.user.userId?[actionSetting, actionEdit, actionEllipsis, actionSee, this.actionDelete]:[actionSetting, actionEdit, actionSee]">
+      <!--      <nz-card-meta nzTitle="{{report.name}}" nzDescription=""></nz-card-meta>-->
       <div class="large-indicator">
         <figure class="indicator-icon"><img src="./assets/answers_count.png" style="width:70px;"></figure>
         <div class="indicator-right-side">
@@ -36,22 +37,24 @@ import {SharingService} from '../sharing.service';
         </div>
       </div>
       <div class="progress" style="margin:1em">
-<!--        <i nz-icon nzType="user" style="margin-right: 1em"></i>Autor: {{report.authorName}}-->
+        <!--        <i nz-icon nzType="user" style="margin-right: 1em"></i>Autor: {{report.authorName}}-->
       </div>
     </nz-card>
     <ng-template #extra>
 
     </ng-template>
     <ng-template #coverTemplate>
-<figure class="header-image" [style]="'background-image: url(/bkg/'+report.backgroundImg+');'">
-
-</figure>
+      <figure class="header-image" [style]="'background-image: url(/bkg/'+report.backgroundImg+');'">
+        <div style="position:absolute; font-weight: bold; right:15px; top:15px; background-color: white; border-radius: 5px; padding:6px">
+          RAPORT
+        </div>
+      </figure>
       <span class="card-title">{{report.name}}</span>
 
 
-<!--      <div class="units">-->
-<!--        <nz-tag [nzColor]="'magenta'" class="connected-survey">{{report.connectedSurvey.name}}</nz-tag>-->
-<!--      </div>-->
+      <!--      <div class="units">-->
+      <!--        <nz-tag [nzColor]="'magenta'" class="connected-survey">{{report.connectedSurvey.name}}</nz-tag>-->
+      <!--      </div>-->
 
     </ng-template>
 
@@ -193,24 +196,31 @@ export class ReportTileComponent implements OnInit {
   async delete(){
     this.modals.openDeleteConfirmationDialog(this.report.name, async ()=>{
       await (this.reportService.deleteReport(this.report.id).toPromise())
-      this.reloadEmitter.emit()
-      this.message.info('Usunięto')
+      this.reloadEmitter.emit();
+      this.message.info('Usunięto');
     })
 
   }
-  async PDF(){
+
+  async PDF() {
     this.router.navigateByUrl(`/reports/${this.report.id}`, {
-      state: {shallPrint:true}
+      state: {shallPrint: true}
     });
   }
-  async preview(){
-    this.router.navigateByUrl(`/reports/${this.report.id}`,{
-      state: {shallPrint:false}
+
+  async openEditor() {
+    this.router.navigate(['reports/editor', this.report.id]);
+  }
+
+  async preview() {
+    this.router.navigateByUrl(`/reports/${this.report.id}`, {
+      state: {shallPrint: false}
     });
   }
-  async previewFromLink(){
-    let r = await this.sharing.getReportSharingLink(this.report.id, 'r').toPromise()
-    console.log(r)
+
+  async previewFromLink() {
+    let r = await this.sharing.getReportSharingLink(this.report.id, 'r').toPromise();
+    console.log(r);
     // this.router.navigateByUrl(`/reports/${this.report.id}`,{
     //   state: {shallPrint:false}
     // });

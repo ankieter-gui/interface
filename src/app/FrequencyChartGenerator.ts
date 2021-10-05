@@ -8,18 +8,39 @@ import {CallbackDataParams} from 'echarts/types/src/util/types';
 export class FrequencyChartGenerator extends AbstractChartGenerator {
   chartValuesPairs;
   wereAllValuesFilledByHand: boolean = false;
+
   constructor(series: any, chartElement: ChartReportElement, namingDictionary, public reportsService: ReportsService) {
     super(series, chartElement, namingDictionary, reportsService);
   }
-  getWereAllValuesFilled():boolean{
+
+  wasAnyValueFilled(): boolean {
+    if (!this.chartElement.config.handCodedData) {
+      return false;
+    }
+    for (let i of this.chartElement.config.handCodedData) {
+      if (i.value) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  getWereAllValuesFilled(): boolean {
     let wereAllValuesFilled;
-    for (let i of this.chartElement.config.handCodedData){
-      console.log(i)
-      if (!i.value) {wereAllValuesFilled=false;break}
-      wereAllValuesFilled=true;
+    if (!this.chartElement.config.handCodedData) {
+      return false;
+    }
+    for (let i of this.chartElement.config.handCodedData) {
+      console.log(i);
+      if (!i.value) {
+        wereAllValuesFilled = false;
+        break;
+      }
+      wereAllValuesFilled = true;
     }
     return wereAllValuesFilled
   }
+
   generate(): FrequencyChartGenerator {
     console.log(this.series);
     this.shareElement = AbstractChartGenerator.transformDataIntoPairs(this.series).filter(d => d[0].includes('share'))[0][1][0];
@@ -44,9 +65,17 @@ export class FrequencyChartGenerator extends AbstractChartGenerator {
         this.chartElement.config.allTogetherValue,
         chartValuesPairs.reduce((previousValue: number, currentValue: number, index, array) => previousValue + currentValue) / Number(this.chartElement.config.allTogetherValue) * 100], ...chartValuesPairs];
     }else {
-        //we can't calculate percent. Stick with N only
-        chartValuesPairs = chartValuesPairs.sort((a,b)=>a[1]-b[1])
+      //we can't calculate percent. Stick with N only
+      console.log(chartValuesPairs);
+      this.chartElement.config.allTogetherValue = 0;
+      for (let i of chartValuesPairs) {
+        this.chartElement.config.allTogetherValue += i[1];
       }
+      console.log(this.chartElement.config.allTogetherValue);
+      chartValuesPairs = chartValuesPairs.sort((a, b) => a[1] - b[1]);
+      chartValuesPairs = [...chartValuesPairs, [this.chartElement.config.allTogetherLabel,
+        this.chartElement.config.allTogetherValue]];
+    }
 
 
     this.chartValuesPairs=chartValuesPairs
@@ -99,8 +128,8 @@ export class FrequencyChartGenerator extends AbstractChartGenerator {
         stack: 'total',
         label: {
           show: true,
-
-           formatter: this.getFormatter()
+          position: 'right',
+          formatter: this.getFormatter()
         },
         emphasis: {
           focus: 'series'

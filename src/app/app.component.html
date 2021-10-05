@@ -1,4 +1,8 @@
-  <div *ngIf="userService.userResponse.debug" style="background-color: #e54848; color:white; text-align: center; padding:0.6em; font-family: Gilroy ExtraBold, sans-serif">Tryb debugowania na serwerze - można logować się bez CAS</div>
+  <div
+    *ngIf="userService.userResponse.debug && !(userService.router.url.includes('reports')&&!userService.router.url.includes('editor'))"
+    style="background-color: #e54848; color:white; text-align: center; padding:0.6em; font-family: Gilroy ExtraBold, sans-serif">
+    Tryb debugowania na serwerze - można logować się bez CAS
+  </div>
   <router-outlet *ngIf="!userService.isUserDataBeingDownloaded"></router-outlet>
   <nz-spin nzSize="large" style="margin-top: 40vh" *ngIf="!cached.user.userResponse || userService.isUserDataBeingDownloaded"></nz-spin>
 <!--  <div *ngIf="!this.userService.isUnrestrictedPage &&( cached.user.userResponse && cached.user.userResponse.role=='g') ">-->

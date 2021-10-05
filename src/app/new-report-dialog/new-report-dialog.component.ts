@@ -9,24 +9,30 @@ import {NzMessageService} from 'ng-zorro-antd/message';
 @Component({
   selector: 'app-new-report-dialog',
   template: `
+    <ng-template #suffixIconSearch>
+      <i nz-icon nzType="caret-down" style="cursor:pointer;" (click)="surveyInput.select()"></i>
+    </ng-template>
     Użyj danych z ankiety:
-    <input placeholder="wybierz ankietę" nz-input [(ngModel)]="surveyInputValue" (ngModelChange)="change()"
-           [nzAutocomplete]="auto"/>
-    <nz-autocomplete #auto>
-      <nz-auto-option class="global-search-item" *ngFor="let option of autocompleteSurveys|filterByName:surveyInputValue"
-                      [nzValue]="option.name">
-        {{ option.name }}
+    <nz-input-group [nzSuffix]="suffixIconSearch">
 
-      </nz-auto-option>
-    </nz-autocomplete>
-    <nz-collapse>
+      <input #surveyInput placeholder="wybierz ankietę" nz-input [(ngModel)]="surveyInputValue" (ngModelChange)="change()"
+             [nzAutocomplete]="auto"/>
+      <nz-autocomplete #auto>
+        <nz-auto-option class="global-search-item" *ngFor="let option of autocompleteSurveys|filterByName:surveyInputValue"
+                        [nzValue]="option.name">
+          {{ option.name }}
+
+        </nz-auto-option>
+      </nz-autocomplete>
+    </nz-input-group>
+    <nz-collapse style="margin-top:1em;">
       <nz-collapse-panel [nzHeader]="'Lub użyj własnych danych z pliku .csv'">
         CSV:
         <ngx-file-drop *ngIf="!isFileBeingUploaded" dropZoneLabel="Upuść plik tutaj" (onFileDrop)="dropped($event)"
                        (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)" accept=".csv">
           <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
             <span style="display:block;" *ngIf="files.length>0">Wybrano: {{files[0].relativePath}}</span>
-            <button nz-button (click)="openFileSelector()">{{files.length>0?"Zmień":"Wybierz"}}</button>
+            <button nz-button (click)="openFileSelector()">{{files.length > 0 ? "Zmień" : "Wybierz"}}</button>
           </ng-template>
         </ngx-file-drop>
         XML:

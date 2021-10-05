@@ -16,7 +16,8 @@ export class Table{
   series:string[]
 }
 export class ChartConfig{
-  handCodedData:{value:string, label:string}[]=[ {label:"", value:""} ]
+  showTitle = false;
+  handCodedData: { value: string, label: string }[] = [{label: '', value: ''}];
   static colorSets={
     default: ['red', 'blue', 'green']
   }
@@ -28,7 +29,7 @@ export class ChartConfig{
   extraEChartLiteralObject?: EChartsOption = null;
   tableDefinition: Table = {series: []};
   filter: GlobalFilter;
-  allTogetherValue = 'UAM';
+  allTogetherValue = 0;
   shortLabels = false;
 }
 

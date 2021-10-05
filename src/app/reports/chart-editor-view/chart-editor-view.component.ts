@@ -33,25 +33,33 @@ import {Subject} from 'rxjs';
     </ng-template>
     <section class="chart-column-container">
 <!--      <mat-form-field class="chart-title-input chart-name">-->
-<!--       <input matInput placeholder="nazwa wykresu" [(ngModel)]="this.chartData.name">-->
-<!--      </mat-form-field>-->
+      <!--       <input matInput placeholder="nazwa wykresu" [(ngModel)]="this.chartData.name">-->
+      <!--      </mat-form-field>-->
       <section class="query-display">
-<!--        <nz-tag [nzColor]="'blue'" class="unit">Pytanie 1</nz-tag><i nz-icon nzType="right"></i>-->
-<!--        <nz-tag [nzColor]="'blue'" class="unit">Wszystkie odpowiedzi</nz-tag><i nz-icon nzType="right"></i>-->
-<!--        <nz-tag [nzColor]="'magenta'" class="unit">jako procent</nz-tag>-->
+        <!--        <nz-tag [nzColor]="'blue'" class="unit">Pytanie 1</nz-tag><i nz-icon nzType="right"></i>-->
+        <!--        <nz-tag [nzColor]="'blue'" class="unit">Wszystkie odpowiedzi</nz-tag><i nz-icon nzType="right"></i>-->
+        <!--        <nz-tag [nzColor]="'magenta'" class="unit">jako procent</nz-tag>-->
         <!--        <nz-tag [nzColor]="'red'" class="unit">wydział</nz-tag>-->
         <!--        <nz-tag [nzColor]="'red'" class="unit">średnia</nz-tag>-->
       </section>
-      <p><b>{{this.chartData.name ? this.chartData.name : this.chartData.dataQuery.get[0][0]}}</b></p>
-      <div class="chart-container">
+      <label style="margin-bottom:0.4em" nz-checkbox [(ngModel)]="this.chartData.config.showTitle" *ngIf="!isPreview">
+        {{ chartData.config.showTitle ? 'Wyświetlać tytuł?' : 'Wyświetlać tytuł?' }}
+      </label>
+      <p [style.display]="isPreview? chartData.config.showTitle?'block':'none':'block'" [class.title-hidden]="!chartData.config.showTitle">
+        <b>{{this.chartData.name ? this.chartData.name : this.chartData.dataQuery.get[0][0]}}</b>
 
+
+      </p>
+      <div class="chart-container">
+        <figure *ngIf="!chartData.config.type || isError" style="margin:auto;"><img
+          src="../../../assets/Continuous-Animations_guidelines.gif"></figure>
         <section class="chart-area" *ngIf="chartData.config.type=='groupedPercentAndData' && this.echartOptions">
           <div [style.height.px]="echartOptions.pxHeight" echarts (chartInit)="onChartInit($event)" [options]="echartOptions" class="chart"
                [class.fullWidth]="!(chartData.dataQuery.as.includes('share') && chartData.dataQuery.as.length>1 && dataResponse)"
                #chartInstance></div>
-          <nz-table style="min-height: 300px"
-                    *ngIf="chartData.dataQuery.as.includes('share') && chartData.dataQuery.as.length>1 && dataResponse"
-                    class="details-table" [nzTemplateMode]="true">
+          <nz-table
+            *ngIf="chartData.dataQuery.as.includes('share') && chartData.dataQuery.as.length>1 && dataResponse"
+            class="details-table" [nzTemplateMode]="true">
             <thead style="white-space: nowrap;">
             <tr>
               <th style="white-space: nowrap; background:transparent!important;"
@@ -60,7 +68,7 @@ import {Subject} from 'rxjs';
             </thead>
             <tbody>
             <tr style="line-height: 1.428!important;" *ngFor="let row of this.tableData">
-              <td *ngFor="let value of row">{{value |  number:'':'fr-FR' }}</td>
+              <td *ngFor="let value of row">{{this.reportsService.getLabelFor(namingDictionary, this.question, value) }}</td>
             </tr>
             </tbody>
           </nz-table>
@@ -112,27 +120,30 @@ import {Subject} from 'rxjs';
         <figure class="indicator-card indicator-card-purple">
           <div class="indicator-card-inner">
             <div class="indicator-card-header">Filtry</div>
-            <div class="indicator-card-content" *ngIf="chartData.config.filter">{{chartData.config.filter.question}} = {{chartData.config.filter.answer}}</div>
+            <div class="indicator-card-content" *ngIf="chartData.config.filter">{{chartData.config.filter.question}}
+              = {{chartData.config.filter.answer}}</div>
             <div class="indicator-card-content" *ngIf="!chartData.config.filter">Brak</div>
           </div>
         </figure>
 
       </section>
 
-      <nz-collapse class="chart-editor-dropdown">
-        <nz-collapse-panel nzHeader="Edytor">
-                <div>
-                  <input placeholder="Nazwa wykresu" nz-input [(ngModel)]="this.chartData.name" (blur)="refreshChart(); save()"/>
-                  <nz-tabset [(nzSelectedIndex)]="activeTab">
-                    <nz-tab nzTitle="Wygląd i układ">
-                      <section class="query-marker">
-                        <figure class="indicator-card indicator-card-velvet preset" nz-tooltip="Wykres przedstawiający procent odpowiedzi tak/nie/nie mam zdania w podziale na wydziały lub etapy studiów" (click)="pickPreset('groupedPercentAndData');">
-                          <div class="indicator-card-inner">
-                            <div class="indicator-card-header">Zgrupowany procent + dane</div>
-                            <div class="indicator-card-content"><img src="./assets/preset1.png" style="width: 100%"></div>
-                          </div>
-                        </figure>
-                        <div class="spacer"></div>
+     <nz-collapse class="chart-editor-dropdown">
+       <nz-collapse-panel nzHeader="Edytor" [nzActive]="true">
+         <div>
+           <!--                  <input placeholder="Nazwa wykresu" nz-input [(ngModel)]="this.chartData.name" (blur)="refreshChart(); save()"/>-->
+           <nz-tabset [(nzSelectedIndex)]="activeTab">
+             <nz-tab nzTitle="Wygląd i układ">
+               <section class="query-marker">
+                 <figure class="indicator-card indicator-card-velvet preset"
+                         nz-tooltip="Wykres przedstawiający procent odpowiedzi tak/nie/nie mam zdania w podziale na wydziały lub etapy studiów"
+                         (click)="pickPreset('groupedPercentAndData');">
+                   <div class="indicator-card-inner">
+                     <div class="indicator-card-header">Zgrupowany procent + dane</div>
+                     <div class="indicator-card-content"><img src="./assets/preset1.png" style="width: 100%"></div>
+                   </div>
+                 </figure>
+                 <div class="spacer"></div>
                         <figure class="indicator-card indicator-card-velvet preset" nz-tooltip="Użyj tego wykresu aby przedstawić wyniki z pytań wielokrotnego wyboru. Na przykład: dlaczego poleciłbyś UAM" (click)="pickPreset('multipleChoice');">
                           <div class="indicator-card-inner">
                             <div class="indicator-card-header">Wielokrotny wybór</div>
@@ -249,24 +260,24 @@ import {Subject} from 'rxjs';
                     </nz-tab>
 
 
-                  </nz-tabset>
+           </nz-tabset>
 
 
-                </div>
-          <button style="margin:1em; width:50%" *ngIf="!this.isPreview" nz-button (click)="saveAsPng()">Zapisz wykres jako png</button>
-          <div>Nazwa całego zestawu danych (np.: łącznie, razem, UAM):
-            <input nz-input (blur)="refreshChart(true)" placeholder="Nazwa dla zagregowanych wyników - może to być 'Razem', 'łącznie' itd"
-                   [(ngModel)]="chartData.config.allTogetherLabel">
-          </div>
-          <div><label nz-checkbox [(ngModel)]="this.chartData.config.shortLabels">Krótkie etykiety</label></div>
-          <!--          <input nz-input placeholder="Wpisz query" [(ngModel)]="advancedQuery" (ngModelChange)="refreshChart()">-->
-        </nz-collapse-panel>
-        <!--        <nz-collapse-panel nzHeader="Zaawansowany edytor">-->
-        <!--            <input nz-input placeholder="Wpisz query" [(ngModel)]="advancedQuery" (ngModelChange)="refreshChart()">-->
-        <!--          <hr>-->
-        <!--          <p>Wykresy z całkowicie własnymi, wpisanymi ręcznie danymi</p>-->
-        <!--        </nz-collapse-panel>-->
-      </nz-collapse>
+         </div>
+         <button style="margin:1em; width:50%" *ngIf="!this.isPreview" nz-button (click)="saveAsPng()">Zapisz wykres jako png</button>
+         <div>Nazwa całego zestawu danych (np.: łącznie, razem, UAM):
+           <input nz-input (blur)="refreshChart(true)" placeholder="Nazwa dla zagregowanych wyników - może to być 'Razem', 'łącznie' itd"
+                  [(ngModel)]="chartData.config.allTogetherLabel" value="UAM">
+         </div>
+         <div><label nz-checkbox [(ngModel)]="this.chartData.config.shortLabels">Krótkie etykiety</label></div>
+         <!--          <input nz-input placeholder="Wpisz query" [(ngModel)]="advancedQuery" (ngModelChange)="refreshChart()">-->
+       </nz-collapse-panel>
+       <!--        <nz-collapse-panel nzHeader="Zaawansowany edytor">-->
+       <!--            <input nz-input placeholder="Wpisz query" [(ngModel)]="advancedQuery" (ngModelChange)="refreshChart()">-->
+       <!--          <hr>-->
+       <!--          <p>Wykresy z całkowicie własnymi, wpisanymi ręcznie danymi</p>-->
+       <!--        </nz-collapse-panel>-->
+     </nz-collapse>
    </ng-container>
 
     </section>
@@ -372,26 +383,33 @@ import {Subject} from 'rxjs';
         padding:15px;
       }
       .chart-title-input{
-       max-width: 600px;
+        max-width: 600px;
         width: 50%;
-        font-family: "Gilroy ExtraBold"!important;
+        font-family: "Gilroy ExtraBold" !important;
         margin: auto;
       }
-      .chart-container{
+
+      .chart-container {
         display: flex;
         justify-content: flex-start;
         justify-items: center;
       }
-      .chart-editor{
+
+      .title-hidden {
+        color: rgba(0, 0, 0, 0.3);
+      }
+
+      .chart-editor {
         display: flex;
         justify-items: center;
         justify-content: center;
         flex-direction: column;
       }
-      .chart-editor i{
+
+      .chart-editor i {
         display: block;
         font-size: 2em;
-        margin:0.5em;
+        margin: 0.5em;
         color:rgba(0,0,0,0.6);
         transition: 0.2s all;
       }
@@ -597,14 +615,18 @@ globalFilter:GlobalFilter
     }
     this.refreshChart()
   }
+
+  isError = false;
   async refreshChart(shallSave=true){
 
     if (shallSave) this.save()
     try {
       await this.downloadQueryResponse();
       await this.generateChart();
+      this.isError = false;
     } catch (e){
-      console.log(e)
+      console.log(e);
+      this.isError = true;
     }
   }
   @Input()

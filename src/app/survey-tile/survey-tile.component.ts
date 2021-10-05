@@ -7,7 +7,9 @@ import {UserService} from '../user.service';
 @Component({
   selector: 'app-survey-tile',
   template: `
-    <nz-card [nzBordered]="false"  [nzCover]="coverTemplate" [nzActions]="this.survey.authorId==this.user.userId?[actionShare, actionCreateReport,actionDelete]:[actionCreateReport]">
+    <nz-card [nzBordered]="false" (click)="dashboardModals.openNewReportDialog(this.survey)" style="cursor: pointer"
+             [nzCover]="coverTemplate"
+             [nzActions]="this.survey.authorId==this.user.userId?[actionShare, actionCreateReport,actionDelete]:[actionCreateReport]">
       <!--      <nz-card-meta nzTitle="{{report.name}}" nzDescription=""></nz-card-meta>-->
       <div class="large-indicator">
         <figure class="indicator-icon"><img src="./assets/answers_count.png" style="width:70px;"></figure>
@@ -41,23 +43,25 @@ import {UserService} from '../user.service';
 <!--      <i nz-icon nzType="calendar"></i>Koniec: {{survey.endsOn| date}}-->
 <!--      </div>-->
 
-<!--      <div class="progress">-->
-<!--        <i nz-icon nzType="calendar"></i>Odpowiedzi: {{survey.}}-->
-<!--      </div>-->
+      <!--      <div class="progress">-->
+      <!--        <i nz-icon nzType="calendar"></i>Odpowiedzi: {{survey.}}-->
+      <!--      </div>-->
     </nz-card>
     <ng-template #extra>
 
     </ng-template>
     <ng-template #coverTemplate>
       <figure class="header-image" [style]="'background-image: url(/bkg/'+survey.backgroundImg+');'">
-
+        <div style="position:absolute; font-weight: bold; right:15px; top:15px; background-color: white; border-radius: 5px; padding:6px">
+          ANKIETA
+        </div>
       </figure>
       <span class="card-title">{{survey.name}}</span>
 
 
-<!--      <div class="units">-->
-<!--        <nz-tag [nzColor]="'magenta'" class="connected-survey"></nz-tag>-->
-<!--      </div>-->
+      <!--      <div class="units">-->
+      <!--        <nz-tag [nzColor]="'magenta'" class="connected-survey"></nz-tag>-->
+      <!--      </div>-->
 
     </ng-template>
     <ng-template #actionSetting>

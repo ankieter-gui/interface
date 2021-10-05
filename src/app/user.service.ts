@@ -12,10 +12,11 @@ export class UserService {
     return this._userId
   }
   _username:string = ""
-  get username():string{
-    return this._username
+  get username(): string {
+    return this._username;
   }
-  constructor(private http:HttpClient, private window:Window, private router:Router, private route:ActivatedRoute) {
+
+  constructor(private http: HttpClient, private window: Window, public router: Router, private route: ActivatedRoute) {
 
   }
   userResponse;

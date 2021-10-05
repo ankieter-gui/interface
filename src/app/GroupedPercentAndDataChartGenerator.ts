@@ -53,7 +53,7 @@ export class GroupedPercentAndDataChartGenerator extends AbstractChartGenerator{
         bottom: '3%',
         containLabel: true
       },
-      xAxis: {type: 'value', show: true, animation: true, max: 100},
+      xAxis: {type: 'value', show: false, animation: true, max: 100, axisLabel: {formatter: (value, index) => `${value}%`}},
       yAxis: {
         type: 'category', show: true, data:
           this.indices.map(d =>
