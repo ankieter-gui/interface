@@ -65,10 +65,12 @@ export class EditorComponent implements OnInit {
 
   addNewTextElement(beginning = false) {
     let elem = {type: 'text', content: {text: ''} as TextReportElement};
-    //@ts-ignore
+
     if (beginning) {
+      //@ts-ignore
       this.reportDefinition.elements = [elem, ...this.reportDefinition.elements];
     } else {
+      //@ts-ignore
       this.reportDefinition.elements.push(elem);
     }
 
@@ -91,10 +93,12 @@ export class EditorComponent implements OnInit {
         }
       } as ChartReportElement
     };
-    //@ts-ignore
+
     if (beginning) {
+      //@ts-ignore
       this.reportDefinition.elements = [elem, ...this.reportDefinition.elements];
     } else {
+      //@ts-ignore
       this.reportDefinition.elements.push(elem);
     }
   }
