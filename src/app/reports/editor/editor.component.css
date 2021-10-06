@@ -4,6 +4,18 @@
   margin: 16px;
 }
 
+@media screen and (min-width: 1920px) {
+
+
+  /*.inner-content{width:800px!important;}*/
+}
+
+
+.inner-content {
+  max-width: 1200px !important;
+}
+
+
 nz-header {
   background: #fff;
   padding: 0;
@@ -24,17 +36,19 @@ nz-breadcrumb {
   padding: 24px;
   background:white;
   min-height: 100vh;
-  max-width: 1200px;
-
 }
 
 
 .cdk-drop-list-dragging .element-box:not(.cdk-drag-placeholder) {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
-.element-box{
-  margin-top:2em;
-  padding:3em;
+.element-box {
+  margin-top: 0em;
+  padding-left: 3em;
+  border-top: 1px solid rgba(0, 0, 0, 0.2);
+  padding-right: 3em;
+  padding-top: 1em;
+  padding-bottom: 1em;
   background-color: white;
   /*border: 1px solid rgba(0,0,0,0.03);*/
   border-radius: 10px;

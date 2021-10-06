@@ -118,13 +118,14 @@ export class FrequencyChartGenerator extends AbstractChartGenerator {
       },
       xAxis: {type: 'value', show: true, animation: true},
       //@ts-ignore
-      yAxis: {type: 'category', show: true, data: this.getLabels(), axisLabel: {overflow: 'break'}},
+      yAxis: {type: 'category', show: true, data: this.getLabels(), axisLabel: {overflow: 'break'}, axisLine: {show: true}},
       series: [{
         //barMinHeight:this.horizontalBarHeight,
-        data:this.getData(),
+        data: this.getData(),
         name: 'Liczba odpowiedzi',
         type: 'bar',
-        color:this.lightBlue,
+
+        color: this.lightBlue,
         stack: 'total',
         label: {
           show: true,

@@ -32,7 +32,11 @@ import {Subject} from 'rxjs';
       <i nz-icon nzType="search"></i>
     </ng-template>
     <section class="chart-column-container">
-<!--      <mat-form-field class="chart-title-input chart-name">-->
+      <button [nz-tooltip]="'Pobierz wykres jako obrazek .png'" nz-button nzType="primary" nzSize="default" nzShape="circle"
+              style="position: absolute;right:50px;top:0" (click)="saveAsPng()"><i nz-icon nzType="download"></i></button>
+
+
+      <!--      <mat-form-field class="chart-title-input chart-name">-->
       <!--       <input matInput placeholder="nazwa wykresu" [(ngModel)]="this.chartData.name">-->
       <!--      </mat-form-field>-->
       <section class="query-display">
@@ -42,7 +46,8 @@ import {Subject} from 'rxjs';
         <!--        <nz-tag [nzColor]="'red'" class="unit">wydział</nz-tag>-->
         <!--        <nz-tag [nzColor]="'red'" class="unit">średnia</nz-tag>-->
       </section>
-      <label style="margin-bottom:0.4em" nz-checkbox [(ngModel)]="this.chartData.config.showTitle" *ngIf="!isPreview">
+      <label style="margin-bottom:0.4em" nz-checkbox [(ngModel)]="this.chartData.config.showTitle"
+             *ngIf="!isPreview && (this.chartData.name||this.chartData.dataQuery.get[0][0]) ">
         {{ chartData.config.showTitle ? 'Wyświetlać tytuł?' : 'Wyświetlać tytuł?' }}
       </label>
       <p [style.display]="isPreview? chartData.config.showTitle?'block':'none':'block'" [class.title-hidden]="!chartData.config.showTitle">
@@ -82,53 +87,53 @@ import {Subject} from 'rxjs';
         <!--        <i nz-icon nzType="line-chart" [nz-tooltip]="'Typ wykresu'"></i>-->
         <!--        <i nz-icon nzType="question" [nz-tooltip]="'Pytania'"></i>-->
         <!--        <i nz-icon nzType="database" [nz-tooltip]="'Agregacje'"></i>-->
-<!--        <i nz-icon nzType="bar-chart" [nz-tooltip]="'Wykres kolumnowy, histogram'"></i>-->
-<!--        <i nz-icon nzType="font-size" [nz-tooltip]="'Tekst'"></i>-->
-<!--      </section>-->
-    </div>
-<!--      <div *ngIf="true" style="border: 1px dashed rgba(0,0,0,0.2); width:100%;">-->
+        <!--        <i nz-icon nzType="bar-chart" [nz-tooltip]="'Wykres kolumnowy, histogram'"></i>-->
+        <!--        <i nz-icon nzType="font-size" [nz-tooltip]="'Tekst'"></i>-->
+        <!--      </section>-->
+      </div>
+      <!--      <div *ngIf="true" style="border: 1px dashed rgba(0,0,0,0.2); width:100%;">-->
 
-<!--      <ckeditor  [(ngModel)]="chartData.text" type="inline"></ckeditor>-->
-<!--      </div>-->
-   <ng-container *ngIf="!isPreview">
-      <section class="query-marker"  *ngIf="chartData.dataQuery.get[0].length>0 && !showLinearPicker" [@fadeInOut]>
-                <figure class="indicator-card indicator-card-red" style="width: 290px" (click)="activeTab=0">
-                  <div class="indicator-card-inner">
-                  <div class="indicator-card-header">Pytanie</div>
-                  <div class="indicator-card-content">
-                  {{question | RemoveHtml}}
+      <!--      <ckeditor  [(ngModel)]="chartData.text" type="inline"></ckeditor>-->
+      <!--      </div>-->
+      <ng-container *ngIf="!isPreview">
+        <section class="query-marker" *ngIf="chartData.dataQuery.get[0].length>0 && !showLinearPicker" [@fadeInOut]>
+          <figure class="indicator-card indicator-card-red" style="width: 290px" (click)="activeTab=1">
+            <div class="indicator-card-inner">
+              <div class="indicator-card-header">Pytanie</div>
+              <div class="indicator-card-content">
+                {{question | RemoveHtml}}
 
 
-                  </div>
-                  </div>
-                </figure>
-        <div class="arrow-container" *ngIf="!hideData"> <i nz-icon nzType="right"></i></div>
-        <figure class="indicator-card indicator-card-green"  *ngIf="!hideData">
-          <div class="indicator-card-inner">
-            <div class="indicator-card-header">Dane</div>
-            <div class="indicator-card-content">{{jointAs | titlecase}}</div>
-          </div>
-        </figure>
-        <div class="arrow-container" *ngIf="!hideGroupBy"> <i nz-icon nzType="right"></i></div>
-        <figure class="indicator-card indicator-card-velvet"  *ngIf="!hideGroupBy">
-          <div class="indicator-card-inner">
-            <div class="indicator-card-header">Grupowanie</div>
-            <div class="indicator-card-content">{{chartData.dataQuery.by[0] | RemoveHtml}}</div>
-          </div>
-        </figure>
-       <div class="arrow-container"> <i nz-icon nzType="right"></i></div>
-        <figure class="indicator-card indicator-card-purple">
-          <div class="indicator-card-inner">
-            <div class="indicator-card-header">Filtry</div>
-            <div class="indicator-card-content" *ngIf="chartData.config.filter">{{chartData.config.filter.question}}
-              = {{chartData.config.filter.answer}}</div>
-            <div class="indicator-card-content" *ngIf="!chartData.config.filter">Brak</div>
-          </div>
-        </figure>
+              </div>
+            </div>
+          </figure>
+          <div class="arrow-container" *ngIf="!hideData"><i nz-icon nzType="right"></i></div>
+          <figure class="indicator-card indicator-card-green" *ngIf="!hideData" (click)="activeTab=2">
+            <div class="indicator-card-inner">
+              <div class="indicator-card-header">Dane</div>
+              <div class="indicator-card-content">{{jointAs | titlecase}}</div>
+            </div>
+          </figure>
+          <div class="arrow-container" *ngIf="!hideGroupBy"><i nz-icon nzType="right"></i></div>
+          <figure class="indicator-card indicator-card-velvet" *ngIf="!hideGroupBy" (click)="activeTab=3">
+            <div class="indicator-card-inner">
+              <div class="indicator-card-header">Grupowanie</div>
+              <div class="indicator-card-content">{{chartData.dataQuery.by[0] | RemoveHtml}}</div>
+            </div>
+          </figure>
+          <div class="arrow-container"><i nz-icon nzType="right"></i></div>
+          <figure class="indicator-card indicator-card-purple" (click)="activeTab=4">
+            <div class="indicator-card-inner">
+              <div class="indicator-card-header">Filtry</div>
+              <div class="indicator-card-content" *ngIf="chartData.config.filter">{{chartData.config.filter.question}}
+                = {{chartData.config.filter.answer}}</div>
+              <div class="indicator-card-content" *ngIf="!chartData.config.filter">Brak</div>
+            </div>
+          </figure>
 
-      </section>
+        </section>
 
-     <nz-collapse class="chart-editor-dropdown">
+        <nz-collapse class="chart-editor-dropdown">
        <nz-collapse-panel nzHeader="Edytor" [nzActive]="true">
          <div>
            <!--                  <input placeholder="Nazwa wykresu" nz-input [(ngModel)]="this.chartData.name" (blur)="refreshChart(); save()"/>-->
@@ -264,7 +269,7 @@ import {Subject} from 'rxjs';
 
 
          </div>
-         <button style="margin:1em; width:50%" *ngIf="!this.isPreview" nz-button (click)="saveAsPng()">Zapisz wykres jako png</button>
+
          <div>Nazwa całego zestawu danych (np.: łącznie, razem, UAM):
            <input nz-input (blur)="refreshChart(true)" placeholder="Nazwa dla zagregowanych wyników - może to być 'Razem', 'łącznie' itd"
                   [(ngModel)]="chartData.config.allTogetherLabel" value="UAM">
@@ -285,13 +290,24 @@ import {Subject} from 'rxjs';
   `,
   styles: [
     `
-      .chart-area td{
-        padding-top:9px!important;
-        padding-bottom:9px!important;
-        padding-left:0px!important;
-        padding-right:0px!important;
+      @media screen and (min-width: 1920px) {
+
+        /*.chart-editor-dropdown{*/
+        /*  position: absolute;*/
+        /*  left:110%;*/
+        /*}*/
+        /*.inner-content{width:800px}*/
       }
-      .chart-area th{
+
+
+      .chart-area td {
+        padding-top: 9px !important;
+        padding-bottom: 9px !important;
+        padding-left: 0px !important;
+        padding-right: 0px !important;
+      }
+
+      .chart-area th {
         max-width: 30px;
 
         padding-left:0px!important;
@@ -356,30 +372,40 @@ import {Subject} from 'rxjs';
 
         text-align: center;
       }
-      .arrow-container{
+
+      .arrow-container {
         margin-left: 15px;
         margin-right: 15px;
         display: flex;
         justify-content: center; /* align horizontal */
         align-items: center; /* align vertical */
       }
-      .indicator-card{
-        width:140px;
-        min-height: 100px;
-        box-shadow: 0 0 8px 0 rgba(0,0,0,0.05);
-        border-radius: 7px;
 
+      .indicator-card {
+        width: 140px;
+        min-height: 100px;
+        cursor: pointer;
+        box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.05);
+        border-radius: 7px;
+        transition: all 0.1s ease-out;
       }
-      .indicator-card .indicator-card-header{
+
+      .indicator-card:hover {
+        transform: scale(1.03);
+      }
+
+      .indicator-card .indicator-card-header {
         font-family: "Gilroy ExtraBold";
-        font-size:14pt;
+        font-size: 14pt;
       }
-      .indicator-card .indicator-card-content{
+
+      .indicator-card .indicator-card-content {
         font-family: "Gilroy Light";
-        padding-top:25px;
-        font-size:8pt;
+        padding-top: 25px;
+        font-size: 8pt;
       }
-      .indicator-card-inner{
+
+      .indicator-card-inner {
         padding:15px;
       }
       .chart-title-input{

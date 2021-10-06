@@ -5,6 +5,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {SurveysService} from '../surveys.service';
 import {SharingService} from '../sharing.service';
 import {NzMessageService} from 'ng-zorro-antd/message';
+import {SurveyMeta} from '../dataModels/survey';
 
 @Component({
   selector: 'app-new-report-dialog',
@@ -20,7 +21,7 @@ import {NzMessageService} from 'ng-zorro-antd/message';
       <nz-autocomplete #auto>
         <nz-auto-option class="global-search-item" *ngFor="let option of autocompleteSurveys|filterByName:surveyInputValue"
                         [nzValue]="option.name">
-          {{ option.name }}
+          {{ option.name }} ({{option.answersCount}} odpowiedzi)
 
         </nz-auto-option>
       </nz-autocomplete>
@@ -60,8 +61,9 @@ export class NewReportDialogComponent implements OnInit {
   reportNameInputValue;
   surveyInputValue;
   constructor(private http:HttpClient, private  surveyService:SurveysService, public message:NzMessageService) { }
+
   @Input()
-  autocompleteSurveys;
+  autocompleteSurveys: SurveyMeta[];
   @Input()
   survey;
   name:string;

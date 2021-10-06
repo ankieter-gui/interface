@@ -10,6 +10,7 @@ export class ColorsGenerator {
   chart: ChartReportElement;
   typeOf;
   lightBlue = '#1e6adb';
+  darkBlue = '#0c4190';
   caller: AbstractChartGenerator;
   fourColorPalette = [
     '#F46D43', '#FEE08B', '#D8EE8A', '#66BD63', '#078202', '#9F9F9F'
@@ -26,6 +27,7 @@ export class ColorsGenerator {
     console.log(GroupedPercentAndDataChartGenerator);
     console.log(GroupedPercentAndDataChartGenerator == this.typeOf);
     let x = {
+      'FrequencyChartGenerator': (o) => this.frequencyChartGenerator(o),
       'MultipleChoiceChartGenerator': (o) => this.multipleChoiceChartGenerator(o),
       'MultipleBarsChartGenerator': (o) => this.multipleBarsChartGenerator(o),
       'GroupedPercentAndDataChartGenerator': (o) => this.groupedPercentAndDataChartGenerator(o)
@@ -35,6 +37,13 @@ export class ColorsGenerator {
     if (x) {
       return x(options);
     }
+    return options;
+  }
+
+  frequencyChartGenerator(options: EChartsOption): EChartsOption {
+    let i = options.series[0].data.length - 1;
+    (options.series[0] as any).data[i] = {value: (options.series[0] as any).data[i], itemStyle: {color: this.darkBlue},};
+    console.log((options.series[0] as any).data[i]);
     return options;
   }
 
