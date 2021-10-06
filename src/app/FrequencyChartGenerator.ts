@@ -38,7 +38,19 @@ export class FrequencyChartGenerator extends AbstractChartGenerator {
       }
       wereAllValuesFilled = true;
     }
-    return wereAllValuesFilled
+    return wereAllValuesFilled;
+  }
+
+  wasValueFilled(label: string) {
+    if (!this.chartElement.config.handCodedData) {
+      return false;
+    }
+    for (let i of this.chartElement.config.handCodedData) {
+      if (i.label == label && i.value) {
+        return true;
+      }
+    }
+    return false;
   }
 
   generate(): FrequencyChartGenerator {
@@ -48,23 +60,33 @@ export class FrequencyChartGenerator extends AbstractChartGenerator {
     let values = Object.values(this.shareElement);
     //make it into pairs [key,value][] so we can sort it later
     let chartValuesPairs = this.zip(categories, values);
-    chartValuesPairs=chartValuesPairs.filter(d=>d[0]!="9999" && d[0]!="999")
+    chartValuesPairs = chartValuesPairs.filter(d => d[0] != '9999' && d[0] != '999');
     this.wereAllValuesFilledByHand = this.getWereAllValuesFilled();
-    if (this.wereAllValuesFilledByHand){
-
+    let outChartValuesPairs = chartValuesPairs;
+    if (this.wasAnyValueFilled()) {
+      outChartValuesPairs = [];
       //therefore we count percentages
       //we need to delete 999 and 9999 as there is no way to represent it meaningfuly when displaying %
 
       for (let pair of chartValuesPairs) {
+        if (!this.wasValueFilled(pair[0])) {
+          continue;
+        }
         let category = pair[0];
         let handcodedValue = Number(this.chartElement.config.handCodedData.filter(d => d.label === category)[0].value);
         pair.push(Math.round(pair[1] / handcodedValue * 100));
+        outChartValuesPairs.push(pair);
       }
-      chartValuesPairs = chartValuesPairs.sort((a, b) => a[2] - b[2]);
-      chartValuesPairs = [[this.chartElement.config.allTogetherLabel,
+
+      outChartValuesPairs = outChartValuesPairs.sort((a, b) => a[2] - b[2]);
+      console.log(chartValuesPairs);
+      let sum = 0;
+      chartValuesPairs.forEach(d => sum += Number(d[1]));
+      outChartValuesPairs = [...outChartValuesPairs, [this.chartElement.config.allTogetherLabel,
         this.chartElement.config.allTogetherValue,
-        chartValuesPairs.reduce((previousValue: number, currentValue: number, index, array) => previousValue + currentValue) / Number(this.chartElement.config.allTogetherValue) * 100], ...chartValuesPairs];
-    }else {
+        Math.round(sum / Number(this.chartElement.config.allTogetherValue) * 100)],];
+      console.log(chartValuesPairs)
+    } else {
       //we can't calculate percent. Stick with N only
       console.log(chartValuesPairs);
       this.chartElement.config.allTogetherValue = 0;
@@ -78,29 +100,28 @@ export class FrequencyChartGenerator extends AbstractChartGenerator {
     }
 
 
-    this.chartValuesPairs=chartValuesPairs
+    this.chartValuesPairs = outChartValuesPairs;
     return this;
   }
   private getData(){
-    if (this.wereAllValuesFilledByHand){
-      return this.chartValuesPairs.map(d=>d[2])
-    }else{
-      return this.chartValuesPairs.map(d=>d[1])
+    if (this.wasAnyValueFilled()) {
+      return this.chartValuesPairs.map(d => d[2]);
+    } else {
+      return this.chartValuesPairs.map(d => d[1]);
     }
   }
   private getLabels(){
     return this.chartValuesPairs.map(d=>d[0]).map(d=>this.getLabelFor(this.questions[0], d))
   }
   private getN(name){
-    console.log(name)
-    console.log(this.chartValuesPairs)
+
     return this.chartValuesPairs.filter(d=>this.getLabelFor(this.questions[0],d[0])==name)[0][1]
   }
   private getFormatter(){
-    if (this.wereAllValuesFilledByHand){
-      return (options:CallbackDataParams)=>`${options.value}% (N=${this.getN(options.name)})`
-    }else{
-      return (options:CallbackDataParams)=>`${options.value}`
+    if (this.wasAnyValueFilled()) {
+      return (options: CallbackDataParams) => `${options.value}% (N=${this.getN(options.name)})`;
+    } else {
+      return (options: CallbackDataParams) => `${options.value}`;
     }
   }
   asJSONConfig(): EChartsOption {

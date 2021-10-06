@@ -31,7 +31,7 @@ import {ChartsService} from '../charts.service';
           <input nz-input (blur)="save()" [(ngModel)]="chart.config.allTogetherLabel">
         </td>
         <td>
-          <input nz-input [(ngModel)]="chart.config.allTogetherValue">
+          <input nz-input (blur)="save()" [(ngModel)]="chart.config.allTogetherValue">
         </td>
       </tr>
       </tbody>
