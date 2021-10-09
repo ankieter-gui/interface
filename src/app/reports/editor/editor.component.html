@@ -27,20 +27,45 @@
       </section>
         <section class="header-right slide-top-enter-animation" >
           <div style="display: flex;flex-direction: row">
-            <button nz-button nzType="link" (click)="save(true)" nz-tooltip="Zapisywanie jest automatyczne!">Zapisz</button>
+            <button nz-button nzType="link" (click)="save(true)" nz-tooltip="Zapisywanie jest automatyczne!">Zapisz
+            </button>
             <button (click)="preview()" nz-button nzType="link">Podgląd</button>
-            <nz-tag *ngIf="reportDefinition.globalFilter" nzMode="closeable" (nzOnClose)="this.reportDefinition.globalFilter=null; refresh(); filterSelector.reset()">{{this.reportDefinition.globalFilter.question}} - {{this.reportsService.getLabelFor(this.namingDictionary, this.reportDefinition.globalFilter.question,  this.reportDefinition.globalFilter.answer)}}</nz-tag>
-          <button nz-button nz-dropdown [nzDropdownMenu]="menu4" nzTrigger="click">
-            Filtruj ankietę przez odpowiedź
-            <i nz-icon nzType="down"></i>
-          </button>
+            <nz-tag *ngIf="reportDefinition.globalFilter" nzMode="closeable"
+                    (nzOnClose)="this.reportDefinition.globalFilter=null; refresh(); filterSelector.reset()">{{this.reportDefinition.globalFilter.question}}
+              - {{this.reportsService.getLabelFor(this.namingDictionary, this.reportDefinition.globalFilter.question, this.reportDefinition.globalFilter.answer)}}</nz-tag>
+            <button nz-button nz-dropdown [nzDropdownMenu]="menu4" nzTrigger="click">
+              Filtruj ankietę przez odpowiedź
+              <i nz-icon nzType="down"></i>
+            </button>
+
+            <button [nzDropdownMenu]="menu5" nz-button nz-dropdown nzTrigger="click">
+              Nadpisz etykiety
+              <i nz-icon nzType="down"></i>
+            </button>
           </div>
+          <nz-dropdown-menu #menu5="nzDropdownMenu">
+            <section class="global-filter-container" nz-menu>
+              <h3>Nadpisz etykiety</h3>
+              <p>W tym panelu możesz zmienić domyślną etykietę dla wszystkich wykresów. Poszczególne etykiety mogą
+                zostać edytowane także potem na poziomie pojedyńczego wykresu.</p>
+
+              <app-global-dictionary-override-editor (dataChanged)="refresh()" *ngIf="this.namingDictionary"
+                                                     [dictionary]="this.namingDictionary" [maxHeight]="'600px'"
+                                                     [report]="reportDefinition"></app-global-dictionary-override-editor>
+
+            </section>
+          </nz-dropdown-menu>
           <nz-dropdown-menu #menu4="nzDropdownMenu">
-           <section nz-menu class="global-filter-container">
+            <section nz-menu class="global-filter-container">
               <h3>Filtruj ankietę przez odpowiedź</h3>
-             <p>Wybierz pytanie i odpowiedź na nie aby cały raport brał pod uwagę tylko respondentów którzy udzieli na nią takiej odpowiedzi</p>
-             <app-filters-selector [namingDictionary]="namingDictionary" #filterSelector (globalFilterChange)="refresh()" [(globalFilter)]="this.reportDefinition.globalFilter" [allQuestions]="surveyQuestions" [reportId]="reportId" [report]="reportDefinition"></app-filters-selector>
-           </section>
+              <p>Wybierz pytanie i odpowiedź na nie aby cały raport brał pod uwagę tylko respondentów którzy udzieli na
+                nią takiej odpowiedzi</p>
+              <app-filters-selector [namingDictionary]="namingDictionary" #filterSelector
+                                    (globalFilterChange)="refresh()"
+                                    [(globalFilter)]="this.reportDefinition.globalFilter"
+                                    [allQuestions]="surveyQuestions" [reportId]="reportId"
+                                    [report]="reportDefinition"></app-filters-selector>
+            </section>
           </nz-dropdown-menu>
         </section>
       </section>
@@ -49,19 +74,7 @@
           <input matInput placeholder="Nazwa raportu" [(ngModel)]="this.reportDefinition.title"
                  (blur)="rename();save()">
         </mat-form-field>
-        <section (mouseleave)="mouseHoveringAddMorePanel=false" (mouseover)="mouseHoveringAddMorePanel=true"
-                 *ngIf="this.reportDefinition.elements.length>0" class="add-more slide-top-enter-animation">
-          <div class="add-more-content add-new"> Dodaj nowy <i nz-icon nzType="plus"></i></div>
-          <div class="add-more-content">
-            <span (click)="addNewChartElement(true)" [class.shake]="true"><span [class.slide-top]="true"><i
-              [nz-tooltip]="'Wykres'" class="recommended" nz-icon nzType="bar-chart"></i></span></span>
-            <!--            <i nz-icon nzType="line-chart" [nz-tooltip]="'Wykres liniowy'"></i>-->
-            <!--            <i nz-icon nzType="pie-chart" [nz-tooltip]="'Wykres ciasteczkowy (???)'"></i>-->
-            <!--            <i nz-icon nzType="area-chart" [nz-tooltip]="'Wykres liniowy'"></i>-->
-            <!--            <i nz-icon nzType="bar-chart" [nz-tooltip]="'Wykres kolumnowy, histogram'"></i>-->
-            <i (click)="addNewTextElement(true)" [nz-tooltip]="'Tekst'" nz-icon nzType="font-size"></i>
-          </div>
-        </section>
+
         <div class="report-element" cdkDropList [cdkDropListData]="this.reportDefinition.elements"
              (cdkDropListDropped)="drop($event)">
           <div class="custom-placeholder" *cdkDragPlaceholder></div>
@@ -85,7 +98,11 @@
             </mat-menu>
 
             <app-text-editor-view *ngSwitchCase="'text'" [(text)]="element.content.text" (focusEvent)="save()"></app-text-editor-view>
-            <app-chart-editor-view *ngSwitchCase="'chart'" [namingDictionary]="namingDictionary" [globalFilter]="this.reportDefinition.globalFilter" [forceUpdate]="forceUpdate" [reportId]="this.reportId" [(chartData)]="element.content" (chartDataChange)="save()" [questions]="surveyQuestions" [surveyId]="this.linkedSurveyId"></app-chart-editor-view>
+              <app-chart-editor-view (chartDataChange)="save()" *ngSwitchCase="'chart'" [(chartData)]="element.content"
+                                     [forceUpdate]="forceUpdate" [globalFilter]="this.reportDefinition.globalFilter"
+                                     [namingDictionary]="namingDictionary" [questions]="surveyQuestions"
+                                     [reportId]="this.reportId" [report]="this.reportDefinition"
+                                     [surveyId]="this.linkedSurveyId"></app-chart-editor-view>
           </div>
 
           </div>

@@ -4,15 +4,22 @@ import {ReportsService} from './reports.service';
 import {EChartsOption} from 'echarts';
 import {ColorsGenerator} from './ColorsGenerator';
 
-export class GroupedPercentAndDataChartGenerator extends AbstractChartGenerator{
-  constructor(series: any, chartElement: ChartReportElement, namingDictionary, public reportsService: ReportsService) {
-    super(series, chartElement, namingDictionary, reportsService);
+export class GroupedPercentAndDataChartGenerator extends AbstractChartGenerator {
+  constructor(series: any, chartElement: ChartReportElement, namingDictionary, public reportsService: ReportsService, dictionaryOverrides) {
+    super(series, chartElement, namingDictionary, reportsService, dictionaryOverrides);
+    Object.values(series).forEach((d: any[]) => d.reverse());
+    Object.values(series).forEach((d: any[]) => {
+      d.push(d[0]);
+      d.shift();
+    });
+
   }
+
   indices;
   seriesList;
   chartName;
+
   generate(): AbstractChartGenerator {
-  console.log(this.series)
 
     this.shareElement = AbstractChartGenerator.transformDataIntoPairs(this.series, true).filter(d => d[0].includes('share') || d[0].includes('*'))[0][1];
     this.indices = this.indices.filter(d => d != 999 && d != 9999);
@@ -37,14 +44,14 @@ export class GroupedPercentAndDataChartGenerator extends AbstractChartGenerator{
   }
 
   asJSONConfig(): EChartsOption {
-
+    console.log(this.getAllShareLabels(this.shareElement).map(d => this.getNumberToStringScale(this.getLabelFor(this.chartElement.dataQuery.get[0][0], d))).reverse());
     return {
 
       color: '#3b3b3b',
       pxHeight: this.indices.length * (120 / 3) + 80,
       legend: {
         // top: 1+chartName.length*0.1+"%",
-        data: this.getAllShareLabels(this.shareElement).map(d => this.getNumberToStringScale(this.getLabelFor(this.chartElement.dataQuery.get[0][0], d)))
+        data: this.getAllShareLabels(this.shareElement).map(d => this.getLabelFor(this.chartElement.dataQuery.get[0][0], d)).reverse()
         //data:this.getAllShareLabels(shareElement).map(d=>this.numberToStringScale[Number(d)])
       },
       grid: {
@@ -60,10 +67,10 @@ export class GroupedPercentAndDataChartGenerator extends AbstractChartGenerator{
             this.shortenLabel(this.getLabelFor(this.chartElement.dataQuery.by[0], d)))
         // indices.map(d=>this.numberToStringScale[Number(d)])
       },
-      series: this.zip(Object.keys(this.seriesList), Object.values(this.seriesList)).map((d, index) => ({
+      series: this.zip(Object.keys(this.seriesList), Object.values(this.seriesList)).reverse().map((d, index) => ({
         data: d[1],
         d: d,
-        index: index,
+        index: Object.keys(this.seriesList).length - 1 - index,
         name: this.shortenLabel(this.getLabelFor(this.chartElement.dataQuery.get[0][0], d[0])),
         // name:this.numberToStringScale[d[0]],
         type: 'bar',

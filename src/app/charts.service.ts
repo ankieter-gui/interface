@@ -149,7 +149,7 @@ export class ChartsService {
     return [list.map(d => d.replace(prefix, '')), prefix];
   }
 
-  generateChart(series: any, chartElement: ChartReportElement, reportId, namingDictioanry): EChartsOption {
+  generateChart(series: any, chartElement: ChartReportElement, reportId, namingDictioanry, dictionaryOverrides): EChartsOption {
     let strategyType = {
       'groupedBars': FrequencyChartGenerator,
       'multipleBars': MultipleBarsChartGenerator,
@@ -157,7 +157,7 @@ export class ChartsService {
       'multipleChoice': MultipleChoiceChartGenerator,
       'linearCustomData': LinearCustomDataChartGenerator
     }[chartElement.config.type];
-    let strategy = new strategyType(series, chartElement, namingDictioanry, this.reportService);
+    let strategy = new strategyType(series, chartElement, namingDictioanry, this.reportService, dictionaryOverrides);
 
     strategy.generate();
     let generator = new ColorsGenerator(chartElement, strategyType, strategy);

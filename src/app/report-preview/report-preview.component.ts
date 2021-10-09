@@ -20,8 +20,9 @@ export class ReportPreviewComponent implements OnInit {
   mouseHoveringAddMorePanel=false;
   surveyQuestions;
   linkedSurveyId;
-  reportDefinition:ReportDefinition = { title:"", elements:[
-    ], globalFilter:null};
+  reportDefinition: ReportDefinition = {
+    dictionaryOverrides: {}, title: '', elements: [], globalFilter: null
+  };
   queryData(charData){
     return this.mockChartResponseData;
   }

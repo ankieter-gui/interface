@@ -4,8 +4,8 @@ import {ReportsService} from './reports.service';
 import {EChartsOption} from 'echarts';
 
 export class LinearCustomDataChartGenerator extends AbstractChartGenerator {
-  constructor(series: any, chartElement: ChartReportElement, namingDictionary, public reportsService: ReportsService) {
-    super(series, chartElement, namingDictionary, reportsService);
+  constructor(series: any, chartElement: ChartReportElement, namingDictionary, public reportsService: ReportsService, dictionaryOverrides) {
+    super(series, chartElement, namingDictionary, reportsService, dictionaryOverrides);
   }
 
   generate(): LinearCustomDataChartGenerator {

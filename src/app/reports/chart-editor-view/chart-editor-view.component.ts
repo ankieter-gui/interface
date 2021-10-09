@@ -9,7 +9,7 @@ import {ComplimentQuery, SurveyQueryNamingDictionary} from '../../dataModels/Que
 import {ChartConfig, ChartReportElement} from '../../dataModels/ReportElement';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {ReportsService} from '../../reports.service';
-import {GlobalFilter} from '../../dataModels/ReportDefinition';
+import {GlobalFilter, ReportDefinition} from '../../dataModels/ReportDefinition';
 import {Subject} from 'rxjs';
 
 @Component({
@@ -32,7 +32,8 @@ import {Subject} from 'rxjs';
       <i nz-icon nzType="search"></i>
     </ng-template>
     <section class="chart-column-container">
-      <button [nz-tooltip]="'Pobierz wykres jako obrazek .png'" nz-button nzType="primary" nzSize="default" nzShape="circle"
+      <button *ngIf="!isPreview" [nz-tooltip]="'Pobierz wykres jako obrazek .png'" nz-button nzType="primary" nzSize="default"
+              nzShape="circle"
               style="position: absolute;right:50px;top:0" (click)="saveAsPng()"><i nz-icon nzType="download"></i></button>
 
 
@@ -73,7 +74,8 @@ import {Subject} from 'rxjs';
             </thead>
             <tbody>
             <tr style="line-height: 1.428!important;" *ngFor="let row of this.tableData">
-              <td *ngFor="let value of row">{{this.reportsService.getLabelFor(namingDictionary, this.question, value) }}</td>
+              <td
+                *ngFor="let value of row">{{this.reportsService.getLabelFor(namingDictionary, this.question, value) == value ? this.round(value) : this.reportsService.getLabelFor(namingDictionary, this.question, value) }}</td>
             </tr>
             </tbody>
           </nz-table>
@@ -108,14 +110,14 @@ import {Subject} from 'rxjs';
             </div>
           </figure>
           <div class="arrow-container" *ngIf="!hideData"><i nz-icon nzType="right"></i></div>
-          <figure class="indicator-card indicator-card-green" *ngIf="!hideData" (click)="activeTab=2">
+          <figure class="indicator-card indicator-card-green" *ngIf="!hideData" (click)="activeTab=1">
             <div class="indicator-card-inner">
               <div class="indicator-card-header">Dane</div>
               <div class="indicator-card-content">{{jointAs | titlecase}}</div>
             </div>
           </figure>
           <div class="arrow-container" *ngIf="!hideGroupBy"><i nz-icon nzType="right"></i></div>
-          <figure class="indicator-card indicator-card-velvet" *ngIf="!hideGroupBy" (click)="activeTab=3">
+          <figure class="indicator-card indicator-card-velvet" *ngIf="!hideGroupBy" (click)="activeTab=1">
             <div class="indicator-card-inner">
               <div class="indicator-card-header">Grupowanie</div>
               <div class="indicator-card-content">{{chartData.dataQuery.by[0] | RemoveHtml}}</div>
@@ -270,20 +272,21 @@ import {Subject} from 'rxjs';
 
          </div>
 
-         <div>Nazwa całego zestawu danych (np.: łącznie, razem, UAM):
+         <div *ngIf="this.chartData.config.type!=='groupedBars'">Nazwa całego zestawu danych (np.: łącznie, razem, UAM):
            <input nz-input (blur)="refreshChart(true)" placeholder="Nazwa dla zagregowanych wyników - może to być 'Razem', 'łącznie' itd"
                   [(ngModel)]="chartData.config.allTogetherLabel" value="UAM">
          </div>
-         <div><label nz-checkbox [(ngModel)]="this.chartData.config.shortLabels">Krótkie etykiety</label></div>
+         <div><label nz-checkbox [(ngModel)]="this.chartData.config.shortLabels"
+                     [nz-tooltip]="'Jeżeli etykieta jest zbyt długa, zostanie ona ucięta'">Krótkie etykiety</label></div>
          <!--          <input nz-input placeholder="Wpisz query" [(ngModel)]="advancedQuery" (ngModelChange)="refreshChart()">-->
        </nz-collapse-panel>
-       <!--        <nz-collapse-panel nzHeader="Zaawansowany edytor">-->
-       <!--            <input nz-input placeholder="Wpisz query" [(ngModel)]="advancedQuery" (ngModelChange)="refreshChart()">-->
-       <!--          <hr>-->
-       <!--          <p>Wykresy z całkowicie własnymi, wpisanymi ręcznie danymi</p>-->
-       <!--        </nz-collapse-panel>-->
-     </nz-collapse>
-   </ng-container>
+          <!--        <nz-collapse-panel nzHeader="Zaawansowany edytor">-->
+          <!--            <input nz-input placeholder="Wpisz query" [(ngModel)]="advancedQuery" (ngModelChange)="refreshChart()">-->
+          <!--          <hr>-->
+          <!--          <p>Wykresy z całkowicie własnymi, wpisanymi ręcznie danymi</p>-->
+          <!--        </nz-collapse-panel>-->
+        </nz-collapse>
+      </ng-container>
 
     </section>
 
@@ -308,17 +311,18 @@ import {Subject} from 'rxjs';
       }
 
       .chart-area th {
-        max-width: 30px;
+        max-width: 70px;
 
-        padding-left:0px!important;
-        padding-right:0px!important;
+        padding-left: 0px !important;
+        padding-right: 0px !important;
       }
 
-      .spacer{
-        width:25px;
+      .spacer {
+        width: 25px;
       }
-      .editor-column{
-        width:32%;
+
+      .editor-column {
+        width: 32%;
       }
       .indicator-card-red{
         border-bottom: 10px solid #FF4C61 ;
@@ -421,6 +425,14 @@ import {Subject} from 'rxjs';
         justify-items: center;
       }
 
+      .details-table td {
+        text-align: center;
+      }
+
+      .details-table th {
+        text-align: center;
+      }
+
       .title-hidden {
         color: rgba(0, 0, 0, 0.3);
       }
@@ -500,24 +512,31 @@ export class ChartEditorViewComponent implements OnInit {
   questions;
   @Input()
   isPreview=false;
-@Input()
-chartData:ChartReportElement;
-@Output() chartDataChange = new EventEmitter<ChartReportElement>()
-activeTab=0;
-questionSearchString:string
-bySearchString:string
-  advancedQuery:string;
-asSearchString:string
-  onPickQuestion;
-@Input()
-reportId
-hideData=false;
-showLinearPicker=false;
-hideGroupBy=false;
-@Input()
-globalFilter:GlobalFilter
   @Input()
-  namingDictionary
+  chartData: ChartReportElement;
+  @Output() chartDataChange = new EventEmitter<ChartReportElement>();
+  activeTab = 0;
+  questionSearchString: string;
+  bySearchString: string;
+  advancedQuery: string;
+  asSearchString: string;
+  onPickQuestion;
+  @Input()
+  reportId;
+  @Input()
+  report: ReportDefinition;
+  hideData = false;
+  showLinearPicker = false;
+  hideGroupBy = false;
+
+  round(value) {
+    return Math.round(value * 100 + Number.EPSILON) / 100;
+  }
+
+  @Input()
+  globalFilter: GlobalFilter;
+  @Input()
+  namingDictionary;
   pickPreset(name){
     this.byPickerClick=(type)=>{}
     this.onPickQuestion = ()=>{}
@@ -709,7 +728,7 @@ saveAsPng(){
   generateChart(){
 
 
-      this.echartOptions = this.chartsService.generateChart(this.dataResponse, this.chartData, this.reportId, this.namingDictionary)
+    this.echartOptions = this.chartsService.generateChart(this.dataResponse, this.chartData, this.reportId, this.namingDictionary, this.report.dictionaryOverrides);
 
   }
   get tableHeaders(){

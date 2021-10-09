@@ -7,8 +7,8 @@ export class MultipleBarsChartGenerator extends AbstractChartGenerator {
   xAxisLabels;
   barSeries;
 
-  constructor(series: any, chartElement: ChartReportElement, namingDictionary, public reportsService: ReportsService) {
-    super(series, chartElement, namingDictionary, reportsService);
+  constructor(series: any, chartElement: ChartReportElement, namingDictionary, public reportsService: ReportsService, dictionaryOverrides) {
+    super(series, chartElement, namingDictionary, reportsService, dictionaryOverrides);
   }
 
   generate(): MultipleBarsChartGenerator {

@@ -1,8 +1,9 @@
 import {ChartReportElement, ReportElement, TextReportElement} from './ReportElement';
 
 export class ReportDefinition{
-  title:string;
-  globalFilter:GlobalFilter=null
+  title: string;
+  dictionaryOverrides = {};
+  globalFilter: GlobalFilter = null;
   elements:ReportElement[];
   constructor(title) {
     this.title =title;

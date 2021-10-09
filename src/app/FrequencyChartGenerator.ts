@@ -9,8 +9,8 @@ export class FrequencyChartGenerator extends AbstractChartGenerator {
   chartValuesPairs;
   wereAllValuesFilledByHand: boolean = false;
 
-  constructor(series: any, chartElement: ChartReportElement, namingDictionary, public reportsService: ReportsService) {
-    super(series, chartElement, namingDictionary, reportsService);
+  constructor(series: any, chartElement: ChartReportElement, namingDictionary, public reportsService: ReportsService, dictionaryOverride) {
+    super(series, chartElement, namingDictionary, reportsService, dictionaryOverride);
   }
 
   wasAnyValueFilled(): boolean {
@@ -62,7 +62,7 @@ export class FrequencyChartGenerator extends AbstractChartGenerator {
     let chartValuesPairs = this.zip(categories, values);
     chartValuesPairs = chartValuesPairs.filter(d => d[0] != '9999' && d[0] != '999');
     this.wereAllValuesFilledByHand = this.getWereAllValuesFilled();
-    let outChartValuesPairs = chartValuesPairs;
+    let outChartValuesPairs = JSON.parse(JSON.stringify(chartValuesPairs)); //deep copy
     if (this.wasAnyValueFilled()) {
       outChartValuesPairs = [];
       //therefore we count percentages
@@ -95,7 +95,7 @@ export class FrequencyChartGenerator extends AbstractChartGenerator {
       }
       console.log(this.chartElement.config.allTogetherValue);
       chartValuesPairs = chartValuesPairs.sort((a, b) => a[1] - b[1]);
-      chartValuesPairs = [...chartValuesPairs, [this.chartElement.config.allTogetherLabel,
+      outChartValuesPairs = [...chartValuesPairs, [this.chartElement.config.allTogetherLabel,
         this.chartElement.config.allTogetherValue]];
     }
 

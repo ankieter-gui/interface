@@ -35,8 +35,9 @@ export class EditorComponent implements OnInit {
   }
   linkedSurveyId;
   reportId;
-  reportDefinition:ReportDefinition = { title:"", elements:[
-    ], globalFilter:null};
+  reportDefinition: ReportDefinition = {
+    dictionaryOverrides: {}, title: '', elements: [], globalFilter: null
+  };
   queryData(charData){
     return this.mockChartResponseData;
   }

@@ -3,7 +3,8 @@ import {ChartReportElement} from './dataModels/ReportElement';
 import {Data} from '@angular/router';
 import {ReportsService} from './reports.service';
 import {commonSubstring} from './lcs';
-import * as Chance from 'chance'
+import * as Chance from 'chance';
+import {ReportDefinition} from './dataModels/ReportDefinition';
 export interface DataPair{
   // [
   //   [
@@ -37,26 +38,34 @@ export abstract class AbstractChartGenerator {
   horizontalBarHeight=40;
   gray="#9F9F9F"
   darkGray="#5e5e5e"
-  lightBlue="#1e6adb"
-  darkBlue="#043b8b"
-  static valuesToOmit = [999,9999]
+  lightBlue = '#1e6adb';
+  darkBlue = '#043b8b';
+  static valuesToOmit = [999, 9999];
   zip = (a, b) => a.map((k, i) => [k, b[i]]);
-  abstract asJSONConfig(): EChartsOption;
-  series:any;
-  indices
-  chartElement:ChartReportElement
-  namingDictionary;
-  shareElement:DataPair[];
-  reportsService:ReportsService
-  constructor(series:any, chartElement:ChartReportElement,namingDictionary, reportsService:ReportsService) {
-    this.chartElement=chartElement;
-    this.series=series;
-    this.namingDictionary=namingDictionary;
-    this.reportsService=reportsService
 
-    if (series) this.indices = series["index"]
+  abstract asJSONConfig(): EChartsOption;
+
+  series: any;
+  indices;
+  chartElement: ChartReportElement;
+  namingDictionary;
+  shareElement: DataPair[];
+  reportsService: ReportsService;
+  dictionaryOverride;
+
+  constructor(series: any, chartElement: ChartReportElement, namingDictionary, reportsService: ReportsService, dictionaryOverride) {
+    this.chartElement = chartElement;
+    this.series = series;
+    this.dictionaryOverride = dictionaryOverride;
+    this.namingDictionary = namingDictionary;
+    this.reportsService = reportsService;
+
+    if (series) {
+      this.indices = series['index'];
+    }
   }
-  getAllShareLabels(shareElement){
+
+  getAllShareLabels(shareElement) {
     let l = []
     for (let series of shareElement){
       l= [...l, ...Object.keys(series)]
@@ -156,6 +165,9 @@ export abstract class AbstractChartGenerator {
     if (value == "*") return this.chartElement.config.allTogetherLabel
     if (question in this.namingDictionary && this.namingDictionary[question]) {
       r = this.namingDictionary[question][value];
+      if (this.dictionaryOverride && Object.keys(this.dictionaryOverride).includes(r) && this.dictionaryOverride[r]) {
+        r = this.dictionaryOverride[r];
+      }
     }
     if (!r) {
       return String(value);

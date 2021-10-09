@@ -80,7 +80,7 @@ export class PolskieNazwyFilter implements PipeTransform {
 })
 export class FilterByFieldPipe implements PipeTransform {
 
-  transform(items: any[],field:string, filter: string): any {
+  transform(items: any[], field, filter: string): any {
     if (!items || !filter) {
       return items;
     }

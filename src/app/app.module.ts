@@ -92,6 +92,9 @@ import {NzMessageModule} from 'ng-zorro-antd/message';
 import {DeleteConfirmModalComponent} from './delete-confirm-modal/delete-confirm-modal.component';
 import {DummyChartComponent} from './dummy-chart/dummy-chart.component';
 import {EscapeHtmlPipe} from './keep-html.pipe';
+import {GlobalDictionaryOverrideEditorComponent} from './global-dictionary-override-editor/global-dictionary-override-editor.component';
+import {GlobalQuestionDictionaryOverrideEditorComponent} from './global-question-dictionary-override-editor/global-question-dictionary-override-editor.component';
+import {LocalQuestionDictionaryOverrideEditorComponent} from './local-question-dictionary-override-editor/local-question-dictionary-override-editor.component';
 
 
 registerLocaleData(fr);
@@ -187,7 +190,13 @@ export let commonNZImports = [
 
     DeleteConfirmModalComponent,
 
-    DummyChartComponent
+    DummyChartComponent,
+
+    GlobalDictionaryOverrideEditorComponent,
+
+    GlobalQuestionDictionaryOverrideEditorComponent,
+
+    LocalQuestionDictionaryOverrideEditorComponent
   ],
     imports: [
         ...commonNZImports,

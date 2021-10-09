@@ -3,19 +3,21 @@ import {ChartReportElement} from './dataModels/ReportElement';
 import {ReportsService} from './reports.service';
 import {EChartsOption} from 'echarts';
 
-export class MultipleChoiceChartGenerator extends AbstractChartGenerator{
-  constructor(series: any, chartElement: ChartReportElement, namingDictionary, public reportsService: ReportsService) {
-    super(series, chartElement, namingDictionary, reportsService);
+export class MultipleChoiceChartGenerator extends AbstractChartGenerator {
+  constructor(series: any, chartElement: ChartReportElement, namingDictionary, public reportsService: ReportsService, dictionaryOverrides) {
+    super(series, chartElement, namingDictionary, reportsService, dictionaryOverrides);
   }
+
   chartName;
+
   generate(): MultipleChoiceChartGenerator {
-    let shareElements=AbstractChartGenerator.transformDataIntoPairs(this.series).filter(d=>d[0].includes("share"))
-    console.log(shareElements)
-    let categories =shareElements.map(d=>d[0].replace("share ", "").replace(/<[^>]*>/g, ''))
-    let commonSubstringResults =  this.sanitizeLabels(categories)
-    categories=commonSubstringResults[0]
-    this.chartName = !!this.chartName?this.chartName:commonSubstringResults[1]
-    let barSeries = shareElements.map(d=>{
+    let shareElements = AbstractChartGenerator.transformDataIntoPairs(this.series).filter(d => d[0].includes('share'));
+    console.log(shareElements);
+    let categories = shareElements.map(d => d[0].replace('share ', '').replace(/<[^>]*>/g, ''));
+    let commonSubstringResults = this.sanitizeLabels(categories);
+    categories = commonSubstringResults[0];
+    this.chartName = !!this.chartName ? this.chartName : commonSubstringResults[1];
+    let barSeries = shareElements.map(d => {
       let sum=0;
       try {
         sum = Object.values(d[1][0]).reduce((previousValue: number, currentValue: number, index, array) => previousValue + currentValue) as number
