@@ -1,6 +1,6 @@
 import {isDevMode} from '@angular/core';
 
-export const isProd = isDevMode();
+export const isProd = !isDevMode();
 
 const myIp = 'localhost';
 
