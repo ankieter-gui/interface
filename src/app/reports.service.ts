@@ -1,24 +1,43 @@
-import { Injectable } from '@angular/core';
-import * as Chance from 'chance'
+import {Injectable} from '@angular/core';
+import * as Chance from 'chance';
 import {BACKEND_URL} from './Configuration';
 import {HttpClient} from '@angular/common/http';
 import {ReportDefinition} from './dataModels/ReportDefinition';
 import {SurveyQuery} from './dataModels/Query';
 import {ChartsService} from './charts.service';
+import {ChartReportElement} from './dataModels/ReportElement';
+import {AbstractChartGenerator} from './AbstractChartGenerator';
+
 @Injectable({
   providedIn: 'root'
 })
 export class ReportsService {
 
-  constructor(private http:HttpClient) {}
-  createNewReport(surveyId, name){
-    return this.http.post(`${BACKEND_URL}/report/new`, {"surveyId":surveyId, "title":name}, {withCredentials:true,})
+  constructor(private http: HttpClient) {
   }
-  getReport(id){
+
+  createNewReport(surveyId, name) {
+    return this.http.post(`${BACKEND_URL}/report/new`, {'surveyId': surveyId, 'title': name}, {withCredentials: true,});
+  }
+
+  getReport(id) {
     return this.http.get<ReportDefinition>(`${BACKEND_URL}/report/${id}`,{withCredentials:true})
   }
-  saveReport(id,content:ReportDefinition){
-    return this.http.post(`${BACKEND_URL}/report/${id}`, content ,{withCredentials:true})
+  saveReport(id,content:ReportDefinition) {
+    let generators: AbstractChartGenerator[] = [];
+    content.elements.forEach(d => {
+      if (d.type == 'chart') {
+        generators.push((d.content as ChartReportElement).generator);
+        (d.content as ChartReportElement).generator = undefined;
+      }
+    });
+    let toSave = JSON.parse(JSON.stringify(content));
+    generators.reverse();
+    console.log(generators);
+    for (let [i, element] of content.elements.entries()) {
+      (element.content as ChartReportElement).generator = generators.pop();
+    }
+    return this.http.post(`${BACKEND_URL}/report/${id}`, toSave, {withCredentials: true});
   }
   getLinkedSurvey(reportId){
     return this.http.get<{surveyId:string, error?:string}>(`${BACKEND_URL}/report/${reportId}/survey`,{withCredentials:true})
@@ -70,11 +89,7 @@ export class ReportsService {
     return dict
   }
   getLabelFor(dictionary, question, value){
-// console.log(dictionary[question])
-//     console.log(question);console.log(value)
     let r;
-    if (value==9999) return "Pominięto"
-    if (value == "*") return "allTogether"
     if (question in dictionary && dictionary[question]) r=  dictionary[question][value]
     if (!r) {return value} else {return r}
   }

@@ -95,6 +95,7 @@ import {EscapeHtmlPipe} from './keep-html.pipe';
 import {GlobalDictionaryOverrideEditorComponent} from './global-dictionary-override-editor/global-dictionary-override-editor.component';
 import {GlobalQuestionDictionaryOverrideEditorComponent} from './global-question-dictionary-override-editor/global-question-dictionary-override-editor.component';
 import {LocalQuestionDictionaryOverrideEditorComponent} from './local-question-dictionary-override-editor/local-question-dictionary-override-editor.component';
+import {IgnoreSelectorComponent} from './ignore-selector/ignore-selector.component';
 
 
 registerLocaleData(fr);
@@ -196,7 +197,9 @@ export let commonNZImports = [
 
     GlobalQuestionDictionaryOverrideEditorComponent,
 
-    LocalQuestionDictionaryOverrideEditorComponent
+    LocalQuestionDictionaryOverrideEditorComponent,
+
+    IgnoreSelectorComponent
   ],
     imports: [
         ...commonNZImports,

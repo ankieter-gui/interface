@@ -74,7 +74,6 @@ export class SharingService {
   }
   shareReportToGroups(reportId, groupsRead:string[]=[],groupsWrite:string[]=[], groupsNone:string[]=[] ){
     return this.http.post(`${BACKEND_URL}/report/${reportId}/share`, {"r":groupsRead.map(g=>this.allGroups[g].map(d=>d.id)).flat(), "w":groupsWrite.map(g=>this.allGroups[g].map(d=>d.id)).flat(), "n":groupsNone.map(g=>this.allGroups[g].map(d=>d.id)).flat()}, {withCredentials:true})
-
   }
   shareSurveyToUsers(surveyId,usersRead=[], usersWrite=[], usersNone=[]){
     return this.http.post(`${BACKEND_URL}/report/${surveyId}/share`, {"r":usersRead, "w":usersWrite, "n":usersNone}, {withCredentials:true})

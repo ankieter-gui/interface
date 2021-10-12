@@ -265,7 +265,12 @@ import {Subject} from 'rxjs';
                                             [reportId]="reportId"></app-filters-selector>
 
                     </nz-tab>
-
+<!--                    <nz-tab nzTitle="Etykiety">-->
+<!--                      <app-local-question-dictionary-override-editor [chart]="chartData" [report]="report" maxHeight="600px" (dataChanged)="refreshChart()" [dictionary]="this.namingDictionary"></app-local-question-dictionary-override-editor>-->
+<!--                    </nz-tab>-->
+             <nz-tab nzTitle="Ustawienia obliczeń" *ngIf="chartData.config.type == 'groupedPercentAndData'">
+                    <app-ignore-selector [chart]="chartData" *ngIf="this.dataResponse" (dataChanged)="refreshChart()" [lastDataResponse]="this.dataResponse"></app-ignore-selector>
+                               </nz-tab>
 
            </nz-tabset>
 

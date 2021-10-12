@@ -1,6 +1,7 @@
 import {EChartsOption} from 'echarts';
 import {SurveyQuery} from './Query';
 import {GlobalFilter} from './ReportDefinition';
+import {AbstractChartGenerator} from '../AbstractChartGenerator';
 
 export class ReportElement{
   type:"text"|"chart";
@@ -12,15 +13,18 @@ export class TextReportElement{
 
 }
 
-export class Table{
-  series:string[]
+export class Table {
+  series: string[];
 }
-export class ChartConfig{
+
+export class ChartConfig {
+  ignoreAnswersForCalculations: any[];
+  localLabelOverrides;
   showTitle = false;
   handCodedData: { value: string, label: string }[] = [{label: '', value: ''}];
-  static colorSets={
+  static colorSets = {
     default: ['red', 'blue', 'green']
-  }
+  };
   type: 'groupedPercentAndData' | 'multipleChoice' | 'multipleChoiceAndData' | 'multipleBars' | 'groupedBars' | 'complex' | 'linearCustomData';
   colors?: string[] = ChartConfig.colorSets.default;
   showDataLabels?: boolean = true;
@@ -38,4 +42,5 @@ export class ChartReportElement {
   dataQuery: SurveyQuery;
   config: ChartConfig;
   text: string;
+  generator: AbstractChartGenerator;
 }

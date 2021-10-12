@@ -3,8 +3,8 @@ import {GlobalFilter} from './ReportDefinition';
 export class SurveyQuery{
   get: string[][]=[[]]
   as: ("share"|"max"|"min"|"mode"|"mean"|"median"|"std"|"var"|"count"|"sum")[]=[]
-  by:string[]=[]
-  filter: [string, ">"|"<"|"="|"!="|"<="|">="|"top"|"low"|"in", string, string?][]=[]
+  by: string[] = [];
+  filter: [string, '>' | '<' | '=' | '!=' | '<=' | '>=' | 'top' | 'low' | 'in' | 'notin', string?, string?][] = [];
   constructor() {
     this.get=[[]]
     this.as=[]
@@ -13,9 +13,7 @@ export class SurveyQuery{
   }
 }
 export let ComplimentQuery = (query:SurveyQuery, globalFilter:GlobalFilter=null, localFilter:GlobalFilter=null):SurveyQuery=>{
-
-  let q2= new SurveyQuery()
-  q2=JSON.parse(JSON.stringify(query))
+  let q2: SurveyQuery = JSON.parse(JSON.stringify(query)) as SurveyQuery;
   while (q2.as.length>q2.get[0].length){
     q2.get[0].push(q2.get[0][0])
   }

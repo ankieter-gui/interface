@@ -55,34 +55,6 @@ export class ChartsService {
   darkBlue="#043b8b"
   horizontalBarHeight=40;
 
-  rateToColorGrade(index,n){
-
-    if (n==undefined) return this.darkGray
-    let y = {
-      'bardzo dobrze': "#4AAF5B",
-      'raczej dobrze':"#B7E075",
-      'średnio':"#FDFEBD",
-      'raczej źle':"#FDBE6F",
-      'bardzo źle':"#E95638",
-      "tak":"#4AAF5B",
-      "nie":"#E95638",
-      "pominięto":this.darkGray,
-      'odmowa odpowiedzi':this.darkGray
-    }
-    if (n.toLowerCase() in y) return y[n.toLowerCase()]
-    else {
-      if (this.graySubstrings.some(v=>n.toLowerCase().includes(v))){
-        return this.gray
-      }
-      if (this.darkGraySubstrings.some(v=>n.toLowerCase().includes(v))){
-        return this.darkGray
-      }
-      if (index<this.fourColorPalette.length-1)
-      return this.fourColorPalette[index]
-      else
-        return Chance().color()
-    }
-  }
   sevenColorPalette=[
     "#c01f50","#cc5a29","#bb900c","#CAF259", "#92bf42", "#37e79a","#59B0F2", "#9F9F9F"
   ]
@@ -149,7 +121,7 @@ export class ChartsService {
     return [list.map(d => d.replace(prefix, '')), prefix];
   }
 
-  generateChart(series: any, chartElement: ChartReportElement, reportId, namingDictioanry, dictionaryOverrides): EChartsOption {
+  getGenerator(series, chartElement: ChartReportElement, namingDictioanry, reportService, dictionaryOverrides, localOverrides = undefined) {
     let strategyType = {
       'groupedBars': FrequencyChartGenerator,
       'multipleBars': MultipleBarsChartGenerator,
@@ -157,9 +129,14 @@ export class ChartsService {
       'multipleChoice': MultipleChoiceChartGenerator,
       'linearCustomData': LinearCustomDataChartGenerator
     }[chartElement.config.type];
-    let strategy = new strategyType(series, chartElement, namingDictioanry, this.reportService, dictionaryOverrides);
+    return [strategyType, new strategyType(series, chartElement, namingDictioanry, this.reportService, dictionaryOverrides)];
+  }
 
+  generateChart(series: any, chartElement: ChartReportElement, reportId, namingDictioanry, dictionaryOverrides, localOverrides = undefined): EChartsOption {
+
+    let [strategyType, strategy] = this.getGenerator(series, chartElement, namingDictioanry, this.reportService, dictionaryOverrides, localOverrides);
     strategy.generate();
+    chartElement.generator = strategy;
     let generator = new ColorsGenerator(chartElement, strategyType, strategy);
     return generator.generateColors(strategy.asJSONConfig());
 
