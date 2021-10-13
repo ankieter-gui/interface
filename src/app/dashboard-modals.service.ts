@@ -191,9 +191,14 @@ export class DashboardModalsService {
   openNewUserDialog(): void{
     this.createComponentModal("Nowy użytkownik", AddNewUserComponent, {}, async (i: AddNewUserComponent, m) => {
       // TODO: create group
-
+      if (this.sharing.users().some((d, index, a) => d.casLogin == i.casLogin)) {
+        this.message.error('Użytkownik już istnieje!');
+        i.error = true;
+        return;
+      }
+      i.error = false;
       await this.sharing.createNewUser(i.casLogin, i.role, i.pesel).toPromise();
-      this.sharing.downloadAllUsers()
+      this.sharing.downloadAllUsers();
       m.destroy();
     } )
   }
