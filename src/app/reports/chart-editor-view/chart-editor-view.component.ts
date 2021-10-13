@@ -74,8 +74,8 @@ import {Subject} from 'rxjs';
             </thead>
             <tbody>
             <tr style="line-height: 1.428!important;" *ngFor="let row of this.tableData">
-              <td
-                *ngFor="let value of row">{{this.reportsService.getLabelFor(namingDictionary, this.question, value) == value ? this.round(value) : this.reportsService.getLabelFor(namingDictionary, this.question, value) }}</td>
+              <td style="white-space: nowrap"
+                  *ngFor="let value of row">{{this.reportsService.getLabelFor(namingDictionary, this.question, value) == value ? this.round(value) : this.reportsService.getLabelFor(namingDictionary, this.question, value) }}</td>
             </tr>
             </tbody>
           </nz-table>
@@ -265,12 +265,16 @@ import {Subject} from 'rxjs';
                                             [reportId]="reportId"></app-filters-selector>
 
                     </nz-tab>
-<!--                    <nz-tab nzTitle="Etykiety">-->
-<!--                      <app-local-question-dictionary-override-editor [chart]="chartData" [report]="report" maxHeight="600px" (dataChanged)="refreshChart()" [dictionary]="this.namingDictionary"></app-local-question-dictionary-override-editor>-->
-<!--                    </nz-tab>-->
+             <!--                    <nz-tab nzTitle="Etykiety">-->
+             <!--                      <app-local-question-dictionary-override-editor [chart]="chartData" [report]="report" maxHeight="600px" (dataChanged)="refreshChart()" [dictionary]="this.namingDictionary"></app-local-question-dictionary-override-editor>-->
+             <!--                    </nz-tab>-->
              <nz-tab nzTitle="Ustawienia obliczeń" *ngIf="chartData.config.type == 'groupedPercentAndData'">
-                    <app-ignore-selector [chart]="chartData" *ngIf="this.dataResponse" (dataChanged)="refreshChart()" [lastDataResponse]="this.dataResponse"></app-ignore-selector>
-                               </nz-tab>
+               <app-ignore-selector [chart]="chartData" *ngIf="this.dataResponse" (dataChanged)="refreshChart()"
+                                    [lastDataResponse]="this.dataResponse"></app-ignore-selector>
+             </nz-tab>
+             <nz-tab *ngIf="this.chartData.generator" nzTitle="Kolory i kolejność">
+               <app-colors-and-order-selector [chart]="chartData"></app-colors-and-order-selector>
+             </nz-tab>
 
            </nz-tabset>
 

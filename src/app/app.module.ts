@@ -96,6 +96,7 @@ import {GlobalDictionaryOverrideEditorComponent} from './global-dictionary-overr
 import {GlobalQuestionDictionaryOverrideEditorComponent} from './global-question-dictionary-override-editor/global-question-dictionary-override-editor.component';
 import {LocalQuestionDictionaryOverrideEditorComponent} from './local-question-dictionary-override-editor/local-question-dictionary-override-editor.component';
 import {IgnoreSelectorComponent} from './ignore-selector/ignore-selector.component';
+import {ColorsAndOrderSelectorComponent} from './colors-and-order-selector/colors-and-order-selector.component';
 
 
 registerLocaleData(fr);
@@ -199,7 +200,9 @@ export let commonNZImports = [
 
     LocalQuestionDictionaryOverrideEditorComponent,
 
-    IgnoreSelectorComponent
+    IgnoreSelectorComponent,
+
+    ColorsAndOrderSelectorComponent
   ],
     imports: [
         ...commonNZImports,

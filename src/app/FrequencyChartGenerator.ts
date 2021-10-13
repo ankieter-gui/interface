@@ -128,7 +128,7 @@ export class FrequencyChartGenerator extends AbstractChartGenerator {
     return {
 
       color: '#3b3b3b',
-       pxHeight: this.getLabels().length*this.horizontalBarHeight,
+      pxHeight: this.getLabels().length * this.horizontalBarHeight,
 
       grid: {
         left: '3%',
@@ -137,7 +137,7 @@ export class FrequencyChartGenerator extends AbstractChartGenerator {
         top: '0%',
         containLabel: true
       },
-      xAxis: {type: 'value', show: true, animation: true},
+      xAxis: {type: 'value', show: true, animation: true, axisLine: {show: true}},
       //@ts-ignore
       yAxis: {type: 'category', show: true, data: this.getLabels(), axisLabel: {overflow: 'break'}, axisLine: {show: true}},
       series: [{

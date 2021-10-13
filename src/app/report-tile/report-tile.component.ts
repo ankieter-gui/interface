@@ -11,40 +11,43 @@ import {SharingService} from '../sharing.service';
 @Component({
   selector: 'app-report-tile',
   template: `
-    <nz-card (click)="fromLogin?this.preview():this.openEditor()" [class.fromLogin]="true" [nzBordered]="false" [nzCover]="coverTemplate"
+    <nz-card [class.fromLogin]="true" [nzBordered]="false" [nzCover]="coverTemplate"
              [nzActions]="this.fromLogin?[]:this.report.authorId==this.user.userId?[actionSetting, actionEdit, actionEllipsis, actionSee, this.actionDelete]:[actionSetting, actionEdit, actionSee]">
       <!--      <nz-card-meta nzTitle="{{report.name}}" nzDescription=""></nz-card-meta>-->
-      <div class="large-indicator">
-        <figure class="indicator-icon"><img src="./assets/answers_count.png" style="width:70px;"></figure>
-        <div class="indicator-right-side">
-          <div class="indicator-right-side-top small-font">
-            {{this.report.connectedSurvey.name}}
-          </div>
-          <div class="indicator-right-side-bottom">
-            Nazwa ankiety
-          </div>
-        </div>
-      </div>
-      <div class="large-indicator" *ngIf="!fromLogin">
-        <figure class="indicator-icon"><img src="./assets/answers_count.png" style="width:70px;"></figure>
-        <div class="indicator-right-side">
-          <div class="indicator-right-side-top small-font">
-            {{sharedToCount}}
-          </div>
-          <div class="indicator-right-side-bottom">
-            Użytkownicy z dostępem
+      <div (click)="fromLogin?this.preview():this.openEditor()">
+        <div class="large-indicator">
+          <figure class="indicator-icon"><img src="./assets/answers_count.png" style="width:70px;"></figure>
+          <div class="indicator-right-side">
+            <div class="indicator-right-side-top small-font">
+              {{this.report.connectedSurvey.name}}
+            </div>
+            <div class="indicator-right-side-bottom">
+              Nazwa ankiety
+            </div>
           </div>
         </div>
-      </div>
-      <div class="progress" style="margin:1em">
-        <!--        <i nz-icon nzType="user" style="margin-right: 1em"></i>Autor: {{report.authorName}}-->
+        <div class="large-indicator" *ngIf="!fromLogin">
+          <figure class="indicator-icon"><img src="./assets/answers_count.png" style="width:70px;"></figure>
+          <div class="indicator-right-side">
+            <div class="indicator-right-side-top small-font">
+              {{0}}
+            </div>
+            <div class="indicator-right-side-bottom">
+              Użytkownicy z dostępem
+            </div>
+          </div>
+        </div>
+        <div class="progress" style="margin:1em">
+          <!--        <i nz-icon nzType="user" style="margin-right: 1em"></i>Autor: {{report.authorName}}-->
+        </div>
       </div>
     </nz-card>
     <ng-template #extra>
 
     </ng-template>
     <ng-template #coverTemplate>
-      <figure class="header-image" [style]="'background-image: url(/bkg/'+report.backgroundImg+');'">
+      <figure (click)="fromLogin?this.preview():this.openEditor()" class="header-image"
+              [style]="'background-image: url(/bkg/'+report.backgroundImg+');'">
         <div style="position:absolute; font-weight: bold; right:15px; top:15px; background-color: white; border-radius: 5px; padding:6px">
           RAPORT
         </div>

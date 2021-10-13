@@ -12,8 +12,24 @@ export class ColorsGenerator {
   lightBlue = '#1e6adb';
   darkBlue = '#0c4190';
   caller: AbstractChartGenerator;
+  fiveColorPalette = [
+    '#9F9F9F', '#F46D43', '#FEE08B', '#D8EE8A', '#66BD63', '#078202',
+  ];
   fourColorPalette = [
-    '#F46D43', '#FEE08B', '#D8EE8A', '#66BD63', '#078202', '#9F9F9F'
+
+    '#F46D43',
+    '#FEE08B',
+    '#66BD63',
+    '#078202',
+  ];
+  sevenColorPalette = [
+    '#E34933',
+    '#FCA55D',
+    '#FEE999',
+    '#E3F399',
+    '#9DD569',
+    '#39A758',
+    '#D3D3D3'
   ];
 
   constructor(chart: ChartReportElement, typeOf, caller: AbstractChartGenerator) {
@@ -54,24 +70,26 @@ export class ColorsGenerator {
 
   multipleBarsChartGenerator(options: EChartsOption): EChartsOption {
     let questionObject: SingleQuestionTypesDefinition = this.caller.namingDictionary[this.chart.dataQuery.get.flat()[0]];
-    let pairs: [string, string][] = this.caller.zip(Object.keys(questionObject.values), Object.values(questionObject.values));
+    let pairs: [string, string][] = this.caller.zip(Object.keys(questionObject), Object.values(questionObject));
     for (let series of (options.series as any[])) {
       let data = series.d;
-      console.log(data);
+      series.color = this.sevenColorPalette[series.index];
     }
     return options;
   }
 
   groupedPercentAndDataChartGenerator(options: EChartsOption): EChartsOption {
-
     console.log(this.chart.dataQuery.get.flat()[0]);
-    console.log(this.caller.namingDictionary);
     let questionObject: SingleQuestionTypesDefinition = this.caller.namingDictionary[this.chart.dataQuery.get.flat()[0]];
-    console.log(questionObject);
     let pairs: [string, string][] = this.caller.zip(Object.keys(questionObject), Object.values(questionObject));
+    const seriesLength = (options.series as any[]).length;
     for (let series of (options.series as any[])) {
       let data = series.d;
-      series.color = this.fourColorPalette[series.index];
+      if (seriesLength > 4) {
+        series.color = this.fiveColorPalette[series.index];
+      } else {
+        series.color = this.fourColorPalette[series.index];
+      }
     }
     return options;
   }

@@ -14,7 +14,7 @@ export class LinearCustomDataChartGenerator extends AbstractChartGenerator {
 
   asJSONConfig(): EChartsOption {
     return {
-      pxHeight: 250,
+      pxHeight: 350,
       tooltip: {
         trigger: 'axis',
         axisPointer: {
@@ -28,10 +28,14 @@ export class LinearCustomDataChartGenerator extends AbstractChartGenerator {
       xAxis: {
         type: 'category',
         boundaryGap: false,
+        axisLabel: {interval: 0, rotate: 20},
+        axisTick: {show: true},
         minorTick: {show: true},
         data: this.chartElement.config.handCodedData.map(d => d.label)
       },
       yAxis: {
+        axisLabel: {interval: 0},
+        axisTick: {show: true},
         min: Number(Math.min(
           ...this.chartElement.config.handCodedData.map(
             d => Number(d.value)))) - 0.05 * Number(Math.min(
@@ -42,7 +46,8 @@ export class LinearCustomDataChartGenerator extends AbstractChartGenerator {
       },
       series: [{
         data: this.chartElement.config.handCodedData.map(d => Number(d.value)),
-        type: 'line'
+        type: 'line',
+        label: {show: true}
       }]
     };
   }

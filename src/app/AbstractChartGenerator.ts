@@ -66,6 +66,7 @@ export abstract class AbstractChartGenerator {
   }
 
   getAllShareLabels(shareElement) {
+    //można przerobić - issue: https://github.com/ankieter-gui/engine/issues/74
     let l = []
     for (let series of shareElement){
       l= [...l, ...Object.keys(series)]

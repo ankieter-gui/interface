@@ -18,21 +18,32 @@ export let ComplimentQuery = (query:SurveyQuery, globalFilter:GlobalFilter=null,
     q2.get[0].push(q2.get[0][0])
   }
   console.log(q2);
-  if (globalFilter){
-    if (!q2.filter) q2.filter=[]
-    q2.filter.push([globalFilter.question, '=', globalFilter.answer])
+  if (globalFilter) {
+    if (!q2.filter) {
+      q2.filter = [];
+    }
+    q2.filter.push([globalFilter.question, '=', globalFilter.answer]);
   }
-  if (localFilter && localFilter.question && localFilter.answer){
-    if (!q2.filter) q2.filter=[]
-    q2.filter.push([localFilter.question, '=', localFilter.answer])
+  if (localFilter && localFilter.question && localFilter.answer) {
+    if (!q2.filter) {
+      q2.filter = [];
+    }
+    q2.filter.push([localFilter.question, '=', localFilter.answer]);
   }
-  if (q2.filter) q2['if'] = q2.filter
-
-  if (q2['if'].length ==0){
+  if (q2.filter) {
+    q2['if'] = q2.filter;
+  }
+  const notInQuestions = [...q2.by.flat(), ...q2.get.flat()].map(d => [d, 'notin', '9999', '999']);
+  notInQuestions.forEach(d => {
+    if (d[0] != '*') {
+      q2['if'].push(d);
+    }
+  });
+  if (q2['if'].length == 0) {
     delete q2['if'];
   }
   delete q2['filter'];
-  q2['if'] = q2.get.flat().map(d=>[d, 'notin', '9999', '999'])
+
   return q2;
 }
 export let SurveyQueryNamingDictionary = {

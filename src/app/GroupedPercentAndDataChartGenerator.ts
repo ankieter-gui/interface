@@ -44,14 +44,23 @@ export class GroupedPercentAndDataChartGenerator extends AbstractChartGenerator 
   }
 
   asJSONConfig(): EChartsOption {
-    console.log(this.getAllShareLabels(this.shareElement).map(d => this.getNumberToStringScale(this.getLabelFor(this.chartElement.dataQuery.get[0][0], d))).reverse());
+    //Nie działa  - linked issue: https://github.com/ankieter-gui/engine/issues/74
+    let orderedEntriesList = this.zip(Object.keys(this.seriesList), Object.values(this.seriesList)).reverse();
+
+
+    let orderedLegend: any[] = this.getAllShareLabels(this.shareElement).map(d => this.getLabelFor(this.chartElement.dataQuery.get[0][0], d)).reverse();
+    //TODO: to jest lekko sketchy. Trzeba zrobić dialog który ustawi flagę - czy istnieje "Nie wiem/nie istnieje" oraz czy przenieść na koniec
+    if (orderedLegend.some((element, index, array) => element.toLowerCase().includes('nie wiem') || element.toLowerCase().includes('nie dotyczy'))) {
+      orderedLegend.push(orderedLegend.shift());
+      orderedEntriesList.push(orderedEntriesList.shift());
+    }
     return {
 
       color: '#3b3b3b',
       pxHeight: this.indices.length * (120 / 3) + 80,
       legend: {
         // top: 1+chartName.length*0.1+"%",
-        data: this.getAllShareLabels(this.shareElement).map(d => this.getLabelFor(this.chartElement.dataQuery.get[0][0], d)).reverse()
+        data: orderedLegend
         //data:this.getAllShareLabels(shareElement).map(d=>this.numberToStringScale[Number(d)])
       },
       grid: {
@@ -67,7 +76,7 @@ export class GroupedPercentAndDataChartGenerator extends AbstractChartGenerator 
             this.shortenLabel(this.getLabelFor(this.chartElement.dataQuery.by[0], d)))
         // indices.map(d=>this.numberToStringScale[Number(d)])
       },
-      series: this.zip(Object.keys(this.seriesList), Object.values(this.seriesList)).reverse().map((d, index) => ({
+      series: orderedEntriesList.map((d, index) => ({
         data: d[1],
         d: d,
         index: Object.keys(this.seriesList).length - 1 - index,

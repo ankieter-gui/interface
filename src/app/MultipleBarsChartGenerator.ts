@@ -15,22 +15,8 @@ export class MultipleBarsChartGenerator extends AbstractChartGenerator {
     this.xAxisLabels = this.series.index;
     this.shareElement = AbstractChartGenerator.transformDataIntoPairs(this.series).filter(d => d[0].includes('share'))[0][1];
     let seriesList = this.generateSeriesList(this.shareElement);
-    //get only values and transpose
-    const transpose = m => m[0].map((x, i) => m.map(x => x[i]));
-    this.barSeries = Object.values(seriesList).map((d: number[]) => {
-      let sum = 0;
-      console.log(d);
-      try {
-        sum = d.reduce((previousValue: number, currentValue: number, index, array) => previousValue + currentValue, 0) as number;
-      } catch (e) {
-        console.log('could not count responses amount');
-        console.log(e);
-      }
-      console.log(d);
-      console.log(sum);
-      return d;
-      return (JSON.parse(JSON.stringify(d)) as number[]).map(i => i / sum * 100);
-    });
+    console.log(seriesList);
+    this.barSeries = seriesList;
     return this;
 
   }
@@ -87,7 +73,8 @@ export class MultipleBarsChartGenerator extends AbstractChartGenerator {
       legend: {
         data: this.getAllShareLabels(this.shareElement).map(d => this.getLabelFor(this.chartElement.dataQuery.get[0][0], d))
       },
-      pxHeight: 300,
+
+      pxHeight: 500,
       xAxis: [
         {
           boundaryGap: true,
@@ -113,6 +100,7 @@ export class MultipleBarsChartGenerator extends AbstractChartGenerator {
         bottom: '3%',
         containLabel: true
       },
+
       series:
       //każda seria to jeden słupek w tej samej pozycji ale w różnych grupach
         this.zip(this.getAllShareLabels(this.shareElement), this.barSeries).map((d, index) => ({
@@ -120,7 +108,8 @@ export class MultipleBarsChartGenerator extends AbstractChartGenerator {
           d: d,
           index: index,
           type: 'bar',
-          color: this.rateToColorGrade(index, this.getNumberToStringScale(this.getLabelFor(this.chartElement.dataQuery.get[0][0], d[0]))),
+          barWidth: 20,
+          color: undefined,
           barGap: 0,
           label: {
             show: true,
@@ -129,7 +118,6 @@ export class MultipleBarsChartGenerator extends AbstractChartGenerator {
             align: config.align,
             verticalAlign: config.verticalAlign,
             rotate: config.rotate,
-            // formatter: '{c}%  {name|{a}}',
             formatter: (options) => Math.round(options.value) != 0 ? `${Math.round(options.value)}%` : '',
             fontSize: 12,
             rich: {

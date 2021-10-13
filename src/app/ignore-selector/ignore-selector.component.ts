@@ -7,7 +7,7 @@ import {ReportsService} from '../reports.service';
 @Component({
   selector: 'app-ignore-selector',
   template: `
-    <section *ngIf="this.selections">
+    <section *ngIf="this.selections && this.chart.generator">
       <input nz-input [(ngModel)]="searchString" placeholder="Szukaj..." style="margin-bottom: 1em">
       <div style="overflow-y: scroll;" [style.maxHeight]="'700px'">
         <nz-table
