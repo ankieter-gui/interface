@@ -5,7 +5,10 @@ import {ReportsService} from './reports.service';
 import {commonSubstring} from './lcs';
 import * as Chance from 'chance';
 import {ReportDefinition} from './dataModels/ReportDefinition';
-export interface DataPair{
+import {OrderSetting, OrderSettingGenerator} from './dataModels/OrderSetting';
+import {share} from 'rxjs/operators';
+
+export interface DataPair {
   // [
   //   [
   //     "share W skali od 5 do 1 (5 - bardzo dobrze, 4 - raczej dobrze, 3 - średnio, 2 - raczej źle, 1 - bardzo źle) proszę ocenić następujące elementy dotyczące jakości zajęć: - Dostosowanie form pracy zdalnej do przekazywanych treści",
@@ -45,6 +48,7 @@ export abstract class AbstractChartGenerator {
 
   abstract asJSONConfig(): EChartsOption;
 
+  rawSeries: any;
   series: any;
   indices;
   chartElement: ChartReportElement;
@@ -55,13 +59,50 @@ export abstract class AbstractChartGenerator {
 
   constructor(series: any, chartElement: ChartReportElement, namingDictionary, reportsService: ReportsService, dictionaryOverride) {
     this.chartElement = chartElement;
-    this.series = series;
+    this.rawSeries = series;
     this.dictionaryOverride = dictionaryOverride;
     this.namingDictionary = namingDictionary;
     this.reportsService = reportsService;
 
     if (series) {
       this.indices = series['index'];
+      let allShareLabels = [];
+      let shareValues = Object.entries(series).filter(([key, value]) => key.includes('share')).map(([key, value]) => value);
+      console.log(shareValues);
+      allShareLabels = [...new Set((shareValues.map((d: []) => d.map(u => Object.keys(u)))).flat())][0]; //d[0] bo z jakiegoś powodu d jest arrayem. Prawdopodobnie gdy są skomplikowane zapytania trzeba to będzie inaczej obsłuyżyc
+
+      //check if all labels from response are already in the order list
+      let r = true;
+      console.log('all share label');
+      console.log(JSON.parse(JSON.stringify(allShareLabels)));
+      for (let l of allShareLabels) {
+        if (!this.chartElement.config.order.order || !this.chartElement.config.order.order.includes(l) || this.chartElement.config.order.order.length !== allShareLabels.length) {
+          r = false;
+          break;
+        }
+      }
+      if (!r) {
+        this.chartElement.config.order = OrderSettingGenerator.applyAutomaticOrdering(this, allShareLabels);
+      }
+
+      //sort
+      let seriesCopied = JSON.parse(JSON.stringify(this.rawSeries));
+      let keys = Object.keys(seriesCopied);
+      for (let j = 0; j < keys.length; j++) {
+        if (keys[j] == 'index') {
+          continue;
+        }
+        for (let objectSeriesIndex = 0; objectSeriesIndex < seriesCopied[keys[j]].length; objectSeriesIndex++) {
+          let o = seriesCopied[keys[j]][objectSeriesIndex];
+          seriesCopied[keys[j]][objectSeriesIndex] = OrderSetting.sortAnotherSeriesInPlace(this.chartElement.config.order, o);
+          console.log(seriesCopied[keys[j]][objectSeriesIndex]);
+        }
+
+      }
+
+      this.series = seriesCopied;
+      console.log(this.rawSeries);
+      console.log(JSON.parse(JSON.stringify(this.series)))
     }
   }
 

@@ -272,8 +272,9 @@ import {Subject} from 'rxjs';
                <app-ignore-selector [chart]="chartData" *ngIf="this.dataResponse" (dataChanged)="refreshChart()"
                                     [lastDataResponse]="this.dataResponse"></app-ignore-selector>
              </nz-tab>
-             <nz-tab *ngIf="this.chartData.generator" nzTitle="Kolory i kolejność">
-               <app-colors-and-order-selector [chart]="chartData"></app-colors-and-order-selector>
+             <nz-tab nzTitle="Kolory i kolejność" *ngIf="['groupedPercentAndData'].includes(chartData.config.type)">
+               <app-colors-and-order-selector [dictionary]="namingDictionary" (update)="refreshChart()"
+                                              [lastDataResponse]="this.dataResponse" [chart]="chartData"></app-colors-and-order-selector>
              </nz-tab>
 
            </nz-tabset>
@@ -676,7 +677,9 @@ export class ChartEditorViewComponent implements OnInit {
     if (shallSave) this.save()
     try {
       await this.downloadQueryResponse();
-      await this.generateChart();
+      if (this.dataResponse) {
+        await this.generateChart();
+      }
       this.isError = false;
     } catch (e){
       console.log(e);

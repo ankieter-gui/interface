@@ -97,6 +97,8 @@ import {GlobalQuestionDictionaryOverrideEditorComponent} from './global-question
 import {LocalQuestionDictionaryOverrideEditorComponent} from './local-question-dictionary-override-editor/local-question-dictionary-override-editor.component';
 import {IgnoreSelectorComponent} from './ignore-selector/ignore-selector.component';
 import {ColorsAndOrderSelectorComponent} from './colors-and-order-selector/colors-and-order-selector.component';
+import {CommonColorPickerComponent} from './common-color-picker/common-color-picker.component';
+import {MAT_COLOR_FORMATS, NGX_MAT_COLOR_FORMATS, NgxMatColorPickerModule} from '@angular-material-components/color-picker';
 
 
 registerLocaleData(fr);
@@ -115,6 +117,7 @@ export let commonNZImports = [
   NzBreadCrumbModule,
   NzCardModule,
   NzAvatarModule,
+  NgxMatColorPickerModule,
   AppRoutingModule,
   NzAffixModule,
   NzMenuModule,
@@ -202,7 +205,9 @@ export let commonNZImports = [
 
     IgnoreSelectorComponent,
 
-    ColorsAndOrderSelectorComponent
+    ColorsAndOrderSelectorComponent,
+
+    CommonColorPickerComponent
   ],
     imports: [
         ...commonNZImports,
@@ -216,17 +221,21 @@ export let commonNZImports = [
         NzListModule,
         NgxFileDropModule,
         NzBadgeModule,
-        NzTabsModule,
-        NzCheckboxModule,
-        NzSpinModule,
-        NzDividerModule,
-        NzPaginationModule,
-        NzDropDownModule,
-        NzRadioModule,
-        NzAlertModule
+      NzTabsModule,
+      NzCheckboxModule,
+      NzSpinModule,
+      NzDividerModule,
+      NzPaginationModule,
+      NzDropDownModule,
+      NzRadioModule,
+      NzAlertModule
 
     ],
-  providers: [{provide: NZ_I18N, useValue: fr_FR},  { provide: Window, useValue: window },LoginGuard, OnlyAdminGuard],
+  providers: [
+    {provide: NZ_I18N, useValue: fr_FR},
+    {provide: Window, useValue: window},
+    {provide: MAT_COLOR_FORMATS, useValue: NGX_MAT_COLOR_FORMATS}
+    , LoginGuard, OnlyAdminGuard],
   exports: [
     GlobalSidemenuComponent
   ],

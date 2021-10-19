@@ -2,6 +2,7 @@ import {EChartsOption} from 'echarts';
 import {SurveyQuery} from './Query';
 import {GlobalFilter} from './ReportDefinition';
 import {AbstractChartGenerator} from '../AbstractChartGenerator';
+import {OrderSetting} from './OrderSetting';
 
 export class ReportElement{
   type:"text"|"chart";
@@ -18,6 +19,8 @@ export class Table {
 }
 
 export class ChartConfig {
+  order: OrderSetting = new OrderSetting();
+  useManualOrdering?: boolean = false;
   ignoreAnswersForCalculations: any[];
   localLabelOverrides;
   showTitle = false;
@@ -26,7 +29,7 @@ export class ChartConfig {
     default: ['red', 'blue', 'green']
   };
   type: 'groupedPercentAndData' | 'multipleChoice' | 'multipleChoiceAndData' | 'multipleBars' | 'groupedBars' | 'complex' | 'linearCustomData';
-  colors?: string[] = ChartConfig.colorSets.default;
+  colors? = {};
   showDataLabels?: boolean = true;
   allTogetherLabel = 'UAM';
   orientation?: 'horizontal' | 'vertical' = 'horizontal';

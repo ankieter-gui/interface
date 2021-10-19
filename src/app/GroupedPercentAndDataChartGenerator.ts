@@ -5,32 +5,42 @@ import {EChartsOption} from 'echarts';
 import {ColorsGenerator} from './ColorsGenerator';
 
 export class GroupedPercentAndDataChartGenerator extends AbstractChartGenerator {
-  constructor(series: any, chartElement: ChartReportElement, namingDictionary, public reportsService: ReportsService, dictionaryOverrides) {
-    super(series, chartElement, namingDictionary, reportsService, dictionaryOverrides);
-    Object.values(series).forEach((d: any[]) => d.reverse());
-    Object.values(series).forEach((d: any[]) => {
-      d.push(d[0]);
-      d.shift();
-    });
-
-  }
+  entries;
 
   indices;
   seriesList;
   chartName;
+  legend;
+  transposedEntries;
+
+  constructor(series: any, chartElement: ChartReportElement, namingDictionary, public reportsService: ReportsService, dictionaryOverrides) {
+    super(series, chartElement, namingDictionary, reportsService, dictionaryOverrides);
+    // Object.values(series).forEach((d: any[]) => d.reverse());
+    // Object.values(series).forEach((d: any[]) => {
+    //   d.push(d[0]);
+    //   d.shift();
+    // });
+
+  }
 
   generate(): AbstractChartGenerator {
-
-    this.shareElement = AbstractChartGenerator.transformDataIntoPairs(this.series, true).filter(d => d[0].includes('share') || d[0].includes('*'))[0][1];
-    this.indices = this.indices.filter(d => d != 999 && d != 9999);
-    for (let x of this.shareElement) {
-      delete x[9999];
-    }
-    for (let x of this.shareElement) {
-      delete x[999];
-    }
-    this.seriesList = this.generateSeriesList(this.shareElement);
-
+    this.legend = this.chartElement.config.order.order.map(d => this.getLabelFor(this.chartElement.dataQuery.get[0][0], d));
+    this.entries = Object.entries(this.series).filter(d => d[0] != 'index' && d[0].includes('share')).map(d => this.zip(d[1], this.chartElement.config.order.order))[0];
+    this.entries.forEach(d => {
+      console.log(JSON.parse(JSON.stringify(d)));
+      let tmp = d[0];
+      d[0] = d[1];
+      d[1] = tmp;
+      console.log(JSON.parse(JSON.stringify(d)));
+      let sum = 0;
+      d[1].forEach(u => sum += u);
+      d[1].forEach((u, i) => d[1][i] = Math.round(u / sum * 100));
+    });
+    let transpose = m => m[0].map((x, i) => m.map(x => x[i]));
+    console.log(this.series);
+    console.log(this.entries);
+    this.transposedEntries = transpose(this.entries.map(d => d[1]));
+    console.log(this.transposedEntries);
     this.chartName = this.chartName ? this.chartName : this.chartElement.dataQuery.get[0][0];
     return this;
   }
@@ -45,22 +55,16 @@ export class GroupedPercentAndDataChartGenerator extends AbstractChartGenerator 
 
   asJSONConfig(): EChartsOption {
     //Nie działa  - linked issue: https://github.com/ankieter-gui/engine/issues/74
-    let orderedEntriesList = this.zip(Object.keys(this.seriesList), Object.values(this.seriesList)).reverse();
+    // let orderedEntriesList = this.zip(Object.keys(this.seriesList), Object.values(this.seriesList)).reverse();
+    // let orderedLegend: any[] = this.getAllShareLabels(this.shareElement).map(d => this.getLabelFor(this.chartElement.dataQuery.get[0][0], d)).reverse();
 
-
-    let orderedLegend: any[] = this.getAllShareLabels(this.shareElement).map(d => this.getLabelFor(this.chartElement.dataQuery.get[0][0], d)).reverse();
-    //TODO: to jest lekko sketchy. Trzeba zrobić dialog który ustawi flagę - czy istnieje "Nie wiem/nie istnieje" oraz czy przenieść na koniec
-    if (orderedLegend.some((element, index, array) => element.toLowerCase().includes('nie wiem') || element.toLowerCase().includes('nie dotyczy'))) {
-      orderedLegend.push(orderedLegend.shift());
-      orderedEntriesList.push(orderedEntriesList.shift());
-    }
     return {
 
       color: '#3b3b3b',
       pxHeight: this.indices.length * (120 / 3) + 80,
       legend: {
         // top: 1+chartName.length*0.1+"%",
-        data: orderedLegend
+        data: this.legend
         //data:this.getAllShareLabels(shareElement).map(d=>this.numberToStringScale[Number(d)])
       },
       grid: {
@@ -76,10 +80,11 @@ export class GroupedPercentAndDataChartGenerator extends AbstractChartGenerator 
             this.shortenLabel(this.getLabelFor(this.chartElement.dataQuery.by[0], d)))
         // indices.map(d=>this.numberToStringScale[Number(d)])
       },
-      series: orderedEntriesList.map((d, index) => ({
-        data: d[1],
-        d: d,
-        index: Object.keys(this.seriesList).length - 1 - index,
+      series: this.zip(this.chartElement.config.order.order, this.transposedEntries).map((d, index) => ({
+        data: this.transposedEntries[index],
+        d: d[1],
+        orderLabel: d[0],
+        index: this.transposedEntries.length - 1 - index,
         name: this.shortenLabel(this.getLabelFor(this.chartElement.dataQuery.get[0][0], d[0])),
         // name:this.numberToStringScale[d[0]],
         type: 'bar',

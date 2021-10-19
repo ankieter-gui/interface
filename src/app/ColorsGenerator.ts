@@ -79,9 +79,6 @@ export class ColorsGenerator {
   }
 
   groupedPercentAndDataChartGenerator(options: EChartsOption): EChartsOption {
-    console.log(this.chart.dataQuery.get.flat()[0]);
-    let questionObject: SingleQuestionTypesDefinition = this.caller.namingDictionary[this.chart.dataQuery.get.flat()[0]];
-    let pairs: [string, string][] = this.caller.zip(Object.keys(questionObject), Object.values(questionObject));
     const seriesLength = (options.series as any[]).length;
     for (let series of (options.series as any[])) {
       let data = series.d;
@@ -90,7 +87,11 @@ export class ColorsGenerator {
       } else {
         series.color = this.fourColorPalette[series.index];
       }
+      if (this.chart.config.colors && this.chart.config.colors[series.orderLabel]) {
+        series.color = this.chart.config.colors[series.orderLabel]
+      }
     }
+
     return options;
   }
 
