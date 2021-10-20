@@ -39,7 +39,7 @@ export class ColorsGenerator {
     this.typeOf = typeOf;
   }
 
-  generateColors(options: EChartsOption): EChartsOption {
+  generateColors(options: any): any {
 
     console.log(GroupedPercentAndDataChartGenerator);
     console.log(GroupedPercentAndDataChartGenerator == this.typeOf);
@@ -57,19 +57,19 @@ export class ColorsGenerator {
     return options;
   }
 
-  frequencyChartGenerator(options: EChartsOption): EChartsOption {
+  frequencyChartGenerator(options: any): any {
     let i = options.series[0].data.length - 1;
     (options.series[0] as any).data[i] = {value: (options.series[0] as any).data[i], itemStyle: {color: this.darkBlue},};
     console.log((options.series[0] as any).data[i]);
     return options;
   }
 
-  multipleChoiceChartGenerator(options: EChartsOption): EChartsOption {
-    (options.series as BarSeriesOption[]).forEach((d) => d.color = this.multipleChoiceRed);
+  multipleChoiceChartGenerator(options: any): any {
+    (options.series as any[]).forEach((d) => d.color = this.multipleChoiceRed);
     return options;
   }
 
-  multipleBarsChartGenerator(options: EChartsOption): EChartsOption {
+  multipleBarsChartGenerator(options: any): any {
     let questionObject: SingleQuestionTypesDefinition = this.caller.namingDictionary[this.chart.dataQuery.get.flat()[0]];
     let pairs: [string, string][] = this.caller.zip(Object.keys(questionObject), Object.values(questionObject));
     for (let series of (options.series as any[])) {
@@ -79,7 +79,7 @@ export class ColorsGenerator {
     return options;
   }
 
-  groupedPercentAndDataChartGenerator(options: EChartsOption): EChartsOption {
+  groupedPercentAndDataChartGenerator(options: any): any {
     const seriesLength = (options.series as any[]).length;
     for (let series of (options.series as any[])) {
       let data = series.d;
@@ -89,7 +89,7 @@ export class ColorsGenerator {
         series.color = this.fourColorPalette[series.index];
       }
       if (this.chart.config.colors && this.chart.config.colors[series.orderLabel]) {
-        series.color = this.chart.config.colors[series.orderLabel]
+        series.color = this.chart.config.colors[series.orderLabel];
       }
     }
 
