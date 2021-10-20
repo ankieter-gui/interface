@@ -12,6 +12,7 @@ export class ColorsGenerator {
   lightBlue = '#1e6adb';
   darkBlue = '#0c4190';
   caller: AbstractChartGenerator;
+  multipleChoiceRed = '#C44E52';
   fiveColorPalette = [
     '#9F9F9F', '#F46D43', '#FEE08B', '#D8EE8A', '#66BD63', '#078202',
   ];
@@ -39,7 +40,7 @@ export class ColorsGenerator {
   }
 
   generateColors(options: EChartsOption): EChartsOption {
-    console.log(this.typeOf);
+
     console.log(GroupedPercentAndDataChartGenerator);
     console.log(GroupedPercentAndDataChartGenerator == this.typeOf);
     let x = {
@@ -64,7 +65,7 @@ export class ColorsGenerator {
   }
 
   multipleChoiceChartGenerator(options: EChartsOption): EChartsOption {
-    (options.series as BarSeriesOption[]).forEach((d) => d.color = this.lightBlue);
+    (options.series as BarSeriesOption[]).forEach((d) => d.color = this.multipleChoiceRed);
     return options;
   }
 

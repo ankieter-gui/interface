@@ -14,12 +14,12 @@ export class OrderSettingGenerator {
         return conditionPair.orderingFunction(allLabels);
       }
     }
-    return new OrderSetting(allLabels.reverse());
+    return new OrderSetting(allLabels);
   }
 
   public static moveFirstToLast(allLabels): OrderSetting {
     let order = new OrderSetting(allLabels);
-    console.log(order);
+
     order.order.push(order.order.shift());
     return order;
   }
@@ -44,8 +44,7 @@ export class OrderSetting {
 
     let otherMap = {};
     other.forEach(d => otherMap[key(d)] = value(d));
-    console.log(otherMap);
-    console.log(self.order);
+
     return self.order.map((current) => otherMap[current] != null ? otherMap[current] : 0)
 
 

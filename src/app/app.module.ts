@@ -10,9 +10,9 @@ import {NgxEchartsModule} from 'ngx-echarts';
 
 import {NZ_I18N, pl_PL} from 'ng-zorro-antd/i18n';
 import { fr_FR } from 'ng-zorro-antd/i18n';
-import { registerLocaleData } from '@angular/common';
-import fr from '@angular/common/locales/fr';
-import { FormsModule } from '@angular/forms';
+import {registerLocaleData} from '@angular/common';
+import pl from '@angular/common/locales/pl';
+import {FormsModule} from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import {NzLayoutModule} from 'ng-zorro-antd/layout';
 import {NzIconModule} from 'ng-zorro-antd/icon';
@@ -99,9 +99,11 @@ import {IgnoreSelectorComponent} from './ignore-selector/ignore-selector.compone
 import {ColorsAndOrderSelectorComponent} from './colors-and-order-selector/colors-and-order-selector.component';
 import {CommonColorPickerComponent} from './common-color-picker/common-color-picker.component';
 import {MAT_COLOR_FORMATS, NGX_MAT_COLOR_FORMATS, NgxMatColorPickerModule} from '@angular-material-components/color-picker';
+import {InViewportModule} from '@thisissoon/angular-inviewport';
+import {ExportReportDialogComponent} from './export-report-dialog/export-report-dialog.component';
 
 
-registerLocaleData(fr);
+registerLocaleData(pl);
 export let commonNZImports = [
   NgxEchartsModule.forRoot({
     /**
@@ -207,7 +209,9 @@ export let commonNZImports = [
 
     ColorsAndOrderSelectorComponent,
 
-    CommonColorPickerComponent
+    CommonColorPickerComponent,
+
+    ExportReportDialogComponent
   ],
     imports: [
         ...commonNZImports,
@@ -215,16 +219,17 @@ export let commonNZImports = [
         MatFormFieldModule,
         MatInputModule,
         ReportsModule,
-        CKEditorModule,
-        MatIconModule,
-        NzCollapseModule,
-        NzListModule,
-        NgxFileDropModule,
-        NzBadgeModule,
+      CKEditorModule,
+      MatIconModule,
+      NzCollapseModule,
+      NzListModule,
+      NgxFileDropModule,
+      NzBadgeModule,
       NzTabsModule,
       NzCheckboxModule,
       NzSpinModule,
       NzDividerModule,
+      InViewportModule,
       NzPaginationModule,
       NzDropDownModule,
       NzRadioModule,

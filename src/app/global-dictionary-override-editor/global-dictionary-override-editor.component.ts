@@ -54,12 +54,10 @@ export class GlobalDictionaryOverrideEditorComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(Object.values(this.dictionary));
     let keys = Object.values(this.dictionary).map(d => Object.values(d)).flat();
-    console.log(keys);
     keys = [...new Set(keys)];
     this.uniqueKeys = keys.map(d => [d, '']);
-    console.log(this.uniqueKeys)
+
   }
 
 }

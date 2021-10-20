@@ -8,11 +8,13 @@ import {SurveysService} from '../../surveys.service';
 import {SurveyQuery} from '../../dataModels/Query';
 import {ReportsService} from '../../reports.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {ChartReportElement, TextReportElement} from '../../dataModels/ReportElement';
+import {ChartReportElement, ReportElement, TextReportElement} from '../../dataModels/ReportElement';
 import {Subject} from 'rxjs';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {FRONTEND_URL} from '../../Configuration';
 import {bg_BG} from 'ng-zorro-antd/i18n';
+import {DashboardModalsService} from '../../dashboard-modals.service';
+import {AbstractChartGenerator} from '../../AbstractChartGenerator';
 
 @Component({
   selector: 'app-editor',
@@ -20,33 +22,69 @@ import {bg_BG} from 'ng-zorro-antd/i18n';
   styleUrls: ['./editor.component.css']
 })
 export class EditorComponent implements OnInit {
+  //pagination:
+  currentPage = 1;
+  itemsOnPage = 13;
+
+  constructor(private dialogs: DashboardModalsService, private surveysService: SurveysService, private reportsService: ReportsService, private route: ActivatedRoute, private message: NzMessageService, public window: Window, private router: Router) {
+  }
+
   mockChartResponseData = {};
-  mouseHoveringAddMorePanel=false;
+  mouseHoveringAddMorePanel = false;
   surveyQuestions;
   namingDictionary;
   surveyStructure;
   codeModel;
-  preview(){
-    this.window.open(`${FRONTEND_URL}/reports/${this.reportId}`, "_blank");
+
+  preview() {
+    this.window.open(`${FRONTEND_URL}/reports/${this.reportId}`, '_blank');
   }
-  useCode(){
-    this.reportDefinition = JSON.parse(this.codeModel)
-    this.save()
+
+  itemsForCurrentPage() {
+    let endIndex = this.itemsOnPage * this.currentPage;
+    let startIndex = endIndex - this.itemsOnPage;
+    return this.reportDefinition.elements.slice(startIndex, endIndex);
   }
+
+  useCode() {
+    this.reportDefinition = JSON.parse(this.codeModel);
+    this.save();
+  }
+
   linkedSurveyId;
   reportId;
   reportDefinition: ReportDefinition = {
     dictionaryOverrides: {}, title: '', elements: [], globalFilter: null
   };
-  queryData(charData){
+
+  queryData(charData) {
     return this.mockChartResponseData;
   }
-  generateChart(chartData, config){
-    return "chart content"
+
+  generateChart(chartData, config) {
+    return 'chart content';
   }
-  removeElement(element){
+
+  removeElement(element) {
     this.reportDefinition.elements = this.reportDefinition.elements.filter(d => d != element);
     this.save();
+  }
+
+  export() {
+    let generators: AbstractChartGenerator[] = [];
+    this.reportDefinition.elements.forEach(d => {
+      if (d.type == 'chart') {
+        generators.push((d.content as ChartReportElement).generator);
+        (d.content as ChartReportElement).generator = undefined;
+      }
+    });
+    let toSave = JSON.stringify(this.reportDefinition);
+    generators.reverse();
+    console.log(generators);
+    for (let [i, element] of this.reportDefinition.elements.entries()) {
+      (element.content as ChartReportElement).generator = generators.pop();
+    }
+    this.dialogs.openExportReportDialog(toSave);
   }
 
   forceUpdate = new Subject();
@@ -61,7 +99,20 @@ export class EditorComponent implements OnInit {
 
   }
 
-  constructor(private surveysService: SurveysService, private reportsService: ReportsService, private route: ActivatedRoute, private message: NzMessageService, public window: Window, private router: Router) {
+  duplicateElement(element: ReportElement) {
+    let generator;
+    let shallowCopy = {};
+    Object.assign(shallowCopy, element);
+    // @ts-ignore
+    Object.assign(shallowCopy.content, element.content);
+    if (element.type == 'chart') {
+      // @ts-ignore
+      (shallowCopy as ReportElement).content.generator = undefined;
+
+    }
+    this.reportDefinition.elements.push(JSON.parse(JSON.stringify(shallowCopy)));
+
+    this.save();
   }
 
   addNewTextElement(beginning = false) {

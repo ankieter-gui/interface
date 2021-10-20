@@ -43,18 +43,20 @@ export class MultipleChoiceChartGenerator extends AbstractChartGenerator {
   barSeries
   asJSONConfig(): EChartsOption {
     return {
-      color:"#64B5CD",
-      pxHeight: this.categories.length*this.horizontalBarHeight,
+      color: '#64B5CD',
+      pxHeight: this.categories.length * this.horizontalBarHeight,
 
-      grid:{left: '3%',
+      grid: {
+        left: '3%',
         right: '4%',
         bottom: '3%',
-        top:"0%",
-        containLabel: true},
-      xAxis:{type:'value', show:true, animation:true},
+        top: '0%',
+        containLabel: true
+      },
+      xAxis: {type: 'value', show: true, animation: true},
       //@ts-ignore
-      yAxis:{type:'category', show:true, data:categories, axisLabel:{overflow:"break"}},
-      series:[{
+      yAxis: {type: 'category', show: true, data: this.categories, axisLabel: {overflow: 'break'}},
+      series: [{
 
         data: this.barSeries,
         name: 'Procent odpowiedzi',

@@ -136,18 +136,19 @@ import {Subject} from 'rxjs';
         </section>
 
         <nz-collapse class="chart-editor-dropdown">
-       <nz-collapse-panel nzHeader="Edytor" [nzActive]="true">
-         <div>
-           <!--                  <input placeholder="Nazwa wykresu" nz-input [(ngModel)]="this.chartData.name" (blur)="refreshChart(); save()"/>-->
-           <nz-tabset [(nzSelectedIndex)]="activeTab">
-             <nz-tab nzTitle="Wygląd i układ">
-               <section class="query-marker">
-                 <figure class="indicator-card indicator-card-velvet preset"
-                         nz-tooltip="Wykres przedstawiający procent odpowiedzi tak/nie/nie mam zdania w podziale na wydziały lub etapy studiów"
-                         (click)="pickPreset('groupedPercentAndData');">
-                   <div class="indicator-card-inner">
-                     <div class="indicator-card-header">Zgrupowany procent + dane</div>
-                     <div class="indicator-card-content"><img src="./assets/preset1.png" style="width: 100%"></div>
+
+          <nz-collapse-panel nzHeader="Edytor" [nzActive]="isEditing" (nzActiveChange)="isEditing=$event">
+            <div *ngIf="isEditing">
+              <!--                  <input placeholder="Nazwa wykresu" nz-input [(ngModel)]="this.chartData.name" (blur)="refreshChart(); save()"/>-->
+              <nz-tabset [(nzSelectedIndex)]="activeTab">
+                <nz-tab nzTitle="Wygląd i układ">
+                  <section class="query-marker">
+                    <figure class="indicator-card indicator-card-velvet preset"
+                            nz-tooltip="Wykres przedstawiający procent odpowiedzi tak/nie/nie mam zdania w podziale na wydziały lub etapy studiów"
+                            (click)="pickPreset('groupedPercentAndData');">
+                      <div class="indicator-card-inner">
+                        <div class="indicator-card-header">Zgrupowany procent + dane</div>
+                        <div class="indicator-card-content"><img src="./assets/preset1.png" style="width: 100%"></div>
                    </div>
                  </figure>
                  <div class="spacer"></div>
@@ -265,24 +266,25 @@ import {Subject} from 'rxjs';
                                             [reportId]="reportId"></app-filters-selector>
 
                     </nz-tab>
-             <!--                    <nz-tab nzTitle="Etykiety">-->
-             <!--                      <app-local-question-dictionary-override-editor [chart]="chartData" [report]="report" maxHeight="600px" (dataChanged)="refreshChart()" [dictionary]="this.namingDictionary"></app-local-question-dictionary-override-editor>-->
-             <!--                    </nz-tab>-->
-             <nz-tab nzTitle="Ustawienia obliczeń" *ngIf="chartData.config.type == 'groupedPercentAndData'">
-               <app-ignore-selector [chart]="chartData" *ngIf="this.dataResponse" (dataChanged)="refreshChart()"
-                                    [lastDataResponse]="this.dataResponse"></app-ignore-selector>
-             </nz-tab>
-             <nz-tab nzTitle="Kolory i kolejność" *ngIf="['groupedPercentAndData'].includes(chartData.config.type)">
-               <app-colors-and-order-selector [dictionary]="namingDictionary" (update)="refreshChart()"
-                                              [lastDataResponse]="this.dataResponse" [chart]="chartData"></app-colors-and-order-selector>
-             </nz-tab>
+                <!--                    <nz-tab nzTitle="Etykiety">-->
+                <!--                      <app-local-question-dictionary-override-editor [chart]="chartData" [report]="report" maxHeight="600px" (dataChanged)="refreshChart()" [dictionary]="this.namingDictionary"></app-local-question-dictionary-override-editor>-->
+                <!--                    </nz-tab>-->
+                <nz-tab nzTitle="Ustawienia obliczeń" *ngIf="chartData.config.type == 'groupedPercentAndData'">
+                  <app-ignore-selector [chart]="chartData" *ngIf="this.dataResponse" (dataChanged)="refreshChart()"
+                                       [lastDataResponse]="this.dataResponse"></app-ignore-selector>
+                </nz-tab>
+                <nz-tab nzTitle="Kolory i kolejność"
+                        *ngIf="['groupedPercentAndData'].includes(chartData.config.type) && chartData.config.order">
+                  <app-colors-and-order-selector [dictionary]="namingDictionary" (update)="refreshChart()"
+                                                 [lastDataResponse]="this.dataResponse" [chart]="chartData"></app-colors-and-order-selector>
+                </nz-tab>
 
-           </nz-tabset>
+              </nz-tabset>
 
 
-         </div>
+            </div>
 
-         <div *ngIf="this.chartData.config.type!=='groupedBars'">Nazwa całego zestawu danych (np.: łącznie, razem, UAM):
+            <div *ngIf="this.chartData.config.type!=='groupedBars'">Nazwa całego zestawu danych (np.: łącznie, razem, UAM):
            <input nz-input (blur)="refreshChart(true)" placeholder="Nazwa dla zagregowanych wyników - może to być 'Razem', 'łącznie' itd"
                   [(ngModel)]="chartData.config.allTogetherLabel" value="UAM">
          </div>
@@ -303,6 +305,14 @@ import {Subject} from 'rxjs';
   `,
   styles: [
     `
+      .foo.sn-viewport--out {
+        display: none;
+      }
+
+      .foo.sn-viewport--in {
+        display: block;
+      }
+
       @media screen and (min-width: 1920px) {
 
         /*.chart-editor-dropdown{*/
@@ -503,8 +513,9 @@ import {Subject} from 'rxjs';
         display:flex;
         flex-direction: row;
       }
-      .editor-flex-column{
-        display:flex;
+
+      .editor-flex-column {
+        display: flex;
         flex-direction: row;
       }
 
@@ -513,15 +524,21 @@ import {Subject} from 'rxjs';
   ]
 })
 export class ChartEditorViewComponent implements OnInit {
-  textVisible:boolean=false;
-  get questionNames(){
-    return this.questions?Object.keys(this.questions):[];
+  @Input()
+  isLast = false;
+  isEditing = false;
+
+  textVisible: boolean = false;
+
+  get questionNames() {
+    return this.questions ? Object.keys(this.questions) : [];
   }
+
   @Input() forceUpdate;
   @Input()
   questions;
   @Input()
-  isPreview=false;
+  isPreview = false;
   @Input()
   chartData: ChartReportElement;
   @Output() chartDataChange = new EventEmitter<ChartReportElement>();
@@ -661,6 +678,7 @@ export class ChartEditorViewComponent implements OnInit {
   constructor(private surveyService:SurveysService, private chartsService:ChartsService, public reportsService:ReportsService) { }
 
   ngOnInit(): void {
+    this.isEditing = this.isLast;
   if (this.forceUpdate)
     this.forceUpdate.subscribe(async (v) => {
       await this.refreshChart(false)

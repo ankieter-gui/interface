@@ -42,6 +42,9 @@
               Nadpisz etykiety
               <i nz-icon nzType="down"></i>
             </button>
+            <button (click)="export()" nz-button>
+              Eksportuj raport do JSONa
+            </button>
           </div>
           <nz-dropdown-menu #menu5="nzDropdownMenu">
             <section class="global-filter-container" nz-menu>
@@ -80,7 +83,7 @@
           <div class="custom-placeholder" *cdkDragPlaceholder></div>
 
 
-          <div *ngFor="let element of reportDefinition.elements" cdkDrag class="element-box" style="position:relative;">
+          <div *ngFor="let element of itemsForCurrentPage()" cdkDrag class="element-box" style="position:relative;">
 
             <div [ngSwitch]="element.type" style="position:relative;">
               <mat-icon cdkDragHandle class="drag-handle" [nz-tooltip]="'Przeciągnij aby zmienić kolejność'">open_with
@@ -88,20 +91,25 @@
               <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu"
                       class="more">
                 <mat-icon>more_vert</mat-icon>
-            </button>
-            <mat-menu #menu="matMenu">
-              <button mat-menu-item (click)="removeElement(element)">
-                <mat-icon>delete</mat-icon>
-                <span>Usuń</span>
               </button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="removeElement(element)">
+                  <mat-icon>delete</mat-icon>
+                  <span>Usuń</span>
+                </button>
+                <button (click)="duplicateElement(element)" mat-menu-item>
+                  <mat-icon>copy</mat-icon>
+                  <span>Duplikuj</span>
+                </button>
+              </mat-menu>
 
-            </mat-menu>
-
-            <app-text-editor-view *ngSwitchCase="'text'" [(text)]="element.content.text" (focusEvent)="save()"></app-text-editor-view>
+              <app-text-editor-view (focusEvent)="save()" *ngSwitchCase="'text'" [(text)]="element.content.text"
+                                    [isLast]="element == this.reportDefinition.elements[this.reportDefinition.elements.length-1]"></app-text-editor-view>
               <app-chart-editor-view (chartDataChange)="save()" *ngSwitchCase="'chart'" [(chartData)]="element.content"
                                      [forceUpdate]="forceUpdate" [globalFilter]="this.reportDefinition.globalFilter"
                                      [namingDictionary]="namingDictionary" [questions]="surveyQuestions"
                                      [reportId]="this.reportId" [report]="this.reportDefinition"
+                                     [isLast]="element == this.reportDefinition.elements[this.reportDefinition.elements.length-1]"
                                      [surveyId]="this.linkedSurveyId"></app-chart-editor-view>
           </div>
 
@@ -112,14 +120,18 @@
           <div class="add-more-content">
             <span (click)="addNewChartElement()" [class.shake]="true"><span [class.slide-top]="true"><i
               [nz-tooltip]="'Wykres'" class="recommended" nz-icon nzType="bar-chart"></i></span></span>
-<!--            <i nz-icon nzType="line-chart" [nz-tooltip]="'Wykres liniowy'"></i>-->
-<!--            <i nz-icon nzType="pie-chart" [nz-tooltip]="'Wykres ciasteczkowy (???)'"></i>-->
-<!--            <i nz-icon nzType="area-chart" [nz-tooltip]="'Wykres liniowy'"></i>-->
-<!--            <i nz-icon nzType="bar-chart" [nz-tooltip]="'Wykres kolumnowy, histogram'"></i>-->
+            <!--            <i nz-icon nzType="line-chart" [nz-tooltip]="'Wykres liniowy'"></i>-->
+            <!--            <i nz-icon nzType="pie-chart" [nz-tooltip]="'Wykres ciasteczkowy (???)'"></i>-->
+            <!--            <i nz-icon nzType="area-chart" [nz-tooltip]="'Wykres liniowy'"></i>-->
+            <!--            <i nz-icon nzType="bar-chart" [nz-tooltip]="'Wykres kolumnowy, histogram'"></i>-->
             <i nz-icon nzType="font-size" [nz-tooltip]="'Tekst'" (click)="addNewTextElement()"></i>
           </div>
         </section>
-
+        <nz-pagination (nzPageIndexChange)="currentPage=$event"
+                       *ngIf="this.reportDefinition.elements && this.reportDefinition.elements.length>0"
+                       [nzPageIndex]="currentPage" [nzPageSize]="itemsOnPage"
+                       [nzTotal]="this.reportDefinition.elements.length" nzShowQuickJumper
+                       nzShowSizeChanger></nz-pagination>
       </div>
 <!--      <p>Lub wklej kod raportu:</p>-->
 <!--      <textarea [(ngModel)]="codeModel"></textarea>-->

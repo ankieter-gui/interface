@@ -17,6 +17,7 @@ import {SurveysService} from './surveys.service';
 import {NewSurveyDialogComponent} from './new-survey-dialog/new-survey-dialog.component';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {DeleteConfirmModalComponent} from './delete-confirm-modal/delete-confirm-modal.component';
+import {ExportReportDialogComponent} from './export-report-dialog/export-report-dialog.component';
 
 @Injectable({
   providedIn: 'root'
@@ -178,18 +179,26 @@ export class DashboardModalsService {
         m.destroy()
     })
   }
-  openNewGroupDialog(fromAdminPanel=false): void{
-    this.createComponentModal("Nowa grupa", NewGroupDialogComponent, {placeholder: "Szukaj przez nazwisko", fromAdminPanel:fromAdminPanel}, async (i: NewGroupDialogComponent, m) => {
+
+  openNewGroupDialog(fromAdminPanel = false): void {
+    this.createComponentModal('Nowa grupa', NewGroupDialogComponent, {
+      placeholder: 'Szukaj przez nazwisko',
+      fromAdminPanel: fromAdminPanel
+    }, async (i: NewGroupDialogComponent, m) => {
       // TODO: create group
-      i.updating=true;
-      await this.sharing.updateGroup(i.groupName, i.selected.map(d=>d.id)).toPromise()
-      await this.sharing.downloadAllGroups()
+      i.updating = true;
+      await this.sharing.updateGroup(i.groupName, i.selected.map(d => d.id)).toPromise();
+      await this.sharing.downloadAllGroups();
       m.destroy();
-    } )
+    });
   }
 
-  openNewUserDialog(): void{
-    this.createComponentModal("Nowy użytkownik", AddNewUserComponent, {}, async (i: AddNewUserComponent, m) => {
+  openExportReportDialog(stringContent: string): void {
+    this.createComponentModal('Kod', ExportReportDialogComponent, {content: stringContent}, async (i, m) => m.destroy());
+  }
+
+  openNewUserDialog(): void {
+    this.createComponentModal('Nowy użytkownik', AddNewUserComponent, {}, async (i: AddNewUserComponent, m) => {
       // TODO: create group
       if (this.sharing.users().some((d, index, a) => d.casLogin == i.casLogin)) {
         this.message.error('Użytkownik już istnieje!');

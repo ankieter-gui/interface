@@ -17,7 +17,7 @@ export let ComplimentQuery = (query:SurveyQuery, globalFilter:GlobalFilter=null,
   while (q2.as.length>q2.get[0].length){
     q2.get[0].push(q2.get[0][0])
   }
-  console.log(q2);
+
   if (globalFilter) {
     if (!q2.filter) {
       q2.filter = [];
@@ -47,16 +47,16 @@ export let ComplimentQuery = (query:SurveyQuery, globalFilter:GlobalFilter=null,
   return q2;
 }
 export let SurveyQueryNamingDictionary = {
-  "share":"udział",
-  "max":"maksimum",
-  "min":"minimum",
-  "mode":"dominanta",
-  "median":"mediana",
-  "mean":"średnia",
-  "std":"odchylenie",
-  "var":"wariacja",
-  "count":"N",
-  "sum":"suma"
+  'share': 'udział',
+  'max': 'maksimum',
+  'min': 'minimum',
+  'mode': 'dominanta',
+  'median': 'me',
+  'mean': 'śr',
+  'std': 'SD',
+  'var': 'wariacja',
+  'count': 'N',
+  'sum': 'suma'
 }
 
 

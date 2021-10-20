@@ -117,7 +117,7 @@ export class ChartsService {
       return [list, ''];
     }
     const prefix = commonSubstring(list);
-    console.log(prefix);
+
     return [list.map(d => d.replace(prefix, '')), prefix];
   }
 
