@@ -41,13 +41,13 @@ export class ColorsGenerator {
     this.typeOf = typeOf;
   }
 
-  generateColors(options: any): any {
+  generateColors(options: EChartsOption): EChartsOption {
 
     console.log(GroupedPercentAndDataChartGenerator);
     console.log(GroupedPercentAndDataChartGenerator == this.typeOf);
-    console.log(this.typeOf.name)
-    const x = {}
-    x[FrequencyChartGenerator.name]=(o) => this.frequencyChartGenerator(o);
+    console.log(this.typeOf.name);
+    const x = {};
+    x[FrequencyChartGenerator.name] = (o) => this.frequencyChartGenerator(o);
     x[MultipleChoiceChartGenerator.name] = (o) => this.multipleChoiceChartGenerator(o);
     x[MultipleBarsChartGenerator.name] = (o) => this.multipleBarsChartGenerator(o);
     x[GroupedPercentAndDataChartGenerator.name] = (o) => this.groupedPercentAndDataChartGenerator(o);
@@ -58,19 +58,19 @@ export class ColorsGenerator {
     return options;
   }
 
-  frequencyChartGenerator(options: any): any {
+  frequencyChartGenerator(options: EChartsOption): EChartsOption {
     let i = options.series[0].data.length - 1;
     (options.series[0] as any).data[i] = {value: (options.series[0] as any).data[i], itemStyle: {color: this.darkBlue},};
     console.log((options.series[0] as any).data[i]);
     return options;
   }
 
-  multipleChoiceChartGenerator(options: any): any {
-    (options.series as any[]).forEach((d) => d.color = this.multipleChoiceRed);
+  multipleChoiceChartGenerator(options: EChartsOption): EChartsOption {
+    (options.series as BarSeriesOption[]).forEach((d) => d.color = this.lightBlue);
     return options;
   }
 
-  multipleBarsChartGenerator(options: any): any {
+  multipleBarsChartGenerator(options: EChartsOption): EChartsOption {
     let questionObject: SingleQuestionTypesDefinition = this.caller.namingDictionary[this.chart.dataQuery.get.flat()[0]];
     let pairs: [string, string][] = this.caller.zip(Object.keys(questionObject), Object.values(questionObject));
     for (let series of (options.series as any[])) {
@@ -80,7 +80,7 @@ export class ColorsGenerator {
     return options;
   }
 
-  groupedPercentAndDataChartGenerator(options: any): any {
+  groupedPercentAndDataChartGenerator(options: EChartsOption): EChartsOption {
     const seriesLength = (options.series as any[]).length;
     for (let series of (options.series as any[])) {
       let data = series.d;
