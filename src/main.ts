@@ -12,7 +12,7 @@ if (environment.production) {
 if(isProd) { // assuming you have env variable configured
                      // check if window exists, if you render backend window will not be available
   if(window){
-    window.console.log = function(){};
+  //  window.console.log = function(){};
   }
 }
 platformBrowserDynamic().bootstrapModule(AppModule)
