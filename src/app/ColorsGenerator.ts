@@ -66,7 +66,7 @@ export class ColorsGenerator {
   }
 
   multipleChoiceChartGenerator(options: EChartsOption): EChartsOption {
-    (options.series as BarSeriesOption[]).forEach((d) => d.color = this.lightBlue);
+    (options.series as BarSeriesOption[]).forEach((d) => d.color = this.multipleChoiceRed);
     return options;
   }
 

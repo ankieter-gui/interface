@@ -2,6 +2,7 @@ import {AbstractChartGenerator} from './AbstractChartGenerator';
 import {ChartReportElement} from './dataModels/ReportElement';
 import {ReportsService} from './reports.service';
 import {EChartsOption} from 'echarts';
+import {breakLongLabels} from './breakLongLabels';
 
 export class MultipleChoiceChartGenerator extends AbstractChartGenerator {
   constructor(series: any, chartElement: ChartReportElement, namingDictionary, public reportsService: ReportsService, dictionaryOverrides) {
@@ -55,9 +56,9 @@ export class MultipleChoiceChartGenerator extends AbstractChartGenerator {
       },
       xAxis: {type: 'value', show: true, animation: true},
       //@ts-ignore
-      yAxis: {type: 'category', show: true, data: this.categories, axisLabel: {overflow: 'break'}},
+      yAxis: {type: 'category', show: true, data: this.categories, axisLabel: {formatter: (o) => breakLongLabels(o.toString())},},
       series: [{
-
+        barWidth: '20px',
         data: this.barSeries,
         name: 'Procent odpowiedzi',
         type: 'bar',

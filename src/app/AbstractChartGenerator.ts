@@ -96,14 +96,20 @@ export abstract class AbstractChartGenerator {
         if (keys[j] == 'index') {
           continue;
         }
+        const startIndex = Math.min(...Object.keys(seriesCopied[keys[j]]).map(d => Number(d)));
+
         for (let objectSeriesIndex = 0; objectSeriesIndex < seriesCopied[keys[j]].length; objectSeriesIndex++) {
           let o = seriesCopied[keys[j]][objectSeriesIndex];
           seriesCopied[keys[j]][objectSeriesIndex] = OrderSetting.sortAnotherSeriesInPlace(this.chartElement.config.order, o);
-          console.log(seriesCopied[keys[j]][objectSeriesIndex]);
+
         }
 
       }
-
+      console.log('keys');
+      console.log(keys);
+      console.log(seriesCopied);
+      console.log(series);
+      console.log(this.chartElement.config.order.order);
       this.series = seriesCopied;
 
 
@@ -172,8 +178,8 @@ export abstract class AbstractChartGenerator {
     return [list.map(d=>d.replace(prefix, '')), prefix]
   }
   generateSeriesList(shareElement:object[]){
-    let resultingMap={}
-    let allKeys = this.getAllShareLabels(shareElement)
+    let resultingMap = {};
+    let allKeys = this.chartElement.config.order.order;
     for (let valuesMap of shareElement){
       const sum = Object.values(valuesMap).reduce((previousValue:number, currentValue:number, index, array)=>previousValue + currentValue)
       for (let key of allKeys){

@@ -43,7 +43,6 @@ import {
   PolskieNazwyFilter,
   RemoveHtmlFilter
 } from './filter-by-name.pipe';
-import { ShareDialogComponent } from './share-dialog/share-dialog.component';
 import { GlobalSidemenuComponent } from './global-sidemenu/global-sidemenu.component';
 import {EditorComponent} from './reports/editor/editor.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
@@ -58,7 +57,6 @@ import { GroupsEditorComponent } from './groups-editor/groups-editor.component';
 import { GroupsEditorPageComponent } from './groups-editor-page/groups-editor-page.component';
 import {NzCollapseModule} from 'ng-zorro-antd/collapse';
 import {NzListModule} from 'ng-zorro-antd/list';
-import { CreateNewGroupComponent } from './create-new-group/create-new-group.component';
 import { NewGroupDialogComponent } from './new-group-dialog/new-group-dialog.component';
 import { UserSearchComboboxComponent } from './user-search-combobox/user-search-combobox.component';
 import {NgxFileDropModule} from 'ngx-file-drop';
@@ -93,7 +91,6 @@ import {DeleteConfirmModalComponent} from './delete-confirm-modal/delete-confirm
 import {DummyChartComponent} from './dummy-chart/dummy-chart.component';
 import {EscapeHtmlPipe} from './keep-html.pipe';
 import {GlobalDictionaryOverrideEditorComponent} from './global-dictionary-override-editor/global-dictionary-override-editor.component';
-import {GlobalQuestionDictionaryOverrideEditorComponent} from './global-question-dictionary-override-editor/global-question-dictionary-override-editor.component';
 import {LocalQuestionDictionaryOverrideEditorComponent} from './local-question-dictionary-override-editor/local-question-dictionary-override-editor.component';
 import {IgnoreSelectorComponent} from './ignore-selector/ignore-selector.component';
 import {ColorsAndOrderSelectorComponent} from './colors-and-order-selector/colors-and-order-selector.component';
@@ -157,7 +154,6 @@ export let commonNZImports = [
     ReportTileComponent,
     NewReportDialogComponent,
     FilterByNamePipe,
-    ShareDialogComponent,
 
     GlobalSidemenuComponent,
     //TODO: lazy loading issue #4
@@ -166,7 +162,7 @@ export let commonNZImports = [
     ChartEditorViewComponent,
     GroupsEditorComponent,
     GroupsEditorPageComponent,
-    CreateNewGroupComponent,
+
     NewGroupDialogComponent,
     UserSearchComboboxComponent,
     NameFilter,
@@ -201,7 +197,6 @@ export let commonNZImports = [
 
     GlobalDictionaryOverrideEditorComponent,
 
-    GlobalQuestionDictionaryOverrideEditorComponent,
 
     LocalQuestionDictionaryOverrideEditorComponent,
 

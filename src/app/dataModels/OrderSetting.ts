@@ -44,8 +44,10 @@ export class OrderSetting {
 
     let otherMap = {};
     other.forEach(d => otherMap[key(d)] = value(d));
-
-    return self.order.map((current) => otherMap[current] != null ? otherMap[current] : 0)
+    console.log(otherMap);
+    console.log(self.order);
+    console.log(self.order.map((current) => otherMap[current] != null ? otherMap[current] : 0));
+    return self.order.map((current) => otherMap[current] != null ? otherMap[current] : 0);
 
 
   }

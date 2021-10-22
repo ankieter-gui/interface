@@ -34,7 +34,7 @@ export class GroupedPercentAndDataChartGenerator extends AbstractChartGenerator 
       console.log(JSON.parse(JSON.stringify(d)));
       let sum = 0;
       d[1].forEach(u => sum += u);
-      d[1].forEach((u, i) => d[1][i] = Math.round(u / sum * 100));
+      d[1].forEach((u, i) => d[1][i] = u / sum * 100);
     });
     let transpose = m => m[0].map((x, i) => m.map(x => x[i]));
     console.log(this.series);

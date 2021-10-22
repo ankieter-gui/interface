@@ -15,7 +15,8 @@ export class MultipleBarsChartGenerator extends AbstractChartGenerator {
     this.xAxisLabels = this.series.index;
     this.shareElement = AbstractChartGenerator.transformDataIntoPairs(this.series).filter(d => d[0].includes('share'))[0][1];
     let seriesList = this.generateSeriesList(this.shareElement);
-    console.log(seriesList);
+    console.log(this.shareElement);
+    console.log('shareElement');
     this.barSeries = seriesList;
     return this;
 
@@ -71,7 +72,7 @@ export class MultipleBarsChartGenerator extends AbstractChartGenerator {
 
     return {
       legend: {
-        data: this.getAllShareLabels(this.shareElement).map(d => this.getLabelFor(this.chartElement.dataQuery.get[0][0], d))
+        data: this.chartElement.config.order.order.map(d => this.getLabelFor(this.chartElement.dataQuery.get[0][0], d))
       },
 
       pxHeight: 500,

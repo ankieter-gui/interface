@@ -3,6 +3,7 @@ import {EChartsOption} from 'echarts';
 import {ChartReportElement} from './dataModels/ReportElement';
 import {ReportsService} from './reports.service';
 import {CallbackDataParams} from 'echarts/types/src/util/types';
+import {breakLongLabels} from './breakLongLabels';
 
 //groupedBars string type
 export class FrequencyChartGenerator extends AbstractChartGenerator {
@@ -139,7 +140,13 @@ export class FrequencyChartGenerator extends AbstractChartGenerator {
       },
       xAxis: {type: 'value', show: true, animation: true, axisLine: {show: true}},
       //@ts-ignore
-      yAxis: {type: 'category', show: true, data: this.getLabels(), axisLabel: {overflow: 'break'}, axisLine: {show: true}},
+      yAxis: {
+        type: 'category',
+        show: true,
+        data: this.getLabels(),
+        axisLabel: {formatter: (o) => breakLongLabels(o.toString())},
+        axisLine: {show: true}
+      },
       series: [{
         //barMinHeight:this.horizontalBarHeight,
         data: this.getData(),
