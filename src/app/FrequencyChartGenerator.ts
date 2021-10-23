@@ -9,6 +9,8 @@ import {breakLongLabels} from './breakLongLabels';
 export class FrequencyChartGenerator extends AbstractChartGenerator {
   chartValuesPairs;
   wereAllValuesFilledByHand: boolean = false;
+getAllCount(reportId) {
+}
 
   constructor(series: any, chartElement: ChartReportElement, namingDictionary, public reportsService: ReportsService, dictionaryOverride) {
     super(series, chartElement, namingDictionary, reportsService, dictionaryOverride);

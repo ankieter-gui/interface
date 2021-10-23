@@ -18,29 +18,32 @@ import {NewSurveyDialogComponent} from './new-survey-dialog/new-survey-dialog.co
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {DeleteConfirmModalComponent} from './delete-confirm-modal/delete-confirm-modal.component';
 import {ExportReportDialogComponent} from './export-report-dialog/export-report-dialog.component';
+import {ReorderDialogComponent} from './reorder-dialog/reorder-dialog.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DashboardModalsService {
 
-  constructor(private modal: NzModalService,private window:Window,public message:NzMessageService, private mockService: MockService, private surveys:SurveysService, private router: Router, private reports: ReportsService,private sharing:SharingService, private dashboardService:DashboardService) { }
-  createComponentModal(title, component, params, onOk= (instance, modal) => null): void{
+  constructor(private modal: NzModalService, private window: Window, public message: NzMessageService, private mockService: MockService, private surveys: SurveysService, private router: Router, private reports: ReportsService, private sharing: SharingService, private dashboardService: DashboardService) {
+  }
+
+  createComponentModal(title, component, params, onOk = (instance, modal) => null, width = '520px'): void {
     const modal = this.modal.create({
       nzTitle: title,
       nzContent: component,
-    //  nzViewContainerRef: this.viewContainerRef,
+      //  nzViewContainerRef: this.viewContainerRef,
       nzComponentParams: params,
-
+      nzWidth: width,
       nzFooter: [
         {
           label: 'Anuluj',
           onClick: () => modal.destroy()
         },
         {
-          label: params.okText??'OK',
+          label: params.okText ?? 'OK',
           type: 'primary',
-          onClick: () => onOk(instance, modal) ,
+          onClick: () => onOk(instance, modal),
         },
 
 
@@ -191,6 +194,12 @@ export class DashboardModalsService {
       await this.sharing.downloadAllGroups();
       m.destroy();
     });
+  }
+
+  openReorderDialog(report: ReportDefinition): void {
+    this.createComponentModal('Zmień kolejność', ReorderDialogComponent, {report: report}, (i: ReorderDialogComponent, m) => {
+      m.destroy();
+    }, '900px');
   }
 
   openExportReportDialog(stringContent: string): void {

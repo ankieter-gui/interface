@@ -7,9 +7,13 @@ export class MultipleBarsChartGenerator extends AbstractChartGenerator {
   xAxisLabels;
   barSeries;
 
+  getAllCount(reportId) {
+  }
+
   constructor(series: any, chartElement: ChartReportElement, namingDictionary, public reportsService: ReportsService, dictionaryOverrides) {
     super(series, chartElement, namingDictionary, reportsService, dictionaryOverrides);
   }
+
 
   generate(): MultipleBarsChartGenerator {
     this.xAxisLabels = this.series.index;

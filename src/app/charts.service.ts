@@ -136,8 +136,11 @@ export class ChartsService {
 
     let [strategyType, strategy] = this.getGenerator(series, chartElement, namingDictioanry, this.reportService, dictionaryOverrides, localOverrides);
     strategy.generate();
+    strategy.getAllCount(reportId);
+    console.log(strategy.allAnswers);
     chartElement.generator = strategy;
     let generator = new ColorsGenerator(chartElement, strategyType, strategy);
+
     return generator.generateColors(strategy.asJSONConfig());
 
 

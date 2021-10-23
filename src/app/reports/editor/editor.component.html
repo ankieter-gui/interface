@@ -64,8 +64,8 @@
               <p>Wybierz pytanie i odpowiedź na nie aby cały raport brał pod uwagę tylko respondentów którzy udzieli na
                 nią takiej odpowiedzi</p>
               <app-filters-selector [namingDictionary]="namingDictionary" #filterSelector
-                                    (globalFilterChange)="refresh()"
-                                    [(globalFilter)]="this.reportDefinition.globalFilter"
+                                    (filtersChange)="refresh()"
+                                    [(filters)]="this.reportDefinition.globalFilter"
                                     [allQuestions]="surveyQuestions" [reportId]="reportId"
                                     [report]="reportDefinition"></app-filters-selector>
             </section>
@@ -100,6 +100,10 @@
                 <button (click)="duplicateElement(element)" mat-menu-item>
                   <mat-icon>copy</mat-icon>
                   <span>Duplikuj</span>
+                </button>
+                <button (click)="this.dialogs.openReorderDialog(this.reportDefinition)" mat-menu-item>
+                  <mat-icon>copy</mat-icon>
+                  <span>Przerzuć</span>
                 </button>
               </mat-menu>
 

@@ -11,12 +11,19 @@ export class MultipleChoiceChartGenerator extends AbstractChartGenerator {
 
   chartName;
 
+  getAllCount(reportId): any {
+    console.log('get all count');
+    //TODO: czekanie na endpointa do tego
+
+  }
+
   generate(): MultipleChoiceChartGenerator {
     let shareElements = AbstractChartGenerator.transformDataIntoPairs(this.series).filter(d => d[0].includes('share'));
     console.log(shareElements);
     let categories = shareElements.map(d => d[0].replace('share ', '').replace(/<[^>]*>/g, ''));
     let commonSubstringResults = this.sanitizeLabels(categories);
     categories = commonSubstringResults[0];
+
     this.chartName = !!this.chartName ? this.chartName : commonSubstringResults[1];
     let barSeries = shareElements.map(d => {
       let sum=0;
@@ -27,6 +34,7 @@ export class MultipleChoiceChartGenerator extends AbstractChartGenerator {
         console.log("could not count responses amount")
         console.log(e)
       }
+
       //dont touch ;(((
       return sum!=0?(1 in d[1][0])?d[1][0]['1']/sum*100:0:0
     })

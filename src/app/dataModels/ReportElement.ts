@@ -35,7 +35,9 @@ export class ChartConfig {
   orientation?: 'horizontal' | 'vertical' = 'horizontal';
   extraEChartLiteralObject?: EChartsOption = null;
   tableDefinition: Table = {series: []};
-  filter: GlobalFilter;
+
+  filter: GlobalFilter; //for legacy compatibility
+  filters: GlobalFilter[] = [];
   allTogetherValue = 0;
   shortLabels = false;
 }

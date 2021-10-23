@@ -3,6 +3,7 @@ import {ChartReportElement} from './dataModels/ReportElement';
 import {ReportsService} from './reports.service';
 import {EChartsOption} from 'echarts';
 import {ColorsGenerator} from './ColorsGenerator';
+import {OrderSetting, OrderSettingGenerator} from './dataModels/OrderSetting';
 
 export class GroupedPercentAndDataChartGenerator extends AbstractChartGenerator {
   entries;
@@ -12,6 +13,9 @@ export class GroupedPercentAndDataChartGenerator extends AbstractChartGenerator 
   chartName;
   legend;
   transposedEntries;
+
+  getAllCount(reportId) {
+  }
 
   constructor(series: any, chartElement: ChartReportElement, namingDictionary, public reportsService: ReportsService, dictionaryOverrides) {
     super(series, chartElement, namingDictionary, reportsService, dictionaryOverrides);
@@ -76,12 +80,12 @@ export class GroupedPercentAndDataChartGenerator extends AbstractChartGenerator 
       xAxis: {type: 'value', show: false, animation: true, max: 100, axisLabel: {formatter: (value, index) => `${value}%`}},
       yAxis: {
         type: 'category', show: true, data:
-          this.indices.map(d =>
+          OrderSettingGenerator.moveFirstToLast(this.indices.reverse()).order.map(d =>
             this.shortenLabel(this.getLabelFor(this.chartElement.dataQuery.by[0], d)))
         // indices.map(d=>this.numberToStringScale[Number(d)])
       },
       series: this.zip(this.chartElement.config.order.order, this.transposedEntries).map((d, index) => ({
-        data: this.transposedEntries[index],
+        data: OrderSettingGenerator.moveFirstToLast(this.transposedEntries[index].reverse()).order,
         d: d[1],
         orderLabel: d[0],
         index: this.transposedEntries.length - 1 - index,

@@ -182,16 +182,11 @@ export class EditorComponent implements OnInit {
     this.surveyQuestions = await this.surveysService.getQuestions(this.linkedSurveyId).toPromise();
   }
   drop(event: CdkDragDrop<string[]>) {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    console.log('drop');
+    let i = this.currentPage * this.itemsOnPage - this.itemsOnPage;
+    moveItemInArray(this.reportDefinition.elements, event.previousIndex + i, event.currentIndex + i);
 
-    } else {
-      transferArrayItem(event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex);
 
-    }
   }
   rename(){
     this.reportsService.renameReport(this.route.snapshot.paramMap.get('id'), this.reportDefinition.title).subscribe(d=>console.log(d))

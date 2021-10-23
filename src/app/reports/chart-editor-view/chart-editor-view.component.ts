@@ -84,6 +84,10 @@ import {Subject} from 'rxjs';
                  *ngIf="['multipleChoice', 'groupedBars', 'multipleBars', 'linearCustomData'].includes(chartData.config.type)  && this.echartOptions">
           <div echarts [style.height.px]="echartOptions.pxHeight" (chartInit)="onChartInit($event)" [options]="echartOptions" class="chart"
                style="width: 100%;"></div>
+          <div style="position: absolute;right: 0; border: 1px solid rgba(0,0,0,0.2); padding:0.7em;"
+               [style.top.px]="echartOptions.pxHeight-30"
+               *ngIf="chartData.generator && chartData.generator.allAnswers">Wszystkie odpowiedzi: {{chartData.generator.allAnswers}}</div>
+
         </section>
         <!--      <section class="chart-editor">-->
         <!--        <i nz-icon nzType="line-chart" [nz-tooltip]="'Typ wykresu'"></i>-->
@@ -92,6 +96,7 @@ import {Subject} from 'rxjs';
         <!--        <i nz-icon nzType="bar-chart" [nz-tooltip]="'Wykres kolumnowy, histogram'"></i>-->
         <!--        <i nz-icon nzType="font-size" [nz-tooltip]="'Tekst'"></i>-->
         <!--      </section>-->
+
       </div>
       <!--      <div *ngIf="true" style="border: 1px dashed rgba(0,0,0,0.2); width:100%;">-->
 
@@ -147,45 +152,51 @@ import {Subject} from 'rxjs';
                             nz-tooltip="Wykres przedstawiający procent odpowiedzi tak/nie/nie mam zdania w podziale na wydziały lub etapy studiów"
                             (click)="pickPreset('groupedPercentAndData');">
                       <div class="indicator-card-inner">
-                        <div class="indicator-card-header">Zgrupowany procent + dane</div>
+                        <div class="indicator-card-header">Ocena aspektu w skali</div>
                         <div class="indicator-card-content"><img src="./assets/preset1.png" style="width: 100%"></div>
-                   </div>
-                 </figure>
-                 <div class="spacer"></div>
-                        <figure class="indicator-card indicator-card-velvet preset" nz-tooltip="Użyj tego wykresu aby przedstawić wyniki z pytań wielokrotnego wyboru. Na przykład: dlaczego poleciłbyś UAM" (click)="pickPreset('multipleChoice');">
-                          <div class="indicator-card-inner">
-                            <div class="indicator-card-header">Wielokrotny wybór</div>
-                            <div class="indicator-card-content"><img src="./assets/preset2.png" style="width: 100%"></div>
-                          </div>
-                        </figure>
-                        <div class="spacer"></div>
-<!--                        <figure class="indicator-card indicator-card-velvet preset"  nz-tooltip="Użyj tego wykresu aby przedstawić wyniki z pytań wielokrotnego wyboru wraz z danymi statystycznymi jak np. odchylenie. Na przykład: dlaczego poleciłbyś UAM">-->
-<!--                          <div class="indicator-card-inner">-->
-<!--                            <div class="indicator-card-header">Wielokrotny wybór + dane</div>-->
-<!--                            <div class="indicator-card-content"><img src="./assets/preset3.png" style="width: 100%"></div>-->
-<!--                          </div>-->
-<!--                        </figure>-->
-<!--                        <div class="spacer"></div>-->
-                        <figure class="indicator-card indicator-card-velvet preset" [nz-tooltip]="'Kiedy chcesz przedstawić dane z różnych wydziałów obok siebie. Przydatne przy prezentowaniu średniej ocen'" (click)="pickPreset('multipleBars')">
-                          <div class="indicator-card-inner">
-                            <div class="indicator-card-header">Wiele słupków</div>
-                            <div class="indicator-card-content"><img src="./assets/preset4.png" style="width: 100%"></div>
-                          </div>
-                        </figure>
-                        <div class="spacer"></div>
-                        <figure class="indicator-card indicator-card-velvet preset" nz-tooltip="Użyj tego wykresu do prezentacji frekwencji" (click)="pickPreset('groupedBars');">
-                          <div class="indicator-card-inner">
-                            <div class="indicator-card-header">Słupkowy zgrupowany</div>
-                            <div class="indicator-card-content"><img src="./assets/wydzialy.png" style="width: 100%"></div>
-                          </div>
-                        </figure>
-                        <figure class="indicator-card indicator-card-velvet preset" nz-tooltip="Prezentacja frekwencji na przestrzeni lat" (click)="pickPreset('linearCustomData');">
-                          <div class="indicator-card-inner">
-                            <div class="indicator-card-header">Liniowy z własnymi danymi</div>
-                            <div class="indicator-card-content"><img src="./assets/ocena_lata.png" style="width: 100%"></div>
-                          </div>
-                        </figure>
-                      </section>
+                      </div>
+                    </figure>
+                    <div class="spacer"></div>
+                    <figure class="indicator-card indicator-card-velvet preset"
+                            nz-tooltip="Użyj tego wykresu aby przedstawić wyniki z pytań wielokrotnego wyboru. Na przykład: dlaczego poleciłbyś UAM"
+                            (click)="pickPreset('multipleChoice');">
+                      <div class="indicator-card-inner">
+                        <div class="indicator-card-header">Wielokrotny wybór</div>
+                        <div class="indicator-card-content"><img src="./assets/preset2.png" style="width: 100%"></div>
+                      </div>
+                    </figure>
+                    <div class="spacer"></div>
+                    <!--                        <figure class="indicator-card indicator-card-velvet preset"  nz-tooltip="Użyj tego wykresu aby przedstawić wyniki z pytań wielokrotnego wyboru wraz z danymi statystycznymi jak np. odchylenie. Na przykład: dlaczego poleciłbyś UAM">-->
+                    <!--                          <div class="indicator-card-inner">-->
+                    <!--                            <div class="indicator-card-header">Wielokrotny wybór + dane</div>-->
+                    <!--                            <div class="indicator-card-content"><img src="./assets/preset3.png" style="width: 100%"></div>-->
+                    <!--                          </div>-->
+                    <!--                        </figure>-->
+                    <!--                        <div class="spacer"></div>-->
+                    <figure class="indicator-card indicator-card-velvet preset"
+                            [nz-tooltip]="'Kiedy chcesz przedstawić dane z różnych wydziałów obok siebie. Przydatne przy prezentowaniu średniej ocen'"
+                            (click)="pickPreset('multipleBars')">
+                      <div class="indicator-card-inner">
+                        <div class="indicator-card-header">Wiele słupków (oceny)</div>
+                        <div class="indicator-card-content"><img src="./assets/preset4.png" style="width: 100%"></div>
+                      </div>
+                    </figure>
+                    <div class="spacer"></div>
+                    <figure class="indicator-card indicator-card-velvet preset" nz-tooltip="Użyj tego wykresu do prezentacji frekwencji"
+                            (click)="pickPreset('groupedBars');">
+                      <div class="indicator-card-inner">
+                        <div class="indicator-card-header">Frekwencja</div>
+                        <div class="indicator-card-content"><img src="./assets/wydzialy.png" style="width: 100%"></div>
+                      </div>
+                    </figure>
+                    <figure class="indicator-card indicator-card-velvet preset" nz-tooltip="Prezentacja frekwencji na przestrzeni lat"
+                            (click)="pickPreset('linearCustomData');">
+                      <div class="indicator-card-inner">
+                        <div class="indicator-card-header">Liniowy z własnymi danymi</div>
+                        <div class="indicator-card-content"><img src="./assets/ocena_lata.png" style="width: 100%"></div>
+                      </div>
+                    </figure>
+                  </section>
                     </nz-tab>
                     <nz-tab nzTitle="Pytanie i dane" *ngIf="!showLinearPicker && this.chartData.config.type">
                       <section class="question-selector dane" *ngIf="!hideData">
@@ -254,18 +265,22 @@ import {Subject} from 'rxjs';
                         </section>
                       </section>
                     </nz-tab>
-                    <nz-tab nzTitle="Dane" *ngIf="showLinearPicker">
-                      <app-line-chart-custom-data-picker (saveEmitter)="refreshChart()" [reportId]="reportId" [chart]="this.chartData"></app-line-chart-custom-data-picker>
-                    </nz-tab>
-                    <nz-tab nzTitle="Dane do wykresu frekwencji" *ngIf="chartData.config.type=='groupedBars'" (nzClick)="barsPicker.updateFields()">
-                      <app-grouped-bars-percentage-data-picker #barsPicker [dataResponse]="dataResponse" [namingDictionary]="namingDictionary" (saveEmitter)="refreshChart()" [reportId]="reportId" [chart]="this.chartData"></app-grouped-bars-percentage-data-picker>
-                    </nz-tab>
-                    <nz-tab nzTitle="Filtry" *ngIf="!showLinearPicker && this.chartData.config.type">
-                      <app-filters-selector [namingDictionary]="namingDictionary" [allQuestions]="namingDictionary"
-                                            (globalFilterChange)="refreshFilter($event)" [(globalFilter)]="this.chartData.config.filter"
-                                            [reportId]="reportId"></app-filters-selector>
+                <nz-tab nzTitle="Dane" *ngIf="showLinearPicker">
+                  <app-line-chart-custom-data-picker (saveEmitter)="refreshChart()" [reportId]="reportId"
+                                                     [chart]="this.chartData"></app-line-chart-custom-data-picker>
+                </nz-tab>
+                <nz-tab nzTitle="Dane do wykresu frekwencji" *ngIf="chartData.config.type=='groupedBars'"
+                        (nzClick)="barsPicker.updateFields()">
+                  <app-grouped-bars-percentage-data-picker #barsPicker [dataResponse]="dataResponse" [namingDictionary]="namingDictionary"
+                                                           (saveEmitter)="refreshChart()" [reportId]="reportId"
+                                                           [chart]="this.chartData"></app-grouped-bars-percentage-data-picker>
+                </nz-tab>
+                <nz-tab nzTitle="Filtry" *ngIf="!showLinearPicker && this.chartData.config.type">
+                  <app-filters-selector [namingDictionary]="namingDictionary" [allQuestions]="namingDictionary"
+                                        (filtersChange)="refreshFilter($event)" [(filters)]="this.chartData.config.filters"
+                                        [reportId]="reportId"></app-filters-selector>
 
-                    </nz-tab>
+                </nz-tab>
                 <!--                    <nz-tab nzTitle="Etykiety">-->
                 <!--                      <app-local-question-dictionary-override-editor [chart]="chartData" [report]="report" maxHeight="600px" (dataChanged)="refreshChart()" [dictionary]="this.namingDictionary"></app-local-question-dictionary-override-editor>-->
                 <!--                    </nz-tab>-->
@@ -274,7 +289,7 @@ import {Subject} from 'rxjs';
                                        [lastDataResponse]="this.dataResponse"></app-ignore-selector>
                 </nz-tab>
                 <nz-tab nzTitle="Kolory i kolejność"
-                        *ngIf="['groupedPercentAndData'].includes(chartData.config.type) && chartData.config.order">
+                        *ngIf=" chartData.config.order">
                   <app-colors-and-order-selector [dictionary]="namingDictionary" (update)="refreshChart()"
                                                  [lastDataResponse]="this.dataResponse" [chart]="chartData"></app-colors-and-order-selector>
                 </nz-tab>
@@ -561,7 +576,7 @@ export class ChartEditorViewComponent implements OnInit {
   }
 
   @Input()
-  globalFilter: GlobalFilter;
+  globalFilter: GlobalFilter[];
   @Input()
   namingDictionary;
   pickPreset(name){
@@ -635,8 +650,8 @@ export class ChartEditorViewComponent implements OnInit {
   this.refreshChart()
   }
   refreshFilter(filter){
-  this.chartData.config.filter=filter
-  this.refreshChart(true);
+    this.chartData.config.filters = filter;
+    this.refreshChart(true);
   }
   removeGet(i){
     this.chartData.dataQuery.get[0].splice(i,1)
@@ -695,7 +710,7 @@ export class ChartEditorViewComponent implements OnInit {
     if (shallSave) this.save()
     try {
       await this.downloadQueryResponse();
-      if (this.dataResponse) {
+      if (this.dataResponse || this.chartData.config.type == 'linearCustomData') {
         await this.generateChart();
       }
       this.isError = false;
@@ -741,16 +756,17 @@ saveAsPng(){
   var blob = this.base64toBlob(decodeURIComponent(src.replace(/^data:image\/(png|jpeg|jpg);base64,/, '')), "image/png")
   saveAs(blob, "wykres_"+this.chartData.name+".png")
 }
-  async downloadQueryResponse(){
+  async downloadQueryResponse() {
 
-      let _dataResponse: any = await (this.reportsService.getData(this.reportId, this.advancedQuery?JSON.parse(this.advancedQuery):ComplimentQuery(this.chartData.dataQuery, this.globalFilter, this.chartData.config.filter)).toPromise())
-      console.log(_dataResponse);
-      if ("error" in _dataResponse) {
 
-      } else {
-        this.dataResponse = _dataResponse
-      }
-      console.log(this.dataResponse);
+    let _dataResponse: any = await (this.reportsService.getData(this.reportId, this.advancedQuery ? JSON.parse(this.advancedQuery) : ComplimentQuery(this.chartData.dataQuery, this.globalFilter, this.chartData.config.filters ? this.chartData.config.filters : [this.chartData.config.filter])).toPromise());
+    console.log(_dataResponse);
+    if ('error' in _dataResponse) {
+
+    } else {
+      this.dataResponse = _dataResponse;
+    }
+    console.log(this.dataResponse);
 
 
   }

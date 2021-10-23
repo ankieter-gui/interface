@@ -40,7 +40,7 @@ import {ReportsService} from '../reports.service';
           </thead>
           <tbody>
           <tr style="cursor: pointer" *ngFor="let entry of answersTable.data" (click)="selectAnswer(entry)">
-            <td>  <label nz-checkbox [ngModel]="selectedAnswer==entry"></label></td>
+            <td>  <label nz-checkbox [ngModel]="selectedAnswers.includes(entry)"></label></td>
             <td>{{this.reportService.getLabelFor(this.namingDictionary, this.selectedQuestionName, entry)}}</td>
 
 
@@ -61,9 +61,9 @@ import {ReportsService} from '../reports.service';
 export class FiltersSelectorComponent implements OnInit {
   answerSearchString;
   @Output()
-  globalFilterChange = new EventEmitter<GlobalFilter>();
+  filtersChange = new EventEmitter<GlobalFilter>();
   @Input()
-  globalFilter;
+  filters;
   searchString;
   selectedQuestionName;
   @Input()
@@ -73,7 +73,7 @@ export class FiltersSelectorComponent implements OnInit {
   @Input()
   allQuestions
   answers;
-  selectedAnswer;
+  selectedAnswers = [];
   @Input()
   namingDictionary;
   @Input()
@@ -85,14 +85,14 @@ export class FiltersSelectorComponent implements OnInit {
   }
   constructor(public reportService:ReportsService) { }
   async selectQuestion(entry){
-    this.selectedQuestionName=this.selectedQuestionName!=entry?entry:null
-    this.selectedAnswer=null
+    this.selectedQuestionName = this.selectedQuestionName != entry ? entry : null;
+    this.selectedAnswers = [];
     if(this.selectedQuestionName) {
       await this.downloadAnswers()
       this.index = 1
-    }else{
-      this.globalFilter=null;
-      this.globalFilterChange.emit(this.globalFilter)
+    }else {
+      this.filters = [];
+      this.filtersChange.emit(this.filters);
     }
   }
   async downloadAnswers(){
@@ -102,22 +102,25 @@ export class FiltersSelectorComponent implements OnInit {
     // Object.assign(this.reverseAnswers, ...Object.entries(this.namingDictionary[this.selectedQuestionName]).map(([a,b]) => ({ [b]: a })))
 
   }
-  selectAnswer(entry){
-
-    this.selectedAnswer=this.selectedAnswer!=entry?entry:null
-    this.globalFilter = {question: this.selectedQuestionName, answer:this.selectedAnswer}
-    this.globalFilterChange.emit(this.globalFilter)
+  selectAnswer(entry) {
+    if (this.selectedAnswers.includes(entry)) {
+      this.selectedAnswers = this.selectedAnswers.filter(d => d != entry);
+    } else {
+      this.selectedAnswers.push(entry);
+    }
+    this.filters = this.selectedAnswers.map(d => ({question: this.selectedQuestionName, answer: d}));
+    this.filtersChange.emit(this.filters);
   }
   ngOnInit(): void {
-    if (this.globalFilter){
-      this.selectedQuestionName=this.globalFilter.question
-      this.selectedAnswer=this.globalFilter.answer
-      this.downloadAnswers()
+    if (this.filters) {
+      this.selectedQuestionName = this.filters[0].question;
+      this.selectedAnswers = this.filters.map(d => d.answer);
+      this.downloadAnswers();
     }
   }
   reset(){
-    this.selectedAnswer=null
-    this.selectedQuestionName=null;
+    this.selectedAnswers = [];
+    this.selectedQuestionName = null;
   }
 
 }

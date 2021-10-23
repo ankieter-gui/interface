@@ -7,6 +7,7 @@ import * as Chance from 'chance';
 import {ReportDefinition} from './dataModels/ReportDefinition';
 import {OrderSetting, OrderSettingGenerator} from './dataModels/OrderSetting';
 import {share} from 'rxjs/operators';
+import {sum} from 'ng-zorro-antd/core/util';
 
 export interface DataPair {
   // [
@@ -48,6 +49,7 @@ export abstract class AbstractChartGenerator {
 
   abstract asJSONConfig(): EChartsOption;
 
+  allAnswers = 0;
   rawSeries: any;
   series: any;
   indices;
@@ -116,11 +118,13 @@ export abstract class AbstractChartGenerator {
     }
   }
 
+  abstract getAllCount(reportId);
+
   getAllShareLabels(shareElement) {
     //można przerobić - issue: https://github.com/ankieter-gui/engine/issues/74
-    let l = []
-    for (let series of shareElement){
-      l= [...l, ...Object.keys(series)]
+    let l = [];
+    for (let series of shareElement) {
+      l = [...l, ...Object.keys(series)];
     }
     return [...new Set(l)];
   }

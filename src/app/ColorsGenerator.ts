@@ -7,6 +7,7 @@ import Single from 'echarts/types/src/coord/single/Single';
 import {GroupedPercentAndDataChartGenerator} from './GroupedPercentAndDataChartGenerator';
 import {FrequencyChartGenerator} from './FrequencyChartGenerator';
 import {MultipleChoiceChartGenerator} from './MultipleChoiceChartGenerator';
+import {LinearCustomDataChartGenerator} from './LinearCustomDataChartGenerator';
 
 export class ColorsGenerator {
   chart: ChartReportElement;

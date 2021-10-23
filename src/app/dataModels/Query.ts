@@ -12,23 +12,45 @@ export class SurveyQuery{
     this.filter=[]
   }
 }
-export let ComplimentQuery = (query:SurveyQuery, globalFilter:GlobalFilter=null, localFilter:GlobalFilter=null):SurveyQuery=>{
-  let q2: SurveyQuery = JSON.parse(JSON.stringify(query)) as SurveyQuery;
-  while (q2.as.length>q2.get[0].length){
-    q2.get[0].push(q2.get[0][0])
-  }
 
+export let ComplimentQuery = (query: SurveyQuery, globalFilter: GlobalFilter[] = null, localFilter: GlobalFilter[] = null): SurveyQuery => {
+
+  let q2: SurveyQuery = JSON.parse(JSON.stringify(query)) as SurveyQuery;
+  while (q2.as.length > q2.get[0].length) {
+    q2.get[0].push(q2.get[0][0]);
+  }
+  let questions = {};
   if (globalFilter) {
     if (!q2.filter) {
       q2.filter = [];
     }
-    q2.filter.push([globalFilter.question, '=', globalFilter.answer]);
+
+    globalFilter.forEach(d => {
+      //TODO: czekać na backend
+      if (!questions[d.question]) {
+        questions[d.question] = [];
+      }
+      questions[d.question].push(d.answer);
+
+    });
   }
-  if (localFilter && localFilter.question && localFilter.answer) {
+  if (localFilter && localFilter) {
     if (!q2.filter) {
       q2.filter = [];
     }
-    q2.filter.push([localFilter.question, '=', localFilter.answer]);
+    localFilter = localFilter.filter(f => f);
+    localFilter.forEach(d => {
+      if (!questions[d.question]) {
+        questions[d.question] = [];
+      }
+      questions[d.question].push(d.answer);
+    });
+
+    Object.entries(questions).forEach(d => {
+      // @ts-ignore
+      q2.filter.push([d[0], 'in', ...d[1]]);
+    })
+
   }
   if (q2.filter) {
     q2['if'] = q2.filter;

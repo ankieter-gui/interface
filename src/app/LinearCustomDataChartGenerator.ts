@@ -8,6 +8,9 @@ export class LinearCustomDataChartGenerator extends AbstractChartGenerator {
     super(series, chartElement, namingDictionary, reportsService, dictionaryOverrides);
   }
 
+  getAllCount(reportId) {
+  }
+
   generate(): LinearCustomDataChartGenerator {
     return this;
   }
