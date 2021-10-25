@@ -74,6 +74,10 @@ export class MultipleChoiceChartGenerator extends AbstractChartGenerator {
         name: 'Procent odpowiedzi',
         type: 'bar',
         color: undefined,
+        showBackground: true,
+        backgroundStyle: {
+          color: 'rgba(180, 180, 180, 0.2)'
+        },
         stack: 'total',
         label: {
           show: true,

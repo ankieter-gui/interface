@@ -158,7 +158,10 @@ getAllCount(reportId) {
         data: this.getData(),
         name: 'Liczba odpowiedzi',
         type: 'bar',
-
+        showBackground: true,
+        backgroundStyle: {
+          color: 'rgba(180, 180, 180, 0.2)'
+        },
         color: this.lightBlue,
         stack: 'total',
         label: {

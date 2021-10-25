@@ -66,9 +66,11 @@ import {Subject} from 'rxjs';
               </tr>
               </thead>
               <tbody>
-              <tr style="line-height: 0.19!important;" *ngFor="let row of chartData.generator.tableData.data">
-                <td style="white-space: nowrap"
-                    *ngFor="let value of row">{{this.reportsService.getLabelFor(namingDictionary, this.question, value) == value ? this.round(value) : this.reportsService.getLabelFor(namingDictionary, this.question, value) }}</td>
+              <tr style="line-height: 1!important; padding:0px!important;" *ngFor="let row of chartData.generator.tableData.data">
+                <td
+                  style="white-space: nowrap; padding-right:0px!important;padding-top:0px!important;padding-bottom:0px!important;height:23px"
+                  [class.leftpadding]="i>0"
+                  *ngFor="let value of row; let i=index;">{{this.reportsService.getLabelFor(namingDictionary, this.question, value) == value ? this.round(value) : this.reportsService.getLabelFor(namingDictionary, this.question, value) }}</td>
               </tr>
               </tbody>
             </nz-table>
@@ -348,7 +350,7 @@ import {Subject} from 'rxjs';
       }
 
 
-      .chart-area td {
+      .chart-area td:not(.leftpadding) {
         padding-top: 9px !important;
         padding-bottom: 9px !important;
         padding-left: 0px !important;
@@ -497,17 +499,20 @@ import {Subject} from 'rxjs';
         transition: 0.2s all;
       }
       .chart-editor i:hover{
-        color:rgba(0,0,0,0.9);
+        color: rgba(0, 0, 0, 0.9);
         animation-fill-mode: forwards;
         cursor: pointer;
         transform: scale(1.3);
       }
-      .chart-area{
+
+      .chart-area {
         display: flex;
-
         flex-direction: row;
-       width:100%;
+        width: 100%;
+      }
 
+      .leftpadding {
+        padding-left: 12px !important;
       }
 
       .chart {

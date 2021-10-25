@@ -9,7 +9,7 @@ export class SummaryChartGenerator extends AbstractChartGenerator {
   yLabels;
   shortYLabels;
   sortedByMean;
-  horizontalBarHeight = 15;
+  horizontalBarHeight = 26;
   ranks = [];
   seriesByScales = [];
   scales = [2.5, 3, 3.5, 4, 4.5];
@@ -87,7 +87,7 @@ export class SummaryChartGenerator extends AbstractChartGenerator {
     return {
 
       color: '#3b3b3b',
-      pxHeight: this.yLabels.length * this.horizontalBarHeight < 25 ? 25 : this.yLabels.length * this.horizontalBarHeight,
+      pxHeight: this.yLabels.length * 23 + 58,
       grid: {
         left: '3%',
         right: '4%',
@@ -98,20 +98,22 @@ export class SummaryChartGenerator extends AbstractChartGenerator {
       legend: {},
       xAxis: {type: 'value', show: true, animation: true, axisLine: {show: true}},
       //@ts-ignore
-      yAxis: {
+      yAxis: [{
         type: 'category',
         show: true,
         minorTick: {show: true},
         data: this.shortYLabels,
         axisLabel: {formatter: (o) => breakLongLabels(o.toString(), 3), fontSize: 10, interval: 0},
         axisLine: {show: true},
-
-      },
+      }
+      ]
+      ,
       series: [...this.seriesByScales.entries()].map(d => ({
         data: d[1],
         name: namesToScales[d[0]],
         type: 'bar',
         rank: d[0],
+
         color: undefined,
         stack: 'total',
         label: {
