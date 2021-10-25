@@ -10,6 +10,9 @@ export class MultipleChoiceChartGenerator extends AbstractChartGenerator {
   }
 
   chartName;
+  get tableData() {
+    return undefined;
+  }
 
   getAllCount(reportId): any {
     console.log('get all count');

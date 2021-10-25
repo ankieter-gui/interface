@@ -28,89 +28,101 @@ import {Subject} from 'rxjs';
   ])],
   selector: 'app-chart-editor-view',
   template: `
+
+
     <ng-template #suffixIconSearch>
       <i nz-icon nzType="search"></i>
     </ng-template>
     <section class="chart-column-container">
-      <button *ngIf="!isPreview" [nz-tooltip]="'Pobierz wykres jako obrazek .png'" nz-button nzType="primary" nzSize="default"
-              nzShape="circle"
-              style="position: absolute;right:50px;top:0" (click)="saveAsPng()"><i nz-icon nzType="download"></i></button>
+      <div *ngIf="this.chartData.name||(this.chartData.dataQuery.get[0]&&this.chartData.dataQuery.get[0][0])">
+        <button *ngIf="!isPreview" [nz-tooltip]="'Pobierz wykres jako obrazek .png'" nz-button nzType="primary" nzSize="default"
+                nzShape="circle"
+                style="position: absolute;right:50px;top:0" (click)="saveAsPng()"><i nz-icon nzType="download"></i></button>
+        <label style="margin-bottom:0.4em" nz-checkbox [(ngModel)]="this.chartData.config.showTitle"
+               *ngIf="!isPreview && (this.chartData.name||(this.chartData.dataQuery.get[0]&&this.chartData.dataQuery.get[0][0])) ">
+          {{ chartData.config.showTitle ? 'Wyświetlać tytuł?' : 'Wyświetlać tytuł?' }}
+        </label>
+        <p [style.display]="isPreview? chartData.config.showTitle?'block':'none':'block'"
+           [class.title-hidden]="!chartData.config.showTitle">
+          <b>{{this.chartData.name ? this.chartData.name : this.chartData.dataQuery.get[0][0]}}</b>
+        </p>
+        <div class="chart-container summary-container" *ngIf="this.chartData.config.type=='summary'">
+          <figure *ngIf="!chartData.config.type || isError" style="margin:auto;"><img
+            src="../../../assets/Continuous-Animations_guidelines.gif"></figure>
+          <section class="chart-area" *ngIf="this.echartOptions">
+            <div [style.height.px]="echartOptions.pxHeight" echarts (chartInit)="onChartInit($event)" [options]="echartOptions"
+                 class="chart"
+                 [class.fullWidth]="!(chartData.dataQuery.as.includes('share') && chartData.dataQuery.as.length>1 && dataResponse)"
+                 #chartInstance>
+            </div>
+            <nz-table
+              *ngIf="chartData.dataQuery.as.length>1 && dataResponse"
+              class="details-table details-table-summary" [nzTemplateMode]="true">
+              <thead style="white-space: nowrap;">
 
+              <tr>
+                <th style="white-space: nowrap; background:transparent!important;padding:0px;"
+                    *ngFor="let header of chartData.generator.tableData.headers">{{header | PolskieNazwy | titlecase}}</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr style="line-height: 0.19!important;" *ngFor="let row of chartData.generator.tableData.data">
+                <td style="white-space: nowrap"
+                    *ngFor="let value of row">{{this.reportsService.getLabelFor(namingDictionary, this.question, value) == value ? this.round(value) : this.reportsService.getLabelFor(namingDictionary, this.question, value) }}</td>
+              </tr>
+              </tbody>
+            </nz-table>
+          </section>
 
-      <!--      <mat-form-field class="chart-title-input chart-name">-->
-      <!--       <input matInput placeholder="nazwa wykresu" [(ngModel)]="this.chartData.name">-->
-      <!--      </mat-form-field>-->
-      <section class="query-display">
-        <!--        <nz-tag [nzColor]="'blue'" class="unit">Pytanie 1</nz-tag><i nz-icon nzType="right"></i>-->
-        <!--        <nz-tag [nzColor]="'blue'" class="unit">Wszystkie odpowiedzi</nz-tag><i nz-icon nzType="right"></i>-->
-        <!--        <nz-tag [nzColor]="'magenta'" class="unit">jako procent</nz-tag>-->
-        <!--        <nz-tag [nzColor]="'red'" class="unit">wydział</nz-tag>-->
-        <!--        <nz-tag [nzColor]="'red'" class="unit">średnia</nz-tag>-->
-      </section>
-      <label style="margin-bottom:0.4em" nz-checkbox [(ngModel)]="this.chartData.config.showTitle"
-             *ngIf="!isPreview && (this.chartData.name||this.chartData.dataQuery.get[0][0]) ">
-        {{ chartData.config.showTitle ? 'Wyświetlać tytuł?' : 'Wyświetlać tytuł?' }}
-      </label>
-      <p [style.display]="isPreview? chartData.config.showTitle?'block':'none':'block'" [class.title-hidden]="!chartData.config.showTitle">
-        <b>{{this.chartData.name ? this.chartData.name : this.chartData.dataQuery.get[0][0]}}</b>
-
-
-      </p>
-      <div class="chart-container">
-        <figure *ngIf="!chartData.config.type || isError" style="margin:auto;"><img
-          src="../../../assets/Continuous-Animations_guidelines.gif"></figure>
-        <section class="chart-area" *ngIf="chartData.config.type=='groupedPercentAndData' && this.echartOptions">
-          <div [style.height.px]="echartOptions.pxHeight" echarts (chartInit)="onChartInit($event)" [options]="echartOptions" class="chart"
-               [class.fullWidth]="!(chartData.dataQuery.as.includes('share') && chartData.dataQuery.as.length>1 && dataResponse)"
-               #chartInstance></div>
-          <nz-table
-            *ngIf="chartData.dataQuery.as.includes('share') && chartData.dataQuery.as.length>1 && dataResponse"
-            class="details-table" [nzTemplateMode]="true">
-            <thead style="white-space: nowrap;">
-            <tr>
-              <th style="white-space: nowrap; background:transparent!important;"
-                  *ngFor="let header of tableHeaders">{{header | PolskieNazwy | titlecase}}</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr style="line-height: 1.428!important;" *ngFor="let row of this.tableData">
-              <td style="white-space: nowrap"
-                  *ngFor="let value of row">{{this.reportsService.getLabelFor(namingDictionary, this.question, value) == value ? this.round(value) : this.reportsService.getLabelFor(namingDictionary, this.question, value) }}</td>
-            </tr>
-            </tbody>
-          </nz-table>
-        </section>
-        <section class="chart-area"
-                 *ngIf="['multipleChoice', 'groupedBars', 'multipleBars', 'linearCustomData'].includes(chartData.config.type)  && this.echartOptions">
-          <div echarts [style.height.px]="echartOptions.pxHeight" (chartInit)="onChartInit($event)" [options]="echartOptions" class="chart"
-               style="width: 100%;"></div>
-          <div style="position: absolute;right: 0; border: 1px solid rgba(0,0,0,0.2); padding:0.7em;"
-               [style.top.px]="echartOptions.pxHeight-30"
-               *ngIf="chartData.generator && chartData.generator.allAnswers">Wszystkie odpowiedzi: {{chartData.generator.allAnswers}}</div>
-
-        </section>
-        <!--      <section class="chart-editor">-->
-        <!--        <i nz-icon nzType="line-chart" [nz-tooltip]="'Typ wykresu'"></i>-->
-        <!--        <i nz-icon nzType="question" [nz-tooltip]="'Pytania'"></i>-->
-        <!--        <i nz-icon nzType="database" [nz-tooltip]="'Agregacje'"></i>-->
-        <!--        <i nz-icon nzType="bar-chart" [nz-tooltip]="'Wykres kolumnowy, histogram'"></i>-->
-        <!--        <i nz-icon nzType="font-size" [nz-tooltip]="'Tekst'"></i>-->
-        <!--      </section>-->
+        </div>
+        <div class="chart-container" *ngIf="this.chartData.config.type!='summary'">
+          <figure *ngIf="!chartData.config.type || isError" style="margin:auto;"><img
+            src="../../../assets/Continuous-Animations_guidelines.gif"></figure>
+          <section class="chart-area" *ngIf="chartData.config.type=='groupedPercentAndData' && this.echartOptions">
+            <div [style.height.px]="echartOptions.pxHeight" echarts (chartInit)="onChartInit($event)" [options]="echartOptions"
+                 class="chart"
+                 [class.fullWidth]="!(chartData.dataQuery.as.includes('share') && chartData.dataQuery.as.length>1 && dataResponse)"
+                 #chartInstance>
+            </div>
+            <nz-table
+              *ngIf="(chartData.dataQuery.as.includes('share') || chartData.dataQuery.as.includes('mean') )&& chartData.dataQuery.as.length>1 && dataResponse"
+              class="details-table" [nzTemplateMode]="true">
+              <thead style="white-space: nowrap;">
+              <tr>
+                <th style="white-space: nowrap; background:transparent!important;"
+                    *ngFor="let header of tableHeaders">{{header | PolskieNazwy | titlecase}}</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr style="line-height: 1.428!important;" *ngFor="let row of this.tableData">
+                <td style="white-space: nowrap"
+                    *ngFor="let value of row">{{this.reportsService.getLabelFor(namingDictionary, this.question, value) == value ? this.round(value) : this.reportsService.getLabelFor(namingDictionary, this.question, value) }}</td>
+              </tr>
+              </tbody>
+            </nz-table>
+          </section>
+          <section class="chart-area"
+                   *ngIf="['multipleChoice', 'groupedBars', 'multipleBars', 'linearCustomData', 'summary'].includes(chartData.config.type)  && this.echartOptions">
+            <div echarts [style.height.px]="echartOptions.pxHeight" (chartInit)="onChartInit($event)" [options]="echartOptions"
+                 class="chart"
+                 style="width: 100%;"></div>
+            <div style="position: absolute;right: 0; border: 1px solid rgba(0,0,0,0.2); padding:0.7em;"
+                 [style.top.px]="echartOptions.pxHeight-30"
+                 *ngIf="chartData.generator && chartData.generator.allAnswers">Wszystkie
+              odpowiedzi: {{chartData.generator.allAnswers}}</div>
+          </section>
+        </div>
 
       </div>
-      <!--      <div *ngIf="true" style="border: 1px dashed rgba(0,0,0,0.2); width:100%;">-->
-
-      <!--      <ckeditor  [(ngModel)]="chartData.text" type="inline"></ckeditor>-->
-      <!--      </div>-->
       <ng-container *ngIf="!isPreview">
-        <section class="query-marker" *ngIf="chartData.dataQuery.get[0].length>0 && !showLinearPicker" [@fadeInOut]>
+        <section class="query-marker"
+                 *ngIf="(this.chartData.dataQuery.get[0]&&this.chartData.dataQuery.get[0][0]) && (chartData.dataQuery.get[0].length>0 && !showLinearPicker)"
+                 [@fadeInOut]>
           <figure class="indicator-card indicator-card-red" style="width: 290px" (click)="activeTab=1">
             <div class="indicator-card-inner">
               <div class="indicator-card-header">Pytanie</div>
               <div class="indicator-card-content">
                 {{question | RemoveHtml}}
-
-
               </div>
             </div>
           </figure>
@@ -133,15 +145,13 @@ import {Subject} from 'rxjs';
             <div class="indicator-card-inner">
               <div class="indicator-card-header">Filtry</div>
               <div class="indicator-card-content" *ngIf="chartData.config.filter">{{chartData.config.filter.question}}
-                = {{chartData.config.filter.answer}}</div>
+                = {{chartData.config.filter.answer}}
+              </div>
               <div class="indicator-card-content" *ngIf="!chartData.config.filter">Brak</div>
             </div>
           </figure>
-
         </section>
-
         <nz-collapse class="chart-editor-dropdown">
-
           <nz-collapse-panel nzHeader="Edytor" [nzActive]="isEditing" (nzActiveChange)="isEditing=$event">
             <div *ngIf="isEditing">
               <!--                  <input placeholder="Nazwa wykresu" nz-input [(ngModel)]="this.chartData.name" (blur)="refreshChart(); save()"/>-->
@@ -166,13 +176,6 @@ import {Subject} from 'rxjs';
                       </div>
                     </figure>
                     <div class="spacer"></div>
-                    <!--                        <figure class="indicator-card indicator-card-velvet preset"  nz-tooltip="Użyj tego wykresu aby przedstawić wyniki z pytań wielokrotnego wyboru wraz z danymi statystycznymi jak np. odchylenie. Na przykład: dlaczego poleciłbyś UAM">-->
-                    <!--                          <div class="indicator-card-inner">-->
-                    <!--                            <div class="indicator-card-header">Wielokrotny wybór + dane</div>-->
-                    <!--                            <div class="indicator-card-content"><img src="./assets/preset3.png" style="width: 100%"></div>-->
-                    <!--                          </div>-->
-                    <!--                        </figure>-->
-                    <!--                        <div class="spacer"></div>-->
                     <figure class="indicator-card indicator-card-velvet preset"
                             [nz-tooltip]="'Kiedy chcesz przedstawić dane z różnych wydziałów obok siebie. Przydatne przy prezentowaniu średniej ocen'"
                             (click)="pickPreset('multipleBars')">
@@ -196,75 +199,88 @@ import {Subject} from 'rxjs';
                         <div class="indicator-card-content"><img src="./assets/ocena_lata.png" style="width: 100%"></div>
                       </div>
                     </figure>
+                    <figure class="indicator-card indicator-card-velvet preset"
+                            (click)="pickPreset('summary');">
+                      <div class="indicator-card-inner">
+                        <div class="indicator-card-header">Podsumowanie</div>
+                        <div class="indicator-card-content"><img src="./assets/podsumowanie.PNG" style="width: 100%"></div>
+                      </div>
+                    </figure>
                   </section>
-                    </nz-tab>
-                    <nz-tab nzTitle="Pytanie i dane" *ngIf="!showLinearPicker && this.chartData.config.type">
-                      <section class="question-selector dane" *ngIf="!hideData">
-                        <div style="display: flex;flex-direction: row"> <span style='font-family: "Gilroy ExtraBold", sans-serif; width:50%;'>Dane:</span></div>
-                        <div style="display: flex; flex-direction: row; width: 100%">
-                          <nz-table #aggregationTable nzTemplateMode>
-                            <thead>
-
-                            </thead>
-                            <tbody>
-                            <tr><td style="cursor: pointer!important;" *ngFor='let q of ["max","min","mode","mean","median","std","var","count","sum"]'  (click)="$event.preventDefault();$event.stopPropagation();asPickerClick(q);refreshChart()"> <label><input style="pointer-events:none" type="checkbox" (click)="$event.preventDefault()" [checked]="chartData.dataQuery.as.includes(q)"> {{q |  PolskieNazwy | titlecase}}</label></td></tr>
-                            </tbody>
-                          </nz-table>
-<!--                          <label  nz-checkbox [nzChecked]="chartData.dataQuery.as.includes(q)" (click)="asPickerClick(q);refreshChart()">{{q | PolskieNazwy | titlecase}}</label>-->
-
-                        </div>
-                      </section>
-                      <section class="tab-flex-container">
-                      <section class="question-selector pytania">
-                      <div style="display: flex;flex-direction: row"> <span style='font-family: "Gilroy ExtraBold", sans-serif; width:50%;'>Odpowiedzi na pytanie:</span> <nz-input-group class="force-input-borderless" [nzPrefixIcon]="'search'"><input   nzBorderless nz-input placeholder="Wyszukaj..." [(ngModel)]="questionSearchString"> </nz-input-group></div>
+                </nz-tab>
+                <nz-tab nzTitle="Pytanie i dane" *ngIf="!showLinearPicker && this.chartData.config.type">
+                  <section class="question-selector dane" *ngIf="!hideData">
+                    <div style="display: flex;flex-direction: row"><span style='font-family: "Gilroy ExtraBold", sans-serif; width:50%;'>Dane:</span>
+                    </div>
+                    <div style="display: flex; flex-direction: row; width: 100%">
+                      <nz-table #aggregationTable nzTemplateMode>
+                        <thead>
+                        </thead>
+                        <tbody>
+                        <tr>
+                          <td style="cursor: pointer!important;"
+                              *ngFor='let q of ["max","min","mode","mean","median","std","var","count","sum"]'
+                              (click)="$event.preventDefault();$event.stopPropagation();asPickerClick(q);refreshChart()"><label><input
+                            style="pointer-events:none" type="checkbox" (click)="$event.preventDefault()"
+                            [checked]="chartData.dataQuery.as.includes(q)"> {{q |  PolskieNazwy | titlecase}}</label></td>
+                        </tr>
+                        </tbody>
+                      </nz-table>
+                      <!--                          <label  nz-checkbox [nzChecked]="chartData.dataQuery.as.includes(q)" (click)="asPickerClick(q);refreshChart()">{{q | PolskieNazwy | titlecase}}</label>-->
+                    </div>
+                  </section>
+                  <section class="tab-flex-container">
+                    <section class="question-selector pytania">
+                      <div style="display: flex;flex-direction: row"><span style='font-family: "Gilroy ExtraBold", sans-serif; width:50%;'>Odpowiedzi na pytanie:</span>
+                        <nz-input-group class="force-input-borderless" [nzPrefixIcon]="'search'"><input nzBorderless nz-input
+                                                                                                        placeholder="Wyszukaj..."
+                                                                                                        [(ngModel)]="questionSearchString">
+                        </nz-input-group>
+                      </div>
                       <div style="display: flex; flex-direction: column">
                         <nz-table #questionTable [nzData]="questionNames|NameFilter: questionSearchString">
                           <thead>
                           <tr>
                             <th>Zaznaczono</th>
                             <th>Pytanie</th>
-
                           </tr>
                           </thead>
                           <tbody>
                           <tr *ngFor="let q of questionTable.data" (click)="questionPickerClick(q);refreshChart()" style="cursor: pointer">
-                            <td>  <label style="pointer-events: none" nz-checkbox [nzChecked]="chartData.dataQuery.get[0].includes(q)"></label></td>
+                            <td><label style="pointer-events: none" nz-checkbox
+                                       [nzChecked]="chartData.dataQuery.get.flat().includes(q)"></label></td>
                             <td>{{q}}</td>
-
-
                           </tr>
                           </tbody>
                         </nz-table>
-
                       </div>
-                      </section>
-
-                        <section class="question-selector pytania" *ngIf="!hideGroupBy">
-                        <div style="display: flex;flex-direction: row"> <span style='font-family: "Gilroy ExtraBold", sans-serif; width:50%;'>Grupuj przez:</span> <nz-input-group class="force-input-borderless" [nzPrefixIcon]="'search'"><input   nzBorderless nz-input placeholder="Wyszukaj..." [(ngModel)]="bySearchString"> </nz-input-group></div>
-                        <div style="display: flex; flex-direction: column">
-                          <nz-table #groupTable [nzData]="questionNames|NameFilter: bySearchString">
-                            <thead>
-                            <tr>
-                              <th>Zaznaczono</th>
-                              <th>Pytanie</th>
-
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr *ngFor="let q of groupTable.data" (click)="buPickerClick(q);refreshChart()" style="cursor: pointer">
-                              <td>  <label style="pointer-events: none" nz-checkbox [nzChecked]="chartData.dataQuery.by[0]==q"></label></td>
-                              <td>{{q}}</td>
-
-
-                            </tr>
-                            </tbody>
-                          </nz-table>
-<!--                          <label *ngFor="let q of questionNames|NameFilter: bySearchString" nz-checkbox [nzChecked]="chartData.dataQuery.by[0]==q" (click)="buPickerClick(q);refreshChart()">{{q| RemoveHtml}}</label>-->
-
-                        </div>
-                        </section>
-                      </section>
-                    </nz-tab>
+                    </section>
+                    <section class="question-selector pytania" *ngIf="!hideGroupBy">
+                      <div style="display: flex;flex-direction: row"><span style='font-family: "Gilroy ExtraBold", sans-serif; width:50%;'>Grupuj przez:</span>
+                        <nz-input-group class="force-input-borderless" [nzPrefixIcon]="'search'"><input nzBorderless nz-input
+                                                                                                        placeholder="Wyszukaj..."
+                                                                                                        [(ngModel)]="bySearchString">
+                        </nz-input-group>
+                      </div>
+                      <div style="display: flex; flex-direction: column">
+                        <nz-table #groupTable [nzData]="questionNames|NameFilter: bySearchString">
+                          <thead>
+                          <tr>
+                            <th>Zaznaczono</th>
+                            <th>Pytanie</th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          <tr *ngFor="let q of groupTable.data" (click)="buPickerClick(q);refreshChart()" style="cursor: pointer">
+                            <td><label style="pointer-events: none" nz-checkbox [nzChecked]="chartData.dataQuery.by[0]==q"></label></td>
+                            <td>{{q}}</td>
+                          </tr>
+                          </tbody>
+                        </nz-table>
+                      </div>
+                    </section>
+                  </section>
+                </nz-tab>
                 <nz-tab nzTitle="Dane" *ngIf="showLinearPicker">
                   <app-line-chart-custom-data-picker (saveEmitter)="refreshChart()" [reportId]="reportId"
                                                      [chart]="this.chartData"></app-line-chart-custom-data-picker>
@@ -279,11 +295,8 @@ import {Subject} from 'rxjs';
                   <app-filters-selector [namingDictionary]="namingDictionary" [allQuestions]="namingDictionary"
                                         (filtersChange)="refreshFilter($event)" [(filters)]="this.chartData.config.filters"
                                         [reportId]="reportId"></app-filters-selector>
-
                 </nz-tab>
-                <!--                    <nz-tab nzTitle="Etykiety">-->
-                <!--                      <app-local-question-dictionary-override-editor [chart]="chartData" [report]="report" maxHeight="600px" (dataChanged)="refreshChart()" [dictionary]="this.namingDictionary"></app-local-question-dictionary-override-editor>-->
-                <!--                    </nz-tab>-->
+
                 <nz-tab nzTitle="Ustawienia obliczeń" *ngIf="chartData.config.type == 'groupedPercentAndData'">
                   <app-ignore-selector [chart]="chartData" *ngIf="this.dataResponse" (dataChanged)="refreshChart()"
                                        [lastDataResponse]="this.dataResponse"></app-ignore-selector>
@@ -293,35 +306,32 @@ import {Subject} from 'rxjs';
                   <app-colors-and-order-selector [dictionary]="namingDictionary" (update)="refreshChart()"
                                                  [lastDataResponse]="this.dataResponse" [chart]="chartData"></app-colors-and-order-selector>
                 </nz-tab>
-
               </nz-tabset>
-
-
             </div>
-
             <div *ngIf="this.chartData.config.type!=='groupedBars'">Nazwa całego zestawu danych (np.: łącznie, razem, UAM):
-           <input nz-input (blur)="refreshChart(true)" placeholder="Nazwa dla zagregowanych wyników - może to być 'Razem', 'łącznie' itd"
-                  [(ngModel)]="chartData.config.allTogetherLabel" value="UAM">
-         </div>
-         <div><label nz-checkbox [(ngModel)]="this.chartData.config.shortLabels"
-                     [nz-tooltip]="'Jeżeli etykieta jest zbyt długa, zostanie ona ucięta'">Krótkie etykiety</label></div>
-         <!--          <input nz-input placeholder="Wpisz query" [(ngModel)]="advancedQuery" (ngModelChange)="refreshChart()">-->
-       </nz-collapse-panel>
-          <!--        <nz-collapse-panel nzHeader="Zaawansowany edytor">-->
-          <!--            <input nz-input placeholder="Wpisz query" [(ngModel)]="advancedQuery" (ngModelChange)="refreshChart()">-->
-          <!--          <hr>-->
-          <!--          <p>Wykresy z całkowicie własnymi, wpisanymi ręcznie danymi</p>-->
-          <!--        </nz-collapse-panel>-->
+              <input nz-input (blur)="refreshChart(true)" placeholder="Nazwa dla zagregowanych wyników - może to być 'Razem', 'łącznie' itd"
+                     [(ngModel)]="chartData.config.allTogetherLabel" value="UAM">
+            </div>
+            <div><label nz-checkbox [(ngModel)]="this.chartData.config.shortLabels"
+                        [nz-tooltip]="'Jeżeli etykieta jest zbyt długa, zostanie ona ucięta'">Krótkie etykiety</label></div>
+
+          </nz-collapse-panel>
+
         </nz-collapse>
       </ng-container>
-
     </section>
+
+
 
   `,
   styles: [
     `
       .foo.sn-viewport--out {
         display: none;
+      }
+
+      .details-table-summary {
+
       }
 
       .foo.sn-viewport--in {
@@ -570,6 +580,7 @@ export class ChartEditorViewComponent implements OnInit {
   hideData = false;
   showLinearPicker = false;
   hideGroupBy = false;
+  summarySelectedQuestions = [];
 
   round(value) {
     return Math.round(value * 100 + Number.EPSILON) / 100;
@@ -579,15 +590,52 @@ export class ChartEditorViewComponent implements OnInit {
   globalFilter: GlobalFilter[];
   @Input()
   namingDictionary;
-  pickPreset(name){
-    this.byPickerClick=(type)=>{}
-    this.onPickQuestion = ()=>{}
-    this.showLinearPicker=false;
+
+  get question() {
+    const ret = {
+      'groupedPercentAndData': this.chartData.dataQuery.get[0][0],
+      'multipleBars': this.chartData.dataQuery.get[0][0],
+      'multipleChoice': this.chartData.dataQuery.get.length > 1 ? this.chartsService.sanitizeLabels(this.chartData.dataQuery.get.map(d => d[0]))[1] : this.chartData.dataQuery.get[0][0],
+      'groupedBars': this.chartData.dataQuery.get[0][0]
+    }[this.chartData.config.type];
+    if (ret) {
+      return ret;
+    } else {
+      return this.chartData.dataQuery.get[0][0];
+    }
+  }
+
+  removeBy(i) {
+    this.chartData.dataQuery.by.splice(i, 1);
+    this.refreshChart();
+  }
+
+  refreshFilter(filter) {
+    this.chartData.config.filters = filter;
+    this.refreshChart(true);
+  }
+
+  removeGet(i) {
+    this.chartData.dataQuery.get[0].splice(i, 1);
+    this.chartData.dataQuery.as.splice(i, 1);
+    this.refreshChart();
+  }
+
+  save() {
+    this.chartDataChange.emit(this.chartData);
+  }
+
+  pickPreset(name) {
+    this.byPickerClick = (type) => {
+    };
+    this.onPickQuestion = () => {
+    };
+    this.showLinearPicker = false;
     let fun = {
-      'groupedPercentAndData':()=>{
-        this.hideData=false;
-        this.hideGroupBy=false;
-        this.chartData.dataQuery.as[0]='share'
+      'groupedPercentAndData': () => {
+        this.hideData = false;
+        this.hideGroupBy = false;
+        this.chartData.dataQuery.as[0] = 'share';
         this.onPickQuestion = (question)=>{
           if (this.chartData.dataQuery.get[0].length > 0 && this.chartData.dataQuery.get[0][0] == question) {
             console.log("equals")
@@ -629,40 +677,65 @@ export class ChartEditorViewComponent implements OnInit {
         this.chartData.dataQuery.by[0] = "*"
         this.onPickQuestion = (question)=>{this.chartData.dataQuery.get[0][0] = question}
       },
-      "multipleBars":()=>{
-        this.hideData=true;
-        this.hideGroupBy=false;
-        this.chartData.dataQuery.as[0]='share'
-        this.onPickQuestion = (question)=>{this.chartData.dataQuery.get[0][0] = question}
-        this.byPickerClick = (by)=>{this.chartData.dataQuery.by[0] = by; this.chartData.dataQuery.by[1]= "*"}
+      'multipleBars': () => {
+        this.hideData = true;
+        this.hideGroupBy = false;
+        this.chartData.dataQuery.as[0] = 'share';
+        this.onPickQuestion = (question) => {
+          this.chartData.dataQuery.get[0][0] = question;
+        };
+        this.byPickerClick = (by) => {
+          this.chartData.dataQuery.by[0] = by;
+          this.chartData.dataQuery.by[1] = '*';
+        };
       },
-      "linearCustomData":()=>{
-       this.showLinearPicker = true;
-      }
+      'linearCustomData': () => {
+        this.showLinearPicker = true;
+      },
+      'summary': () => {
+        this.summarySelectedQuestions = [...new Set(this.chartData.dataQuery.get.flat())];
+        let update = () => {
+          this.chartData.dataQuery.get = [];
+          for (let i = 0; i < this.summarySelectedQuestions.length; i++) {
+            this.chartData.dataQuery.get.push(Array(this.chartData.dataQuery.as.length).fill(this.summarySelectedQuestions[i]));
+          }
+        };
+        this.asPickerClick = (s) => {
+          // @ts-ignore
+          if (this.chartData.dataQuery.as.includes(s)) {
+            this.chartData.dataQuery.as = this.chartData.dataQuery.as.filter(d => d != s);
+          } else {
+            // @ts-ignore
+            this.chartData.dataQuery.as.push(s);
+
+          }
+          update();
+        };
+        this.chartData.dataQuery.by[0] = '*';
+        this.hideGroupBy = true;
+        this.chartData.dataQuery.as[0] = 'mean';
+        this.onPickQuestion = (question) => {
+          console.log(JSON.stringify(this.summarySelectedQuestions));
+          const exists = this.summarySelectedQuestions.includes(question);
+          if (exists) {
+            if (this.summarySelectedQuestions.length == 1) {
+              this.summarySelectedQuestions = [];
+            } else {
+              this.summarySelectedQuestions = this.summarySelectedQuestions.filter(s => s != question);
+            }
+
+          } else {
+            this.summarySelectedQuestions.push(question);
+          }
+          //complimenting
+          update();
+        };
+      },
 
     }[name]
     this.chartData.config.type=name;
     fun()
     this.activeTab=1;
-  }
-  removeBy(i){
-  this.chartData.dataQuery.by.splice(i,1)
-  this.refreshChart()
-  }
-  refreshFilter(filter){
-    this.chartData.config.filters = filter;
-    this.refreshChart(true);
-  }
-  removeGet(i){
-    this.chartData.dataQuery.get[0].splice(i,1)
-    this.chartData.dataQuery.as.splice(i,1)
-  this.refreshChart()
-  }
-  save(){
-    this.chartDataChange.emit(this.chartData)
-  }
-  get question(){
-   return {"groupedPercentAndData": this.chartData.dataQuery.get[0][0], "multipleBars": this.chartData.dataQuery.get[0][0], "multipleChoice":this.chartData.dataQuery.get.length>1?this.chartsService.sanitizeLabels(this.chartData.dataQuery.get.map(d=>d[0]))[1]:this.chartData.dataQuery.get[0][0], "groupedBars":this.chartData.dataQuery.get[0][0]}[this.chartData.config.type]
   }
   questionPickerClick(question){
     this.onPickQuestion(question);
@@ -705,9 +778,14 @@ export class ChartEditorViewComponent implements OnInit {
   }
 
   isError = false;
-  async refreshChart(shallSave=true){
 
-    if (shallSave) this.save()
+  async refreshChart(shallSave=true){
+    if (shallSave) {
+      this.save();
+    }
+    if (!this.chartData.dataQuery.get || !this.chartData.dataQuery.get[0]) {
+      return;
+    }
     try {
       await this.downloadQueryResponse();
       if (this.dataResponse || this.chartData.config.type == 'linearCustomData') {

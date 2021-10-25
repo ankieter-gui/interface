@@ -13,6 +13,9 @@ export class GroupedPercentAndDataChartGenerator extends AbstractChartGenerator 
   chartName;
   legend;
   transposedEntries;
+  get tableData() {
+    return undefined;
+  }
 
   getAllCount(reportId) {
   }

@@ -28,7 +28,7 @@ export class ChartConfig {
   static colorSets = {
     default: ['red', 'blue', 'green']
   };
-  type: 'groupedPercentAndData' | 'multipleChoice' | 'multipleChoiceAndData' | 'multipleBars' | 'groupedBars' | 'complex' | 'linearCustomData';
+  type: 'summary' | 'groupedPercentAndData' | 'multipleChoice' | 'multipleChoiceAndData' | 'multipleBars' | 'groupedBars' | 'complex' | 'linearCustomData';
   colors? = {};
   showDataLabels?: boolean = true;
   allTogetherLabel = 'UAM';

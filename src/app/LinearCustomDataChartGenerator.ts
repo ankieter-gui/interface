@@ -11,6 +11,10 @@ export class LinearCustomDataChartGenerator extends AbstractChartGenerator {
   getAllCount(reportId) {
   }
 
+  get tableData() {
+    return undefined;
+  }
+
   generate(): LinearCustomDataChartGenerator {
     return this;
   }

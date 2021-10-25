@@ -8,7 +8,7 @@ import {ReportsService} from '../reports.service';
   selector: 'app-colors-and-order-selector',
   template: `
     <div>Przeciągnij aby zmienić kolejność</div>
-    <label nz-checkbox [ngModel]="this.chart.config.useManualOrdering">Używaj poniższej kolejności</label>
+
     <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event)">
 
       <div class="example-box" *ngFor="let label of this.chart.config.order.order" cdkDrag>

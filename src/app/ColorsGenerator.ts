@@ -8,6 +8,7 @@ import {GroupedPercentAndDataChartGenerator} from './GroupedPercentAndDataChartG
 import {FrequencyChartGenerator} from './FrequencyChartGenerator';
 import {MultipleChoiceChartGenerator} from './MultipleChoiceChartGenerator';
 import {LinearCustomDataChartGenerator} from './LinearCustomDataChartGenerator';
+import {SummaryChartGenerator} from './SummaryChartGenerator';
 
 export class ColorsGenerator {
   chart: ChartReportElement;
@@ -44,18 +45,26 @@ export class ColorsGenerator {
 
   generateColors(options: EChartsOption): EChartsOption {
 
-    console.log(GroupedPercentAndDataChartGenerator);
-    console.log(GroupedPercentAndDataChartGenerator == this.typeOf);
-    console.log(this.typeOf.name);
+
     const x = {};
     x[FrequencyChartGenerator.name] = (o) => this.frequencyChartGenerator(o);
     x[MultipleChoiceChartGenerator.name] = (o) => this.multipleChoiceChartGenerator(o);
     x[MultipleBarsChartGenerator.name] = (o) => this.multipleBarsChartGenerator(o);
     x[GroupedPercentAndDataChartGenerator.name] = (o) => this.groupedPercentAndDataChartGenerator(o);
+    x[SummaryChartGenerator.name] = (o) => this.summaryChartGenerator(o);
     const colorFunction = x[this.typeOf.name];
     if (colorFunction) {
       return colorFunction(options);
     }
+    console.log(options);
+    return options;
+  }
+
+  summaryChartGenerator(options: EChartsOption): EChartsOption {
+    console.log(options);
+
+    (options.series as any[]).forEach((d) => d.color = this.sevenColorPalette[d.rank]);
+
     return options;
   }
 
@@ -77,6 +86,11 @@ export class ColorsGenerator {
     for (let series of (options.series as any[])) {
       let data = series.d;
       series.color = this.sevenColorPalette[series.index];
+      console.log(this.chart.config.colors);
+      console.log(series.orderLabel);
+      if (this.chart.config.colors && this.chart.config.colors[series.orderLabel]) {
+        series.color = this.chart.config.colors[series.orderLabel];
+      }
     }
     return options;
   }

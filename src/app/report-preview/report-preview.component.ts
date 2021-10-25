@@ -26,9 +26,7 @@ export class ReportPreviewComponent implements OnInit {
   queryData(charData){
     return this.mockChartResponseData;
   }
-  generateChart(chartData, config){
-    return "chart content"
-  }
+
   removeElement(element){
     this.reportDefinition.elements = this.reportDefinition.elements.filter(d=>d!=element)
     this.save()

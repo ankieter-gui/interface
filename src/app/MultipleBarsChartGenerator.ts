@@ -6,6 +6,9 @@ import {EChartsOption} from 'echarts';
 export class MultipleBarsChartGenerator extends AbstractChartGenerator {
   xAxisLabels;
   barSeries;
+  get tableData() {
+    return undefined;
+  }
 
   getAllCount(reportId) {
   }
@@ -108,7 +111,7 @@ export class MultipleBarsChartGenerator extends AbstractChartGenerator {
 
       series:
       //każda seria to jeden słupek w tej samej pozycji ale w różnych grupach
-        this.zip(this.getAllShareLabels(this.shareElement), this.barSeries).map((d, index) => ({
+        this.zip(this.chartElement.config.order.order, this.barSeries).map((d, index) => ({
           name: this.getLabelFor(this.chartElement.dataQuery.get[0][0], d[0]),
           d: d,
           index: index,
@@ -129,7 +132,7 @@ export class MultipleBarsChartGenerator extends AbstractChartGenerator {
               name: {}
             }
           },
-
+          orderLabel: d[0],
           data: d[1]
         }))
     };

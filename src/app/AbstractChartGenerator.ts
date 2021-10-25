@@ -66,7 +66,7 @@ export abstract class AbstractChartGenerator {
     this.namingDictionary = namingDictionary;
     this.reportsService = reportsService;
 
-    if (series) {
+    if (series && Object.keys(series).some(d => d.includes('share'))) {
       this.indices = series['index'];
       let allShareLabels = [];
       let shareValues = Object.entries(series).filter(([key, value]) => key.includes('share')).map(([key, value]) => value);
@@ -115,6 +115,8 @@ export abstract class AbstractChartGenerator {
       this.series = seriesCopied;
 
 
+    } else {
+      this.series = this.rawSeries;
     }
   }
 
@@ -175,22 +177,30 @@ export abstract class AbstractChartGenerator {
     if ( Number(n) in this.numberToStringScale) return this.numberToStringScale[Number(n)]
     else return n
   }
-  sanitizeLabels(list){
-    if (list.length==1) return [list, ""];
+
+  sanitizeLabels(list) {
+    if (list.length == 1) {
+      return [list, ''];
+    }
     const prefix = commonSubstring(list);
-    console.log(prefix)
-    return [list.map(d=>d.replace(prefix, '')), prefix]
+    console.log(prefix);
+    return [list.map(d => d.replace(prefix, '')), prefix];
   }
-  generateSeriesList(shareElement:object[]){
+
+  abstract get tableData();
+
+  generateSeriesList(shareElement: object[]) {
     let resultingMap = {};
     let allKeys = this.chartElement.config.order.order;
-    for (let valuesMap of shareElement){
-      const sum = Object.values(valuesMap).reduce((previousValue:number, currentValue:number, index, array)=>previousValue + currentValue)
-      for (let key of allKeys){
-        let val =0;
+    for (let valuesMap of shareElement) {
+      const sum = Object.values(valuesMap).reduce((previousValue: number, currentValue: number, index, array) => previousValue + currentValue);
+      for (let key of allKeys) {
+        let val = 0;
         // console.log("key: "+key)
-        if (key in valuesMap) val =valuesMap[key]/sum*100
-        if (key in resultingMap){
+        if (key in valuesMap) {
+          val = valuesMap[key] / sum * 100;
+        }
+        if (key in resultingMap) {
           resultingMap[key].push(val)
         }else{
           resultingMap[key] = [val]

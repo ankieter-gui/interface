@@ -12,6 +12,10 @@ export class FrequencyChartGenerator extends AbstractChartGenerator {
 getAllCount(reportId) {
 }
 
+  get tableData() {
+    return undefined;
+  }
+
   constructor(series: any, chartElement: ChartReportElement, namingDictionary, public reportsService: ReportsService, dictionaryOverride) {
     super(series, chartElement, namingDictionary, reportsService, dictionaryOverride);
   }
