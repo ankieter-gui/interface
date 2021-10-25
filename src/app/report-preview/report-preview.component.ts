@@ -27,10 +27,7 @@ export class ReportPreviewComponent implements OnInit {
     return this.mockChartResponseData;
   }
 
-  removeElement(element){
-    this.reportDefinition.elements = this.reportDefinition.elements.filter(d=>d!=element)
-    this.save()
-  }
+
   reportId;
   constructor(private surveysService:SurveysService,private reportsService:ReportsService,private route: ActivatedRoute, private router:Router, private window:Window) {
     //https://stackoverflow.com/questions/55019343/how-to-generate-a-pdf-using-angular-7
@@ -38,17 +35,7 @@ export class ReportPreviewComponent implements OnInit {
       setTimeout(()=>{this.exportAsPDF("main")}, 2000)
     }
   }
-  addNewTextElement(){
-    this.reportDefinition.elements.push({type:"text", content: {text:""} as TextReportElement})
-  }
-  addNewChartElement(){
-    this.reportDefinition.elements.push({type:"chart", content: {name:"", dataQuery: new SurveyQuery(), config: { tableDefinition:{series:[]},
-          type:null,
-          orientation:"vertical",}} as ChartReportElement})
-  }
-  save(){
-    this.reportsService.saveReport(this.reportId, this.reportDefinition).subscribe(d=>console.log("saved"));
-  }
+
   @Input()
   idFromExternalSource;
   ngOnInit(): void {

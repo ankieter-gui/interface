@@ -18,11 +18,8 @@ export class SummaryChartGenerator extends AbstractChartGenerator {
     super(series, chartElement, namingDictionary, reportsService, dictionaryOverrides);
   }
 
-  _tableData;
-
-  get tableData() {
-    return {headers: this.chartElement.dataQuery.as.filter(d => d != 'mean'), data: this._tableData};
-  }
+  tableData;
+  type = 'summary';
 
   getAllCount(reportId) {
   }
@@ -71,14 +68,14 @@ export class SummaryChartGenerator extends AbstractChartGenerator {
       }
     }
     this.ranks = ranks;
-    this._tableData = [];
+    let _tableData = [];
     console.log(this.seriesByScales);
     this.yLabels.forEach(label => {
       const tmp = this.chartElement.dataQuery.as.filter(d => d != 'mean').map(d => d + label);
-      this._tableData.push(tmp.map(u => this.series[u][0]));
+      _tableData.push(tmp.map(u => this.series[u][0]));
     });
-    console.log(this._tableData);
 
+    this.tableData = {headers: this.chartElement.dataQuery.as.filter(d => d != 'mean'), data: _tableData};
     return this;
   }
 

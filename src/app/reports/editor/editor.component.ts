@@ -99,6 +99,10 @@ export class EditorComponent implements OnInit {
 
   }
 
+  get lastPage() {
+    return Math.round(this.reportDefinition.elements.length / this.itemsOnPage + 0.5);
+  }
+
   duplicateElement(element: ReportElement) {
     let generator;
     let shallowCopy = {};
@@ -113,6 +117,9 @@ export class EditorComponent implements OnInit {
     this.reportDefinition.elements.push(JSON.parse(JSON.stringify(shallowCopy)));
 
     this.save();
+    if (this.currentPage != this.lastPage) {
+      this.currentPage = 999;
+    }
   }
 
   addNewTextElement(beginning = false) {
@@ -124,6 +131,9 @@ export class EditorComponent implements OnInit {
     } else {
       //@ts-ignore
       this.reportDefinition.elements.push(elem);
+    }
+    if (this.currentPage != this.lastPage) {
+      this.currentPage = 999;
     }
 
   }
@@ -152,6 +162,9 @@ export class EditorComponent implements OnInit {
     } else {
       //@ts-ignore
       this.reportDefinition.elements.push(elem);
+    }
+    if (this.currentPage != this.lastPage) {
+      this.currentPage = 999;
     }
   }
 

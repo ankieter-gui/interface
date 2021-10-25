@@ -9,7 +9,8 @@ import {ReportsService} from '../reports.service';
   template: `
     <div>Przeciągnij aby zmienić kolejność</div>
 
-    <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event)">
+    <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event)"
+         *ngIf="this.chart.dataQuery.get[0] && this.chart.dataQuery.get[0][0]">
 
       <div class="example-box" *ngFor="let label of this.chart.config.order.order" cdkDrag>
         <div>{{this.reportService.getLabelFor(this.dictionary, this.chart.dataQuery.get[0][0], label)}}</div>

@@ -7,6 +7,9 @@ import {SurveyQuery} from './dataModels/Query';
 import {ChartsService} from './charts.service';
 import {ChartReportElement} from './dataModels/ReportElement';
 import {AbstractChartGenerator} from './AbstractChartGenerator';
+import {SummaryChartGenerator} from './SummaryChartGenerator';
+import * as _ from 'lodash';
+
 
 @Injectable({
   providedIn: 'root'
@@ -24,20 +27,20 @@ export class ReportsService {
     return this.http.get<ReportDefinition>(`${BACKEND_URL}/report/${id}`,{withCredentials:true})
   }
   saveReport(id,content:ReportDefinition) {
-    let generators: AbstractChartGenerator[] = [];
-    content.elements.forEach(d => {
-      if (d.type == 'chart') {
-        generators.push((d.content as ChartReportElement).generator);
-        (d.content as ChartReportElement).generator = undefined;
+    let copy = Object.assign({}, content);
+    let newElements = [];
+    for (let element of copy.elements) {
+      let newElement = Object.assign({}, element);
+      newElements.push(newElement);
+      if (newElement.type == 'chart') {
+
+        newElement.content = Object.assign({}, newElement.content);
+        (newElement.content as ChartReportElement).generator = undefined;
       }
-    });
-    let toSave = JSON.parse(JSON.stringify(content));
-    generators.reverse();
-    console.log(generators);
-    for (let [i, element] of content.elements.entries()) {
-      (element.content as ChartReportElement).generator = generators.pop();
     }
-    return this.http.post(`${BACKEND_URL}/report/${id}`, toSave, {withCredentials: true});
+    copy.elements = newElements;
+    console.log(copy);
+    return this.http.post(`${BACKEND_URL}/report/${id}`, copy, {withCredentials: true});
   }
   getLinkedSurvey(reportId){
     return this.http.get<{surveyId:string, error?:string}>(`${BACKEND_URL}/report/${reportId}/survey`,{withCredentials:true})

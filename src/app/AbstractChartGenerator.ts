@@ -187,7 +187,6 @@ export abstract class AbstractChartGenerator {
     return [list.map(d => d.replace(prefix, '')), prefix];
   }
 
-  abstract get tableData();
 
   generateSeriesList(shareElement: object[]) {
     let resultingMap = {};

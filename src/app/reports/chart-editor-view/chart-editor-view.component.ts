@@ -56,7 +56,7 @@ import {Subject} from 'rxjs';
                  #chartInstance>
             </div>
             <nz-table
-              *ngIf="chartData.dataQuery.as.length>1 && dataResponse"
+              *ngIf="chartData.dataQuery.as.length>1 && dataResponse && chartData.generator"
               class="details-table details-table-summary" [nzTemplateMode]="true">
               <thead style="white-space: nowrap;">
 
@@ -146,10 +146,9 @@ import {Subject} from 'rxjs';
           <figure class="indicator-card indicator-card-purple" (click)="activeTab=4">
             <div class="indicator-card-inner">
               <div class="indicator-card-header">Filtry</div>
-              <div class="indicator-card-content" *ngIf="chartData.config.filter">{{chartData.config.filter.question}}
-                = {{chartData.config.filter.answer}}
+              <div class="indicator-card-content">{{filtersAsString}}
               </div>
-              <div class="indicator-card-content" *ngIf="!chartData.config.filter">Brak</div>
+
             </div>
           </figure>
         </section>
@@ -194,6 +193,7 @@ import {Subject} from 'rxjs';
                         <div class="indicator-card-content"><img src="./assets/wydzialy.png" style="width: 100%"></div>
                       </div>
                     </figure>
+                    <div class="spacer"></div>
                     <figure class="indicator-card indicator-card-velvet preset" nz-tooltip="Prezentacja frekwencji na przestrzeni lat"
                             (click)="pickPreset('linearCustomData');">
                       <div class="indicator-card-inner">
@@ -201,6 +201,7 @@ import {Subject} from 'rxjs';
                         <div class="indicator-card-content"><img src="./assets/ocena_lata.png" style="width: 100%"></div>
                       </div>
                     </figure>
+                    <div class="spacer"></div>
                     <figure class="indicator-card indicator-card-velvet preset"
                             (click)="pickPreset('summary');">
                       <div class="indicator-card-inner">
@@ -827,18 +828,30 @@ onChartInit(e){
       }
       byteArrays[sliceIndex] = new Uint8Array(bytes);
     }
-    return new Blob(byteArrays, { type: contentType });
-  }
-saveAsPng(){
+   return new Blob(byteArrays, {type: contentType});
+ }
 
-  let src = this.chartInstance.getDataURL({
-    pixelRatio: 2,
-    backgroundColor: '#fff'
-  });
-  console.log(decodeURIComponent(src.replace(/^data:image\/(png|jpeg|jpg);base64,/, '')))
-  var blob = this.base64toBlob(decodeURIComponent(src.replace(/^data:image\/(png|jpeg|jpg);base64,/, '')), "image/png")
-  saveAs(blob, "wykres_"+this.chartData.name+".png")
-}
+  get filtersAsString() {
+    if (this.chartData.config.filters && this.chartData.config.filters.length > 0) {
+      return this.chartData.config.filters.map(d => d.question + '=' + d.answer).join('; ');
+    }
+    if (this.chartData.config.filter) {
+      return `${this.chartData.config.filter.question} = ${this.chartData.config.filter.answer}`;
+    }
+    return 'Brak';
+  }
+
+  saveAsPng() {
+
+    let src = this.chartInstance.getDataURL({
+      pixelRatio: 2,
+      backgroundColor: '#fff'
+    });
+    console.log(decodeURIComponent(src.replace(/^data:image\/(png|jpeg|jpg);base64,/, '')));
+    var blob = this.base64toBlob(decodeURIComponent(src.replace(/^data:image\/(png|jpeg|jpg);base64,/, '')), 'image/png');
+    saveAs(blob, 'wykres_' + this.chartData.name + ".png")
+  }
+
   async downloadQueryResponse() {
 
 
