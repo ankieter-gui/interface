@@ -41,6 +41,7 @@ export interface DataPair {
 export abstract class AbstractChartGenerator {
   horizontalBarHeight=40;
   gray="#9F9F9F"
+  tableData:{headers:string[], data:any[]}={headers:[], data:[]};
   darkGray="#5e5e5e"
   lightBlue = '#1e6adb';
   darkBlue = '#043b8b';

@@ -28,8 +28,6 @@ import {Subject} from 'rxjs';
   ])],
   selector: 'app-chart-editor-view',
   template: `
-
-
     <ng-template #suffixIconSearch>
       <i nz-icon nzType="search"></i>
     </ng-template>

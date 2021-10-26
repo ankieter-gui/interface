@@ -18,7 +18,7 @@ export class SummaryChartGenerator extends AbstractChartGenerator {
     super(series, chartElement, namingDictionary, reportsService, dictionaryOverrides);
   }
 
-  tableData;
+
   type = 'summary';
 
   getAllCount(reportId) {

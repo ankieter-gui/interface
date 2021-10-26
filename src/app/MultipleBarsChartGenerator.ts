@@ -6,9 +6,7 @@ import {EChartsOption} from 'echarts';
 export class MultipleBarsChartGenerator extends AbstractChartGenerator {
   xAxisLabels;
   barSeries;
-  get tableData() {
-    return undefined;
-  }
+
 
   getAllCount(reportId) {
   }
