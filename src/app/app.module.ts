@@ -9,7 +9,7 @@ import { AppRoutingModule } from './app-routing.module';
 import {NgxEchartsModule} from 'ngx-echarts';
 
 import {NZ_I18N, pl_PL} from 'ng-zorro-antd/i18n';
-import { fr_FR } from 'ng-zorro-antd/i18n';
+
 import {registerLocaleData} from '@angular/common';
 import pl from '@angular/common/locales/pl';
 import {FormsModule} from '@angular/forms';
@@ -235,7 +235,7 @@ export let commonNZImports = [
 
     ],
   providers: [
-    {provide: NZ_I18N, useValue: fr_FR},
+    {provide: NZ_I18N, useValue: pl_PL},
     {provide: Window, useValue: window},
     {provide: MAT_COLOR_FORMATS, useValue: NGX_MAT_COLOR_FORMATS}
     , LoginGuard, OnlyAdminGuard],
