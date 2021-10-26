@@ -96,7 +96,7 @@ import {Subject} from 'rxjs';
               <tbody>
               <tr style="line-height: 1.428!important;" *ngFor="let row of this.tableData">
                 <td style="white-space: nowrap"
-                    *ngFor="let value of row">{{this.reportsService.getLabelFor(namingDictionary, this.question, value) == value ? this.round(value) : this.reportsService.getLabelFor(namingDictionary, this.question, value) }}</td>
+                    *ngFor="let value of row; let i =index">{{this.reportsService.getLabelFor(namingDictionary, this.question, value) == value ? this.round(value) :  ['share','mode'].includes(tableHeaders[i]) ?this.reportsService.getLabelFor(namingDictionary, this.question, value):round(value) }}</td>
               </tr>
               </tbody>
             </nz-table>
