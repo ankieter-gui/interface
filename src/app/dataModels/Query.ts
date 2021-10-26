@@ -76,7 +76,7 @@ export let SurveyQueryNamingDictionary = {
   'median': 'me',
   'mean': 'śr',
   'std': 'SD',
-  'var': 'wariacja',
+  'var': 'wariancja',
   'count': 'N',
   'sum': 'suma'
 }
