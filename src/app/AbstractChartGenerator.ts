@@ -96,14 +96,16 @@ export abstract class AbstractChartGenerator {
       let seriesCopied = JSON.parse(JSON.stringify(this.rawSeries));
       let keys = Object.keys(seriesCopied);
       for (let j = 0; j < keys.length; j++) {
+        console.log(keys[j])
         if (keys[j] == 'index') {
           continue;
         }
-        const startIndex = Math.min(...Object.keys(seriesCopied[keys[j]]).map(d => Number(d)));
+        const key = keys[j]
+        const startIndex = Math.min(...Object.keys(series[key][0]).map(d => Number(d)));
 
-        for (let objectSeriesIndex = 0; objectSeriesIndex < seriesCopied[keys[j]].length; objectSeriesIndex++) {
-          let o = seriesCopied[keys[j]][objectSeriesIndex];
-          seriesCopied[keys[j]][objectSeriesIndex] = OrderSetting.sortAnotherSeriesInPlace(this.chartElement.config.order, o);
+        for (let objectSeriesIndex = startIndex; objectSeriesIndex < seriesCopied[key].length; objectSeriesIndex++) {
+          let o = seriesCopied[key][objectSeriesIndex];
+          seriesCopied[key][objectSeriesIndex] = OrderSetting.sortAnotherSeriesInPlace(this.chartElement.config.order, o);
 
         }
 
