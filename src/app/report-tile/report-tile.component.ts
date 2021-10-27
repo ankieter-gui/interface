@@ -123,7 +123,9 @@ import {SharingService} from '../sharing.service';
         color: #000000;
       }
       .indicator-right-side-top.small-font{
-        font-size: 17px;
+        font-size: 15px;
+        font-family: "Gilroy Light";
+        font-weight: normal;
       }
       .statistics{
         margin-left:1rem;
