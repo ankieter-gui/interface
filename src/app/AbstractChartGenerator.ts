@@ -8,6 +8,7 @@ import {ReportDefinition} from './dataModels/ReportDefinition';
 import {OrderSetting, OrderSettingGenerator} from './dataModels/OrderSetting';
 import {share} from 'rxjs/operators';
 import {sum} from 'ng-zorro-antd/core/util';
+import {FrequencyChartGenerator} from './FrequencyChartGenerator';
 
 export interface DataPair {
   // [
@@ -93,6 +94,9 @@ export abstract class AbstractChartGenerator {
       }
 
       //sort
+      console.log(chartElement.config.type == 'groupedBars')
+      console.log(this.rawSeries)
+      console.log(this.chartElement.config.order.order)
       let seriesCopied = JSON.parse(JSON.stringify(this.rawSeries));
       let keys = Object.keys(seriesCopied);
       for (let j = 0; j < keys.length; j++) {
@@ -102,12 +106,20 @@ export abstract class AbstractChartGenerator {
         }
         const key = keys[j]
         const startIndex = Math.min(...Object.keys(series[key][0]).map(d => Number(d)));
-
-        for (let objectSeriesIndex = startIndex; objectSeriesIndex < seriesCopied[key].length; objectSeriesIndex++) {
-          let o = seriesCopied[key][objectSeriesIndex];
-          seriesCopied[key][objectSeriesIndex] = OrderSetting.sortAnotherSeriesInPlace(this.chartElement.config.order, o);
-
+        console.log(series[key][0])
+        console.log(startIndex)
+        for (let objectSeries of Object.entries(seriesCopied[key])){
+          console.log(objectSeries)
+          let index = objectSeries[0]
+          let o:object = objectSeries[1] as object
+          seriesCopied[key][index] = OrderSetting.sortAnotherSeriesInPlace(this.chartElement.config.order, o);
+          console.log(seriesCopied[key][index])
         }
+        // for (let objectSeriesIndex = startIndex; objectSeriesIndex < seriesCopied[key].length; objectSeriesIndex++) {
+        //   let o = seriesCopied[key][objectSeriesIndex];
+        //   seriesCopied[key][objectSeriesIndex] = OrderSetting.sortAnotherSeriesInPlace(this.chartElement.config.order, o);
+        //
+        // }
 
       }
       console.log('keys');
@@ -115,8 +127,10 @@ export abstract class AbstractChartGenerator {
       console.log(seriesCopied);
       console.log(series);
       console.log(this.chartElement.config.order.order);
-      this.series = seriesCopied;
+      //Czasowy fix
 
+      this.series = seriesCopied;
+      if (chartElement.config.type === 'groupedBars') this.series=this.rawSeries
 
     } else {
       this.series = this.rawSeries;

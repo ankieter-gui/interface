@@ -48,4 +48,5 @@ export class ChartReportElement {
   config: ChartConfig;
   text: string;
   generator: AbstractChartGenerator;
+  lastCachesResponse:any;
 }

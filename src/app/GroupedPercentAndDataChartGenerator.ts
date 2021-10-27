@@ -30,6 +30,7 @@ export class GroupedPercentAndDataChartGenerator extends AbstractChartGenerator 
   generate(): AbstractChartGenerator {
     this.legend = this.chartElement.config.order.order.map(d => this.getLabelFor(this.chartElement.dataQuery.get[0][0], d));
     this.entries = Object.entries(this.series).filter(d => d[0] != 'index' && d[0].includes('share')).map(d => this.zip(d[1], this.chartElement.config.order.order))[0];
+    console.log(JSON.parse(JSON.stringify(this.entries)));
     this.entries.forEach(d => {
       console.log(JSON.parse(JSON.stringify(d)));
       let tmp = d[0];
@@ -37,7 +38,10 @@ export class GroupedPercentAndDataChartGenerator extends AbstractChartGenerator 
       d[1] = tmp;
       console.log(JSON.parse(JSON.stringify(d)));
       let sum = 0;
-      d[1].forEach(u => sum += u);
+
+      // @ts-ignore
+     d[1].forEach(u => sum += u);
+      // @ts-ignore
       d[1].forEach((u, i) => d[1][i] = u / sum * 100);
     });
     let transpose = m => m[0].map((x, i) => m.map(x => x[i]));

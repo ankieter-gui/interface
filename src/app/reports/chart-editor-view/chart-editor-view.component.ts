@@ -851,14 +851,17 @@ onChartInit(e){
   }
 
   async downloadQueryResponse() {
-
-
-    let _dataResponse: any = await (this.reportsService.getData(this.reportId, this.advancedQuery ? JSON.parse(this.advancedQuery) : ComplimentQuery(this.chartData.dataQuery, this.globalFilter, this.chartData.config.filters ? this.chartData.config.filters : [this.chartData.config.filter])).toPromise());
-    console.log(_dataResponse);
+    let _dataResponse:any;
+    // if (this.isPreview && this.chartData.lastCachesResponse && !('error' in this.chartData.lastCachesResponse)){
+    //   _dataResponse = this.chartData.lastCachesResponse;
+    // }else {
+       _dataResponse = await (this.reportsService.getData(this.reportId, this.advancedQuery ? JSON.parse(this.advancedQuery) : ComplimentQuery(this.chartData.dataQuery, this.globalFilter, this.chartData.config.filters ? this.chartData.config.filters : [this.chartData.config.filter])).toPromise());
+    // }
     if ('error' in _dataResponse) {
 
     } else {
       this.dataResponse = _dataResponse;
+      // this.chartData.lastCachesResponse = this.dataResponse;
     }
     console.log(this.dataResponse);
 

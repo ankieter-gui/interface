@@ -2,6 +2,7 @@ import {AbstractChartGenerator} from './AbstractChartGenerator';
 import {ChartReportElement} from './dataModels/ReportElement';
 import {ReportsService} from './reports.service';
 import {EChartsOption} from 'echarts';
+import * as _ from 'lodash';
 
 export class MultipleBarsChartGenerator extends AbstractChartGenerator {
   xAxisLabels;
@@ -15,9 +16,15 @@ export class MultipleBarsChartGenerator extends AbstractChartGenerator {
     super(series, chartElement, namingDictionary, reportsService, dictionaryOverrides);
   }
 
-
+  xAxisLabelsToDisplay
   generate(): MultipleBarsChartGenerator {
     this.xAxisLabels = this.series.index;
+    const xAxisLabelsToDisplay = _.cloneDeep(this.xAxisLabels)
+    this.xAxisLabelsToDisplay = xAxisLabelsToDisplay.map((d,index)=>{
+      let dataSeries = Object.entries(this.series).filter(d=>d[0].includes("share"))[0][1][index];
+      let sum=0;Object.values(dataSeries).forEach(o=>sum+=Number(o));
+     return `${this.getLabelFor(this.chartElement.dataQuery.by[0], d)} (N=${sum})`
+    });
     this.shareElement = AbstractChartGenerator.transformDataIntoPairs(this.series).filter(d => d[0].includes('share'))[0][1];
     let seriesList = this.generateSeriesList(this.shareElement);
     console.log(this.shareElement);
@@ -91,7 +98,7 @@ export class MultipleBarsChartGenerator extends AbstractChartGenerator {
             rotate: this.shareElement.length > 4 ? 30 : 0 //If the label names are too long you can manage this by rotating the label.
           },
           //rok, stopień lub kierunek
-          data: this.xAxisLabels.map(d => this.getLabelFor(this.chartElement.dataQuery.by[0], d))
+          data: this.xAxisLabelsToDisplay
         }
       ],
       yAxis: [
