@@ -5,10 +5,11 @@ import {ReportsService} from './reports.service';
 import {commonSubstring} from './lcs';
 import * as Chance from 'chance';
 import {ReportDefinition} from './dataModels/ReportDefinition';
-import {OrderSetting, OrderSettingGenerator} from './dataModels/OrderSetting';
+import {OrderSetting} from './dataModels/OrderSetting';
 import {share} from 'rxjs/operators';
 import {sum} from 'ng-zorro-antd/core/util';
 import {FrequencyChartGenerator} from './FrequencyChartGenerator';
+import {OrderSettingGenerator} from './OrderSettingGenerator';
 
 export interface DataPair {
   // [

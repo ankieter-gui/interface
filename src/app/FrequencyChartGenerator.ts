@@ -164,6 +164,7 @@ getAllCount(reportId) {
         stack: 'total',
         label: {
           show: true,
+          overflow:"truncate",
           position: 'right',
           formatter: this.getFormatter()
         },

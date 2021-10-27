@@ -3,7 +3,9 @@ import {ChartReportElement} from './dataModels/ReportElement';
 import {ReportsService} from './reports.service';
 import {EChartsOption} from 'echarts';
 import {ColorsGenerator} from './ColorsGenerator';
-import {OrderSetting, OrderSettingGenerator} from './dataModels/OrderSetting';
+import {OrderSetting} from './dataModels/OrderSetting';
+import {OrderSettingGenerator} from './OrderSettingGenerator';
+import {OrderGenerators} from '../OrderGenerators';
 
 export class GroupedPercentAndDataChartGenerator extends AbstractChartGenerator {
   entries;
@@ -50,11 +52,19 @@ export class GroupedPercentAndDataChartGenerator extends AbstractChartGenerator 
     this.transposedEntries = transpose(this.entries.map(d => d[1]));
     console.log(this.transposedEntries);
     this.chartName = this.chartName ? this.chartName : this.chartElement.dataQuery.get[0][0];
+    this.yLabels = OrderGenerators.moveFirstToLast(this.indices.reverse()).order.map(d => this.shortenLabel(this.getLabelFor(this.chartElement.dataQuery.by[0], d)))
+    let _tableData=[]
+    let headers=[]
+    console.log(JSON.stringify(this.rawSeries))
+    Object.entries(this.rawSeries).filter(d=>!(d[0].includes("share") || d[0]=="index")).forEach(([key,value]:[string,any[]]) => {
+      _tableData.push(OrderGenerators.moveFirstToLast(value.reverse()).order)
+      headers.push(key.split(" ")[0])
+    });
+    this.tableData={headers:headers, data:_tableData.length>0?transpose(_tableData).reverse():[]};
     return this;
   }
-
+yLabels;
   shortenLabel(label: string) {
-    console.log(label);
     if (this.chartElement.config.shortLabels) {
       return label.replace('Wydział', 'W.');
     }
@@ -83,13 +93,10 @@ export class GroupedPercentAndDataChartGenerator extends AbstractChartGenerator 
       },
       xAxis: {type: 'value', show: false, animation: true, max: 100, axisLabel: {formatter: (value, index) => `${value}%`}},
       yAxis: {
-        type: 'category', show: true, data:
-          OrderSettingGenerator.moveFirstToLast(this.indices.reverse()).order.map(d =>
-            this.shortenLabel(this.getLabelFor(this.chartElement.dataQuery.by[0], d)))
-        // indices.map(d=>this.numberToStringScale[Number(d)])
+        type: 'category', show: true, data:this.yLabels
       },
       series: this.zip(this.chartElement.config.order.order, this.transposedEntries).map((d, index) => ({
-        data: OrderSettingGenerator.moveFirstToLast(this.transposedEntries[index].reverse()).order,
+        data: OrderGenerators.moveFirstToLast(this.transposedEntries[index].reverse()).order,
         d: d[1],
         orderLabel: d[0],
         index: this.transposedEntries.length - 1 - index,

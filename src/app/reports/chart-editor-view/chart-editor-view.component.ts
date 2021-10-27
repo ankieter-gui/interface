@@ -32,7 +32,8 @@ import {Subject} from 'rxjs';
       <i nz-icon nzType="search"></i>
     </ng-template>
     <section class="chart-column-container">
-      <div *ngIf="this.chartData.name||(this.chartData.dataQuery.get[0]&&this.chartData.dataQuery.get[0][0])">
+
+      <div *ngIf="this.chartData.name||(this.chartData.dataQuery.get[0]&&this.chartData.dataQuery.get[0][0]) || this.chartData.config.type=='linearCustomData'">
         <button *ngIf="!isPreview" [nz-tooltip]="'Pobierz wykres jako obrazek .png'" nz-button nzType="primary" nzSize="default"
                 nzShape="circle"
                 style="position: absolute;right:50px;top:0" (click)="saveAsPng()"><i nz-icon nzType="download"></i></button>
@@ -85,18 +86,18 @@ import {Subject} from 'rxjs';
                  #chartInstance>
             </div>
             <nz-table
-              *ngIf="(chartData.dataQuery.as.includes('share') || chartData.dataQuery.as.includes('mean') )&& chartData.dataQuery.as.length>1 && dataResponse"
+              *ngIf="(chartData.dataQuery.as.includes('share') || chartData.dataQuery.as.includes('mean') )&& chartData.dataQuery.as.length>1 && dataResponse && chartData.generator && chartData.generator.tableData && chartData.generator.tableData.headers"
               class="details-table" [nzTemplateMode]="true">
               <thead style="white-space: nowrap;">
               <tr>
                 <th style="white-space: nowrap; background:transparent!important;"
-                    *ngFor="let header of tableHeaders">{{header | PolskieNazwy | titlecase}}</th>
+                    *ngFor="let header of this.chartData.generator.tableData.headers">{{header | PolskieNazwy | titlecase}}</th>
               </tr>
               </thead>
               <tbody>
-              <tr style="line-height: 1.428!important;" *ngFor="let row of this.tableData">
+              <tr style="line-height: 1.428!important;" *ngFor="let row of this.chartData.generator.tableData.data">
                 <td style="white-space: nowrap"
-                    *ngFor="let value of row; let i =index">{{this.reportsService.getLabelFor(namingDictionary, this.question, value) == value ? this.round(value) :  ['share','mode'].includes(tableHeaders[i]) ?this.reportsService.getLabelFor(namingDictionary, this.question, value):round(value) }}</td>
+                    *ngFor="let value of row; let i =index">{{this.reportsService.getLabelFor(namingDictionary, this.question, value) == value ? this.round(value) :  ['share','mode'].includes(this.chartData.generator.tableData.headers[i]) ?this.reportsService.getLabelFor(namingDictionary, this.question, value):round(value) }}</td>
               </tr>
               </tbody>
             </nz-table>
@@ -874,21 +875,6 @@ onChartInit(e){
     this.echartOptions = this.chartsService.generateChart(this.dataResponse, this.chartData, this.reportId, this.namingDictionary, this.report.dictionaryOverrides);
 
   }
-  get tableHeaders(){
-    let pairs = this.chartsService.transformDataIntoPairs(this.dataResponse)
-    //quite complex fragment dealing with tranforming the data from:
-    //{"mean Price":[20,2,5]}
-    //into
-    //["mean"]
-    return pairs.filter(d=> this.chartData.dataQuery.as.includes(d[0].split(" ")[0]) && d[0].split(" ")[0]!="share").map(d=>d[0].split(" ")[0])
-  }
-  get tableData(){
-    let transpose = m => m[0].map((x,i) => m.map(x => x[i])).reverse()
-    let pairs = this.chartsService.transformDataIntoPairs(this.dataResponse,true)
-   // console.log(pairs)
-      let tableContent = pairs.filter(d=> this.chartData.dataQuery.as.includes(d[0].split(" ")[0]) && d[0].split(" ")[0]!="share").map(d=>d[1])
-    return transpose(tableContent)
-    // return tableContent
-  }
+
 
 }
