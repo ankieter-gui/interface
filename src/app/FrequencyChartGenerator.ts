@@ -145,7 +145,7 @@ getAllCount(reportId) {
       pxHeight: this.getLabels().length * this.horizontalBarHeight,
 
       grid: {
-        left: '3%',
+        left: '10px',
         right: '4%',
         bottom: '3%',
         top: '0%',
@@ -157,7 +157,7 @@ getAllCount(reportId) {
         type: 'category',
         show: true,
         data: this.getLabels(),
-        axisLabel: {formatter: (o) => breakLongLabels(o.toString())},
+        axisLabel: {formatter: (o) => breakLongLabels(o.toString(),1)},
         axisLine: {show: true}
       },
       series: [{
