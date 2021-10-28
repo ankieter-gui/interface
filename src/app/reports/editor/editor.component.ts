@@ -15,11 +15,31 @@ import {FRONTEND_URL} from '../../Configuration';
 import {bg_BG} from 'ng-zorro-antd/i18n';
 import {DashboardModalsService} from '../../dashboard-modals.service';
 import {AbstractChartGenerator} from '../../AbstractChartGenerator';
+import {animate, state, style, transition, trigger} from '@angular/animations';
 
 @Component({
   selector: 'app-editor',
   templateUrl: './editor.component.html',
-  styleUrls: ['./editor.component.css']
+  styleUrls: ['./editor.component.css'],
+  animations: [
+    trigger("hide", [
+      state('open', style({
+        transform: 'translateY(0%)',
+        opacity: 1,
+
+      })),
+      state('closed', style({
+
+        opacity: 0,
+        transform: 'translateY(15%)',
+      })),
+      transition('open => closed', [
+        animate('0.2s')
+      ]),
+      transition('closed => open', [
+        animate('0.2s')
+      ]),
+    ])]
 })
 export class EditorComponent implements OnInit {
   //pagination:
@@ -39,7 +59,11 @@ export class EditorComponent implements OnInit {
   preview() {
     this.window.open(`${FRONTEND_URL}/reports/${this.reportId}`, '_blank');
   }
-
+  loading = "open"
+  hideAndShow(){
+    this.loading = "closed"
+    setTimeout(() => {this.loading = "open"}, 400)
+  }
   itemsForCurrentPage() {
     let endIndex = this.itemsOnPage * this.currentPage;
     let startIndex = endIndex - this.itemsOnPage;

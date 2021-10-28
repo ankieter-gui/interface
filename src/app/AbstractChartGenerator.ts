@@ -236,6 +236,7 @@ export abstract class AbstractChartGenerator {
       for (let key in values){
 
         let res:[] = values[key].filter((d,i)=>!indicesOfDefaultValues.includes(i))
+
         values[key]=res;
       }
     }

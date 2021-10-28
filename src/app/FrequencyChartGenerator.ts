@@ -57,7 +57,7 @@ getAllCount(reportId) {
     }
     return false;
   }
-
+  maxXValue;
   generate(): FrequencyChartGenerator {
     console.log(this.series);
     this.shareElement = AbstractChartGenerator.transformDataIntoPairs(this.series).filter(d => d[0].includes('share'))[0][1][0];
@@ -106,6 +106,7 @@ getAllCount(reportId) {
 
 
     this.chartValuesPairs = outChartValuesPairs;
+    this.maxXValue = Math.max(...this.getData())
     return this;
   }
   private getData(){
@@ -129,6 +130,14 @@ getAllCount(reportId) {
       return (options: CallbackDataParams) => `${options.value}`;
     }
   }
+  getXAxisLabel(){
+    if (this.wasAnyValueFilled()){
+      return (options)=>`${options}%`
+    }
+    else {
+      return (options)=>`${options}`
+    }
+  }
   asJSONConfig(): EChartsOption {
     return {
 
@@ -142,7 +151,7 @@ getAllCount(reportId) {
         top: '0%',
         containLabel: true
       },
-      xAxis: {type: 'value', show: true, animation: true, axisLine: {show: true}},
+      xAxis: {type: 'value', axisLabel:{formatter:this.getXAxisLabel()} ,show: true, animation: true, axisLine: {show: true}, max:this.wasAnyValueFilled()?this.maxXValue+15>100?100:100:this.maxXValue*1.1},
       //@ts-ignore
       yAxis: {
         type: 'category',

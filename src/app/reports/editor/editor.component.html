@@ -42,11 +42,11 @@
               Nadpisz etykiety
               <i nz-icon nzType="down"></i>
             </button>
-            <button (click)="export()" nz-button>
-              Eksportuj raport do JSONa
-            </button>
+<!--            <button (click)="export()" nz-button>-->
+<!--              Eksportuj raport do JSONa-->
+<!--            </button>-->
             <button (click)="this.dialogs.openReorderDialog(this.reportDefinition)" nz-button>
-              Zaawansowana zmiana kolejności
+              Zmiana kolejności
             </button>
           </div>
           <nz-dropdown-menu #menu5="nzDropdownMenu">
@@ -73,10 +73,19 @@
                                     [report]="reportDefinition"></app-filters-selector>
             </section>
           </nz-dropdown-menu>
+
         </section>
       </section>
-      <div class="inner-content ">
-        <mat-form-field class="title-input">
+      <div class="inner-content " style="position: relative"  >
+        <section style="position: absolute;z-index: 999;top:15px;right:15px">
+        <nz-pagination (nzPageIndexChange)="currentPage=$event"
+                       *ngIf="this.reportDefinition.elements && this.reportDefinition.elements.length>0"
+                       [nzPageIndex]="currentPage" [nzPageSize]="itemsOnPage"
+                       [nzTotal]="this.reportDefinition.elements.length" nzShowQuickJumper
+                       nzShowSizeChanger></nz-pagination>
+        </section>
+
+          <mat-form-field class="title-input" style="z-index: 995" >
           <input matInput placeholder="Nazwa raportu" [(ngModel)]="this.reportDefinition.title"
                  (blur)="rename();save()">
         </mat-form-field>
@@ -101,11 +110,11 @@
                   <span>Usuń</span>
                 </button>
                 <button (click)="duplicateElement(element)" mat-menu-item>
-                  <mat-icon>copy</mat-icon>
+                  <mat-icon>content_copy</mat-icon>
                   <span>Duplikuj</span>
                 </button>
                 <button (click)="this.dialogs.openReorderDialog(this.reportDefinition)" mat-menu-item>
-                  <mat-icon>copy</mat-icon>
+                  <mat-icon>open_with</mat-icon>
                   <span>Przerzuć</span>
                 </button>
               </mat-menu>
@@ -134,7 +143,7 @@
             <i nz-icon nzType="font-size" [nz-tooltip]="'Tekst'" (click)="addNewTextElement()"></i>
           </div>
         </section>
-        <nz-pagination (nzPageIndexChange)="currentPage=$event"
+        <nz-pagination style="margin-top:1em" (nzPageIndexChange)="currentPage=$event"
                        *ngIf="this.reportDefinition.elements && this.reportDefinition.elements.length>0"
                        [nzPageIndex]="currentPage" [nzPageSize]="itemsOnPage"
                        [nzTotal]="this.reportDefinition.elements.length" nzShowQuickJumper

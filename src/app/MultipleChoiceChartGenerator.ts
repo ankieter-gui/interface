@@ -3,6 +3,7 @@ import {ChartReportElement} from './dataModels/ReportElement';
 import {ReportsService} from './reports.service';
 import {EChartsOption} from 'echarts';
 import {breakLongLabels} from './breakLongLabels';
+import {commonSubstring} from './lcs';
 
 export class MultipleChoiceChartGenerator extends AbstractChartGenerator {
   constructor(series: any, chartElement: ChartReportElement, namingDictionary, public reportsService: ReportsService, dictionaryOverrides) {
@@ -20,15 +21,17 @@ export class MultipleChoiceChartGenerator extends AbstractChartGenerator {
 
   generate(): MultipleChoiceChartGenerator {
     let shareElements = AbstractChartGenerator.transformDataIntoPairs(this.series).filter(d => d[0].includes('share'));
-    console.log(shareElements);
     let categories = shareElements.map(d => d[0].replace('share ', '').replace(/<[^>]*>/g, ''));
     let commonSubstringResults = this.sanitizeLabels(categories);
+    this.chartElement.name = commonSubstring(categories).replace(" -", "");
     categories = commonSubstringResults[0];
 
     this.chartName = !!this.chartName ? this.chartName : commonSubstringResults[1];
     let barSeries = shareElements.map(d => {
       let sum=0;
+
       try {
+
         sum = Object.values(d[1][0]).reduce((previousValue: number, currentValue: number, index, array) => previousValue + currentValue) as number
       }
       catch (e){
@@ -38,7 +41,7 @@ export class MultipleChoiceChartGenerator extends AbstractChartGenerator {
 
       //dont touch ;(((
       return sum!=0?(1 in d[1][0])?d[1][0]['1']/sum*100:0:0
-    })
+    });
     console.log("categories")
     console.log(categories)
     console.log("barSeries")

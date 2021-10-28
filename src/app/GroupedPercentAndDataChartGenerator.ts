@@ -32,13 +32,13 @@ export class GroupedPercentAndDataChartGenerator extends AbstractChartGenerator 
   generate(): AbstractChartGenerator {
     this.legend = this.chartElement.config.order.order.map(d => this.getLabelFor(this.chartElement.dataQuery.get[0][0], d));
     this.entries = Object.entries(this.series).filter(d => d[0] != 'index' && d[0].includes('share')).map(d => this.zip(d[1], this.chartElement.config.order.order))[0];
-    console.log(JSON.parse(JSON.stringify(this.entries)));
+
     this.entries.forEach(d => {
-      console.log(JSON.parse(JSON.stringify(d)));
+
       let tmp = d[0];
       d[0] = d[1];
       d[1] = tmp;
-      console.log(JSON.parse(JSON.stringify(d)));
+
       let sum = 0;
 
       // @ts-ignore
@@ -55,7 +55,6 @@ export class GroupedPercentAndDataChartGenerator extends AbstractChartGenerator 
     this.yLabels = OrderGenerators.moveFirstToLast(this.indices.reverse()).order.map(d => this.shortenLabel(this.getLabelFor(this.chartElement.dataQuery.by[0], d)))
     let _tableData=[]
     let headers=[]
-    console.log(JSON.stringify(this.rawSeries))
     Object.entries(this.rawSeries).filter(d=>!(d[0].includes("share") || d[0]=="index")).forEach(([key,value]:[string,any[]]) => {
       _tableData.push(OrderGenerators.moveFirstToLast(value.reverse()).order)
       headers.push(key.split(" ")[0])
@@ -86,6 +85,7 @@ yLabels;
         //data:this.getAllShareLabels(shareElement).map(d=>this.numberToStringScale[Number(d)])
       },
       grid: {
+        top:this.legend.length<7?40:40+this.legend.length*6,
         left: '3%',
         right: '4%',
         bottom: '3%',

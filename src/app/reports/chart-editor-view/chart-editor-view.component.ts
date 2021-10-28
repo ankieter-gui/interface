@@ -36,7 +36,7 @@ import {Subject} from 'rxjs';
       <div *ngIf="this.chartData.name||(this.chartData.dataQuery.get[0]&&this.chartData.dataQuery.get[0][0]) || this.chartData.config.type=='linearCustomData'">
         <button *ngIf="!isPreview" [nz-tooltip]="'Pobierz wykres jako obrazek .png'" nz-button nzType="primary" nzSize="default"
                 nzShape="circle"
-                style="position: absolute;right:50px;top:0" (click)="saveAsPng()"><i nz-icon nzType="download"></i></button>
+                style="position: absolute;right:50px;top:-15px" (click)="saveAsPng()"><i nz-icon nzType="download"></i></button>
         <label style="margin-bottom:0.4em" nz-checkbox [(ngModel)]="this.chartData.config.showTitle"
                *ngIf="!isPreview && (this.chartData.name||(this.chartData.dataQuery.get[0]&&this.chartData.dataQuery.get[0][0])) ">
           {{ chartData.config.showTitle ? 'Wyświetlać tytuł?' : 'Wyświetlać tytuł?' }}
@@ -142,9 +142,9 @@ import {Subject} from 'rxjs';
             </div>
           </figure>
           <div class="arrow-container"><i nz-icon nzType="right"></i></div>
-          <figure class="indicator-card indicator-card-purple" (click)="activeTab=4">
+          <figure class="indicator-card indicator-card-purple filtry-card" (click)="activeTab=4">
             <div class="indicator-card-inner">
-              <div class="indicator-card-header">Filtry</div>
+              <div class="indicator-card-header"> Filtry <span *ngIf="this.chartData.config.filters">({{this.chartData.config.filters.length}})</span></div>
               <div class="indicator-card-content">{{filtersAsString}}
               </div>
 
@@ -320,8 +320,8 @@ import {Subject} from 'rxjs';
               <input nz-input (blur)="refreshChart(true)" placeholder="Nazwa dla zagregowanych wyników - może to być 'Razem', 'łącznie' itd"
                      [(ngModel)]="chartData.config.allTogetherLabel" value="UAM">
             </div>
-            <div><label nz-checkbox [(ngModel)]="this.chartData.config.shortLabels"
-                        [nz-tooltip]="'Jeżeli etykieta jest zbyt długa, zostanie ona ucięta'">Krótkie etykiety</label></div>
+<!--            <div><label nz-checkbox [(ngModel)]="this.chartData.config.shortLabels"-->
+<!--                        [nz-tooltip]="'Jeżeli etykieta jest zbyt długa, zostanie ona ucięta'">Krótkie etykiety</label></div>-->
 
           </nz-collapse-panel>
 
@@ -455,11 +455,16 @@ import {Subject} from 'rxjs';
         font-family: "Gilroy ExtraBold";
         font-size: 14pt;
       }
+      .filtry-card .indicator-card-content {
+        max-height: 100px;
 
+        overflow-y: scroll;
+      }
       .indicator-card .indicator-card-content {
         font-family: "Gilroy Light";
         padding-top: 25px;
         font-size: 8pt;
+
       }
 
       .indicator-card-inner {
@@ -522,6 +527,7 @@ import {Subject} from 'rxjs';
       }
 
       .chart {
+        transition: 0.2s all ease-in-out;
         min-width: 80%;
       }
 
@@ -726,7 +732,7 @@ export class ChartEditorViewComponent implements OnInit {
         this.hideGroupBy = true;
         this.chartData.dataQuery.as[0] = 'mean';
         this.onPickQuestion = (question) => {
-          console.log(JSON.stringify(this.summarySelectedQuestions));
+
           const exists = this.summarySelectedQuestions.includes(question);
           if (exists) {
             if (this.summarySelectedQuestions.length == 1) {
