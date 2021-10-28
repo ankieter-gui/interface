@@ -26,7 +26,7 @@ export class EditorComponent implements OnInit {
   currentPage = 1;
   itemsOnPage = 13;
 
-  constructor(private dialogs: DashboardModalsService, private surveysService: SurveysService, private reportsService: ReportsService, private route: ActivatedRoute, private message: NzMessageService, public window: Window, private router: Router) {
+  constructor(public dialogs: DashboardModalsService, private surveysService: SurveysService, private reportsService: ReportsService, private route: ActivatedRoute, private message: NzMessageService, public window: Window, private router: Router) {
   }
 
   mockChartResponseData = {};

@@ -33,10 +33,10 @@ export class LinearCustomDataChartGenerator extends AbstractChartGenerator {
       xAxis: {
         type: 'category',
         boundaryGap: false,
-        axisLabel: {interval: 0, rotate: 20},
+        axisLabel: {interval: 0, rotate: 20, baseline:"top"},
         axisTick: {show: true},
         minorTick: {show: true},
-        data: this.chartElement.config.handCodedData.map(d => d.label)
+        data: this.chartElement.config.handCodedData.map(d => d.secondLine?d.label + "\n" + d.secondLine:d.label)
       },
       yAxis: {
         axisLabel: {interval: 0},

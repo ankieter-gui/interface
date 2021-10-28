@@ -74,12 +74,12 @@ export abstract class AbstractChartGenerator {
       let allShareLabels = [];
       let shareValues = Object.entries(series).filter(([key, value]) => key.includes('share')).map(([key, value]) => value);
 
-      allShareLabels = [...new Set((shareValues.map((d: []) => d.map(u => Object.keys(u)))).flat())][0]; //d[0] bo z jakiegoś powodu d jest arrayem. Prawdopodobnie gdy są skomplikowane zapytania trzeba to będzie inaczej obsłuyżyc
+      allShareLabels = [...new Set((shareValues.map((d: []) => d.map(u => Object.keys(u)))).flat().flat())]; //d[0] bo z jakiegoś powodu d jest arrayem. Prawdopodobnie gdy są skomplikowane zapytania trzeba to będzie inaczej obsłuyżyc
 
       //check if all labels from response are already in the order list
       let r = true;
       console.log('all share label');
-
+      console.log(allShareLabels)
       for (let l of allShareLabels) {
         if (!this.chartElement.config.order) {
           r = false;

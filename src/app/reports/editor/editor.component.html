@@ -26,7 +26,7 @@
       </nz-breadcrumb>
       </section>
         <section class="header-right slide-top-enter-animation" >
-          <div style="display: flex;flex-direction: row">
+          <div style="display: flex;flex-direction: row; flex-wrap: wrap">
             <button nz-button nzType="link" (click)="save(true)" nz-tooltip="Zapisywanie jest automatyczne!">Zapisz
             </button>
             <button (click)="preview()" nz-button nzType="link">Podgląd</button>
@@ -44,6 +44,9 @@
             </button>
             <button (click)="export()" nz-button>
               Eksportuj raport do JSONa
+            </button>
+            <button (click)="this.dialogs.openReorderDialog(this.reportDefinition)" nz-button>
+              Zaawansowana zmiana kolejności
             </button>
           </div>
           <nz-dropdown-menu #menu5="nzDropdownMenu">

@@ -6,6 +6,8 @@ import {TextReportElement} from '../dataModels/ReportElement';
 @Component({
   selector: 'app-reorder-dialog',
   template: `
+    <p>Ten ekran pozwala na przerzucanie elementów między stronami</p>
+    <p>Przeciągnij i upuść elementy aby zmienić kolejność</p>
     <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
       <ng-container *ngFor="let element of report.elements">
         <div class="example-box text" *ngIf="element.type=='text'" [innerHTML]="element.content.text" cdkDrag></div>
@@ -31,7 +33,7 @@ import {TextReportElement} from '../dataModels/ReportElement';
     }
 
     .chart {
-      background-color: rgba(63, 134, 237, 0.1);
+      background-color: rgba(63, 134, 237, 0.4);
     }
 
     .example-box {

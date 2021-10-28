@@ -24,7 +24,7 @@ export class ChartConfig {
   ignoreAnswersForCalculations: any[];
   localLabelOverrides;
   showTitle = false;
-  handCodedData: { value: string, label: string }[] = [{label: '', value: ''}];
+  handCodedData: { value: string, secondLine?:string, label: string }[] = [{label: '', secondLine:'', value: ''}];
   static colorSets = {
     default: ['red', 'blue', 'green']
   };
