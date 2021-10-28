@@ -41,10 +41,10 @@ export class LinearCustomDataChartGenerator extends AbstractChartGenerator {
       yAxis: {
         axisLabel: {interval: 0},
         axisTick: {show: true},
-        min: Number(Math.min(
+        min: Math.round(Number(Math.min(
           ...this.chartElement.config.handCodedData.map(
             d => Number(d.value)))) - 0.05 * Number(Math.min(
-          ...this.chartElement.config.handCodedData.map(d => Number(d.value))
+          ...this.chartElement.config.handCodedData.map(d => Number(d.value)))
           )
         ),
         type: 'value'

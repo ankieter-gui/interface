@@ -77,7 +77,7 @@ nz-card{
 }
 
 
-
+  .may-break{page-break-inside:auto;}
   .dont-break{page-break-inside: avoid;}
   @media print {
     .print-wide{

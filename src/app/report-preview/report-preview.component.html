@@ -15,13 +15,13 @@
 
           <div *ngFor="let element of reportDefinition.elements" class="element-box" style="position:relative;">
 
-            <div [ngSwitch]="element.type" style="position:relative;" class="dont-break">
+            <div [ngSwitch]="element.type" style="position:relative;" class="dont-break" >
               <app-text-editor-view [isPreview]="true" *ngSwitchCase="'text'" [(text)]="element.content.text" (focusEvent)="save()" ></app-text-editor-view>
               <app-chart-editor-view (chartDataChange)="null" *ngSwitchCase="'chart'" [(chartData)]="element.content"
                                      [forceUpdate]="null" [globalFilter]="this.reportDefinition.globalFilter"
                                      [isPreview]="true" [namingDictionary]="namingDictionary"
                                      [questions]="surveyQuestions" [reportId]="reportId" [report]="reportDefinition"
-                                     [surveyId]="this.linkedSurveyId"></app-chart-editor-view>
+                                     [surveyId]="this.linkedSurveyId" ></app-chart-editor-view>
             </div>
 
           </div>

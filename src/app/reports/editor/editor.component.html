@@ -80,7 +80,7 @@
         <section style="position: absolute;z-index: 999;top:15px;right:15px">
         <nz-pagination (nzPageIndexChange)="currentPage=$event"
                        *ngIf="this.reportDefinition.elements && this.reportDefinition.elements.length>0"
-                       [nzPageIndex]="currentPage" [nzPageSize]="itemsOnPage"
+                       [nzPageIndex]="currentPage" [nzPageSize]="itemsOnPage" (nzPageSizeChange)="itemsOnPage=$event"
                        [nzTotal]="this.reportDefinition.elements.length" nzShowQuickJumper
                        nzShowSizeChanger></nz-pagination>
         </section>
@@ -145,7 +145,7 @@
         </section>
         <nz-pagination style="margin-top:1em" (nzPageIndexChange)="currentPage=$event"
                        *ngIf="this.reportDefinition.elements && this.reportDefinition.elements.length>0"
-                       [nzPageIndex]="currentPage" [nzPageSize]="itemsOnPage"
+                       [nzPageIndex]="currentPage" [nzPageSize]="itemsOnPage" (nzPageSizeChange)="itemsOnPage=$event"
                        [nzTotal]="this.reportDefinition.elements.length" nzShowQuickJumper
                        nzShowSizeChanger></nz-pagination>
       </div>
