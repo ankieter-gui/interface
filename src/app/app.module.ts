@@ -99,6 +99,7 @@ import {MAT_COLOR_FORMATS, NGX_MAT_COLOR_FORMATS, NgxMatColorPickerModule} from 
 import {InViewportModule} from '@thisissoon/angular-inviewport';
 import {ExportReportDialogComponent} from './export-report-dialog/export-report-dialog.component';
 import {ReorderDialogComponent} from './reorder-dialog/reorder-dialog.component';
+import { SimpleColorSelectorComponent } from './simple-color-selector/simple-color-selector.component';
 
 
 registerLocaleData(pl);
@@ -209,7 +210,9 @@ export let commonNZImports = [
 
     ExportReportDialogComponent,
 
-    ReorderDialogComponent
+    ReorderDialogComponent,
+
+    SimpleColorSelectorComponent
   ],
     imports: [
         ...commonNZImports,

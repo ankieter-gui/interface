@@ -304,9 +304,15 @@ import {Subject} from 'rxjs';
                                        [lastDataResponse]="this.dataResponse"></app-ignore-selector>
                 </nz-tab>
                 <nz-tab nzTitle="Kolory i kolejność"
-                        *ngIf=" chartData.config.order">
+                        *ngIf=" chartData.config.order && chartData.config.type!=='multipleChoice'">
                   <app-colors-and-order-selector [dictionary]="namingDictionary" (update)="refreshChart()"
                                                  [lastDataResponse]="this.dataResponse" [chart]="chartData"></app-colors-and-order-selector>
+
+                </nz-tab>
+                <nz-tab nzTitle="Kolory i kolejność"
+                        *ngIf="chartData.config.type=='multipleChoice'">
+                  <app-simple-color-selector (update)="refreshChart()" [chart]="chartData"></app-simple-color-selector>
+
                 </nz-tab>
               </nz-tabset>
             </div>
