@@ -7,14 +7,13 @@ import {commonSubstring} from './lcs';
 import {OrderGenerators} from '../OrderGenerators';
 
 export class GroupedSummaryChartGenerator extends AbstractChartGenerator {
-  entries;
-
-  indices;
-  seriesList;
-  chartName;
-  legend;
-  transposedEntries;
-
+  yLabels;
+  shortYLabels;
+  sortedByMean;
+  horizontalBarHeight = 26;
+  ranks = [];
+  seriesByScales = [];
+  scales = [2.5, 3, 3.5, 4, 4.5];
   getAllCount(reportId) {
   }
 
@@ -29,91 +28,101 @@ export class GroupedSummaryChartGenerator extends AbstractChartGenerator {
   }
 
   generate(): AbstractChartGenerator {
-    this.legend = this.chartElement.config.order.order.map(d => this.getLabelFor(this.chartElement.dataQuery.get[0][0], d));
-    this.entries = Object.entries(this.series).filter(d => d[0] != 'index' && d[0].includes('share')).map(d => this.zip(d[1], this.chartElement.config.order.order))[0];
-
-    this.entries.forEach(d => {
-
-      let tmp = d[0];
-      d[0] = d[1];
-      d[1] = tmp;
-
-      let sum = 0;
-
-      // @ts-ignore
-      d[1].forEach(u => sum += u);
-      // @ts-ignore
-      d[1].forEach((u, i) => d[1][i] = u / sum * 100);
+    const meanSeries = Object.entries(this.series).filter(d => d[0].includes('mean'));
+    this.sortedByMean = meanSeries.sort((first, second) => first[1][0] - second[1][0]);
+    this.yLabels = this.sortedByMean.map(d => d[0].replace('mean', ''));
+    //TODO: to powinno być mniej naiwne ;(
+    const lcs = commonSubstring(this.yLabels.map(s => s));
+    this.shortYLabels = [];
+    this.yLabels.forEach(d => {
+      let u = d.split(' - ');
+      this.shortYLabels.push(u[u.length - 1].replace(/\(.*?\)/, ''));
     });
-    let transpose = m => m[0].map((x, i) => m.map(x => x[i]));
-    console.log(this.series);
-    console.log(this.entries);
-    this.transposedEntries = transpose(this.entries.map(d => d[1]));
-    console.log(this.transposedEntries);
-    this.chartName = this.chartName ? this.chartName : this.chartElement.dataQuery.get[0][0];
-    this.yLabels = OrderGenerators.moveFirstToLast(this.indices.reverse()).order.map(d => this.shortenLabel(this.getLabelFor(this.chartElement.dataQuery.by[0], d)))
-    let _tableData=[]
-    let headers=[]
-    Object.entries(this.rawSeries).filter(d=>!(d[0].includes("share") || d[0]=="index")).forEach(([key,value]:[string,any[]]) => {
-      _tableData.push(OrderGenerators.moveFirstToLast(value.reverse()).order)
-      headers.push(key.split(" ")[0])
+
+    this.seriesByScales = new Array(this.scales.length + 2).fill(null).map(function() {
+      return new Array(0);
     });
-    this.tableData={headers:headers, data:_tableData.length>0?transpose(_tableData).reverse():[]};
+    //Array(this.scales.length+2).fill(JSON.parse(JSON.stringify([])))
+    let ranks = [];
+    console.log(this.sortedByMean);
+    for (let entry of this.sortedByMean) {
+      const value = entry[1][0];
+      let rank = 0;
+      for (let scale of this.scales) {
+        if (value >= scale) {
+          rank += 1;
+        } else {
+          break;
+        }
+      }
+      ranks.push(rank);
+    }
+    for (let [j, series] of this.sortedByMean.entries()) {
+      const rank = ranks[j];
+      const value = series[1][0];
+
+      this.seriesByScales[rank].push(value);
+      console.log(this.seriesByScales[rank]);
+      let max = Math.max(...this.seriesByScales.map(d => d.length));
+      for (let scaleSeries of this.seriesByScales) {
+        if (scaleSeries.length < max) {
+          scaleSeries.push(0);
+        }
+      }
+    }
+    this.ranks = ranks;
+    let _tableData = [];
+    console.log(this.seriesByScales);
+    this.yLabels.forEach(label => {
+      const tmp = this.chartElement.dataQuery.as.filter(d => d != 'mean').map(d => d + label);
+      _tableData.push(tmp.map(u => this.series[u][0]));
+    });
+
+    this.tableData = {headers: this.chartElement.dataQuery.as.filter(d => d != 'mean'), data: _tableData};
     return this;
   }
-  yLabels;
-  shortenLabel(label: string) {
-    if (this.chartElement.config.shortLabels) {
-      return label.replace('Wydział', 'W.');
-    }
-    return label;
-  }
-
   asJSONConfig(): EChartsOption {
-    //Nie działa  - linked issue: https://github.com/ankieter-gui/engine/issues/74
-    // let orderedEntriesList = this.zip(Object.keys(this.seriesList), Object.values(this.seriesList)).reverse();
-    // let orderedLegend: any[] = this.getAllShareLabels(this.shareElement).map(d => this.getLabelFor(this.chartElement.dataQuery.get[0][0], d)).reverse();
-
+    let namesToScales = ['2.5 i mniej', '3.00-3.49', '3.50-3.99', '4.00-4.49', '4.50 i więcej'];
     return {
 
       color: '#3b3b3b',
-      pxHeight: this.indices.length * (120 / 3) + 80,
-      legend: {
-        // top: 1+chartName.length*0.1+"%",
-        data: this.legend
-        //data:this.getAllShareLabels(shareElement).map(d=>this.numberToStringScale[Number(d)])
-      },
+      pxHeight: this.yLabels.length * 23 + 58,
       grid: {
-        top:this.legend.length<7?40:40+this.legend.length*6,
         left: '3%',
         right: '4%',
         bottom: '3%',
+        top: '25',
         containLabel: true
       },
-      xAxis: {type: 'value', show: false, animation: true, max: 100, axisLabel: {formatter: (value, index) => `${value}%`}},
-      yAxis: {
-        type: 'category', show: true, data:this.yLabels
-      },
-      series: this.zip(this.chartElement.config.order.order, this.transposedEntries).map((d, index) => ({
-        data: OrderGenerators.moveFirstToLast(this.transposedEntries[index].reverse()).order,
-        d: d[1],
-        orderLabel: d[0],
-        index: this.transposedEntries.length - 1 - index,
-        name: this.shortenLabel(this.getLabelFor(this.chartElement.dataQuery.get[0][0], d[0])),
-        // name:this.numberToStringScale[d[0]],
+      legend: {},
+      xAxis: {type: 'value', show: true, animation: true, axisLine: {show: true}},
+      //@ts-ignore
+      yAxis: [{
+        type: 'category',
+        show: true,
+        minorTick: {show: true},
+        data: this.shortYLabels,
+        axisLabel: {formatter: (o) => breakLongLabels(o.toString(), 3), fontSize: 10, interval: 0},
+        axisLine: {show: true},
+      }
+      ]
+      ,
+      series: [...this.seriesByScales.entries()].map(d => ({
+        data: d[1],
+        name: namesToScales[d[0]],
         type: 'bar',
+        rank: d[0],
+
         color: undefined,
         stack: 'total',
         label: {
           show: true,
-          formatter: (options) => options.value != 0 ? `${Math.round(options.value)}%` : ''
+          position: 'right',
+          formatter: (o) => o.value != 0 ? `${Math.round(Number(o.value) * 100) / 100}` : ""
         },
-        // emphasis: {
-        //   focus: 'series'
-        // },
-        smooth: false,
-        symbol: 'none',
+
+
       }))
-    } as EChartsOption
+    };
   }
 }

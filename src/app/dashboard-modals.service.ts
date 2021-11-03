@@ -19,6 +19,8 @@ import {NzMessageService} from 'ng-zorro-antd/message';
 import {DeleteConfirmModalComponent} from './delete-confirm-modal/delete-confirm-modal.component';
 import {ExportReportDialogComponent} from './export-report-dialog/export-report-dialog.component';
 import {ReorderDialogComponent} from './reorder-dialog/reorder-dialog.component';
+import {QuestionGroupEditorComponent} from './question-group-editor/question-group-editor.component';
+import {GroupSummaryGroup, GroupSummaryPickerComponent} from './group-summary-picker/group-summary-picker.component';
 
 @Injectable({
   providedIn: 'root'
@@ -60,6 +62,12 @@ export class DashboardModalsService {
     this.createComponentModal("Potwierdź", DeleteConfirmModalComponent, {name:name}, (i,m)=>{
       callback()
       m.destroy()
+    })
+  }
+  async openEditQuestionGroupDialog(group:GroupSummaryGroup, parent:GroupSummaryPickerComponent,callback){
+    this.createComponentModal("Edycja grupy pytań", QuestionGroupEditorComponent, {group:group, parent:parent}, async (i:QuestionGroupEditorComponent,m)=>{
+      callback();
+      m.destroy();
     })
   }
   async openNewSurveyDialog(refreshDashboard){

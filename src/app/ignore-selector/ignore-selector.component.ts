@@ -33,7 +33,7 @@ import {ReportsService} from '../reports.service';
 export class IgnoreSelectorComponent implements OnInit {
   searchString;
   @Output()
-  dataChanged = new EventEmitter<GlobalFilter>();
+  dataChanged = new EventEmitter();
 
   @Input()
   lastDataResponse;
@@ -43,18 +43,22 @@ export class IgnoreSelectorComponent implements OnInit {
   @Input()
   chart: ChartReportElement;
 
-  constructor(private chartService: ChartsService, private reportService: ReportsService) {
 
-
-  }
-
-  ngOnInit(): void {
+  onExternalDataChange(){
     console.log((Object.entries(this.lastDataResponse).filter(d => d[0] != 'index' && d[0].includes('share')).map(d => d[1])));
     let allLabels = this.chartService.getAllShareLabels((Object.entries(this.lastDataResponse).filter(d => d[0] != 'index' && d[0].includes('share')).map(d => d[1]))[0]);
     console.log(allLabels);
     this.selections = allLabels.map(d => [this.chart.config.ignoreAnswersForCalculations ? this.chart.config.ignoreAnswersForCalculations.includes(d) : false, d]);
 
 
+  }
+  constructor(private chartService: ChartsService, private reportService: ReportsService) {
+
+
+  }
+
+  ngOnInit(): void {
+    this.onExternalDataChange()
   }
 
 }

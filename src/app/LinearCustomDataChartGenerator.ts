@@ -46,7 +46,7 @@ export class LinearCustomDataChartGenerator extends AbstractChartGenerator {
             d => Number(d.value)))) - 0.05 * Number(Math.min(
           ...this.chartElement.config.handCodedData.map(d => Number(d.value)))
           )
-        )*100)/100,
+        )*10)/10,
         type: 'value'
       },
       series: [{

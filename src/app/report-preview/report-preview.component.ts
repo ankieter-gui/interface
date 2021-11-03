@@ -21,7 +21,7 @@ export class ReportPreviewComponent implements OnInit {
   surveyQuestions;
   linkedSurveyId;
   reportDefinition: ReportDefinition = {
-    dictionaryOverrides: {}, title: '', elements: [], globalFilter: null
+    dictionaryOverrides: {}, title: '', elements: [], globalFilter: []
   };
   queryData(charData){
     return this.mockChartResponseData;

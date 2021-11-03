@@ -30,11 +30,11 @@
             <button nz-button nzType="link" (click)="save(true)" nz-tooltip="Zapisywanie jest automatyczne!">Zapisz
             </button>
             <button (click)="preview()" nz-button nzType="link">Podgląd</button>
-            <nz-tag *ngIf="reportDefinition.globalFilter" nzMode="closeable"
-                    (nzOnClose)="this.reportDefinition.globalFilter=null; refresh(); filterSelector.reset()">{{this.reportDefinition.globalFilter.question}}
-              - {{this.reportsService.getLabelFor(this.namingDictionary, this.reportDefinition.globalFilter.question, this.reportDefinition.globalFilter.answer)}}</nz-tag>
+<!--            <nz-tag nzMode="closeable"-->
+<!--                    (nzOnClose)="removeGlobalFilterRef(this.reportDefinition,f); refresh(); filterSelector.reset()" *ngFor="let f of this.reportDefinition.globalFilter">{{f.question}}-->
+<!--              - {{this.reportsService.getLabelFor(this.namingDictionary, f.question, f.answer)}}</nz-tag>-->
             <button nz-button nz-dropdown [nzDropdownMenu]="menu4" nzTrigger="click">
-              Filtruj ankietę przez odpowiedź
+              Filtruj ankietę przez odpowiedź <span *ngIf="this.reportDefinition.globalFilter"><b> (!)</b></span>
               <i nz-icon nzType="down"></i>
             </button>
 
@@ -67,7 +67,7 @@
               <p>Wybierz pytanie i odpowiedź na nie aby cały raport brał pod uwagę tylko respondentów którzy udzieli na
                 nią takiej odpowiedzi</p>
               <app-filters-selector [namingDictionary]="namingDictionary" #filterSelector
-                                    (filtersChange)="refresh()"
+                                    (filtersChange)="this.reportDefinition.globalFilter = $event;refresh()"
                                     [(filters)]="this.reportDefinition.globalFilter"
                                     [allQuestions]="surveyQuestions" [reportId]="reportId"
                                     [report]="reportDefinition"></app-filters-selector>

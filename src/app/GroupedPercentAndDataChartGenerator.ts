@@ -81,11 +81,12 @@ yLabels;
       pxHeight: this.indices.length * (120 / 3) + 80,
       legend: {
         // top: 1+chartName.length*0.1+"%",
-        data: this.legend
+        data: this.legend,
+        textStyle:{fontSize:11},
         //data:this.getAllShareLabels(shareElement).map(d=>this.numberToStringScale[Number(d)])
       },
       grid: {
-        top:this.legend.length<7?40:40+this.legend.length*6,
+        top:this.legend.length<7?60:60+this.legend.length*6,
         left: '3%',
         right: '4%',
         bottom: '3%',

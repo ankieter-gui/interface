@@ -1,6 +1,6 @@
 import {Component, HostListener, OnInit} from '@angular/core';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
-import {GlobalFilter, ReportDefinition} from '../../dataModels/ReportDefinition';
+import {GlobalFilter, ReportDefinition, removeGlobalFilter} from '../../dataModels/ReportDefinition';
 
 import {SurveyMeta} from '../../dataModels/survey';
 import {addWarning} from '@angular-devkit/build-angular/src/utils/webpack-diagnostics';
@@ -55,7 +55,7 @@ export class EditorComponent implements OnInit {
   namingDictionary;
   surveyStructure;
   codeModel;
-
+  removeGlobalFilterRef = removeGlobalFilter
   preview() {
     this.window.open(`${FRONTEND_URL}/reports/${this.reportId}`, '_blank');
   }
@@ -78,7 +78,7 @@ export class EditorComponent implements OnInit {
   linkedSurveyId;
   reportId;
   reportDefinition: ReportDefinition = {
-    dictionaryOverrides: {}, title: '', elements: [], globalFilter: null
+    dictionaryOverrides: {}, title: '', elements: [], globalFilter: []
   };
 
   queryData(charData) {

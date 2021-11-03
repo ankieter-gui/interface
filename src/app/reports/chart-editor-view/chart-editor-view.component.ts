@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import { saveAs } from 'file-saver';
 import {MockService} from '../../mock.service';
 
@@ -11,6 +11,7 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
 import {ReportsService} from '../../reports.service';
 import {GlobalFilter, ReportDefinition} from '../../dataModels/ReportDefinition';
 import {Subject} from 'rxjs';
+import {IgnoreSelectorComponent} from '../../ignore-selector/ignore-selector.component';
 
 @Component({
   animations:[    trigger('fadeInOut', [
@@ -185,6 +186,15 @@ import {Subject} from 'rxjs';
                       </div>
                     </figure>
                     <div class="spacer"></div>
+                    <figure class="indicator-card indicator-card-velvet preset"
+                            [nz-tooltip]="'Wykres słupkowy z własnymi danymi wprowadzonymi ręcznie'"
+                            (click)="pickPreset('multipleBarsOwnData')">
+                      <div class="indicator-card-inner">
+                        <div class="indicator-card-header">Wiele słupków - własne dane</div>
+                        <div class="indicator-card-content"><img src="./assets/preset4.png" style="width: 100%"></div>
+                      </div>
+                    </figure>
+                    <div class="spacer"></div>
                     <figure class="indicator-card indicator-card-velvet preset" nz-tooltip="Użyj tego wykresu do prezentacji frekwencji"
                             (click)="pickPreset('groupedBars');">
                       <div class="indicator-card-inner">
@@ -208,9 +218,20 @@ import {Subject} from 'rxjs';
                         <div class="indicator-card-content"><img src="./assets/podsumowanie.PNG" style="width: 100%"></div>
                       </div>
                     </figure>
+                    <div class="spacer"></div>
+                    <figure class="indicator-card indicator-card-velvet preset"
+                            (click)="pickPreset('groupSummary');">
+                      <div class="indicator-card-inner">
+                        <div class="indicator-card-header">Grupowe podsumowanie</div>
+                        <div class="indicator-card-content"><img src="./assets/grupowePodsumowanie.png" style="width: 100%"></div>
+                      </div>
+                    </figure>
                   </section>
                 </nz-tab>
-                <nz-tab nzTitle="Pytanie i dane" *ngIf="!showLinearPicker && this.chartData.config.type">
+                <nz-tab nzTitle="Konfiguracja grup" *ngIf="this.chartData.config.type=='groupSummary'">
+                        <app-group-summary-picker [chartData]="chartData" [questions]="this.questions" [questionNames]="this.questionNames"></app-group-summary-picker>
+                </nz-tab>
+                <nz-tab nzTitle="Pytanie i dane" *ngIf="!showLinearPicker && this.chartData.config.type && !['groupSummary', 'multipleBarsOwnData'].includes(this.chartData.config.type)">
                   <section class="question-selector dane" *ngIf="!hideData">
                     <div style="display: flex;flex-direction: row"><span style='font-family: "Gilroy ExtraBold", sans-serif; width:50%;'>Dane:</span>
                     </div>
@@ -283,6 +304,9 @@ import {Subject} from 'rxjs';
                     </section>
                   </section>
                 </nz-tab>
+                <nz-tab nzTitle="Dane" *ngIf="chartData.config.type==='multipleBarsOwnData'">
+                  <app-multiple-bars-with-custom-data-data-picker></app-multiple-bars-with-custom-data-data-picker>
+                </nz-tab>
                 <nz-tab nzTitle="Dane" *ngIf="showLinearPicker">
                   <app-line-chart-custom-data-picker (saveEmitter)="refreshChart()" [reportId]="reportId"
                                                      [chart]="this.chartData"></app-line-chart-custom-data-picker>
@@ -295,12 +319,12 @@ import {Subject} from 'rxjs';
                 </nz-tab>
                 <nz-tab nzTitle="Filtry" *ngIf="!showLinearPicker && this.chartData.config.type">
                   <app-filters-selector [namingDictionary]="namingDictionary" [allQuestions]="namingDictionary"
-                                        (filtersChange)="refreshFilter($event)" [(filters)]="this.chartData.config.filters"
+                                        (filtersChange)="refreshFilter($event)" [(filters)]="this.chartData.config.filters" [multipleQuestionsAllowed]="true"
                                         [reportId]="reportId"></app-filters-selector>
                 </nz-tab>
 
                 <nz-tab nzTitle="Ustawienia obliczeń" *ngIf="chartData.config.type == 'groupedPercentAndData'">
-                  <app-ignore-selector [chart]="chartData" *ngIf="this.dataResponse" (dataChanged)="refreshChart()"
+                  <app-ignore-selector #ignoreSelector [chart]="chartData" *ngIf="this.dataResponse" (dataChanged)="refreshChart()"
                                        [lastDataResponse]="this.dataResponse"></app-ignore-selector>
                 </nz-tab>
                 <nz-tab nzTitle="Kolory i kolejność"
@@ -575,7 +599,7 @@ export class ChartEditorViewComponent implements OnInit {
   get questionNames() {
     return this.questions ? Object.keys(this.questions) : [];
   }
-
+  @ViewChild(IgnoreSelectorComponent) ignoreSelector:IgnoreSelectorComponent;
   @Input() forceUpdate;
   @Input()
   questions;
@@ -649,6 +673,8 @@ export class ChartEditorViewComponent implements OnInit {
     };
     this.showLinearPicker = false;
     let fun = {
+      'multipleBarsOwnData':()=>{},
+      'groupSummary':()=>{},
       'groupedPercentAndData': () => {
         this.hideData = false;
         this.hideGroupBy = false;
@@ -807,6 +833,7 @@ export class ChartEditorViewComponent implements OnInit {
       await this.downloadQueryResponse();
       if (this.dataResponse || this.chartData.config.type == 'linearCustomData') {
         await this.generateChart();
+        if (this.ignoreSelector) setTimeout(()=>this.ignoreSelector.onExternalDataChange(), 100);
       }
       this.isError = false;
     } catch (e){

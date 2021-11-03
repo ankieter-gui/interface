@@ -100,6 +100,9 @@ import {InViewportModule} from '@thisissoon/angular-inviewport';
 import {ExportReportDialogComponent} from './export-report-dialog/export-report-dialog.component';
 import {ReorderDialogComponent} from './reorder-dialog/reorder-dialog.component';
 import { SimpleColorSelectorComponent } from './simple-color-selector/simple-color-selector.component';
+import { GroupSummaryPickerComponent } from './group-summary-picker/group-summary-picker.component';
+import { QuestionGroupEditorComponent } from './question-group-editor/question-group-editor.component';
+import { MultipleBarsWithCustomDataDataPickerComponent } from './multiple-bars-with-custom-data-data-picker/multiple-bars-with-custom-data-data-picker.component';
 
 
 registerLocaleData(pl);
@@ -212,9 +215,16 @@ export let commonNZImports = [
 
     ReorderDialogComponent,
 
-    SimpleColorSelectorComponent
+    SimpleColorSelectorComponent,
+
+    GroupSummaryPickerComponent,
+
+    QuestionGroupEditorComponent,
+
+    MultipleBarsWithCustomDataDataPickerComponent
   ],
     imports: [
+      BrowserAnimationsModule,
         ...commonNZImports,
         DragDropModule,
         MatFormFieldModule,
