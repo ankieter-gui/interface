@@ -19,8 +19,8 @@ import {ReportsService} from '../reports.service';
           </tr>
           </thead>
           <tbody>
-          <tr style="line-height: 1.428!important;" *ngFor="let row of this.selections|filterByField:1:searchString">
-            <td (click)="row[0]=!row[0]" style="cursor: pointer">  <label nz-checkbox [(ngModel)]="row[0]"></label></td>
+          <tr style="line-height: 1.428!important;" *ngFor="let row of this.selections|filterByField:1:searchString" (click)="row[0]=!row[0]; update()">
+            <td  style="cursor: pointer">  <label nz-checkbox [(ngModel)]="row[0]"></label></td>
             <td>{{this.chart.generator.getLabelFor(this.chart.dataQuery.get[0][0], row[1])}} ({{row[1]}})</td>
           </tr>
           </tbody>
@@ -43,14 +43,30 @@ export class IgnoreSelectorComponent implements OnInit {
   @Input()
   chart: ChartReportElement;
 
-
+ lastLabels=[]
   onExternalDataChange(){
-    console.log((Object.entries(this.lastDataResponse).filter(d => d[0] != 'index' && d[0].includes('share')).map(d => d[1])));
-    let allLabels = this.chartService.getAllShareLabels((Object.entries(this.lastDataResponse).filter(d => d[0] != 'index' && d[0].includes('share')).map(d => d[1]))[0]);
+   console.log(this.chart.generator.namingDictionary[this.chart.dataQuery.get[0][0]])
+   let allLabels = Object.keys(this.chart.generator.namingDictionary[this.chart.dataQuery.get[0][0]])
+    // console.log((Object.entries(this.lastDataResponse).filter(d => d[0] != 'index' && d[0].includes('share')).map(d => d[1])));
+    // let allLabels = this.chartService.getAllShareLabels((Object.entries(this.lastDataResponse).filter(d => d[0] != 'index' && d[0].includes('share')).map(d => d[1]))[0]);
     console.log(allLabels);
+    if(this.lastLabels && this.lastLabels.every(i=>allLabels.includes(i))){
+
+    }else{
+
+      this.chart.config.ignoreAnswersForCalculations=[];
+    }
+    this.lastLabels=allLabels;
     this.selections = allLabels.map(d => [this.chart.config.ignoreAnswersForCalculations ? this.chart.config.ignoreAnswersForCalculations.includes(d) : false, d]);
-
-
+  }
+  getSelected(){
+    return this.selections.filter(d=>d[0]).map(d=>d[1])
+  }
+  update(){
+   console.log(this.selections)
+    this.chart.config.ignoreAnswersForCalculations=this.getSelected()
+    console.log(this.getSelected())
+    this.dataChanged.emit()
   }
   constructor(private chartService: ChartsService, private reportService: ReportsService) {
 

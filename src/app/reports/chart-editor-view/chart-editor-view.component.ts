@@ -323,7 +323,7 @@ import {IgnoreSelectorComponent} from '../../ignore-selector/ignore-selector.com
                                         [reportId]="reportId"></app-filters-selector>
                 </nz-tab>
 
-                <nz-tab nzTitle="Ustawienia obliczeń" *ngIf="chartData.config.type == 'groupedPercentAndData'">
+                <nz-tab nzTitle="Ustawienia obliczeń" *ngIf="['groupedPercentAndData', 'summary', 'groupSummary'].includes(chartData.config.type)">
                   <app-ignore-selector #ignoreSelector [chart]="chartData" *ngIf="this.dataResponse" (dataChanged)="refreshChart()"
                                        [lastDataResponse]="this.dataResponse"></app-ignore-selector>
                 </nz-tab>
@@ -757,6 +757,7 @@ export class ChartEditorViewComponent implements OnInit {
         this.chartData.dataQuery.by[0] = '*';
         this.hideGroupBy = true;
         this.chartData.dataQuery.as[0] = 'mean';
+
         this.onPickQuestion = (question) => {
 
           const exists = this.summarySelectedQuestions.includes(question);
@@ -895,7 +896,7 @@ onChartInit(e){
     // if (this.isPreview && this.chartData.lastCachesResponse && !('error' in this.chartData.lastCachesResponse)){
     //   _dataResponse = this.chartData.lastCachesResponse;
     // }else {
-       _dataResponse = await (this.reportsService.getData(this.reportId, this.advancedQuery ? JSON.parse(this.advancedQuery) : ComplimentQuery(this.chartData.dataQuery, this.globalFilter, this.chartData.config.filters ? this.chartData.config.filters : [this.chartData.config.filter])).toPromise());
+       _dataResponse = await (this.reportsService.getData(this.reportId, this.advancedQuery ? JSON.parse(this.advancedQuery) : ComplimentQuery(this.chartData.dataQuery, this.globalFilter, this.chartData.config.filters ? this.chartData.config.filters : [this.chartData.config.filter],this.chartData.config.ignoreAnswersForCalculations)).toPromise());
     // }
     if ('error' in _dataResponse) {
 

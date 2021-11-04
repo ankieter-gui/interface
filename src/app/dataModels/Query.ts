@@ -1,6 +1,8 @@
 import {GlobalFilter} from './ReportDefinition';
+import {Query} from '@angular/core';
 
 export class SurveyQuery{
+  static possibleAggregations = ["share","max","min","mode","mean","median","std","var","count","sum"]
   get: string[][]=[[]]
   as: ("share"|"max"|"min"|"mode"|"mean"|"median"|"std"|"var"|"count"|"sum")[]=[]
   by: string[] = [];
@@ -13,7 +15,7 @@ export class SurveyQuery{
   }
 }
 
-export let ComplimentQuery = (query: SurveyQuery, globalFilter: GlobalFilter[] = null, localFilter: GlobalFilter[] = null): SurveyQuery => {
+export let ComplimentQuery = (query: SurveyQuery, globalFilter: GlobalFilter[] = null, localFilter: GlobalFilter[] = null, ignore=[]): SurveyQuery => {
 
   let q2: SurveyQuery = JSON.parse(JSON.stringify(query)) as SurveyQuery;
   while (q2.as.length > q2.get[0].length) {
@@ -65,7 +67,17 @@ export let ComplimentQuery = (query: SurveyQuery, globalFilter: GlobalFilter[] =
     delete q2['if'];
   }
   delete q2['filter'];
-
+  if (ignore) {
+    //check the indices of 'as' aggregations that shall ignore some values selected by the user
+    let excludeList = ["share", "count"]
+    let includeList = SurveyQuery.possibleAggregations.filter(d => !excludeList.includes(d))
+    // @ts-ignore
+    let indices = includeList.map(d => query.as.indexOf(d)).filter(d => d !== -1)
+    let ignoreFilters = indices.map(d => [Number(d), "notin", ...ignore])
+    console.log(ignoreFilters)
+    if (!q2['if']){q2['if']=[]}
+    q2['if']= [...q2['if'], ...ignoreFilters]
+  }
   return q2;
 }
 export let SurveyQueryNamingDictionary = {
