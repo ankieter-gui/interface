@@ -52,7 +52,7 @@ import {SharingService} from '../sharing.service';
           RAPORT
         </div>
       </figure>
-      <span class="card-title">{{report.name}}</span>
+      <span class="card-title" (click)="fromLogin?this.preview():this.openEditor()">{{report.name}}</span>
 
 
       <!--      <div class="units">-->

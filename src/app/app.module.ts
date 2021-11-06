@@ -116,7 +116,7 @@ export let commonNZImports = [
     echarts: () => import('echarts'), // or import('./path-to-my-custom-echarts')
   }),
   BrowserModule,
-  BrowserAnimationsModule,
+
   NzLayoutModule,
   NzBreadCrumbModule,
   NzCardModule,
