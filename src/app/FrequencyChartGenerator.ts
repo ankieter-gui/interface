@@ -151,7 +151,7 @@ getAllCount(reportId) {
         top: '0%',
         containLabel: true
       },
-      xAxis: {type: 'value', axisLabel:{formatter:this.getXAxisLabel()} ,show: true, animation: true, axisLine: {show: true}, max:this.wasAnyValueFilled()?this.maxXValue+15>100?100:this.maxXValue+15:this.maxXValue*1.1},
+      xAxis: {type: 'value', axisLabel:{formatter:this.getXAxisLabel()} ,show: true, animation: true, axisLine: {show: true}, max:this.wasAnyValueFilled()?this.maxXValue+15>100?100:this.maxXValue+15:Math.round(this.maxXValue*1.1)},
       //@ts-ignore
       yAxis: {
         type: 'category',

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import * as Chance from 'chance';
-import {BACKEND_URL} from './Configuration';
+import {BACKEND_URL, hidePotentiallyUnsafeQuestions, unsafeQuestionsPartialNames} from './Configuration';
 import {HttpClient} from '@angular/common/http';
 import {ReportDefinition} from './dataModels/ReportDefinition';
 import {SurveyQuery} from './dataModels/Query';
@@ -77,9 +77,16 @@ export class ReportsService {
 
       let obj = structure[questionCore]
       let sub = obj['sub_questions']
+
       let values = obj['values']
       if (sub.length>0) {
         for (let subQuestion of sub) {
+          if (hidePotentiallyUnsafeQuestions){
+            console.log(subQuestion)
+            if (unsafeQuestionsPartialNames.some(v=>subQuestion.toLowerCase().includes(v.toLowerCase()))) {
+              continue
+            }
+          }
           let keyName = questionCore+" - "+subQuestion
           dict[keyName] = values
         }
