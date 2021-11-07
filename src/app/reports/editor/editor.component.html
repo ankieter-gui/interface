@@ -27,9 +27,9 @@
       </section>
         <section class="header-right slide-top-enter-animation" >
           <div style="display: flex;flex-direction: row; flex-wrap: wrap">
-            <button nz-button nzType="link" (click)="save(true)" nz-tooltip="Zapisywanie jest automatyczne!">Zapisz
+            <button nz-button nzType="link" (click)="save(true)" nz-tooltip="Zapisywanie jest automatyczne!"><i nz-icon nzType="edit"></i> Zapisz
             </button>
-            <button (click)="preview()" nz-button nzType="link">Podgląd</button>
+            <button (click)="preview()" nz-button nzType="link"><i nz-icon nzType="eye"></i> Podgląd</button>
 <!--            <nz-tag nzMode="closeable"-->
 <!--                    (nzOnClose)="removeGlobalFilterRef(this.reportDefinition,f); refresh(); filterSelector.reset()" *ngFor="let f of this.reportDefinition.globalFilter">{{f.question}}-->
 <!--              - {{this.reportsService.getLabelFor(this.namingDictionary, f.question, f.answer)}}</nz-tag>-->
