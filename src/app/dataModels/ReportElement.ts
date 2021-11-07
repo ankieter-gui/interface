@@ -9,7 +9,7 @@ export class ReportElement{
   content:TextReportElement|ChartReportElement;
 }
 export class TextReportElement{
-
+  isLinkedToSectionBelow=false;
   text:string;
 
 }

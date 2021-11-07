@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {TextReportElement} from '../../dataModels/ReportElement';
 
 @Component({
   selector: 'app-text-editor-view',
@@ -13,12 +14,16 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
     <div *ngIf="!this.isPreview && !isEditing " (click)="isEditing=true" [innerHTML]="text | keepHtml"
          nz-tooltip="Kliknij aby edytować tekst" style="cursor: text"></div>
     <div *ngIf="this.isPreview" [innerHTML]="text | keepHtml"></div>
-    <button *ngIf="!isPreview" nz-button (click)="isEditing=true">Załaduj edytor tekstu</button>
-
+    <div *ngIf="!isPreview">
+      <button  nz-button (click)="isEditing=true">Załaduj edytor tekstu</button>
+      <label nz-checkbox (nzCheckedChange)="focusEvent.emit([number,focused])" [(ngModel)]="this.element.isLinkedToSectionBelow">Czy na wydruku ten tekst powinien być zawsze połączony z sekcją poniżej? Strona nie będzie mogła być wtedy łamana między tymi dwoma elementami.</label>
+    </div>
   `,
   styles: []
 })
 export class TextEditorViewComponent implements OnInit {
+  @Input()
+  element:TextReportElement;
   @Input()
   isLast;
   isEditing = false;
