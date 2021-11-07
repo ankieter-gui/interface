@@ -18,9 +18,9 @@ export class SurveyQuery{
 export let ComplimentQuery = (query: SurveyQuery, globalFilter: GlobalFilter[] = null, localFilter: GlobalFilter[] = null, ignore=[]): SurveyQuery => {
 
   let q2: SurveyQuery = JSON.parse(JSON.stringify(query)) as SurveyQuery;
-  while (q2.as.length > q2.get[0].length) {
-    q2.get[0].push(q2.get[0][0]);
-  }
+  // while (q2.as.length > q2.get[0].length) {
+  //   q2.get[0].push(q2.get[0][0]);
+  // }
   let questions = {};
   if (globalFilter) {
     if (!q2.filter) {
