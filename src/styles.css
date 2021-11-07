@@ -1,5 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
-
+body{
+  zoom:90%;
+/*  Nie działa na firefoxie */
+}
 html, body { height: 100%;-webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility; }
@@ -79,6 +82,7 @@ nz-card{
 
   .may-break{page-break-inside:auto;}
   .dont-break{page-break-inside: avoid;}
+  .always-break-after{page-break-after: always;}
 .dont-break-after{page-break-after: avoid;}
   @media print {
     .print-wide{

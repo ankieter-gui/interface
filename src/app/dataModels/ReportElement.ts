@@ -6,10 +6,13 @@ import {OrderSetting} from './OrderSetting';
 
 export class ReportElement{
   type:"text"|"chart";
+  alwaysBreakAfter=false;
   content:TextReportElement|ChartReportElement;
 }
 export class TextReportElement{
   isLinkedToSectionBelow=false;
+  dontBreakInside=true;
+
   text:string;
 
 }

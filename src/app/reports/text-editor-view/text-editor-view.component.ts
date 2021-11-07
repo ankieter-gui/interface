@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {TextReportElement} from '../../dataModels/ReportElement';
+import {ReportElement, TextReportElement} from '../../dataModels/ReportElement';
 
 @Component({
   selector: 'app-text-editor-view',
@@ -15,13 +15,30 @@ import {TextReportElement} from '../../dataModels/ReportElement';
          nz-tooltip="Kliknij aby edytować tekst" style="cursor: text"></div>
     <div *ngIf="this.isPreview" [innerHTML]="text | keepHtml"></div>
     <div *ngIf="!isPreview">
-      <button  nz-button (click)="isEditing=true">Załaduj edytor tekstu</button>
-      <label nz-checkbox (nzCheckedChange)="focusEvent.emit([number,focused])" [(ngModel)]="this.element.isLinkedToSectionBelow">Czy na wydruku ten tekst powinien być zawsze połączony z sekcją poniżej? Strona nie będzie mogła być wtedy łamana między tymi dwoma elementami.</label>
-    </div>
+
+      <nz-table nzTemplateMode>
+        <thead>
+        <tr><th>
+          <label nz-checkbox (nzCheckedChange)="focusEvent.emit([number,focused])" [(ngModel)]="this.element.isLinkedToSectionBelow">Czy strona powinna być nigdy <b>nie łamana</b> po tym elemencie?</label>
+
+        </th><th>
+          <label nz-checkbox (nzCheckedChange)="focusEvent.emit([number,focused])" [(ngModel)]="this.element.dontBreakInside">Czy w środku tekstu może wystąpić podział strony?</label>
+
+        </th><th>
+          <label nz-checkbox (nzCheckedChange)="focusEvent.emit([number,focused])" [(ngModel)]="this.parentElement.alwaysBreakAfter">Czy strona powinna być zawsze łamana po tym elemencie?</label>
+
+        </th></tr>
+        </thead>
+      </nz-table>
+      <button *ngIf="!isEditing" nz-button (click)="isEditing=true;" style="margin-bottom:1em;"><i nz-icon nzType="edit"></i> Załaduj edytor tekstu</button>
+      <button *ngIf="isEditing" nz-button (click)="isEditing=false;focused=false;" style="margin-bottom:1em;"><i nz-icon nzType="edit"></i> Zapisz i schowaj edytor tekstu</button>
+       </div>
   `,
   styles: []
 })
 export class TextEditorViewComponent implements OnInit {
+  @Input()
+  parentElement:ReportElement
   @Input()
   element:TextReportElement;
   @Input()

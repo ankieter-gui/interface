@@ -349,8 +349,10 @@ import {SuggestionsGenerator} from '../../SuggestionsGenerator';
               <input nz-input (blur)="refreshChart(true)" placeholder="Nazwa dla zagregowanych wyników - może to być 'Razem', 'łącznie' itd"
                      [(ngModel)]="chartData.config.allTogetherLabel" value="UAM">
             </div>
+            <label nz-checkbox (nzCheckedChange)="focusEvent.emit([number,focused])" [(ngModel)]="this.parentElement.alwaysBreakAfter">Czy strona powinna być zawsze łamana po tym elemencie?</label>
 
-<!--            <div><label nz-checkbox [(ngModel)]="this.chartData.config.shortLabels"-->
+
+            <!--            <div><label nz-checkbox [(ngModel)]="this.chartData.config.shortLabels"-->
 <!--                        [nz-tooltip]="'Jeżeli etykieta jest zbyt długa, zostanie ona ucięta'">Krótkie etykiety</label></div>-->
 
           </nz-collapse-panel>
@@ -596,6 +598,8 @@ import {SuggestionsGenerator} from '../../SuggestionsGenerator';
   ]
 })
 export class ChartEditorViewComponent implements OnInit {
+  @Input()
+  parentElement;
   @Input()
   isLast = false;
   isEditing = false;

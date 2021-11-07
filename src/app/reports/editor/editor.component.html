@@ -120,8 +120,8 @@
               </mat-menu>
 
               <app-text-editor-view (focusEvent)="save()" *ngSwitchCase="'text'" [(text)]="element.content.text" [element]="element.content"
-                                    [isLast]="element == this.reportDefinition.elements[this.reportDefinition.elements.length-1]"></app-text-editor-view>
-              <app-chart-editor-view (chartDataChange)="save()" *ngSwitchCase="'chart'" [(chartData)]="element.content"
+                                    [isLast]="element == this.reportDefinition.elements[this.reportDefinition.elements.length-1]" [parentElement]="element"></app-text-editor-view>
+              <app-chart-editor-view (chartDataChange)="save()" *ngSwitchCase="'chart'" [(chartData)]="element.content" [parentElement]="element"
                                      [forceUpdate]="forceUpdate" [globalFilter]="this.reportDefinition.globalFilter"
                                      [namingDictionary]="namingDictionary" [questions]="surveyQuestions"
                                      [reportId]="this.reportId" [report]="this.reportDefinition"

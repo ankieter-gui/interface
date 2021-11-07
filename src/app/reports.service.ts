@@ -82,7 +82,7 @@ export class ReportsService {
       if (sub.length>0) {
         for (let subQuestion of sub) {
           if (hidePotentiallyUnsafeQuestions){
-            console.log(subQuestion)
+
             if (unsafeQuestionsPartialNames.some(v=>subQuestion.toLowerCase().includes(v.toLowerCase()))) {
               continue
             }
