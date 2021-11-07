@@ -12,6 +12,7 @@ import {ReportsService} from '../../reports.service';
 import {GlobalFilter, ReportDefinition} from '../../dataModels/ReportDefinition';
 import {Subject} from 'rxjs';
 import {IgnoreSelectorComponent} from '../../ignore-selector/ignore-selector.component';
+import {SuggestionsGenerator} from '../../SuggestionsGenerator';
 
 @Component({
   animations:[    trigger('fadeInOut', [
@@ -152,8 +153,10 @@ import {IgnoreSelectorComponent} from '../../ignore-selector/ignore-selector.com
             </div>
           </figure>
         </section>
-        <nz-collapse class="chart-editor-dropdown">
+        <nz-collapse class="chart-editor-dropdown" style="position: relative">
+
           <nz-collapse-panel nzHeader="Edytor" [nzActive]="isEditing" (nzActiveChange)="isEditing=$event">
+
             <div *ngIf="isEditing">
               <!--                  <input placeholder="Nazwa wykresu" nz-input [(ngModel)]="this.chartData.name" (blur)="refreshChart(); save()"/>-->
               <nz-tabset [(nzSelectedIndex)]="activeTab">
@@ -254,14 +257,15 @@ import {IgnoreSelectorComponent} from '../../ignore-selector/ignore-selector.com
                   </section>
                   <section class="tab-flex-container">
                     <section class="question-selector pytania">
-                      <div style="display: flex;flex-direction: row"><span style='font-family: "Gilroy ExtraBold", sans-serif; width:50%;'>Odpowiedzi na pytanie:</span>
-                        <nz-input-group class="force-input-borderless" [nzPrefixIcon]="'search'"><input nzBorderless nz-input
+                      <div style="display: flex;flex-direction: row; margin-right: 20px"><span style='font-family: "Gilroy ExtraBold", sans-serif; width:50%;'>Weź pytania:</span>
+                        <nz-input-group  [nzPrefixIcon]="'search'"><input nzBorderless nz-input
                                                                                                         placeholder="Wyszukaj..."
                                                                                                         [(ngModel)]="questionSearchString">
                         </nz-input-group>
                       </div>
                       <div style="display: flex; flex-direction: column">
-                        <nz-table #questionTable [nzData]="questionNames|NameFilter: questionSearchString">
+
+                        <nz-table #questionTable [nzData]="questionNamesWithSuggestions|NameFilter: questionSearchString">
                           <thead>
                           <tr>
                             <th>Zaznaczono</th>
@@ -269,6 +273,7 @@ import {IgnoreSelectorComponent} from '../../ignore-selector/ignore-selector.com
                           </tr>
                           </thead>
                           <tbody>
+
                           <tr *ngFor="let q of questionTable.data" (click)="questionPickerClick(q);refreshChart()" style="cursor: pointer">
                             <td><label style="pointer-events: none" nz-checkbox
                                        [nzChecked]="chartData.dataQuery.get.flat().includes(q)"></label></td>
@@ -279,14 +284,14 @@ import {IgnoreSelectorComponent} from '../../ignore-selector/ignore-selector.com
                       </div>
                     </section>
                     <section class="question-selector pytania" *ngIf="!hideGroupBy">
-                      <div style="display: flex;flex-direction: row"><span style='font-family: "Gilroy ExtraBold", sans-serif; width:50%;'>Grupuj przez:</span>
+                      <div style="display: flex;flex-direction: row;margin-right: 20px"><span style='font-family: "Gilroy ExtraBold", sans-serif; width:50%;'>Grupuj przez:</span>
                         <nz-input-group class="force-input-borderless" [nzPrefixIcon]="'search'"><input nzBorderless nz-input
                                                                                                         placeholder="Wyszukaj..."
                                                                                                         [(ngModel)]="bySearchString">
                         </nz-input-group>
                       </div>
                       <div style="display: flex; flex-direction: column">
-                        <nz-table #groupTable [nzData]="questionNames|NameFilter: bySearchString">
+                        <nz-table #groupTable [nzData]="groupByWithSuggestions|NameFilter: bySearchString">
                           <thead>
                           <tr>
                             <th>Zaznaczono</th>
@@ -344,6 +349,7 @@ import {IgnoreSelectorComponent} from '../../ignore-selector/ignore-selector.com
               <input nz-input (blur)="refreshChart(true)" placeholder="Nazwa dla zagregowanych wyników - może to być 'Razem', 'łącznie' itd"
                      [(ngModel)]="chartData.config.allTogetherLabel" value="UAM">
             </div>
+
 <!--            <div><label nz-checkbox [(ngModel)]="this.chartData.config.shortLabels"-->
 <!--                        [nz-tooltip]="'Jeżeli etykieta jest zbyt długa, zostanie ona ucięta'">Krótkie etykiety</label></div>-->
 
@@ -599,6 +605,14 @@ export class ChartEditorViewComponent implements OnInit {
   get questionNames() {
     return this.questions ? Object.keys(this.questions) : [];
   }
+  get questionNamesWithSuggestions(){
+    let names = this.questionNames.filter(d=>!this.questionSuggestions.includes(d))
+    return [...this.questionSuggestions, ...names]
+  }
+  get groupByWithSuggestions(){
+    let names = this.questionNames.filter(d=>!this.groupBySuggestions.includes(d))
+    return [...this.groupBySuggestions, ...names]
+  }
   @ViewChild(IgnoreSelectorComponent) ignoreSelector:IgnoreSelectorComponent;
   @Input() forceUpdate;
   @Input()
@@ -665,13 +679,20 @@ export class ChartEditorViewComponent implements OnInit {
   save() {
     this.chartDataChange.emit(this.chartData);
   }
-
+  questionSuggestions:string[]=[];
+  groupBySuggestions:string[]=[];
   pickPreset(name) {
     this.byPickerClick = (type) => {
     };
     this.onPickQuestion = () => {
     };
     this.showLinearPicker = false;
+    const suggestionsGenerator = new SuggestionsGenerator()
+    let questionSuggestionsFunction = suggestionsGenerator.getQuestionsGenerator(this.chartData)
+    this.questionSuggestions = questionSuggestionsFunction(this.questionNames)
+    let groupBySuggestionsFunction = suggestionsGenerator.getGroupByGenerator(this.chartData)
+    this.groupBySuggestions = groupBySuggestionsFunction(this.questionNames)
+
     let fun = {
       'multipleBarsOwnData':()=>{},
       'groupSummary':()=>{},

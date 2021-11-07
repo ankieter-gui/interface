@@ -6,10 +6,12 @@ import {ReportsService} from '../reports.service';
 @Component({
   selector: 'app-filters-selector',
   template: `
-    <nz-tag nzMode="closeable" style="margin:1em;" (nzOnClose)="deleteFilter(filter)" *ngFor="let filter of this.filters" (click)="this.selectedQuestionName = filter.question">{{filter.question}} - <b>{{this.reportService.getLabelFor(this.namingDictionary, filter.question, filter.answer)}}</b></nz-tag>
-
+    <span *ngFor="let filter of this.filters"  (click)="this.selectedQuestionName = filter.question; index=2" style="cursor: pointer">
+      <nz-tag nzMode="closeable" style="margin:1em;" (nzOnClose)="deleteFilter(filter); this.selectedQuestionName=undefined; index=0; this.filtersChange.emit(this.filters);" >{{filter.question}} - <b>{{this.reportService.getLabelFor(this.namingDictionary, filter.question, filter.answer)}}</b></nz-tag>
+    </span>
     <nz-tabset [(nzSelectedIndex)]="index">
-    <nz-tab nzTitle="Pytanie">
+    <nz-tab nzTitle="Wybierz pytanie">
+      <nz-alert nzType="info" nzMessage="Wybranie pytania w tym ekranie sprawi, że na wykresie widoczne będą tylko odpowiedzi osób, których odpowiedzi na wybrane tutaj pytanie były zgodne z kluczem."></nz-alert>
     <input nz-input [(ngModel)]="searchString" placeholder="Szukaj..." style="margin-bottom: 1em">
     <nz-table #questionsTable [nzData]="this.questionNames | filterString: searchString">
       <thead>
@@ -29,12 +31,16 @@ import {ReportsService} from '../reports.service';
       </tbody>
     </nz-table>
     </nz-tab>
-      <nz-tab nzTitle="Odpowiedzi">
-              <input nz-input [(ngModel)]="answerSearchString" placeholder="Szukaj..." style="margin-bottom: 1em">
+      <nz-tab nzTitle="Wybierz odpowiedzi" *ngIf="selectedQuestionName">
+
+        <nz-alert nzType="info" [nzMessage]="'Teraz wybierz jak musiał odpowiedzieć ankietowany na pytanie aby jego odpowiedź znalazła się na wykresie.'"> </nz-alert>
+
+        <input nz-input [(ngModel)]="answerSearchString" placeholder="Szukaj..." style="margin-bottom: 1em">
+        <span style="margin: 1em; font-weight: bold; display: block">{{this.selectedQuestionName}}</span>
         <nz-table #answersTable [nzData]="this.answers | filterDict: answerSearchString: namingDictionary: this.selectedQuestionName" *ngIf="this.selectedQuestionName">
           <thead>
           <tr>
-            <th>Zaznaczono</th>
+            <th>Czy filtrować przez tę odpowiedź?</th>
             <th>Odpowiedź</th>
 
           </tr>

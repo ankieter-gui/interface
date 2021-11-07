@@ -13,8 +13,8 @@ export class FilterByNamePipe implements PipeTransform {
       return items;
     }
 
-
-    return items.filter(item => item.name.toLowerCase().includes(filter.toLowerCase()));
+    let substrings = filter.toLowerCase().split(" ")
+    return items.filter(item => substrings.some(v => item.name.includes(v)));
   }
 
 }
@@ -47,7 +47,8 @@ export class NameFilter implements PipeTransform {
     }
 
 
-    return items.filter(item => item.toLowerCase().includes(filter.toLowerCase()));
+    let substrings = filter.toLowerCase().split(" ")
+    return items.filter(item => substrings.some(v => item.includes(v)));
   }
 
 }
