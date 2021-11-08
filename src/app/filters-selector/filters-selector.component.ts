@@ -44,8 +44,7 @@ import {fadeInOut} from '../commonAnimations';
 
     <nz-tabset [(nzSelectedIndex)]="index">
     <nz-tab nzTitle="Wybierz pytanie">
-      <nz-alert nzType="info" nzMessage="Wybranie pytania w tym ekranie sprawi, że na wykresie widoczne będą tylko odpowiedzi osób, których odpowiedzi na wybrane tutaj pytanie były zgodne z kluczem."></nz-alert>
-    <input nz-input [(ngModel)]="searchString" placeholder="Szukaj..." style="margin-bottom: 1em">
+         <input nz-input [(ngModel)]="searchString" placeholder="Szukaj..." style="margin-bottom: 1em">
     <nz-table #questionsTable [nzData]="this.questionNames | filterString: searchString">
       <thead>
       <tr>
@@ -65,8 +64,6 @@ import {fadeInOut} from '../commonAnimations';
     </nz-table>
     </nz-tab>
       <nz-tab nzTitle="Wybierz odpowiedzi" *ngIf="selectedQuestionName">
-
-        <nz-alert nzType="info" [nzMessage]="'Teraz wybierz jak musiał odpowiedzieć ankietowany na pytanie aby jego odpowiedź znalazła się na wykresie.'"> </nz-alert>
 
         <input nz-input [(ngModel)]="answerSearchString" placeholder="Szukaj..." style="margin-bottom: 1em">
         <span style="margin: 1em; font-weight: bold; display: block">{{this.selectedQuestionName}}</span>
