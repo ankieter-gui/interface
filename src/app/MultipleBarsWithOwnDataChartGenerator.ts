@@ -6,8 +6,8 @@ import {EChartsOption} from 'echarts';
 
 export class MultipleBarsWithOwnDataChartGenerator extends AbstractChartGenerator{
   xAxisLabels;
-  barSeries;
-
+  barSeries=[];
+  legend;
 
   getAllCount(reportId) {
   }
@@ -18,18 +18,16 @@ export class MultipleBarsWithOwnDataChartGenerator extends AbstractChartGenerato
 
   xAxisLabelsToDisplay
   generate(): MultipleBarsWithOwnDataChartGenerator {
-    this.xAxisLabels = this.series.index;
-    const xAxisLabelsToDisplay = _.cloneDeep(this.xAxisLabels)
-    this.xAxisLabelsToDisplay = xAxisLabelsToDisplay.map((d,index)=>{
-      let dataSeries = Object.entries(this.series).filter(d=>d[0].includes("share"))[0][1][index];
-      let sum=0;Object.values(dataSeries).forEach(o=>sum+=Number(o));
-      return `${this.getLabelFor(this.chartElement.dataQuery.by[0], d)} (N=${sum})`
-    });
-    this.shareElement = AbstractChartGenerator.transformDataIntoPairs(this.series).filter(d => d[0].includes('share'))[0][1];
-    let seriesList = this.generateSeriesList(this.shareElement);
-    console.log(this.shareElement);
-    console.log('shareElement');
-    this.barSeries = seriesList;
+    this.xAxisLabels = this.chartElement.config.handCodedData.slice(1).map(d=>d[0].value)
+    this.legend = this.chartElement.config.handCodedData[0].slice(1).map(v=>v.value)
+    for (let [i,row] of this.chartElement.config.handCodedData.slice(1).entries()){
+      console.log(row)
+      for (let [j,column] of row.slice(1).entries()){
+        if (!this.barSeries[j]) this.barSeries[j]=[]
+        this.barSeries[j][i]=column.value
+      }
+    }
+    console.log(this.barSeries)
     return this;
 
   }
@@ -84,7 +82,7 @@ export class MultipleBarsWithOwnDataChartGenerator extends AbstractChartGenerato
 
     return {
       legend: {
-        data: this.chartElement.config.order.order.map(d => this.getLabelFor(this.chartElement.dataQuery.get[0][0], d))
+        data: this.legend
       },
 
       pxHeight: 500,
@@ -95,10 +93,10 @@ export class MultipleBarsWithOwnDataChartGenerator extends AbstractChartGenerato
           axisTick: {show: false},
           axisLabel: {
             interval: 0,
-            rotate: this.shareElement.length > 4 ? 30 : 0 //If the label names are too long you can manage this by rotating the label.
+            rotate: 30
           },
           //rok, stopień lub kierunek
-          data: this.xAxisLabelsToDisplay
+          data: this.xAxisLabels
         }
       ],
       yAxis: [
@@ -116,8 +114,8 @@ export class MultipleBarsWithOwnDataChartGenerator extends AbstractChartGenerato
 
       series:
       //każda seria to jeden słupek w tej samej pozycji ale w różnych grupach
-        this.zip(this.chartElement.config.order.order, this.barSeries).map((d, index) => ({
-          name: this.getLabelFor(this.chartElement.dataQuery.get[0][0], d[0]),
+        this.zip(this.legend, this.barSeries).map((d, index) => ({
+          name: d[0],
           d: d,
           index: index,
           type: 'bar',
@@ -137,7 +135,7 @@ export class MultipleBarsWithOwnDataChartGenerator extends AbstractChartGenerato
               name: {}
             }
           },
-          orderLabel: d[0],
+
           data: d[1]
         }))
     };

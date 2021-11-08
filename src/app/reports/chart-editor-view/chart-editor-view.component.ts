@@ -35,7 +35,7 @@ import {SuggestionsGenerator} from '../../SuggestionsGenerator';
     </ng-template>
     <section class="chart-column-container">
 
-      <div *ngIf="this.chartData.name||(this.chartData.dataQuery.get[0]&&this.chartData.dataQuery.get[0][0]) || this.chartData.config.type=='linearCustomData'">
+      <div *ngIf="this.chartData.name||(this.chartData.dataQuery.get[0]&&this.chartData.dataQuery.get[0][0]) || ['linearCustomData',  'multipleBarsOwnData'].includes(this.chartData.config.type)">
         <button *ngIf="!isPreview" [nz-tooltip]="'Pobierz wykres jako obrazek .png'" nz-button nzType="primary" nzSize="default"
                 nzShape="circle"
                 style="position: absolute;right:50px;top:-15px" (click)="saveAsPng()"><i nz-icon nzType="download"></i></button>
@@ -105,7 +105,7 @@ import {SuggestionsGenerator} from '../../SuggestionsGenerator';
             </nz-table>
           </section>
           <section class="chart-area"
-                   *ngIf="['multipleChoice', 'groupedBars', 'multipleBars', 'linearCustomData', 'summary'].includes(chartData.config.type)  && this.echartOptions">
+                   *ngIf="['multipleChoice', 'groupedBars', 'multipleBars', 'linearCustomData', 'summary', 'multipleBarsOwnData'].includes(chartData.config.type)  && this.echartOptions">
             <div echarts [style.height.px]="echartOptions.pxHeight" (chartInit)="onChartInit($event)" [options]="echartOptions"
                  class="chart"
                  style="width: 100%;"></div>
@@ -234,7 +234,7 @@ import {SuggestionsGenerator} from '../../SuggestionsGenerator';
                 <nz-tab nzTitle="Konfiguracja grup" *ngIf="this.chartData.config.type=='groupSummary'">
                         <app-group-summary-picker [chartData]="chartData" [questions]="this.questions" [questionNames]="this.questionNames"></app-group-summary-picker>
                 </nz-tab>
-                <nz-tab nzTitle="Pytanie i dane" *ngIf="!showLinearPicker && this.chartData.config.type && !['groupSummary', 'multipleBarsOwnData'].includes(this.chartData.config.type)">
+                <nz-tab nzTitle="Pytanie i dane" *ngIf="!showLinearPicker && this.chartData.config.type && !['groupSummary', 'multipleBarsOwnData', 'multipleBarsOwnData'].includes(this.chartData.config.type)">
                   <section class="question-selector dane" *ngIf="!hideData">
                     <div style="display: flex;flex-direction: row"><span style='font-family: "Gilroy ExtraBold", sans-serif; width:50%;'>Dane:</span>
                     </div>
@@ -310,7 +310,7 @@ import {SuggestionsGenerator} from '../../SuggestionsGenerator';
                   </section>
                 </nz-tab>
                 <nz-tab nzTitle="Dane" *ngIf="chartData.config.type==='multipleBarsOwnData'">
-                  <app-multiple-bars-with-custom-data-data-picker></app-multiple-bars-with-custom-data-data-picker>
+                  <app-multiple-bars-with-custom-data-data-picker [chartElement]="chartData" (saveEmitter)="refreshChart()"></app-multiple-bars-with-custom-data-data-picker>
                 </nz-tab>
                 <nz-tab nzTitle="Dane" *ngIf="showLinearPicker">
                   <app-line-chart-custom-data-picker (saveEmitter)="refreshChart()" [reportId]="reportId"
@@ -322,7 +322,7 @@ import {SuggestionsGenerator} from '../../SuggestionsGenerator';
                                                            (saveEmitter)="refreshChart()" [reportId]="reportId"
                                                            [chart]="this.chartData"></app-grouped-bars-percentage-data-picker>
                 </nz-tab>
-                <nz-tab nzTitle="Filtry" *ngIf="!showLinearPicker && this.chartData.config.type">
+                <nz-tab nzTitle="Filtry" *ngIf="!showLinearPicker && this.chartData.config.type && this.chartData.config.type!='multipleBarsOwnData'">
                   <app-filters-selector [namingDictionary]="namingDictionary" [allQuestions]="namingDictionary"
                                         (filtersChange)="refreshFilter($event)" [(filters)]="this.chartData.config.filters" [multipleQuestionsAllowed]="true"
                                         [reportId]="reportId"></app-filters-selector>
@@ -349,7 +349,7 @@ import {SuggestionsGenerator} from '../../SuggestionsGenerator';
               <input nz-input (blur)="refreshChart(true)" placeholder="Nazwa dla zagregowanych wyników - może to być 'Razem', 'łącznie' itd"
                      [(ngModel)]="chartData.config.allTogetherLabel" value="UAM">
             </div>
-            <label nz-checkbox (nzCheckedChange)="focusEvent.emit([number,focused])" [(ngModel)]="this.parentElement.alwaysBreakAfter">Czy strona powinna być zawsze łamana po tym elemencie?</label>
+            <label nz-checkbox [(ngModel)]="this.parentElement.alwaysBreakAfter">Czy strona powinna być zawsze łamana po tym elemencie?</label>
 
 
             <!--            <div><label nz-checkbox [(ngModel)]="this.chartData.config.shortLabels"-->
@@ -857,7 +857,7 @@ export class ChartEditorViewComponent implements OnInit {
     }
     try {
       await this.downloadQueryResponse();
-      if (this.dataResponse || this.chartData.config.type == 'linearCustomData') {
+      if (this.dataResponse || ['linearCustomData', 'multipleBarsOwnData'].includes(this.chartData.config.type) ) {
         await this.generateChart();
         if (this.ignoreSelector) setTimeout(()=>this.ignoreSelector.onExternalDataChange(), 100);
       }
@@ -935,8 +935,6 @@ onChartInit(e){
   }
   echartOptions;
   generateChart(){
-
-
     this.echartOptions = this.chartsService.generateChart(this.dataResponse, this.chartData, this.reportId, this.namingDictionary, this.report.dictionaryOverrides);
 
   }

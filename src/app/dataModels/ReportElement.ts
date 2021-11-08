@@ -20,14 +20,16 @@ export class TextReportElement{
 export class Table {
   series: string[];
 }
-
+export interface HandCodedDataType{
+// { value: string, secondLine?:string, label: string }[] | {value:string}[][]
+}
 export class ChartConfig {
   order: OrderSetting = new OrderSetting();
   useManualOrdering?: boolean = false;
   ignoreAnswersForCalculations: any[];
   localLabelOverrides;
   showTitle = false;
-  handCodedData: { value: string, secondLine?:string, label: string }[] = [{label: '', secondLine:'', value: ''}];
+  handCodedData: any= undefined;
   static colorSets = {
     default: ['red', 'blue', 'green']
   };

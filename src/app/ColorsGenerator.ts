@@ -9,6 +9,7 @@ import {FrequencyChartGenerator} from './FrequencyChartGenerator';
 import {MultipleChoiceChartGenerator} from './MultipleChoiceChartGenerator';
 import {LinearCustomDataChartGenerator} from './LinearCustomDataChartGenerator';
 import {SummaryChartGenerator} from './SummaryChartGenerator';
+import {MultipleBarsWithOwnDataChartGenerator} from './MultipleBarsWithOwnDataChartGenerator';
 
 export class ColorsGenerator {
   chart: ChartReportElement;
@@ -50,6 +51,7 @@ export class ColorsGenerator {
     x[FrequencyChartGenerator.name] = (o) => this.frequencyChartGenerator(o);
     x[MultipleChoiceChartGenerator.name] = (o) => this.multipleChoiceChartGenerator(o);
     x[MultipleBarsChartGenerator.name] = (o) => this.multipleBarsChartGenerator(o);
+    x[MultipleBarsWithOwnDataChartGenerator.name] = (o) => this.multipleBarsWithCustomDataChartGenerator(o);
     x[GroupedPercentAndDataChartGenerator.name] = (o) => this.groupedPercentAndDataChartGenerator(o);
     x[SummaryChartGenerator.name] = (o) => this.summaryChartGenerator(o);
     const colorFunction = x[this.typeOf.name];
@@ -79,7 +81,14 @@ export class ColorsGenerator {
     (options.series as BarSeriesOption[]).forEach((d) => d.color = (this.chart.config.colors && "all" in this.chart.config.colors)?this.chart.config.colors["all"]:this.multipleChoiceRed);
     return options;
   }
-
+  multipleBarsWithCustomDataChartGenerator(options:EChartsOption):EChartsOption{
+    for (let i of options.series as BarSeriesOption[]){
+      let entry =this.chart.config.handCodedData[0].find(x=>x.value==i.name)
+      if (entry.color){
+      i.color = entry.color}
+    }
+    return options
+  }
   multipleBarsChartGenerator(options: EChartsOption): EChartsOption {
     let questionObject: SingleQuestionTypesDefinition = this.caller.namingDictionary[this.chart.dataQuery.get.flat()[0]];
     let pairs: [string, string][] = this.caller.zip(Object.keys(questionObject), Object.values(questionObject));

@@ -103,6 +103,7 @@ import { SimpleColorSelectorComponent } from './simple-color-selector/simple-col
 import { GroupSummaryPickerComponent } from './group-summary-picker/group-summary-picker.component';
 import { QuestionGroupEditorComponent } from './question-group-editor/question-group-editor.component';
 import { MultipleBarsWithCustomDataDataPickerComponent } from './multiple-bars-with-custom-data-data-picker/multiple-bars-with-custom-data-data-picker.component';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 
 registerLocaleData(pl);
@@ -223,30 +224,31 @@ export let commonNZImports = [
 
     MultipleBarsWithCustomDataDataPickerComponent
   ],
-    imports: [
-      BrowserAnimationsModule,
-        ...commonNZImports,
-        DragDropModule,
-        MatFormFieldModule,
-        MatInputModule,
-        ReportsModule,
-      CKEditorModule,
-      MatIconModule,
-      NzCollapseModule,
-      NzListModule,
-      NgxFileDropModule,
-      NzBadgeModule,
-      NzTabsModule,
-      NzCheckboxModule,
-      NzSpinModule,
-      NzDividerModule,
-      InViewportModule,
-      NzPaginationModule,
-      NzDropDownModule,
-      NzRadioModule,
-      NzAlertModule
+  imports: [
+    BrowserAnimationsModule,
+    ...commonNZImports,
+    DragDropModule,
+    MatFormFieldModule,
+    MatInputModule,
+    ReportsModule,
+    CKEditorModule,
+    MatIconModule,
+    NzCollapseModule,
+    NzListModule,
+    NgxFileDropModule,
+    NzBadgeModule,
+    NzTabsModule,
+    NzCheckboxModule,
+    NzSpinModule,
+    NzDividerModule,
+    InViewportModule,
+    NzPaginationModule,
+    NzDropDownModule,
+    NzRadioModule,
+    NzAlertModule,
+    MatTooltipModule
 
-    ],
+  ],
   providers: [
     {provide: NZ_I18N, useValue: pl_PL},
     {provide: Window, useValue: window},
