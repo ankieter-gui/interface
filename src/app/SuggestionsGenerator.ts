@@ -34,7 +34,7 @@ export class SuggestionsGenerator{
     return allQuestions.filter(d=>d.includes("stop") || d.includes("rok"))
   }
   multipleBarsSuggestionsGenerator(allQuestiosn:string[]){
-    return allQuestiosn.filter(d=>d.includes("ocen"))
+    return allQuestiosn.filter(d=>d.includes("śred"))
   }
   multipleBarsSuggestionsGeneratorGroupBy(allQuestiosn:string[]){
     return allQuestiosn.filter(d=>d.includes("stop"))

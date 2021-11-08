@@ -17,6 +17,19 @@ export class SurveyQuery{
 
 export let ComplimentQuery = (query: SurveyQuery, globalFilter: GlobalFilter[] = null, localFilter: GlobalFilter[] = null, ignore=[]): SurveyQuery => {
 
+  let exceptFilter:GlobalFilter[] = []
+  localFilter=localFilter.filter(x=>x!=undefined)
+  console.log(localFilter)
+  console.log(exceptFilter)
+  if (localFilter){
+    exceptFilter = [...exceptFilter, ...localFilter.filter(x=>x.except)]
+    localFilter=localFilter.filter(x=>!x.except)
+  }
+  if (globalFilter){
+    exceptFilter = [...exceptFilter, ...globalFilter.filter(x=>x.except)]
+    globalFilter=globalFilter.filter(x=>!x.except)
+  }
+  console.log(exceptFilter)
   let q2: SurveyQuery = JSON.parse(JSON.stringify(query)) as SurveyQuery;
   // while (q2.as.length > q2.get[0].length) {
   //   q2.get[0].push(q2.get[0][0]);
@@ -28,7 +41,7 @@ export let ComplimentQuery = (query: SurveyQuery, globalFilter: GlobalFilter[] =
     }
 
     globalFilter.forEach(d => {
-      //TODO: czekać na backend
+
       if (!questions[d.question]) {
         questions[d.question] = [];
       }
@@ -36,7 +49,7 @@ export let ComplimentQuery = (query: SurveyQuery, globalFilter: GlobalFilter[] =
 
     });
   }
-  if (localFilter && localFilter) {
+  if (localFilter) {
     if (!q2.filter) {
       q2.filter = [];
     }
@@ -77,6 +90,17 @@ export let ComplimentQuery = (query: SurveyQuery, globalFilter: GlobalFilter[] =
     console.log(ignoreFilters)
     if (!q2['if']){q2['if']=[]}
     q2['if']= [...q2['if'], ...ignoreFilters]
+  }
+  if (exceptFilter){
+    q2['except']=[]
+    let exceptDict = {}
+    exceptFilter.forEach(x=>{
+      if(!exceptDict[x.question]) exceptDict[x.question]=[]
+      exceptDict[x.question].push(x.answer)
+    })
+  //@ts-ignore
+    q2['except'] = Object.entries(exceptDict).map(x=>[x[0],'in',...x[1].flat()])
+
   }
   return q2;
 }

@@ -89,4 +89,16 @@ nz-card{
       width: 1400px!important;
     }
   }
+.tag-wrap{
 
+}
+.tag-wrap .ant-tag{
+  white-space: normal!important;
+  position: relative;
+  padding-right: 25px;
+
+  padding-bottom:3px;
+}
+.tag-wrap .ant-tag .anticon{
+  position: absolute;right:5px;font-size: 1.5em;top:2px;
+}

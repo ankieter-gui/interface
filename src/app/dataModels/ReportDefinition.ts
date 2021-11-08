@@ -13,5 +13,6 @@ export class ReportDefinition{
 export class GlobalFilter{
   question:string
   answer:string
+  except?:boolean=false;
 }
 export let removeGlobalFilter = (report:ReportDefinition, f:GlobalFilter)=>report.globalFilter=report.globalFilter.filter(d=>d!==f)
