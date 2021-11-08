@@ -27,8 +27,8 @@ import {fadeInOut} from '../commonAnimations';
         </div>
       </div>
       <div class="right-cointainer" style="width: 45%;">
-        <h2>Filtry ignorujące</h2>
-        <p>Jeżeli odpowiedź spełnia te warunki, to reszta filtrów jest ignorowana</p>
+        <h2>Filtry wykluczające</h2>
+        <p>Jeżeli odpowiedź spełnia te warunki to <b>nie jest wliczana</b></p>
 
         <div
           cdkDropList

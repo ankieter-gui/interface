@@ -78,8 +78,6 @@ export abstract class AbstractChartGenerator {
 
       //check if all labels from response are already in the order list
       let r = true;
-      console.log('all share label');
-      console.log(allShareLabels)
       for (let l of allShareLabels) {
         if (!this.chartElement.config.order) {
           r = false;
@@ -95,9 +93,6 @@ export abstract class AbstractChartGenerator {
       }
 
       //sort
-      console.log(chartElement.config.type == 'groupedBars')
-      console.log(this.rawSeries)
-      console.log(this.chartElement.config.order.order)
       let seriesCopied = JSON.parse(JSON.stringify(this.rawSeries));
       let keys = Object.keys(seriesCopied);
       for (let j = 0; j < keys.length; j++) {
@@ -107,14 +102,11 @@ export abstract class AbstractChartGenerator {
         }
         const key = keys[j]
         const startIndex = Math.min(...Object.keys(series[key][0]).map(d => Number(d)));
-        console.log(series[key][0])
-        console.log(startIndex)
+
         for (let objectSeries of Object.entries(seriesCopied[key])){
-          console.log(objectSeries)
           let index = objectSeries[0]
           let o:object = objectSeries[1] as object
           seriesCopied[key][index] = OrderSetting.sortAnotherSeriesInPlace(this.chartElement.config.order, o);
-          console.log(seriesCopied[key][index])
         }
         // for (let objectSeriesIndex = startIndex; objectSeriesIndex < seriesCopied[key].length; objectSeriesIndex++) {
         //   let o = seriesCopied[key][objectSeriesIndex];
@@ -123,13 +115,7 @@ export abstract class AbstractChartGenerator {
         // }
 
       }
-      console.log('keys');
-      console.log(keys);
-      console.log(seriesCopied);
-      console.log(series);
-      console.log(this.chartElement.config.order.order);
       //Czasowy fix
-
       this.series = seriesCopied;
       if (chartElement.config.type === 'groupedBars') this.series=this.rawSeries
 
@@ -191,7 +177,7 @@ export abstract class AbstractChartGenerator {
     5 : 'bardzo dobrze', 4:'raczej dobrze', 3:'średnio', 2:'raczej źle', 1:'bardzo źle'
   }
   getNumberToStringScale(n){
-    console.log(n)
+
     if ( Number(n) in this.numberToStringScale) return this.numberToStringScale[Number(n)]
     else return n
   }
@@ -201,7 +187,7 @@ export abstract class AbstractChartGenerator {
       return [list, ''];
     }
     const prefix = commonSubstring(list);
-    console.log(prefix);
+
     return [list.map(d => d.replace(prefix, '')), prefix];
   }
 
