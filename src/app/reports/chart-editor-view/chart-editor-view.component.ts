@@ -607,7 +607,7 @@ export class ChartEditorViewComponent implements OnInit {
   textVisible: boolean = false;
 
   get questionNames() {
-    return this.questions ? Object.keys(this.questions) : [];
+    return this.questions ? this.questions : [];
   }
   get questionNamesWithSuggestions(){
     let names = this.questionNames.filter(d=>!this.questionSuggestions.includes(d))

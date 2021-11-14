@@ -48,7 +48,7 @@ export class NameFilter implements PipeTransform {
 
 
     let substrings = filter.toLowerCase().split(" ")
-    return items.filter(item => substrings.some(v => item.includes(v)));
+    return items.filter(item => substrings.some(v => item.toLowerCase().includes(v)));
   }
 
 }

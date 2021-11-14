@@ -166,6 +166,7 @@ export class EditorComponent implements OnInit {
     console.log('downloading structure');
     this.surveyStructure = await (this.reportsService.getSurveyStructure(this.reportId).toPromise());
     this.namingDictionary = (this.reportsService.getNamingDictionary(this.surveyStructure));
+    this.surveyQuestions = Object.keys(this.namingDictionary)
   }
 
   addNewChartElement(beginning = false) {
@@ -208,16 +209,14 @@ export class EditorComponent implements OnInit {
     this.reportId = this.route.snapshot.paramMap.get('id')
     this.reportsService.getLinkedSurvey(this.route.snapshot.paramMap.get('id')).subscribe((d)=> {
       this.linkedSurveyId = d.surveyId; console.log(this.linkedSurveyId)
-      this.downloadSurveyQuestions()
+
       this.reportsService.getReport(this.route.snapshot.paramMap.get('id')).subscribe(d=>this.reportDefinition=d)
     });
     this.downloadNamingDictionary()
 
 
   }
-  async downloadSurveyQuestions(){
-    this.surveyQuestions = await this.surveysService.getQuestions(this.linkedSurveyId).toPromise();
-  }
+
   drop(event: CdkDragDrop<string[]>) {
     console.log('drop');
     let i = this.currentPage * this.itemsOnPage - this.itemsOnPage;

@@ -145,7 +145,7 @@ export class FiltersSelectorComponent implements OnInit {
   }
 
   get questionNames(){
-    return this.allQuestions?Object.keys(this.allQuestions):[]
+    return this.allQuestions?this.allQuestions:[]
   }
   constructor(public reportService:ReportsService) { }
   async selectQuestion(entry){
