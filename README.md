@@ -1,3 +1,16 @@
+## Install
+
+```
+npm install
+```
+
+## Run server
+```angular2html
+ng serve
+```
+
+## Tree
+
 ```
 │   favicon.ico
 │   index.html
