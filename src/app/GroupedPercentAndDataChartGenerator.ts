@@ -80,7 +80,7 @@ export class GroupedPercentAndDataChartGenerator extends AbstractChartGenerator 
       this.tableData.headers.unshift(entry)
       this.tableData.data.unshift(entry2)
     }
-    this.tableData.data = transpose(this.tableData.data).reverse()
+    this.tableData.data = this.tableData.data.length>0?transpose(this.tableData.data).reverse():[]
     return this;
   }
 yLabels;
