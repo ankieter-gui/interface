@@ -10,12 +10,15 @@ import {MultipleChoiceChartGenerator} from './MultipleChoiceChartGenerator';
 import {LinearCustomDataChartGenerator} from './LinearCustomDataChartGenerator';
 import {SummaryChartGenerator} from './SummaryChartGenerator';
 import {MultipleBarsWithOwnDataChartGenerator} from './MultipleBarsWithOwnDataChartGenerator';
+import {GroupedSummaryChartGenerator} from './GroupedSummaryChartGenerator';
 
 export class ColorsGenerator {
   chart: ChartReportElement;
   typeOf;
   lightBlue = '#1e6adb';
   darkBlue = '#0c4190';
+  frekwencjaBlue = '#64b5cd';
+  frekwencjaBlueAccent = '#4c72b0';
   caller: AbstractChartGenerator;
   multipleChoiceRed = '#C44E52';
   fiveColorPalette = [
@@ -54,6 +57,7 @@ export class ColorsGenerator {
     x[MultipleBarsWithOwnDataChartGenerator.name] = (o) => this.multipleBarsWithCustomDataChartGenerator(o);
     x[GroupedPercentAndDataChartGenerator.name] = (o) => this.groupedPercentAndDataChartGenerator(o);
     x[SummaryChartGenerator.name] = (o) => this.summaryChartGenerator(o);
+    x[GroupedSummaryChartGenerator.name] = (o) => this.summaryChartGenerator(o);
     const colorFunction = x[this.typeOf.name];
     if (colorFunction) {
       return colorFunction(options);
@@ -72,7 +76,8 @@ export class ColorsGenerator {
 
   frequencyChartGenerator(options: EChartsOption): EChartsOption {
     let i = options.series[0].data.length - 1;
-    (options.series[0] as any).data[i] = {value: (options.series[0] as any).data[i], itemStyle: {color: this.darkBlue},};
+    options.series[0].color=this.frekwencjaBlue;
+    (options.series[0] as any).data[i] = {value: (options.series[0] as any).data[i], itemStyle: {color: this.frekwencjaBlueAccent},};
     console.log((options.series[0] as any).data[i]);
     return options;
   }

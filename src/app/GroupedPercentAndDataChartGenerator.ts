@@ -59,7 +59,28 @@ export class GroupedPercentAndDataChartGenerator extends AbstractChartGenerator 
       _tableData.push(OrderGenerators.moveFirstToLast(value.reverse()).order)
       headers.push(key.split(" ")[0])
     });
-    this.tableData={headers:headers, data:_tableData.length>0?transpose(_tableData).reverse():[]};
+    this.tableData={headers:headers, data:_tableData.length>0?_tableData:[]};
+    const rowsIndex = this.tableData.headers.indexOf("rows")
+    const countIndex = this.tableData.headers.indexOf("count")
+
+    //zmiana kolejności, tak, żeby N i N* były na pcczątku
+    if (rowsIndex && rowsIndex>=0){
+      let entry = this.tableData.headers[rowsIndex]
+      let entry2 = this.tableData.data[rowsIndex]
+      this.tableData.headers.splice(rowsIndex,1)
+      this.tableData.data.splice(rowsIndex,1)
+      this.tableData.headers.unshift(entry)
+      this.tableData.data.unshift(entry2)
+    }
+    if (countIndex && countIndex>=0){
+      let entry = this.tableData.headers[countIndex]
+      let entry2 = this.tableData.data[countIndex]
+      this.tableData.headers.splice(rowsIndex,1)
+      this.tableData.data.splice(rowsIndex,1)
+      this.tableData.headers.unshift(entry)
+      this.tableData.data.unshift(entry2)
+    }
+    this.tableData.data = transpose(this.tableData.data).reverse()
     return this;
   }
 yLabels;
@@ -108,7 +129,7 @@ yLabels;
         stack: 'total',
         label: {
           show: true,
-          formatter: (options) => options.value != 0 ? `${Math.round(options.value)}%` : ''
+          formatter: (options) => Math.round(options.value) != 0 ? `${Math.round(options.value)}%` : ''
         },
         // emphasis: {
         //   focus: 'series'

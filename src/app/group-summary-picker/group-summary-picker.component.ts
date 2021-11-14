@@ -37,26 +37,26 @@ import {fadeInOut, fadeInOutSmallElement} from '../commonAnimations';
         <th>Kontrolki</th>
         </thead>
         <tbody>
-        <tr *ngFor="let group of this.groups" [@fadeInOutSmallElement]>
+        <tr *ngFor="let group of this.groups">
           <td style="width:60%">
             <div>
               <b>{{group.commonPrefix}}</b>
               <div style="position:relative;margin-top:0.5em;padding:0.5em; border:1px solid rgba(0,0,0,0.1); border-radius: 5px;" *ngFor="let question of group.questions">
-                <button style="position: absolute; top:5px; right:5px" nz-button nzShape="circle" (click)="onClose(group,question)"><i nz-icon nzType="delete"></i></button>
+                <button style="position: absolute; top:5px; right:5px" nz-button nzShape="circle" (click)="onClose(group,question);saveToQuery()"><i nz-icon nzType="delete"></i></button>
                 {{applyPrefix(question, group.commonPrefix)}}
               </div>
             </div>
             <button style="margin-top:1em" nz-button nzType="default" nzShape="circle" (click)="openQuestionsDialog(group)"><i nz-icon nzType="plus"></i></button>
             <span style="margin-left:1em">Dodaj pytanie</span>
           </td>
-          <td><input nz-input [(ngModel)]="group.newName" placeholder="Nazwa grupy"></td>
-          <td><button nz-button nzType="default" nzShape="circle" (click)="removeGroup(group)"><i nz-icon nzType="delete"></i></button></td>
+          <td><input nz-input [(ngModel)]="group.newName" (blur)="saveToQuery()" placeholder="Nazwa grupy"></td>
+          <td><button nz-button nzType="default" nzShape="circle" (click)="removeGroup(group); saveToQuery()"><i nz-icon nzType="delete"></i></button></td>
         </tr>
         </tbody>
       </nz-table>
     </section>
     <section style="margin-top:1em;margin-bottom: 3em">
-      <button nz-button nzType="default" nzShape="circle" (click)="addNewGroup()"><i nz-icon nzType="plus"></i></button>
+      <button nz-button nzType="default" nzShape="circle" (click)="addNewGroup();saveToQuery()"><i nz-icon nzType="plus"></i></button>
       <span style="margin-left:1em">Dodaj grupę</span>
       <span *ngIf="this.groups.length==0" style="margin-left:1em;color:red">Brak grup. Dodaj nową.</span>
     </section>
@@ -79,11 +79,18 @@ export class GroupSummaryPickerComponent implements OnInit {
   questionNames;
 
   getFromQuery(){
-
+    if (!this.chartData.dataQuery.join) return []
+    return this.chartData.dataQuery.join.map(x=>{
+      const u = new GroupSummaryGroup();
+      u.questions=x.of;
+      u.newName=x.name;
+      return u;
+    })
   }
   saveToQuery(){
-
-
+    // this.chartData.dataQuery.get = [this.groups.map(x=>x.newName)]
+    if (this.groups.some(x=>!x.newName)) return;
+    this.chartData.dataQuery.join = this.groups.map(x=>({name:x.newName, of:x.questions}))
     this.saveEmitter.emit()
   }
 
@@ -99,6 +106,9 @@ export class GroupSummaryPickerComponent implements OnInit {
 
   ngOnInit(): void {
     this.addNewGroup()
+    const fromQuery = this.getFromQuery()
+    if (fromQuery) this.groups=fromQuery;
+
   }
   refreshChart(){
 
@@ -106,7 +116,18 @@ export class GroupSummaryPickerComponent implements OnInit {
   openQuestionsDialog(group){
     this.dashboardModals.openEditQuestionGroupDialog(group, this, ()=>this.saveToQuery())
   }
-  asPickerClick(q){}
+  asPickerClick(q){
+    console.log("as picker click")
+    // @ts-ignore
+    if (this.chartData.dataQuery.as.includes(q)) {
+      this.chartData.dataQuery.as = this.chartData.dataQuery.as.filter(d => d != q);
+    } else {
+      // @ts-ignore
+      this.chartData.dataQuery.as.push(q);
+
+    }
+    this.saveToQuery()
+  }
   onClose(group:GroupSummaryGroup,question){
     group.questions = group.questions.filter(d=>d!=question)
   }

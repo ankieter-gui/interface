@@ -34,7 +34,7 @@
 <!--                    (nzOnClose)="removeGlobalFilterRef(this.reportDefinition,f); refresh(); filterSelector.reset()" *ngFor="let f of this.reportDefinition.globalFilter">{{f.question}}-->
 <!--              - {{this.reportsService.getLabelFor(this.namingDictionary, f.question, f.answer)}}</nz-tag>-->
             <button nz-button nz-dropdown [nzDropdownMenu]="menu4" nzTrigger="click">
-              Filtruj ankietę przez odpowiedź <span *ngIf="this.reportDefinition.globalFilter"><b> (!)</b></span>
+              Filtruj ankietę przez odpowiedź
               <i nz-icon nzType="down"></i>
             </button>
 

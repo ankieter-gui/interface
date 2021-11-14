@@ -17,6 +17,7 @@ import {LinearCustomDataChartGenerator} from './LinearCustomDataChartGenerator';
 import {ColorsGenerator} from './ColorsGenerator';
 import {SummaryChartGenerator} from './SummaryChartGenerator';
 import {MultipleBarsWithOwnDataChartGenerator} from './MultipleBarsWithOwnDataChartGenerator';
+import {GroupedSummaryChartGenerator} from './GroupedSummaryChartGenerator';
 
 @Injectable({
   providedIn: 'root'
@@ -132,6 +133,7 @@ export class ChartsService {
       'multipleBarsOwnData':MultipleBarsWithOwnDataChartGenerator,
       'linearCustomData': LinearCustomDataChartGenerator,
       'summary': SummaryChartGenerator,
+      'groupSummary':GroupedSummaryChartGenerator,
     }[chartElement.config.type];
     console.log(chartElement.config.type)
     return [strategyType, new strategyType(series, chartElement, namingDictioanry, this.reportService, dictionaryOverrides)];

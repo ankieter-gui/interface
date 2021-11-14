@@ -106,8 +106,10 @@ export class DashboardModalsService {
         console.log("1")
         // Here you can access the real file
         console.log(i.files[0].relativePath, file);
-        let rsp = await (i.surveyService.uploadData(file, i.files[0].relativePath, name).toPromise())
+        let rsp = await (i.surveyService.createSurvey(name).toPromise())
         newSurveyId=rsp.id
+
+
         console.log(newSurveyId)
         console.log(rsp)
 
@@ -124,6 +126,7 @@ export class DashboardModalsService {
             console.log("sending XML...")
             console.log(newSurveyId)
             let d = await (i.surveyService.uploadXML(newSurveyId, file, i.files[0].relativePath).toPromise())
+            await (i.surveyService.uploadData(file, i.files[0].relativePath,newSurveyId, name).toPromise())
             i.isFileBeingUploaded = false;
             selectedSurvey = d
             callback(rsp,d)
@@ -133,6 +136,7 @@ export class DashboardModalsService {
           });
         }
         else{
+          await (i.surveyService.uploadData(file, i.files[0].relativePath,newSurveyId, name).toPromise())
           callback(rsp,null)
           m.destroy();
 

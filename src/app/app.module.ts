@@ -105,7 +105,15 @@ import { QuestionGroupEditorComponent } from './question-group-editor/question-g
 import { MultipleBarsWithCustomDataDataPickerComponent } from './multiple-bars-with-custom-data-data-picker/multiple-bars-with-custom-data-data-picker.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
 
+// Import the echarts core module, which provides the necessary interfaces for using echarts.
+import * as echarts from 'echarts/core';
+// Import bar charts, all with Chart suffix
+import { BarChart } from 'echarts/charts';
+import { TitleComponent, TooltipComponent, GridComponent } from 'echarts/components';
+// Import the Canvas renderer, note that introducing the CanvasRenderer or SVGRenderer is a required step
+import { SVGRenderer} from 'echarts/renderers';
 
+echarts.use([TitleComponent, TooltipComponent, GridComponent, BarChart, SVGRenderer]);
 registerLocaleData(pl);
 export let commonNZImports = [
   NgxEchartsModule.forRoot({
@@ -116,6 +124,7 @@ export let commonNZImports = [
      */
     echarts: () => import('echarts'), // or import('./path-to-my-custom-echarts')
   }),
+  //NgxEchartsModule.forRoot({ echarts }),  SVG renderer
   BrowserModule,
 
   NzLayoutModule,

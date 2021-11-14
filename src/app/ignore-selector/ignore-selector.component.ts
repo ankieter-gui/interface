@@ -45,8 +45,13 @@ export class IgnoreSelectorComponent implements OnInit {
 
  lastLabels=[]
   onExternalDataChange(){
-   console.log(this.chart.generator.namingDictionary[this.chart.dataQuery.get[0][0]])
-   let allLabels = Object.keys(this.chart.generator.namingDictionary[this.chart.dataQuery.get[0][0]])
+
+   let allLabels;
+   if(this.chart.generator.namingDictionary[this.chart.dataQuery.get[0][0]]){
+   allLabels = Object.keys(this.chart.generator.namingDictionary[this.chart.dataQuery.get[0][0]])}else{
+
+      allLabels=Object.keys(this.chart.generator.namingDictionary[this.chart.dataQuery.join[0].of[0]])}
+
     // console.log((Object.entries(this.lastDataResponse).filter(d => d[0] != 'index' && d[0].includes('share')).map(d => d[1])));
     // let allLabels = this.chartService.getAllShareLabels((Object.entries(this.lastDataResponse).filter(d => d[0] != 'index' && d[0].includes('share')).map(d => d[1]))[0]);
     console.log(allLabels);

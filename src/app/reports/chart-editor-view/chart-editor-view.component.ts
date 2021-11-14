@@ -47,7 +47,7 @@ import {SuggestionsGenerator} from '../../SuggestionsGenerator';
            [class.title-hidden]="!chartData.config.showTitle">
           <b>{{this.chartData.name ? this.chartData.name : this.chartData.dataQuery.get[0][0]}}</b>
         </p>
-        <div class="chart-container summary-container" *ngIf="this.chartData.config.type=='summary'">
+        <div class="chart-container summary-container" *ngIf="this.chartData.config.type=='summary' || this.chartData.config.type=='groupSummary'">
           <figure *ngIf="!chartData.config.type || isError" style="margin:auto;"><img
             src="../../../assets/Continuous-Animations_guidelines.gif"></figure>
           <section class="chart-area" *ngIf="this.echartOptions">
@@ -78,7 +78,7 @@ import {SuggestionsGenerator} from '../../SuggestionsGenerator';
           </section>
 
         </div>
-        <div class="chart-container" *ngIf="this.chartData.config.type!='summary'">
+        <div class="chart-container" *ngIf="this.chartData.config.type!='summary' && this.chartData.config.type!='groupSummary'">
           <figure *ngIf="!chartData.config.type || isError" style="margin:auto;"><img
             src="../../../assets/Continuous-Animations_guidelines.gif"></figure>
           <section class="chart-area" *ngIf="chartData.config.type=='groupedPercentAndData' && this.echartOptions">
@@ -105,7 +105,7 @@ import {SuggestionsGenerator} from '../../SuggestionsGenerator';
             </nz-table>
           </section>
           <section class="chart-area"
-                   *ngIf="['multipleChoice', 'groupedBars', 'multipleBars', 'linearCustomData', 'summary', 'multipleBarsOwnData'].includes(chartData.config.type)  && this.echartOptions">
+                   *ngIf="['multipleChoice', 'groupedBars', 'multipleBars', 'linearCustomData', 'summary','groupSummary', 'multipleBarsOwnData'].includes(chartData.config.type)  && this.echartOptions">
             <div echarts [style.height.px]="echartOptions.pxHeight" (chartInit)="onChartInit($event)" [options]="echartOptions"
                  class="chart"
                  style="width: 100%;"></div>
@@ -138,7 +138,7 @@ import {SuggestionsGenerator} from '../../SuggestionsGenerator';
           </figure>
           <div class="arrow-container" *ngIf="!hideGroupBy"><i nz-icon nzType="right"></i></div>
           <figure class="indicator-card indicator-card-velvet" *ngIf="!hideGroupBy" (click)="activeTab=1">
-            <div class="indicator-card-inner">
+            <div class="indicator-card-inner" *ngIf="chartData.dataQuery.by && chartData.dataQuery.by[0]">
               <div class="indicator-card-header">Grupowanie</div>
               <div class="indicator-card-content">{{chartData.dataQuery.by[0] | RemoveHtml}}</div>
             </div>
@@ -232,7 +232,7 @@ import {SuggestionsGenerator} from '../../SuggestionsGenerator';
                   </section>
                 </nz-tab>
                 <nz-tab nzTitle="Konfiguracja grup" *ngIf="this.chartData.config.type=='groupSummary'">
-                        <app-group-summary-picker [chartData]="chartData" [questions]="this.questions" [questionNames]="this.questionNames"></app-group-summary-picker>
+                        <app-group-summary-picker (saveEmitter)="refreshChart()" [chartData]="chartData" [questions]="this.questions" [questionNames]="this.questionNames"></app-group-summary-picker>
                 </nz-tab>
                 <nz-tab nzTitle="Pytanie i dane" *ngIf="!showLinearPicker && this.chartData.config.type && !['groupSummary', 'multipleBarsOwnData', 'multipleBarsOwnData'].includes(this.chartData.config.type)">
                   <section class="question-selector dane" *ngIf="!hideData">
@@ -245,7 +245,7 @@ import {SuggestionsGenerator} from '../../SuggestionsGenerator';
                         <tbody>
                         <tr>
                           <td style="cursor: pointer!important;"
-                              *ngFor='let q of ["max","min","mode","mean","median","std","var","count","sum"]'
+                              *ngFor='let q of ["max","min","mode","mean","median","std","var","count", "rows","sum"]'
                               (click)="$event.preventDefault();$event.stopPropagation();asPickerClick(q);refreshChart()"><label><input
                             style="pointer-events:none" type="checkbox" (click)="$event.preventDefault()"
                             [checked]="chartData.dataQuery.as.includes(q)"> {{q |  PolskieNazwy | titlecase}}</label></td>
@@ -699,13 +699,19 @@ export class ChartEditorViewComponent implements OnInit {
 
     let fun = {
       'multipleBarsOwnData':()=>{},
-      'groupSummary':()=>{},
+      'groupSummary':()=>{
+        this.chartData.dataQuery.by[0] = '*';
+        this.hideGroupBy = true;
+        this.chartData.dataQuery.as[0] = 'mean';
+
+      },
       'groupedPercentAndData': () => {
         this.hideData = false;
         this.hideGroupBy = false;
         this.chartData.dataQuery.as[0] = 'share';
+        console.log(JSON.stringify(this.chartData.dataQuery))
         this.onPickQuestion = (question)=>{
-          if (this.chartData.dataQuery.get[0].length > 0 && this.chartData.dataQuery.get[0][0] == question) {
+          if (this.chartData.dataQuery.get[0] && this.chartData.dataQuery.get[0].length > 0 && this.chartData.dataQuery.get[0][0] == question) {
             console.log("equals")
             this.chartData.dataQuery.get = [[]]
           }else {
@@ -821,6 +827,7 @@ export class ChartEditorViewComponent implements OnInit {
    return  this.chartData.dataQuery.as.map(d=>SurveyQueryNamingDictionary[d]??d).join(', ')
   }
   asPickerClick(type){
+
    if (this.chartData.dataQuery.as.includes(type)){
      this.chartData.dataQuery.as = this.chartData.dataQuery.as.filter(d => d !== type)
    }else{
@@ -936,7 +943,7 @@ onChartInit(e){
   echartOptions;
   generateChart(){
     this.echartOptions = this.chartsService.generateChart(this.dataResponse, this.chartData, this.reportId, this.namingDictionary, this.report.dictionaryOverrides);
-
+    console.log(this.echartOptions)
   }
 
 

@@ -44,7 +44,7 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
 export class EditorComponent implements OnInit {
   //pagination:
   currentPage = 1;
-  itemsOnPage = 13;
+  itemsOnPage = 20;
 
   constructor(public dialogs: DashboardModalsService, private surveysService: SurveysService, private reportsService: ReportsService, private route: ActivatedRoute, private message: NzMessageService, public window: Window, private router: Router) {
   }

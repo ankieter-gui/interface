@@ -2,21 +2,27 @@ import {GlobalFilter} from './ReportDefinition';
 import {Query} from '@angular/core';
 
 export class SurveyQuery{
-  static possibleAggregations = ["share","max","min","mode","mean","median","std","var","count","sum"]
+  join:{of:string[], name:string}[]=[]
+  static possibleAggregations = ["share","max","min","mode","mean","median","std","var","count","sum", "rows"]
   get: string[][]=[[]]
-  as: ("share"|"max"|"min"|"mode"|"mean"|"median"|"std"|"var"|"count"|"sum")[]=[]
+  as: ("share"|"max"|"min"|"mode"|"mean"|"median"|"std"|"var"|"count"|"sum"|"rows")[]=[]
   by: string[] = [];
   filter: [string, '>' | '<' | '=' | '!=' | '<=' | '>=' | 'top' | 'low' | 'in' | 'notin', string?, string?][] = [];
   constructor() {
     this.get=[[]]
     this.as=[]
     this.by=[]
+    this.join=[]
     this.filter=[]
   }
 }
 
 export let ComplimentQuery = (query: SurveyQuery, globalFilter: GlobalFilter[] = null, localFilter: GlobalFilter[] = null, ignore=[]): SurveyQuery => {
-
+  let deleteDatabaseIf=false;
+  if (query.join && query.join.length>0){
+    deleteDatabaseIf=true;
+     query.get = query.join.map(x=>[x.name])
+  }
   let exceptFilter:GlobalFilter[] = []
   localFilter=localFilter.filter(x=>x!=undefined)
   console.log(localFilter)
@@ -80,9 +86,10 @@ export let ComplimentQuery = (query: SurveyQuery, globalFilter: GlobalFilter[] =
     delete q2['if'];
   }
   delete q2['filter'];
+  if (deleteDatabaseIf) q2['if']=[]
   if (ignore) {
     //check the indices of 'as' aggregations that shall ignore some values selected by the user
-    let excludeList = ["share", "count"]
+    let excludeList = ["share", "rows"]
     let includeList = SurveyQuery.possibleAggregations.filter(d => !excludeList.includes(d))
     // @ts-ignore
     let indices = includeList.map(d => query.as.indexOf(d)).filter(d => d !== -1)
@@ -102,6 +109,7 @@ export let ComplimentQuery = (query: SurveyQuery, globalFilter: GlobalFilter[] =
     q2['except'] = Object.entries(exceptDict).map(x=>[x[0],'in',...x[1].flat()])
 
   }
+
   return q2;
 }
 export let SurveyQueryNamingDictionary = {
@@ -113,8 +121,9 @@ export let SurveyQueryNamingDictionary = {
   'mean': 'śr',
   'std': 'SD',
   'var': 'wariancja',
-  'count': 'N',
-  'sum': 'suma'
+  'count': 'N*',
+  'sum': 'suma',
+  "rows":"N",
 }
 
 
