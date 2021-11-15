@@ -3,6 +3,7 @@ import {ChartReportElement} from './dataModels/ReportElement';
 import {ReportsService} from './reports.service';
 import * as _ from 'lodash';
 import {EChartsOption} from 'echarts';
+import {breakLongLabels} from './breakLongLabels';
 
 export class MultipleBarsWithOwnDataChartGenerator extends AbstractChartGenerator{
   xAxisLabels;
@@ -85,7 +86,7 @@ export class MultipleBarsWithOwnDataChartGenerator extends AbstractChartGenerato
         data: this.legend
       },
 
-      pxHeight: 500,
+      pxHeight: 650,
       xAxis: [
         {
           boundaryGap: true,
@@ -96,12 +97,12 @@ export class MultipleBarsWithOwnDataChartGenerator extends AbstractChartGenerato
             rotate: 30
           },
           //rok, stopień lub kierunek
-          data: this.xAxisLabels
+          data: this.xAxisLabels.map(x=> x.replace(" ", "\n"))
         }
       ],
       yAxis: [
         {
-          max:Math.max(...this.barSeries.flat())+25,
+          max:Math.max(...this.barSeries.flat())+8,
           type: 'value'
         }
       ],

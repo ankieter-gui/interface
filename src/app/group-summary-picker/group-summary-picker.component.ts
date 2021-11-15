@@ -18,7 +18,7 @@ import {fadeInOut, fadeInOutSmallElement} from '../commonAnimations';
           <tbody>
           <tr>
             <td style="cursor: pointer!important;"
-                *ngFor='let q of ["max","min","mode","mean","median","std","var","count","sum"]'
+                *ngFor='let q of ["max","min","mode","mean","median","std","var","count","rows","sum"]'
                 (click)="$event.preventDefault();$event.stopPropagation();asPickerClick(q);refreshChart()"><label><input
               style="pointer-events:none" type="checkbox" (click)="$event.preventDefault()"
               [checked]="chartData.dataQuery.as.includes(q)"> {{q |  PolskieNazwy | titlecase}}</label></td>
