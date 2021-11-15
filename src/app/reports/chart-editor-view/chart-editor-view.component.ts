@@ -56,7 +56,7 @@ import {SuggestionsGenerator} from '../../SuggestionsGenerator';
                  [class.fullWidth]="!(chartData.dataQuery.as.includes('share') && chartData.dataQuery.as.length>1 && dataResponse)"
                  #chartInstance>
             </div>
-            <nz-table
+            <nz-table style="margin-top:5px;"
               *ngIf="chartData.dataQuery.as.length>1 && dataResponse && chartData.generator"
               class="details-table details-table-summary" [nzTemplateMode]="true">
               <thead style="white-space: nowrap;">
@@ -69,7 +69,7 @@ import {SuggestionsGenerator} from '../../SuggestionsGenerator';
               <tbody>
               <tr style="line-height: 1!important; padding:0px!important;" *ngFor="let row of chartData.generator.tableData.data">
                 <td
-                  style="white-space: nowrap; padding-right:0px!important;padding-top:0px!important;padding-bottom:0px!important;height:23px"
+                  style="white-space: nowrap; padding-right:0px!important;padding-top:0px!important;padding-bottom:0px!important;height:24px"
                   [class.leftpadding]="i>0"
                   *ngFor="let value of row; let i=index;">{{this.reportsService.getLabelFor(namingDictionary, this.question, value) == value ? this.round(value) : this.reportsService.getLabelFor(namingDictionary, this.question, value) }}</td>
               </tr>
@@ -323,7 +323,7 @@ import {SuggestionsGenerator} from '../../SuggestionsGenerator';
                                                            [chart]="this.chartData"></app-grouped-bars-percentage-data-picker>
                 </nz-tab>
                 <nz-tab nzTitle="Filtry" *ngIf="!showLinearPicker && this.chartData.config.type && this.chartData.config.type!='multipleBarsOwnData'">
-                  <app-filters-selector [namingDictionary]="namingDictionary" [allQuestions]="namingDictionary"
+                  <app-filters-selector [namingDictionary]="namingDictionary" [allQuestions]="questions"
                                         (filtersChange)="refreshFilter($event)" [(filters)]="this.chartData.config.filters" [multipleQuestionsAllowed]="true"
                                         [reportId]="reportId"></app-filters-selector>
                 </nz-tab>
