@@ -75,7 +75,7 @@ export class SummaryChartGenerator extends AbstractChartGenerator {
       _tableData.push(tmp.map(u => this.series[u][0]));
     });
 
-    this.tableData = {headers: this.chartElement.dataQuery.as.filter(d => d != 'mean'), data: _tableData};
+    this.tableData = {headers: this.chartElement.dataQuery.as.filter(d => d != 'mean'), data: _tableData.reverse()};
     return this;
   }
 

@@ -69,7 +69,7 @@ import {SuggestionsGenerator} from '../../SuggestionsGenerator';
               <tbody>
               <tr style="line-height: 1!important; padding:0px!important;" *ngFor="let row of chartData.generator.tableData.data">
                 <td
-                  style="white-space: nowrap; padding-right:0px!important;padding-top:0px!important;padding-bottom:0px!important;height:24px"
+                  style="white-space: nowrap; padding-right:0px!important;padding-top:0px!important;padding-bottom:0px!important;height:23px"
                   [class.leftpadding]="i>0"
                   *ngFor="let value of row; let i=index;">{{this.reportsService.getLabelFor(namingDictionary, this.question, value) == value ? this.round(value) : this.reportsService.getLabelFor(namingDictionary, this.question, value) }}</td>
               </tr>
