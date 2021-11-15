@@ -771,7 +771,8 @@ export class ChartEditorViewComponent implements OnInit {
         let update = () => {
           this.chartData.dataQuery.get = [];
           for (let i = 0; i < this.summarySelectedQuestions.length; i++) {
-            this.chartData.dataQuery.get.push(Array(this.chartData.dataQuery.as.length).fill(this.summarySelectedQuestions[i]));
+            this.chartData.dataQuery.get.push([this.summarySelectedQuestions[i]])
+          //  this.chartData.dataQuery.get.push(Array(this.chartData.dataQuery.as.length).fill(this.summarySelectedQuestions[i]));
           }
         };
         this.asPickerClick = (s) => {
