@@ -47,7 +47,7 @@ export class ReportPreviewComponent implements OnInit {
         return;
       }
       this.linkedSurveyId = d.surveyId; console.log(this.linkedSurveyId)
-      this.downloadSurveyQuestions()
+
       this.reportsService.getReport(this.reportId).subscribe(d=>this.reportDefinition=d)
     });
     this.downloadNamingDictionary()
@@ -56,14 +56,12 @@ export class ReportPreviewComponent implements OnInit {
   }
   surveyStructure;
   namingDictionary;
-  async downloadSurveyQuestions(){
-    this.surveyQuestions = await this.surveysService.getQuestions(this.linkedSurveyId).toPromise();
 
-  }
   async downloadNamingDictionary(){
     console.log("downloading structure")
     this.surveyStructure = await (this.reportsService.getSurveyStructure(this.reportId).toPromise())
     this.namingDictionary =  (this.reportsService.getNamingDictionary(this.surveyStructure))
+    this.surveyQuestions = Object.keys(this.namingDictionary)
   }
   drop(event: CdkDragDrop<string[]>) {
     if (event.previousContainer === event.container) {
