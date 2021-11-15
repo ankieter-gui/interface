@@ -14,8 +14,7 @@ export class MultipleChoiceChartGenerator extends AbstractChartGenerator {
 
 
   getAllCount(reportId): any {
-    console.log('get all count');
-    //TODO: czekanie na endpointa do tego
+    this.reportsService.answersCountMacro(reportId, this.chartElement.dataQuery.get.flat(), this.chartElement.dataQuery.filter).then(x=>this.allAnswers = x)
 
   }
 

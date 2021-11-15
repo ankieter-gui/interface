@@ -56,7 +56,7 @@ import {SuggestionsGenerator} from '../../SuggestionsGenerator';
                  [class.fullWidth]="!(chartData.dataQuery.as.includes('share') && chartData.dataQuery.as.length>1 && dataResponse)"
                  #chartInstance>
             </div>
-            <nz-table style="margin-top:5px;"
+            <nz-table
               *ngIf="chartData.dataQuery.as.length>1 && dataResponse && chartData.generator"
               class="details-table details-table-summary" [nzTemplateMode]="true">
               <thead style="white-space: nowrap;">
@@ -109,7 +109,7 @@ import {SuggestionsGenerator} from '../../SuggestionsGenerator';
             <div echarts [style.height.px]="echartOptions.pxHeight" (chartInit)="onChartInit($event)" [options]="echartOptions"
                  class="chart"
                  style="width: 100%;"></div>
-            <div style="position: absolute;right: 0; border: 1px solid rgba(0,0,0,0.2); padding:0.7em;"
+            <div style="position: absolute;right: 50px; border: 1px solid rgba(0,0,0,0.05); padding:0.7em; background-color:white;"
                  [style.top.px]="echartOptions.pxHeight-30"
                  *ngIf="chartData.generator && chartData.generator.allAnswers">Wszystkie
               odpowiedzi: {{chartData.generator.allAnswers}}</div>

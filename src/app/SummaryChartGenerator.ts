@@ -71,11 +71,18 @@ export class SummaryChartGenerator extends AbstractChartGenerator {
     let _tableData = [];
     console.log(this.seriesByScales);
     this.yLabels.forEach(label => {
-      const tmp = this.chartElement.dataQuery.as.filter(d => d != 'mean').map(d => d + label);
+      let tmp = this.chartElement.dataQuery.as.filter(d => d != 'mean').map(d => d + label);
+      tmp = tmp.sort((a,b)=>a.includes("rows") || a.includes("count")?-1:1 )
+      console.log(tmp)
       _tableData.push(tmp.map(u => this.series[u][0]));
     });
 
-    this.tableData = {headers: this.chartElement.dataQuery.as.filter(d => d != 'mean'), data: _tableData.reverse()};
+    this.tableData = {headers: this.chartElement.dataQuery.as.filter(d => d != 'mean').sort((a,b)=>a.includes("rows") || a.includes("count")?-1:1 ), data: _tableData.reverse()};
+    //zmiana kolejności, tak, żeby N i N* były na pcczątku
+    console.log(this.tableData)
+
+
+
     return this;
   }
 
