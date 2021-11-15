@@ -1,5 +1,5 @@
   <div
-    *ngIf="userService.userResponse && userService.userResponse.debug && (!(userService.router.url.includes('reports')&&!userService.router.url.includes('editor')) || userService.router.url.includes('shared'))"
+    *ngIf="!userService.router.url.includes('shared') && userService.userResponse && userService.userResponse.debug && (!(userService.router.url.includes('reports')&&!userService.router.url.includes('editor')))"
     style="background-color: #e54848; color:white; text-align: center; padding:0.6em; font-family: Gilroy ExtraBold, sans-serif">
     Tryb debugowania na serwerze - można logować się bez CAS
   </div>
