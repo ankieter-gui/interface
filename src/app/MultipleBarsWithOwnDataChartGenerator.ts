@@ -120,7 +120,7 @@ export class MultipleBarsWithOwnDataChartGenerator extends AbstractChartGenerato
           d: d,
           index: index,
           type: 'bar',
-          barWidth: 20,
+          barWidth:15,
           color: undefined,
           barGap: 0,
           label: {
