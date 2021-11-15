@@ -161,6 +161,12 @@ export class EditorComponent implements OnInit {
     }
 
   }
+  addNewTextElementAtIndex(index){
+    let i = this.currentPage * this.itemsOnPage - this.itemsOnPage;
+    let elem = {type: 'text', content: {text: ''}};
+    // @ts-ignore
+    this.reportDefinition.elements.splice(index+i, 0, elem);
+  }
 
   async downloadNamingDictionary() {
     console.log('downloading structure');

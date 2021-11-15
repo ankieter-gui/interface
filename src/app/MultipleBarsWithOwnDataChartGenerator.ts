@@ -101,7 +101,7 @@ export class MultipleBarsWithOwnDataChartGenerator extends AbstractChartGenerato
       ],
       yAxis: [
         {
-
+          max:Math.max(...this.barSeries.flat())+25,
           type: 'value'
         }
       ],

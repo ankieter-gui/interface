@@ -95,7 +95,7 @@
           <div class="custom-placeholder" *cdkDragPlaceholder></div>
 
 
-          <div *ngFor="let element of itemsForCurrentPage()" cdkDrag class="element-box" style="position:relative;">
+          <div *ngFor="let element of itemsForCurrentPage(); let i=index" cdkDrag class="element-box" style="position:relative;">
 
             <div [ngSwitch]="element.type" style="position:relative;">
               <mat-icon cdkDragHandle class="drag-handle" [nz-tooltip]="'Przeciągnij aby zmienić kolejność'">open_with
@@ -116,6 +116,14 @@
                 <button (click)="this.dialogs.openReorderDialog(this.reportDefinition)" mat-menu-item>
                   <mat-icon>open_with</mat-icon>
                   <span>Przerzuć</span>
+                </button>
+                <button (click)="addNewTextElementAtIndex(i-1)" mat-menu-item>
+                  <mat-icon>title</mat-icon>
+                  <span>Nowy tekst wyżej</span>
+                </button>
+                <button (click)="addNewTextElementAtIndex(i+1)" mat-menu-item>
+                  <mat-icon>title</mat-icon>
+                  <span>Nowy tekst niżej</span>
                 </button>
               </mat-menu>
 
