@@ -6,6 +6,7 @@ import {ColorsGenerator} from './ColorsGenerator';
 import {OrderSetting} from './dataModels/OrderSetting';
 import {OrderSettingGenerator} from './OrderSettingGenerator';
 import {OrderGenerators} from '../OrderGenerators';
+import {SurveyQuery} from './dataModels/Query';
 
 export class GroupedPercentAndDataChartGenerator extends AbstractChartGenerator {
   entries;
@@ -16,7 +17,7 @@ export class GroupedPercentAndDataChartGenerator extends AbstractChartGenerator 
   legend;
   transposedEntries;
 
-  getAllCount(reportId) {
+  getAllCount(reportId, complimentedQuery: SurveyQuery = undefined) {
   }
 
   constructor(series: any, chartElement: ChartReportElement, namingDictionary, public reportsService: ReportsService, dictionaryOverrides) {

@@ -109,8 +109,8 @@ import {SuggestionsGenerator} from '../../SuggestionsGenerator';
             <div echarts [style.height.px]="echartOptions.pxHeight" (chartInit)="onChartInit($event)" [options]="echartOptions"
                  class="chart"
                  style="width: 100%;"></div>
-            <div style="position: absolute;right: 50px; border: 1px solid rgba(0,0,0,0.05); padding:0.7em; background-color:white;"
-                 [style.top.px]="echartOptions.pxHeight-30"
+            <div style="position: absolute;right: 5%;bottom:50px; border: 1px solid rgba(0,0,0,0.05); padding:0.7em; background-color:white;"
+
                  *ngIf="chartData.generator && chartData.generator.allAnswers">Wszystkie
               odpowiedzi: {{chartData.generator.allAnswers}}</div>
           </section>
@@ -863,10 +863,11 @@ export class ChartEditorViewComponent implements OnInit {
     if (!this.chartData.dataQuery.get || !this.chartData.dataQuery.get[0]) {
       return;
     }
+    let query = this.advancedQuery ? JSON.parse(this.advancedQuery) : ComplimentQuery(this.chartData.dataQuery, this.globalFilter, this.chartData.config.filters ? this.chartData.config.filters : [this.chartData.config.filter],this.chartData.config.ignoreAnswersForCalculations)
     try {
-      await this.downloadQueryResponse();
+      await this.downloadQueryResponse(query);
       if (this.dataResponse || ['linearCustomData', 'multipleBarsOwnData'].includes(this.chartData.config.type) ) {
-        await this.generateChart();
+        await this.generateChart(query);
         if (this.ignoreSelector) setTimeout(()=>this.ignoreSelector.onExternalDataChange(), 100);
       }
       this.isError = false;
@@ -924,12 +925,12 @@ onChartInit(e){
     saveAs(blob, 'wykres_' + this.chartData.name + ".png")
   }
 
-  async downloadQueryResponse() {
+  async downloadQueryResponse(query) {
     let _dataResponse:any;
     // if (this.isPreview && this.chartData.lastCachesResponse && !('error' in this.chartData.lastCachesResponse)){
     //   _dataResponse = this.chartData.lastCachesResponse;
     // }else {
-       _dataResponse = await (this.reportsService.getData(this.reportId, this.advancedQuery ? JSON.parse(this.advancedQuery) : ComplimentQuery(this.chartData.dataQuery, this.globalFilter, this.chartData.config.filters ? this.chartData.config.filters : [this.chartData.config.filter],this.chartData.config.ignoreAnswersForCalculations)).toPromise());
+       _dataResponse = await (this.reportsService.getData(this.reportId,query).toPromise());
     // }
     if ('error' in _dataResponse) {
 
@@ -942,8 +943,8 @@ onChartInit(e){
 
   }
   echartOptions;
-  generateChart(){
-    this.echartOptions = this.chartsService.generateChart(this.dataResponse, this.chartData, this.reportId, this.namingDictionary, this.report.dictionaryOverrides);
+  generateChart(fullQuery){
+    this.echartOptions = this.chartsService.generateChart(this.dataResponse, this.chartData, this.reportId, this.namingDictionary, this.report.dictionaryOverrides,undefined, fullQuery);
     console.log(this.echartOptions)
   }
 

@@ -16,7 +16,6 @@ export class SurveyQuery{
     this.filter=[]
   }
 }
-
 export let ComplimentQuery = (query: SurveyQuery, globalFilter: GlobalFilter[] = null, localFilter: GlobalFilter[] = null, ignore=[]): SurveyQuery => {
   let deleteDatabaseIf=false;
   if (query.join && query.join.length>0){

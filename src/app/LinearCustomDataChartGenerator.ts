@@ -2,13 +2,14 @@ import {AbstractChartGenerator} from './AbstractChartGenerator';
 import {ChartReportElement} from './dataModels/ReportElement';
 import {ReportsService} from './reports.service';
 import {EChartsOption} from 'echarts';
+import {SurveyQuery} from './dataModels/Query';
 
 export class LinearCustomDataChartGenerator extends AbstractChartGenerator {
   constructor(series: any, chartElement: ChartReportElement, namingDictionary, public reportsService: ReportsService, dictionaryOverrides) {
     super(series, chartElement, namingDictionary, reportsService, dictionaryOverrides);
   }
 
-  getAllCount(reportId) {
+    getAllCount(reportId, complimentedQuery: SurveyQuery = undefined) {
   }
 
 

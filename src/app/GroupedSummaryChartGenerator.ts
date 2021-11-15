@@ -5,6 +5,7 @@ import {EChartsOption} from 'echarts';
 import {breakLongLabels} from './breakLongLabels';
 import {commonSubstring} from './lcs';
 import {OrderGenerators} from '../OrderGenerators';
+import {SurveyQuery} from './dataModels/Query';
 
 export class GroupedSummaryChartGenerator extends AbstractChartGenerator {
   yLabels;
@@ -14,7 +15,8 @@ export class GroupedSummaryChartGenerator extends AbstractChartGenerator {
   ranks = [];
   seriesByScales = [];
   scales = [2.5, 3, 3.5, 4, 4.5];
-  getAllCount(reportId) {
+
+  getAllCount(reportId, complimentedQuery: SurveyQuery = undefined) {
   }
 
   constructor(series: any, chartElement: ChartReportElement, namingDictionary, public reportsService: ReportsService, dictionaryOverrides) {

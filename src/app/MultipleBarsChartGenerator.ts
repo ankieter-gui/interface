@@ -3,13 +3,14 @@ import {ChartReportElement} from './dataModels/ReportElement';
 import {ReportsService} from './reports.service';
 import {EChartsOption} from 'echarts';
 import * as _ from 'lodash';
+import {SurveyQuery} from './dataModels/Query';
 
 export class MultipleBarsChartGenerator extends AbstractChartGenerator {
   xAxisLabels;
   barSeries;
 
 
-  getAllCount(reportId) {
+  getAllCount(reportId, complimentedQuery: SurveyQuery = undefined) {
   }
 
   constructor(series: any, chartElement: ChartReportElement, namingDictionary, public reportsService: ReportsService, dictionaryOverrides) {

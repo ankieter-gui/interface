@@ -58,7 +58,7 @@ export class ReportsService {
     return this.http.post(`${BACKEND_URL}/report/${reportId}/data`, query, {withCredentials:true})
   }
   async answersCountMacro(reportId, questions, filters):Promise<number>{
-    let rsp = await this.getDataFromMacro(reportId, {get: [questions], macro:['count-answers', '9999']})
+    let rsp = await this.getDataFromMacro(reportId, {get: [questions], "if":filters, macro:['count-answers', '9999']})
     return Object.entries(rsp).find(x=>x[0].includes("rows"))[1]
   }
   async getDataFromMacro(reportId, query){

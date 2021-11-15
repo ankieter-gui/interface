@@ -139,11 +139,11 @@ export class ChartsService {
     return [strategyType, new strategyType(series, chartElement, namingDictioanry, this.reportService, dictionaryOverrides)];
   }
 
-  generateChart(series: any, chartElement: ChartReportElement, reportId, namingDictioanry, dictionaryOverrides, localOverrides = undefined): EChartsOption {
+  generateChart(series: any, chartElement: ChartReportElement, reportId, namingDictioanry, dictionaryOverrides, localOverrides = undefined,fullQuery=undefined): EChartsOption {
 
     let [strategyType, strategy] = this.getGenerator(series, chartElement, namingDictioanry, this.reportService, dictionaryOverrides, localOverrides);
     strategy.generate();
-    strategy.getAllCount(reportId);
+    strategy.getAllCount(reportId,fullQuery);
     console.log(strategy.allAnswers);
     chartElement.generator = strategy;
     let generator = new ColorsGenerator(chartElement, strategyType, strategy);

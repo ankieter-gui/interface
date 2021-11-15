@@ -10,6 +10,7 @@ import {share} from 'rxjs/operators';
 import {sum} from 'ng-zorro-antd/core/util';
 import {FrequencyChartGenerator} from './FrequencyChartGenerator';
 import {OrderSettingGenerator} from './OrderSettingGenerator';
+import {SurveyQuery} from './dataModels/Query';
 
 export interface DataPair {
   // [
@@ -124,7 +125,7 @@ export abstract class AbstractChartGenerator {
     }
   }
 
-  abstract getAllCount(reportId);
+  abstract getAllCount(reportId, complimentedQuery: SurveyQuery);
 
   getAllShareLabels(shareElement) {
     //można przerobić - issue: https://github.com/ankieter-gui/engine/issues/74

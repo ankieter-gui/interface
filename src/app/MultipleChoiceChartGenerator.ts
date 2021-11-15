@@ -4,6 +4,7 @@ import {ReportsService} from './reports.service';
 import {EChartsOption} from 'echarts';
 import {breakLongLabels} from './breakLongLabels';
 import {commonSubstring} from './lcs';
+import {ComplimentQuery} from './dataModels/Query';
 
 export class MultipleChoiceChartGenerator extends AbstractChartGenerator {
   constructor(series: any, chartElement: ChartReportElement, namingDictionary, public reportsService: ReportsService, dictionaryOverrides) {
@@ -13,8 +14,9 @@ export class MultipleChoiceChartGenerator extends AbstractChartGenerator {
   chartName;
 
 
-  getAllCount(reportId): any {
-    this.reportsService.answersCountMacro(reportId, this.chartElement.dataQuery.get.flat(), this.chartElement.dataQuery.filter).then(x=>this.allAnswers = x)
+  getAllCount(reportId, complimentedQuery): any {
+    console.log(this.chartElement.dataQuery.filter)
+    this.reportsService.answersCountMacro(reportId, complimentedQuery.get.flat(), complimentedQuery["if"]).then(x=>this.allAnswers = x)
 
   }
 

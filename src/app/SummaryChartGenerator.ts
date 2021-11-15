@@ -4,6 +4,7 @@ import {ReportsService} from './reports.service';
 import {EChartsOption} from 'echarts';
 import {breakLongLabels} from './breakLongLabels';
 import {commonSubstring} from './lcs';
+import {SurveyQuery} from './dataModels/Query';
 
 export class SummaryChartGenerator extends AbstractChartGenerator {
   yLabels;
@@ -21,7 +22,7 @@ export class SummaryChartGenerator extends AbstractChartGenerator {
 
   type = 'summary';
 
-  getAllCount(reportId) {
+  getAllCount(reportId, complimentedQuery: SurveyQuery = undefined) {
   }
 
   generate(): AbstractChartGenerator {

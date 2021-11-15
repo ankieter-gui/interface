@@ -4,12 +4,14 @@ import {ChartReportElement} from './dataModels/ReportElement';
 import {ReportsService} from './reports.service';
 import {CallbackDataParams} from 'echarts/types/src/util/types';
 import {breakLongLabels} from './breakLongLabels';
+import {SurveyQuery} from './dataModels/Query';
 
 //groupedBars string type
 export class FrequencyChartGenerator extends AbstractChartGenerator {
   chartValuesPairs;
   wereAllValuesFilledByHand: boolean = false;
-getAllCount(reportId) {
+
+  getAllCount(reportId, complimentedQuery: SurveyQuery = undefined) {
 }
 
 
