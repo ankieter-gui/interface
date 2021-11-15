@@ -88,7 +88,7 @@ getAllCount(reportId) {
       let sum = 0;
       chartValuesPairs.forEach(d => sum += Number(d[1]));
       outChartValuesPairs = [...outChartValuesPairs, [this.chartElement.config.allTogetherLabel,
-        this.chartElement.config.allTogetherValue,
+        sum,
         Math.round(sum / Number(this.chartElement.config.allTogetherValue) * 100)],];
       console.log(chartValuesPairs)
     } else {
