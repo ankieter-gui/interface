@@ -931,10 +931,22 @@ onChartInit(e){
     //   _dataResponse = this.chartData.lastCachesResponse;
     // }else {
        _dataResponse = await (this.reportsService.getData(this.reportId,query).toPromise());
+
     // }
     if ('error' in _dataResponse) {
 
     } else {
+
+      let indexOf9999 = _dataResponse['index'].indexOf(9999)
+      console.log(indexOf9999)
+      if (indexOf9999>=0) {
+        for (let key of Object.keys(_dataResponse).filter(x => x != 'index')) {
+          _dataResponse[key].splice(indexOf9999, 1)
+
+        }
+        _dataResponse['index'].splice(indexOf9999, 1)
+        console.log(_dataResponse)
+      }
       this.dataResponse = _dataResponse;
       // this.chartData.lastCachesResponse = this.dataResponse;
     }

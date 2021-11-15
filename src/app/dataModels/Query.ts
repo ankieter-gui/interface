@@ -79,7 +79,7 @@ export let ComplimentQuery = (query: SurveyQuery, globalFilter: GlobalFilter[] =
   if (shareIndexOf>=0){
     q2['if'] = [...q2['if'], [shareIndexOf, "notin", "9999", "999"]]
   }
-  if (shareIndexOf>=0) { //jeżeli nie ma share to wtedy nie aplikujemy filtrów 9999 i 999
+  if (shareIndexOf>=0 && false) { //jeżeli nie ma share to wtedy nie aplikujemy filtrów 9999 i 999
     const notInQuestions = [...q2.by.flat(), ...q2.get.flat()].map(d => [d, 'notin', '9999', '999']);
     notInQuestions.forEach(d => {
       if (d[0] != '*') {

@@ -92,10 +92,11 @@ export class MultipleBarsWithOwnDataChartGenerator extends AbstractChartGenerato
         {
           boundaryGap: true,
           type: 'category',
+          splitLine:{interval:"auto", show:true, lineStyle:{width:3}},
           axisTick: {show: false},
           axisLabel: {
             interval: 0,
-            rotate: 30
+            rotate: 10
           },
           //rok, stopień lub kierunek
           data: this.xAxisLabels.map(x=> x.replace(" ", "\n"))
