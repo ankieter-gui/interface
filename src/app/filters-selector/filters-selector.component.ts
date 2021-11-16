@@ -10,14 +10,14 @@ import {fadeInOut} from '../commonAnimations';
   animations:[fadeInOut],
   template: `
     <p *ngIf="acceptList.length>0 || exceptList.length>0">Przeciągaj filtry między kategoriami</p>
-    <div cdkDropListGroup style="display: flex; flex-direction: row; justify-content: space-between; margin-bottom: 2em;" [@fadeInOut] *ngIf="acceptList.length>0 || exceptList.length>0" >
+    <div cdkDropListGroup style="display: flex; flex-direction: row; justify-content: space-between; margin-bottom: 2em;" >
 
       <div class="left-cointainer" style="width: 45%;">
         <h2>Filtry akceptujące</h2>
         <p>Takie, które muszą być spełnione aby odpowiedź była wliczana.</p>
 
         <div
-          cdkDropList
+          cdkDropList [@fadeInOut]
           [cdkDropListData]="acceptList"
          class="dragContainer"
           (cdkDropListDropped)="drop($event)">
@@ -31,7 +31,7 @@ import {fadeInOut} from '../commonAnimations';
         <p>Jeżeli odpowiedź spełnia te warunki to <b>nie jest wliczana</b></p>
 
         <div
-          cdkDropList
+          cdkDropList [@fadeInOut]
           [cdkDropListData]="exceptList"
           class="dragContainer"
           (cdkDropListDropped)="drop($event)">
@@ -93,7 +93,7 @@ import {fadeInOut} from '../commonAnimations';
     `tbody tr:hover{
 
     }
-    .dragContainer{border:1px dashed rgba(0,0,0,0.2); min-height: 20px;border-radius: 10px; transition: all 0.2s}
+    .dragContainer{border:1px dashed rgba(0,0,0,0.2); min-height:250px;border-radius: 10px; transition: all 0.2s}
     `
   ]
 })

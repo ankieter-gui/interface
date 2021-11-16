@@ -472,7 +472,8 @@ import {SuggestionsGenerator} from '../../SuggestionsGenerator';
 
       .indicator-card {
         width: 140px;
-        min-height: 100px;
+        height:150px;
+
         cursor: pointer;
         box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.05);
         border-radius: 7px;
