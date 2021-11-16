@@ -102,10 +102,10 @@ export class DashboardModalsService {
       console.log("1")
       console.log(i.fileEntry)
       let newSurveyId=null
-      i.fileEntry.file(async (file: File) => {
+      i.fileEntry.file(async (fileCSV: File) => {
         console.log("1")
         // Here you can access the real file
-        console.log(i.files[0].relativePath, file);
+        console.log(i.files[0].relativePath, fileCSV);
         let rsp = await (i.surveyService.createSurvey(name).toPromise())
         newSurveyId=rsp.id
 
@@ -126,7 +126,9 @@ export class DashboardModalsService {
             console.log("sending XML...")
             console.log(newSurveyId)
             let d = await (i.surveyService.uploadXML(newSurveyId, file, i.files[0].relativePath).toPromise())
-            await (i.surveyService.uploadData(file, i.files[0].relativePath,newSurveyId, name).toPromise())
+            console.log(file)
+            console.log(i.files[0].relativePath)
+            await (i.surveyService.uploadData(fileCSV, i.files[0].relativePath,newSurveyId, name).toPromise())
             i.isFileBeingUploaded = false;
             selectedSurvey = d
             callback(rsp,d)
@@ -136,7 +138,7 @@ export class DashboardModalsService {
           });
         }
         else{
-          await (i.surveyService.uploadData(file, i.files[0].relativePath,newSurveyId, name).toPromise())
+          await (i.surveyService.uploadData(fileCSV, i.files[0].relativePath,newSurveyId, name).toPromise())
           callback(rsp,null)
           m.destroy();
 
