@@ -109,21 +109,41 @@
                   <mat-icon>delete</mat-icon>
                   <span>Usuń</span>
                 </button>
-                <button (click)="duplicateElement(element)" mat-menu-item>
+                <button (click)="duplicateElement(element, index=i)" mat-menu-item>
                   <mat-icon>content_copy</mat-icon>
                   <span>Duplikuj</span>
+                </button>
+                <button (click)="duplicateElement(element)" mat-menu-item>
+                  <mat-icon>content_copy</mat-icon>
+                  <span>Duplikuj na koniec</span>
+                </button>
+                <button (click)="this.moveElementUp(i)" mat-menu-item>
+                <mat-icon>keyboard_arrow_up</mat-icon>
+                <span>Przesuń w górę</span>
+              </button>
+                <button (click)="this.moveElementDown(i)" mat-menu-item>
+                  <mat-icon>keyboard_arrow_down</mat-icon>
+                  <span>Przesuń w dół</span>
                 </button>
                 <button (click)="this.dialogs.openReorderDialog(this.reportDefinition)" mat-menu-item>
                   <mat-icon>open_with</mat-icon>
                   <span>Przerzuć</span>
                 </button>
-                <button (click)="addNewTextElementAtIndex(i-1)" mat-menu-item>
+                <button (click)="addNewTextElementAtIndex(i)" mat-menu-item>
                   <mat-icon>title</mat-icon>
                   <span>Nowy tekst wyżej</span>
                 </button>
                 <button (click)="addNewTextElementAtIndex(i+1)" mat-menu-item>
                   <mat-icon>title</mat-icon>
                   <span>Nowy tekst niżej</span>
+                </button>
+                <button (click)="addNewChartElementAtIndex(i)" mat-menu-item>
+                  <mat-icon>bar_chart</mat-icon>
+                  <span>Nowy wykres wyżej</span>
+                </button>
+                <button (click)="addNewChartElementAtIndex(i+1)" mat-menu-item>
+                  <mat-icon>bar_chart</mat-icon>
+                  <span>Nowy wykres niżej</span>
                 </button>
               </mat-menu>
 

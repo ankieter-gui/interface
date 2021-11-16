@@ -127,7 +127,29 @@ export class EditorComponent implements OnInit {
     return Math.round(this.reportDefinition.elements.length / this.itemsOnPage + 0.5);
   }
 
-  duplicateElement(element: ReportElement) {
+  moveElementUp(index){
+    let i = this.currentPage * this.itemsOnPage - this.itemsOnPage;
+    this.array_move(this.reportDefinition.elements, index+i,index+i-1 )
+    this.save()
+  }
+  moveElementDown(index){
+    let i = this.currentPage * this.itemsOnPage - this.itemsOnPage;
+    this.array_move(this.reportDefinition.elements, index+i,index+i+1 )
+    this.save()
+  }
+
+  array_move(arr, old_index, new_index) {
+    if (new_index >= arr.length) {
+      var k = new_index - arr.length + 1;
+      while (k--) {
+        arr.push(undefined);
+      }
+    }
+    arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
+    return arr; // for testing
+  };
+
+  duplicateElement(element: ReportElement,index=undefined) {
     let generator;
     let shallowCopy = {};
     Object.assign(shallowCopy, element);
@@ -138,12 +160,18 @@ export class EditorComponent implements OnInit {
       (shallowCopy as ReportElement).content.generator = undefined;
 
     }
-    this.reportDefinition.elements.push(JSON.parse(JSON.stringify(shallowCopy)));
-
-    this.save();
-    if (this.currentPage != this.lastPage) {
-      this.currentPage = 999;
+    const deepCopy = JSON.parse(JSON.stringify(shallowCopy))
+    if (index){
+      let i = this.currentPage * this.itemsOnPage - this.itemsOnPage;
+      this.reportDefinition.elements.splice(index+i+1, 0, deepCopy);
+    }else {
+      this.reportDefinition.elements.push(deepCopy);
+      if (this.currentPage != this.lastPage) {
+        this.currentPage = 999;
+      }
     }
+    this.save();
+
   }
 
   addNewTextElement(beginning = false) {
@@ -166,7 +194,25 @@ export class EditorComponent implements OnInit {
     let elem = {type: 'text', content: {text: ''}};
     // @ts-ignore
     this.reportDefinition.elements.splice(index+i, 0, elem);
+    this.save()
   }
+  addNewChartElementAtIndex(index){
+    let elem = {
+      type: 'chart', content: {
+        name: '', dataQuery: new SurveyQuery(), config: {
+          tableDefinition: {series: []},
+          type: null,
+          allTogetherLabel: 'UAM',
+          orientation: 'vertical',
+        }
+      } as ChartReportElement
+    };
+    let i = this.currentPage * this.itemsOnPage - this.itemsOnPage;
+    // @ts-ignore
+    this.reportDefinition.elements.splice(index+i, 0, elem);
+    this.save()
+  }
+
 
   async downloadNamingDictionary() {
     console.log('downloading structure');
