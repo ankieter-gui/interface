@@ -9,38 +9,7 @@ import {fadeInOut} from '../commonAnimations';
   selector: 'app-filters-selector',
   animations:[fadeInOut],
   template: `
-    <p *ngIf="acceptList.length>0 || exceptList.length>0">Przeciągaj filtry między kategoriami</p>
-    <div cdkDropListGroup style="display: flex; flex-direction: row; justify-content: space-between; margin-bottom: 2em;" >
 
-      <div class="left-cointainer" style="width: 45%;">
-        <h2>Filtry akceptujące</h2>
-        <p>Takie, które muszą być spełnione aby odpowiedź była wliczana.</p>
-
-        <div
-          cdkDropList [@fadeInOut]
-          [cdkDropListData]="acceptList"
-         class="dragContainer"
-          (cdkDropListDropped)="drop($event)">
-          <span class="tag-wrap" cdkDrag *ngFor="let filter of this.acceptList" [cdkDragData]="filter"  (click)="this.selectedQuestionName = filter.question; index=2" style="cursor: pointer">
-      <nz-tag nzMode="closeable" style="margin:1em;" (nzOnClose)="deleteFilter(filter); this.selectedQuestionName=undefined; index=0; this.filtersChange.emit(this.filters);" >{{filter.question}} - <b>{{this.reportService.getLabelFor(this.namingDictionary, filter.question, filter.answer)}}</b></nz-tag>
-    </span>
-        </div>
-      </div>
-      <div class="right-cointainer" style="width: 45%;">
-        <h2>Filtry wykluczające</h2>
-        <p>Jeżeli odpowiedź spełnia te warunki to <b>nie jest wliczana</b></p>
-
-        <div
-          cdkDropList [@fadeInOut]
-          [cdkDropListData]="exceptList"
-          class="dragContainer"
-          (cdkDropListDropped)="drop($event)">
-          <span class="tag-wrap"  cdkDrag *ngFor="let filter of this.exceptList" [cdkDragData]="filter"  (click)="this.selectedQuestionName = filter.question; index=2" style="cursor: pointer">
-      <nz-tag nzMode="closeable" style="margin:1em;" (nzOnClose)="deleteFilter(filter); this.selectedQuestionName=undefined; index=0; this.filtersChange.emit(this.filters);" >{{filter.question}} - <b>{{this.reportService.getLabelFor(this.namingDictionary, filter.question, filter.answer)}}</b></nz-tag>
-    </span>
-        </div>
-      </div>
-    </div>
 
     <nz-tabset [(nzSelectedIndex)]="index">
     <nz-tab nzTitle="Wybierz pytanie">
@@ -88,6 +57,38 @@ import {fadeInOut} from '../commonAnimations';
 
       </nz-tab>
     </nz-tabset>
+    <p *ngIf="acceptList.length>0 || exceptList.length>0">Przeciągaj filtry między kategoriami</p>
+    <div cdkDropListGroup style="display: flex; flex-direction: row; justify-content: space-between; margin-bottom: 2em;" >
+
+      <div class="left-cointainer" style="width: 45%;">
+        <h2>Filtry akceptujące</h2>
+        <p>Takie, które muszą być spełnione aby odpowiedź była wliczana.</p>
+
+        <div
+          cdkDropList [@fadeInOut]
+          [cdkDropListData]="acceptList"
+          class="dragContainer"
+          (cdkDropListDropped)="drop($event)">
+          <span class="tag-wrap" cdkDrag *ngFor="let filter of this.acceptList" [cdkDragData]="filter"  (click)="this.selectedQuestionName = filter.question; index=2" style="cursor: pointer">
+      <nz-tag nzMode="closeable" style="margin:1em;" (nzOnClose)="deleteFilter(filter); this.selectedQuestionName=undefined; index=0; this.filtersChange.emit(this.filters);" >{{filter.question}} - <b>{{this.reportService.getLabelFor(this.namingDictionary, filter.question, filter.answer)}}</b></nz-tag>
+    </span>
+        </div>
+      </div>
+      <div class="right-cointainer" style="width: 45%;">
+        <h2>Filtry wykluczające</h2>
+        <p>Jeżeli odpowiedź spełnia te warunki to <b>nie jest wliczana</b></p>
+
+        <div
+          cdkDropList [@fadeInOut]
+          [cdkDropListData]="exceptList"
+          class="dragContainer"
+          (cdkDropListDropped)="drop($event)">
+          <span class="tag-wrap"  cdkDrag *ngFor="let filter of this.exceptList" [cdkDragData]="filter"  (click)="this.selectedQuestionName = filter.question; index=2" style="cursor: pointer">
+      <nz-tag nzMode="closeable" style="margin:1em;" (nzOnClose)="deleteFilter(filter); this.selectedQuestionName=undefined; index=0; this.filtersChange.emit(this.filters);" >{{filter.question}} - <b>{{this.reportService.getLabelFor(this.namingDictionary, filter.question, filter.answer)}}</b></nz-tag>
+    </span>
+        </div>
+      </div>
+    </div>
   `,
   styles: [
     `tbody tr:hover{
