@@ -14,7 +14,7 @@ export class GroupedSummaryChartGenerator extends AbstractChartGenerator {
   horizontalBarHeight = 26;
   ranks = [];
   seriesByScales = [];
-  scales = [2.5, 3, 3.5, 4, 4.5];
+  scales = [2.99, 3, 3.5, 4, 4.5];
 
   getAllCount(reportId, complimentedQuery: SurveyQuery = undefined) {
   }
@@ -86,7 +86,7 @@ export class GroupedSummaryChartGenerator extends AbstractChartGenerator {
     return this;
   }
   asJSONConfig(): EChartsOption {
-    let namesToScales = ['2.5 i mniej', '3.00-3.49', '3.50-3.99', '4.00-4.49', '4.50 i więcej'];
+    let namesToScales = ['2.99 i mniej', '3.00-3.49', '3.50-3.99', '4.00-4.49', '4.50 i więcej'];
     return {
 
       color: '#3b3b3b',

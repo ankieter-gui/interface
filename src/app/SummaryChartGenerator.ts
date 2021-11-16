@@ -13,7 +13,7 @@ export class SummaryChartGenerator extends AbstractChartGenerator {
   horizontalBarHeight = 26;
   ranks = [];
   seriesByScales = [];
-  scales = [2.5, 3, 3.5, 4, 4.5];
+  scales = [2.99, 3, 3.5, 4, 4.5];
 
   constructor(series: any, chartElement: ChartReportElement, namingDictionary, public reportsService: ReportsService, dictionaryOverrides) {
     super(series, chartElement, namingDictionary, reportsService, dictionaryOverrides);
@@ -88,7 +88,7 @@ export class SummaryChartGenerator extends AbstractChartGenerator {
   }
 
   asJSONConfig(): EChartsOption {
-    let namesToScales = ['2.5 i mniej', '3.00-3.49', '3.50-3.99', '4.00-4.49', '4.50 i więcej'];
+    let namesToScales = ['2.99 i mniej', '3.00-3.49', '3.50-3.99', '4.00-4.49', '4.50 i więcej'];
     return {
 
       color: '#3b3b3b',
