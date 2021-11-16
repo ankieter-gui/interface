@@ -30,8 +30,8 @@ import {ReportElement, TextReportElement} from '../../dataModels/ReportElement';
         </th></tr>
         </thead>
       </nz-table>
-      <button *ngIf="!isEditing" nz-button (click)="isEditing=true;" style="margin-bottom:1em;"><i nz-icon nzType="edit"></i> Załaduj edytor tekstu</button>
-      <button *ngIf="isEditing" nz-button (click)="isEditing=false;focused=false;" style="margin-bottom:1em;"><i nz-icon nzType="edit"></i> Zapisz i schowaj edytor tekstu</button>
+<!--      <button *ngIf="!isEditing" nz-button (click)="isEditing=true;" style="margin-bottom:1em;"><i nz-icon nzType="edit"></i> Załaduj edytor tekstu</button>-->
+<!--      <button *ngIf="isEditing" nz-button (click)="isEditing=false;focused=false;" style="margin-bottom:1em;"><i nz-icon nzType="edit"></i> Zapisz i schowaj edytor tekstu</button>-->
        </div>
   `,
   styles: []

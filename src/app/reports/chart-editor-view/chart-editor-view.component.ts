@@ -328,7 +328,7 @@ import {SuggestionsGenerator} from '../../SuggestionsGenerator';
                                         [reportId]="reportId"></app-filters-selector>
                 </nz-tab>
 
-                <nz-tab nzTitle="Ustawienia obliczeń" *ngIf="['groupedPercentAndData', 'summary', 'groupSummary'].includes(chartData.config.type)">
+                <nz-tab nzTitle="Ustawienia statystyk" *ngIf="['groupedPercentAndData', 'summary', 'groupSummary'].includes(chartData.config.type)">
                   <app-ignore-selector #ignoreSelector [chart]="chartData" *ngIf="this.dataResponse" (dataChanged)="refreshChart()"
                                        [lastDataResponse]="this.dataResponse"></app-ignore-selector>
                 </nz-tab>

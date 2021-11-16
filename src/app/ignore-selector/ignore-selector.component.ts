@@ -14,7 +14,7 @@ import {ReportsService} from '../reports.service';
           [nzTemplateMode]="true">
           <thead style="white-space: nowrap;">
           <tr>
-            <th style="white-space: nowrap; background:transparent!important;">Nie zliczać?</th>
+            <th style="white-space: nowrap; background:transparent!important;">Nie uwzględniać?</th>
             <th style="white-space: nowrap; background:transparent!important;">Wartość i etykieta</th>
           </tr>
           </thead>
