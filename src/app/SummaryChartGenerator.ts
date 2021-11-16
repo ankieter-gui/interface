@@ -13,7 +13,7 @@ export class SummaryChartGenerator extends AbstractChartGenerator {
   horizontalBarHeight = 26;
   ranks = [];
   seriesByScales = [];
-  scales = [2.99, 3, 3.5, 4, 4.5];
+  scales = [2.99,  3.5, 4, 4.5];
 
   constructor(series: any, chartElement: ChartReportElement, namingDictionary, public reportsService: ReportsService, dictionaryOverrides) {
     super(series, chartElement, namingDictionary, reportsService, dictionaryOverrides);
@@ -37,7 +37,7 @@ export class SummaryChartGenerator extends AbstractChartGenerator {
       this.shortYLabels.push(u[u.length - 1].replace(/\(.*?\)/, ''));
     });
 
-    this.seriesByScales = new Array(this.scales.length + 2).fill(null).map(function() {
+    this.seriesByScales = new Array(this.scales.length +1).fill(null).map(function() {
       return new Array(0);
     });
     //Array(this.scales.length+2).fill(JSON.parse(JSON.stringify([])))

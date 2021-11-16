@@ -40,6 +40,15 @@ export class ColorsGenerator {
     '#39A758',
     '#D3D3D3'
   ];
+  summaryColorPalette = [
+    '#E34933',
+    '#FCA55D',
+    '#FEE999',
+    '#66BD63',
+    '#078202',
+
+  ];
+
 
   constructor(chart: ChartReportElement, typeOf, caller: AbstractChartGenerator) {
     this.chart = chart;
@@ -69,7 +78,7 @@ export class ColorsGenerator {
   summaryChartGenerator(options: EChartsOption): EChartsOption {
     console.log(options);
 
-    (options.series as any[]).forEach((d) => d.color = this.sevenColorPalette[d.rank]);
+    (options.series as any[]).forEach((d) =>{ d.color = this.summaryColorPalette[d.rank];console.log(d.name); console.log(d.rank);console.log( this.sevenColorPalette[d.rank])});
 
     return options;
   }

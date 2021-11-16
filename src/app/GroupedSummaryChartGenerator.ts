@@ -14,7 +14,7 @@ export class GroupedSummaryChartGenerator extends AbstractChartGenerator {
   horizontalBarHeight = 26;
   ranks = [];
   seriesByScales = [];
-  scales = [2.99, 3, 3.5, 4, 4.5];
+  scales = [2.99,  3.5, 4, 4.5];
 
   getAllCount(reportId, complimentedQuery: SurveyQuery = undefined) {
   }
