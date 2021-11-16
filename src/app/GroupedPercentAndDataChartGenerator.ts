@@ -108,7 +108,7 @@ yLabels;
         //data:this.getAllShareLabels(shareElement).map(d=>this.numberToStringScale[Number(d)])
       },
       grid: {
-        top:this.legend.length<7?60:60+this.legend.length*6,
+        top:60,
         left: '3%',
         right: '4%',
         bottom: '3%',
