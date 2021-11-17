@@ -51,7 +51,7 @@ import {SurveyMeta} from '../dataModels/survey';
 
     <span style="display:block;margin-top:25px;">Nazwa:</span>
     <input placeholder="Nazwa" nz-input [(ngModel)]="reportNameInputValue" (focus)="nameEdited=true"/>
-
+    <p *ngIf="error" style="color:red;">Nazwa nie może być pusta!</p>
   `,
   styles: [
   ]
@@ -60,6 +60,7 @@ export class NewReportDialogComponent implements OnInit {
   isFileBeingUploaded=false;
   reportNameInputValue;
   surveyInputValue;
+  error=false;
   constructor(private http:HttpClient, private  surveyService:SurveysService, public message:NzMessageService) { }
 
   @Input()

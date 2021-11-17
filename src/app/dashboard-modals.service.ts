@@ -155,6 +155,7 @@ export class DashboardModalsService {
      autocompleteSurveys: (await (this.dashboardService.getDashobardData().toPromise())).objects.filter(d=>d.type==="survey")
 
    }, async (i, m) => {
+     if (!i.reportNameInputValue){i.error=true;return;}
      if (i.files.length==0) {
        let selectedSurvey=i.selectedSurvey
        const response = await (this.reports.createNewReport(selectedSurvey.id, i.reportNameInputValue).toPromise())

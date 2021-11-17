@@ -7,7 +7,7 @@ import {UserService} from '../user.service';
 @Component({
   selector: 'app-survey-tile',
   template: `
-    <nz-card [nzBordered]="false" (click)="dashboardModals.openNewReportDialog(this.survey)" style="cursor: pointer"
+    <nz-card [nzBordered]="false" style="cursor: pointer"
              [nzCover]="coverTemplate"
              [nzActions]="this.survey.authorId==this.user.userId?[actionShare, actionCreateReport,actionDelete]:[actionCreateReport]">
       <!--      <nz-card-meta nzTitle="{{report.name}}" nzDescription=""></nz-card-meta>-->
