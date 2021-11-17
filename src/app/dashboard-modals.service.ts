@@ -73,7 +73,7 @@ export class DashboardModalsService {
   async openNewSurveyDialog(refreshDashboard){
     this.createComponentModal("Nowa ankieta", NewSurveyDialogComponent, {}, async (i:NewSurveyDialogComponent,m)=>{
       this.createNewSurveyFromDialogInstance(i.name, i,m,(csvResponse, xmlResponse)=>{
-        console.log(i)
+       if (!i.name) {i.error=true; return;}
         if (i.filesXML.length>0&& i.files.length>0) {
           //TODO: to nie powinno tak być robione. Przekazywanie funkcji z dashboardu robi błąd z this
           this.window.location.reload();
