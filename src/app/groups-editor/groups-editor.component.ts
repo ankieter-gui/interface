@@ -53,10 +53,7 @@ import {NzMessageService} from 'ng-zorro-antd/message';
              </nz-filter-trigger>
            </th>
            <th></th>
-           <th>Grupy</th>
-           <!--            <th>Age</th>-->
-           <!--            <th>Address</th>-->
-           <th></th>
+
          </tr>
          </thead>
          <tbody>
