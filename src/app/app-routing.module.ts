@@ -13,6 +13,7 @@ import {LoginPanelComponent} from './login-panel/login-panel.component';
 
 
 
+
 const routes: Routes = [
   { path: '', component: DashboardComponent, canActivate: [LoginGuard] },
   { path: 'groups', component: GroupsEditorPageComponent, canActivate: [OnlyAdminGuard] },
