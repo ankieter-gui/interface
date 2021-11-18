@@ -116,15 +116,15 @@ import { SVGRenderer} from 'echarts/renderers';
 echarts.use([TitleComponent, TooltipComponent, GridComponent, BarChart, SVGRenderer]);
 registerLocaleData(pl);
 export let commonNZImports = [
-  NgxEchartsModule.forRoot({
-    /**
-     * This will import all modules from echarts.
-     * If you only need custom modules,
-     * please refer to [Custom Build] section.
-     */
-    echarts: () => import('echarts'), // or import('./path-to-my-custom-echarts')
-  }),
-  //NgxEchartsModule.forRoot({ echarts }),  SVG renderer
+  // NgxEchartsModule.forRoot({
+  //   /**
+  //    * This will import all modules from echarts.
+  //    * If you only need custom modules,
+  //    * please refer to [Custom Build] section.
+  //    */
+  //   echarts: () => import('echarts'), // or import('./path-to-my-custom-echarts')
+  // }),
+  NgxEchartsModule.forRoot({ echarts }),
   BrowserModule,
 
   NzLayoutModule,
