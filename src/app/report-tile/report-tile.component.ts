@@ -26,17 +26,17 @@ import {SharingService} from '../sharing.service';
             </div>
           </div>
         </div>
-        <div class="large-indicator" *ngIf="!fromLogin">
-          <figure class="indicator-icon"><img src="./assets/answers_count.png" style="width:70px;"></figure>
-          <div class="indicator-right-side">
-            <div class="indicator-right-side-top small-font">
-              {{0}}
-            </div>
-            <div class="indicator-right-side-bottom">
-              Użytkownicy z dostępem
-            </div>
-          </div>
-        </div>
+<!--        <div class="large-indicator" *ngIf="!fromLogin">-->
+<!--          <figure class="indicator-icon"><img src="./assets/answers_count.png" style="width:70px;"></figure>-->
+<!--          <div class="indicator-right-side">-->
+<!--            <div class="indicator-right-side-top small-font">-->
+<!--              {{0}}-->
+<!--            </div>-->
+<!--            <div class="indicator-right-side-bottom">-->
+<!--              Użytkownicy z dostępem-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
         <div class="progress" style="margin:1em">
           <!--        <i nz-icon nzType="user" style="margin-right: 1em"></i>Autor: {{report.authorName}}-->
         </div>
