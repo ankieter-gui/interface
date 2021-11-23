@@ -33,19 +33,19 @@
 <!--            <nz-tag nzMode="closeable"-->
 <!--                    (nzOnClose)="removeGlobalFilterRef(this.reportDefinition,f); refresh(); filterSelector.reset()" *ngFor="let f of this.reportDefinition.globalFilter">{{f.question}}-->
 <!--              - {{this.reportsService.getLabelFor(this.namingDictionary, f.question, f.answer)}}</nz-tag>-->
-            <button nz-button nz-dropdown [nzDropdownMenu]="menu4" nzTrigger="click">
+            <button class="top-line-btn" nz-button nz-dropdown [nzDropdownMenu]="menu4" nzTrigger="click">
               Filtruj ankietę przez odpowiedź
               <i nz-icon nzType="down"></i>
             </button>
 
-            <button [nzDropdownMenu]="menu5" nz-button nz-dropdown nzTrigger="click">
+            <button class="top-line-btn" [nzDropdownMenu]="menu5" nz-button nz-dropdown nzTrigger="click">
               Nadpisz etykiety
               <i nz-icon nzType="down"></i>
             </button>
 <!--            <button (click)="export()" nz-button>-->
 <!--              Eksportuj raport do JSONa-->
 <!--            </button>-->
-            <button (click)="this.dialogs.openReorderDialog(this.reportDefinition)" nz-button>
+            <button class="top-line-btn" (click)="this.dialogs.openReorderDialog(this.reportDefinition)" nz-button>
               Zmiana kolejności
             </button>
           </div>

@@ -108,13 +108,13 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 // Import the echarts core module, which provides the necessary interfaces for using echarts.
 import * as echarts from 'echarts/core';
 // Import bar charts, all with Chart suffix
-import { BarChart } from 'echarts/charts';
+import {BarChart, LineChart} from 'echarts/charts';
 import {TitleComponent, TooltipComponent, GridComponent, LegendComponent} from 'echarts/components';
 // Import the Canvas renderer, note that introducing the CanvasRenderer or SVGRenderer is a required step
 import { SVGRenderer} from 'echarts/renderers';
 
 
-echarts.use([TitleComponent, TooltipComponent, GridComponent, BarChart, SVGRenderer, LegendComponent]);
+echarts.use([TitleComponent, TooltipComponent, GridComponent, BarChart, SVGRenderer, LegendComponent, LineChart]);
 registerLocaleData(pl);
 export let commonNZImports = [
   // NgxEchartsModule.forRoot({
