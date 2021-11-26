@@ -68,7 +68,9 @@ export class SharingService {
     if (x) return Object.keys(x)
     else return []
   }
-
+  groupOrUserName(id):string{
+    return this.users().find(d=>d.id==id).casLogin
+  }
   shareReportToUsers(reportId,usersRead=[], usersWrite=[], usersNone=[]){
     return this.http.post(`${BACKEND_URL}/report/${reportId}/share`, {"r":usersRead, "w":usersWrite, "n":usersNone}, {withCredentials:true})
   }

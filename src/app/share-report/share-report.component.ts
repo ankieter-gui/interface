@@ -10,6 +10,10 @@ import {FRONTEND_URL} from '../Configuration';
 <!--    <div class="header">Udostępnij raport: {{this.report.name}}</div>-->
     <div class="input-with-label"><span class="label">Link do poglądu</span><input nz-input [value]="this.shareLinkRead"></div>
     <div class="input-with-label"><span class="label">Link do edycji</span><input nz-input [value]="this.shareLinkEdit"></div>
+    <div>
+      <p><b>Dostęp mają już:</b></p>
+      <nz-tag *ngFor="let userId of whoHasAccess"> {{this.sharingService.groupOrUserName(userId)}}</nz-tag>
+    </div>
 <nz-tabset>
   <nz-tab nzTitle="Użytkownicy">
 <!--<nz-divider nzText="Indywidualni użytkownicy"></nz-divider>-->
@@ -140,6 +144,9 @@ export class ShareReportComponent implements OnInit {
   }
   stringify(a){
     return JSON.stringify(a)
+  }
+  get whoHasAccess(){
+    return Object.keys(this.report.sharedTo)
   }
   removeSelected(selectedUser){
     this.selected = this.selected.filter(d=>d!==selectedUser)
