@@ -14,7 +14,9 @@ import { Component, OnInit } from '@angular/core';
         <nz-header>
           <img src="assets/logoAnkieter.PNG" height="100%" style="margin-left: 1rem;">
 
-
+          <div>
+            <app-user-indicator></app-user-indicator>
+          </div>
         </nz-header>
         <nz-content>
           <nz-breadcrumb>
