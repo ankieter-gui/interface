@@ -39,13 +39,14 @@ import {SuggestionsGenerator} from '../../SuggestionsGenerator';
         <button *ngIf="!isPreview" [nz-tooltip]="'Pobierz wykres jako obrazek .png'" nz-button nzType="primary" nzSize="default"
                 nzShape="circle"
                 style="position: absolute;right:50px;top:-15px" (click)="saveAsPng()"><i nz-icon nzType="download"></i></button>
-        <label style="margin-bottom:0.4em" nz-checkbox [(ngModel)]="this.chartData.config.showTitle"
+        <label style="margin-bottom:0.4em" nz-checkbox [(ngModel)]="this.chartData.config.showTitle" (ngModelChange)="save()"
                *ngIf="!isPreview && (this.chartData.name||(this.chartData.dataQuery.get[0]&&this.chartData.dataQuery.get[0][0])) ">
           {{ chartData.config.showTitle ? 'Wyświetlać tytuł?' : 'Wyświetlać tytuł?' }}
         </label>
         <p [style.display]="isPreview? chartData.config.showTitle?'block':'none':'block'"
            [class.title-hidden]="!chartData.config.showTitle">
-          <b>{{this.chartData.name ? this.chartData.name : this.chartData.dataQuery.get[0][0]}}</b>
+            <input nz-input [value]="this.chartData.name ? this.chartData.name : this.chartData.dataQuery.get[0][0]" [disabled]="!this.chartData.config.showTitle" (blur)="save()" [(ngModel)]="this.chartData.name" [placeholder]="this.chartData.dataQuery.get[0][0]">
+<!--          <b>{{this.chartData.name ? this.chartData.name : this.chartData.dataQuery.get[0][0]}}</b>-->
         </p>
         <div class="chart-container summary-container" *ngIf="this.chartData.config.type=='summary' || this.chartData.config.type=='groupSummary'">
           <figure *ngIf="!chartData.config.type || isError" style="margin:auto;"><img
