@@ -868,12 +868,10 @@ export class ChartEditorViewComponent implements OnInit {
     let query = this.advancedQuery ? JSON.parse(this.advancedQuery) : ComplimentQuery(this.chartData.dataQuery, this.globalFilter, this.chartData.config.filters ? this.chartData.config.filters : [this.chartData.config.filter],this.chartData.config.ignoreAnswersForCalculations)
 
     if (shallSave) {
-      this.chartData.lastQueryCache=query;
+      this.chartData.lastQueryCache = query;
       this.save();
     }
 
-
-    this.chartData.lastQueryCache = query;
     try {
       await this.downloadQueryResponse(query);
       if (this.dataResponse || ['linearCustomData', 'multipleBarsOwnData'].includes(this.chartData.config.type) ) {
