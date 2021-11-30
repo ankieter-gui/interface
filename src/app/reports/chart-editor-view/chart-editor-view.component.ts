@@ -859,13 +859,21 @@ export class ChartEditorViewComponent implements OnInit {
   isError = false;
 
   async refreshChart(shallSave=true){
-    if (shallSave) {
-      this.save();
-    }
     if (!this.chartData.dataQuery.get || !this.chartData.dataQuery.get[0]) {
+      if (shallSave) {
+        this.save();
+      }
       return;
     }
     let query = this.advancedQuery ? JSON.parse(this.advancedQuery) : ComplimentQuery(this.chartData.dataQuery, this.globalFilter, this.chartData.config.filters ? this.chartData.config.filters : [this.chartData.config.filter],this.chartData.config.ignoreAnswersForCalculations)
+
+    if (shallSave) {
+      this.chartData.lastQueryCache=query;
+      this.save();
+    }
+
+
+    this.chartData.lastQueryCache = query;
     try {
       await this.downloadQueryResponse(query);
       if (this.dataResponse || ['linearCustomData', 'multipleBarsOwnData'].includes(this.chartData.config.type) ) {

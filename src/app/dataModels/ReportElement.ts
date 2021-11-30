@@ -54,4 +54,5 @@ export class ChartReportElement {
   text: string;
   generator: AbstractChartGenerator;
   lastCachesResponse:any;
+  lastQueryCache:SurveyQuery;
 }
