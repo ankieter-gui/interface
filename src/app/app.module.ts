@@ -112,6 +112,9 @@ import {BarChart, LineChart} from 'echarts/charts';
 import {TitleComponent, TooltipComponent, GridComponent, LegendComponent} from 'echarts/components';
 // Import the Canvas renderer, note that introducing the CanvasRenderer or SVGRenderer is a required step
 import { SVGRenderer} from 'echarts/renderers';
+import { SurveyElementHostComponent } from './survey-element-host/survey-element-host.component';
+import { TextQuestionSurveyElementComponent } from './text-question-survey-element/text-question-survey-element.component';
+import {DynamicModule} from 'ng-dynamic-component';
 
 
 echarts.use([TitleComponent, TooltipComponent, GridComponent, BarChart, SVGRenderer, LegendComponent, LineChart]);
@@ -234,6 +237,10 @@ export let commonNZImports = [
 
     MultipleBarsWithCustomDataDataPickerComponent,
 
+    SurveyElementHostComponent,
+
+    TextQuestionSurveyElementComponent,
+
   ],
   imports: [
     BrowserAnimationsModule,
@@ -257,7 +264,8 @@ export let commonNZImports = [
     NzDropDownModule,
     NzRadioModule,
     NzAlertModule,
-    MatTooltipModule
+    MatTooltipModule,
+    DynamicModule
 
   ],
   providers: [

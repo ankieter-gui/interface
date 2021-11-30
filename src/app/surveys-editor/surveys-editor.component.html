@@ -28,30 +28,8 @@
         <mat-form-field class="title-input">
           <input matInput placeholder="Nazwa ankiety" [(ngModel)]="this.surveyDefinition.title" (blur)="rename();save()">
         </mat-form-field>
-        <div class="report-element" cdkDropList [cdkDropListData]="this.surveyDefinition.questions" (cdkDropListDropped)="drop($event)">
-          <div class="custom-placeholder" *cdkDragPlaceholder></div>
-
-
-          <div *ngFor="let element of surveyDefinition.questions" cdkDrag class="element-box" style="position:relative;">
-
-            <div [ngSwitch]="element.questionType" style="position:relative;">
-              <mat-icon cdkDragHandle class="drag-handle" [nz-tooltip]="'Przeciągnij aby zmienić kolejność'">open_with</mat-icon>
-              <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu" class="more">
-                <mat-icon>more_vert</mat-icon>
-              </button>
-              <mat-menu #menu="matMenu">
-                <button mat-menu-item (click)="removeElement(element)">
-                  <mat-icon>delete</mat-icon>
-                  <span>Usuń</span>
-                </button>
-
-              </mat-menu>
-
-
-              <app-chart-editor-view *ngSwitchCase="'chart'"></app-chart-editor-view>
-            </div>
-
-          </div>
+        <div *ngFor="let element of this.surveyDefinition.elements">
+          <app-survey-element-host [templateType]="getComponentFromType('text')" [element]="element"></app-survey-element-host>
         </div>
         <section class="add-more slide-top-enter-animation" (mouseover)="mouseHoveringAddMorePanel=true" (mouseleave)="mouseHoveringAddMorePanel=false">
           <div class="add-more-content add-new"> Dodaj pytanie <i nz-icon nzType="plus"></i></div>

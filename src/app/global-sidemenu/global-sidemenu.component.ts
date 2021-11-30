@@ -14,10 +14,10 @@ import {DashboardModalsService} from '../dashboard-modals.service';
           <i nz-icon nzType="folder"></i>
           <span>Ankiety i raporty</span>
         </li>
-<!--        <li nz-menu-item  [routerLink]="'surveysEditor'">-->
-<!--          <i nz-icon nzType="folder"></i>-->
-<!--          <span>Edytor ankiet</span>-->
-<!--        </li>-->
+        <li nz-menu-item  [routerLink]="'surveysEditor'">
+          <i nz-icon nzType="folder"></i>
+          <span>Edytor ankiet</span>
+        </li>
         <li nz-menu-item  (click)="dashboardModals.openNewReportDialog()" >
           <i nz-icon nzType="folder"></i>
           <span>Edytor raportów</span>
