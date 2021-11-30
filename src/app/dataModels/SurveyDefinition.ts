@@ -1,8 +1,24 @@
-
 export class GenericElement{
 
 }
 export class CommonAttributes{
+  constructor() {
+    this.showId=false;
+    this.defaultValue=undefined;
+    this.tip=undefined;
+    this.required=false;
+    this.orientation="horizontal"
+    this.collapsed=false;
+    this.rotate=undefined
+    this.showTextField=false;
+    this.naLabel=false;
+  }
+  static getFriendlyName(name){
+    const u = {
+
+    }
+    return name;
+  }
   showId?:boolean=false;
   defaultValue?:string
   tip?:string
@@ -17,7 +33,7 @@ export class CommonAttributes{
 export class Question extends GenericElement{
   static questionType;
   header;
-  commonAttributes?
+  commonAttributes?:CommonAttributes;
   constructor() {
     super();
   }
@@ -25,6 +41,8 @@ export class Question extends GenericElement{
 }
 export class TextQuestion extends  Question{
   static questionType="text"
+  static allowedAttrs=['showId','defaultValue', "required", "orientation", "collapsed", "rotate", "showTextField", "naLabel"]
+
   maxLength=250;
   constructor() {
     super()
@@ -35,7 +53,7 @@ export class Choice{
   value:string;
 }
 export class SingleChoiceQuestion extends Question{
-  allowedAttrs=['showId','defaultValue', "required", "orientation", "collapsed", "rotate", "showTextField", "naLabel"]
+  static allowedAttrs=['showId','defaultValue', "required", "orientation", "collapsed", "rotate", "showTextField", "naLabel"]
   questionType="single"
   options:Choice[]=[]
   constructor() {

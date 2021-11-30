@@ -1,20 +1,26 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {GenericElement, TextQuestion} from '../dataModels/SurveyDefinition';
 
 @Component({
   selector: 'app-text-question-survey-element',
   template: `
-    <p>
-      {{element.header}}
-      text-question-survey-element works!
-    </p>
+    <div>
+      <input nz-input placeholder="Nazwa pytania..." (blur)="save.emit(parent)">
+      <app-common-attributes-selector [allowed]="allowedAttributes" [element]="element" [type]="this.type"></app-common-attributes-selector>
+    </div>
   `,
   styles: [
   ]
 })
 export class TextQuestionSurveyElementComponent implements OnInit {
+  type=TextQuestion
+  allowedAttributes = TextQuestion.allowedAttrs
   @Input()
   element:TextQuestion;
+  @Input()
+  parent
+  @Output()
+  save:EventEmitter<any> = new EventEmitter()
   constructor() { }
 
   ngOnInit(): void {

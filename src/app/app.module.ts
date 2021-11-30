@@ -115,6 +115,7 @@ import { SVGRenderer} from 'echarts/renderers';
 import { SurveyElementHostComponent } from './survey-element-host/survey-element-host.component';
 import { TextQuestionSurveyElementComponent } from './text-question-survey-element/text-question-survey-element.component';
 import {DynamicModule} from 'ng-dynamic-component';
+import { CommonAttributesSelectorComponent } from './common-attributes-selector/common-attributes-selector.component';
 
 
 echarts.use([TitleComponent, TooltipComponent, GridComponent, BarChart, SVGRenderer, LegendComponent, LineChart]);
@@ -240,6 +241,8 @@ export let commonNZImports = [
     SurveyElementHostComponent,
 
     TextQuestionSurveyElementComponent,
+
+    CommonAttributesSelectorComponent,
 
   ],
   imports: [

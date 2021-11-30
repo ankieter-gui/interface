@@ -1,7 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import {SurveyGeneratorService} from '../survey-generator.service';
-import {SurveyDefinition, TextQuestion} from '../dataModels/SurveyDefinition';
+import {CommonAttributes, Question, SurveyDefinition, TextQuestion} from '../dataModels/SurveyDefinition';
 import {TextQuestionSurveyElementComponent} from '../text-question-survey-element/text-question-survey-element.component';
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+export class SurveyComponentConfig{
+  component;
+  friendlyName:string;
+}
+export interface SurveyComponents{
+  [d:string]:SurveyComponentConfig
+}
+
 @Component({
   selector: 'app-surveys-editor',
   templateUrl: './surveys-editor.component.html',
@@ -10,22 +19,32 @@ import {TextQuestionSurveyElementComponent} from '../text-question-survey-elemen
 export class SurveysEditorComponent implements OnInit {
   surveyDefinition:SurveyDefinition = new SurveyDefinition()
   mouseHoveringAddMorePanel=false;
-
-  surveyElements = {
-
+  itemsForCurrentPage(){
+    return this.surveyDefinition.elements
   }
+  surveyComponents:SurveyComponents = {}
 
   constructor(private surveyGenerator:SurveyGeneratorService) { }
-  getComponentFromType(type){return this.surveyElements[type].component}
+  getComponentFromType(type){return this.surveyComponents[type]}
   ngOnInit(): void {
-    this.surveyDefinition.elements=[<TextQuestion>{commonAttributes:{}, header:"Pytanie #1 header", maxLength:250}]
-      this.surveyElements[TextQuestion.questionType]={
+    this.surveyDefinition.elements=[
+      {questionType:"text", commonAttributes:new CommonAttributes(), header:"Pytanie #1 header", maxLength:250},
+      {questionType:"text", commonAttributes:new CommonAttributes(), header:"Pytanie #2 header", maxLength:250},
+      {questionType:"text", commonAttributes:new CommonAttributes(), header:"Pytanie #3 header", maxLength:250},
+
+    ]
+      this.surveyComponents[TextQuestion.questionType]={
         component:TextQuestionSurveyElementComponent,
+        friendlyName:"Pytanie tekstowe",
       }
   }
 rename(){}
-save(){}
-drop(event){}
+save(){
+    console.log("save in editor")
+}
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.surveyDefinition.elements, event.previousIndex, event.currentIndex);
+  }
 removeElement(element){}
 addNewQuestion(){}
 }
