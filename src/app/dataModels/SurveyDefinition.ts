@@ -56,11 +56,11 @@ export class TextQuestion extends  Question{
 }
 export class Choice{
   code:string="";
-  value:string;
+  value:string="";
 }
 export class SingleChoiceQuestion extends Question{
   static allowedAttrs=['showId','defaultValue', "required", "orientation", "collapsed", "rotate", "showTextField", "naLabel"]
-  questionType="single"
+  static questionType="single"
   options:Choice[]=[]
   constructor() {
     super()

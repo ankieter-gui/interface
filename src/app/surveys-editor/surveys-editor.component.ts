@@ -1,9 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import {SurveyGeneratorService} from '../survey-generator.service';
-import {CommonAttributes, Information, Question, SurveyDefinition, TextQuestion} from '../dataModels/SurveyDefinition';
+import {
+  CommonAttributes,
+  Information,
+  Question,
+  SingleChoiceQuestion,
+  SurveyDefinition,
+  TextQuestion
+} from '../dataModels/SurveyDefinition';
 import {TextQuestionSurveyElementComponent} from '../text-question-survey-element/text-question-survey-element.component';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {InformationSurveyElementComponent} from '../information-survey-element/information-survey-element.component';
+import {SingleQuestionSurveyElementComponent} from '../single-question-survey-element/single-question-survey-element.component';
 export class SurveyComponentConfig{
   component;
   friendlyName:string;
@@ -31,6 +39,7 @@ export class SurveysEditorComponent implements OnInit {
     this.surveyDefinition.elements=[
       {questionType:"text", commonAttributes:new CommonAttributes(), header:"Pytanie #1 header", maxLength:250},
       {questionType:"text", commonAttributes:new CommonAttributes(), header:"Pytanie #2 header", maxLength:250},
+      <SingleChoiceQuestion>{questionType:"single", commonAttributes:new CommonAttributes(), header:"Pytanie #2 header", options:[]},
       {questionType:"text", commonAttributes:new CommonAttributes(), header:"Pytanie #3 header", maxLength:250},
 
     ]
@@ -40,6 +49,10 @@ export class SurveysEditorComponent implements OnInit {
       };
     this.surveyComponents[Information.questionType]={component: InformationSurveyElementComponent,
     friendlyName:"Informacja"}
+    this.surveyComponents[SingleChoiceQuestion.questionType]={
+      component:SingleQuestionSurveyElementComponent,
+      friendlyName:"Pytanie pojedyńczego wyboru"
+    };
   }
 rename(){}
 save(){
