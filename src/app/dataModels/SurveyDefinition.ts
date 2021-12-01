@@ -39,6 +39,10 @@ export class Question extends GenericElement{
   }
 
 }
+export class Information extends  Question{
+  static questionType='information';
+  static allowedAttrs=[]
+}
 export class TextQuestion extends  Question{
   static questionType="text"
   static allowedAttrs=['showId','defaultValue', "required", "orientation", "collapsed", "rotate", "showTextField", "naLabel"]

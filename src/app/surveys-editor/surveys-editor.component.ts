@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {SurveyGeneratorService} from '../survey-generator.service';
-import {CommonAttributes, Question, SurveyDefinition, TextQuestion} from '../dataModels/SurveyDefinition';
+import {CommonAttributes, Information, Question, SurveyDefinition, TextQuestion} from '../dataModels/SurveyDefinition';
 import {TextQuestionSurveyElementComponent} from '../text-question-survey-element/text-question-survey-element.component';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import {InformationSurveyElementComponent} from '../information-survey-element/information-survey-element.component';
 export class SurveyComponentConfig{
   component;
   friendlyName:string;
@@ -36,7 +37,9 @@ export class SurveysEditorComponent implements OnInit {
       this.surveyComponents[TextQuestion.questionType]={
         component:TextQuestionSurveyElementComponent,
         friendlyName:"Pytanie tekstowe",
-      }
+      };
+    this.surveyComponents[Information.questionType]={component: InformationSurveyElementComponent,
+    friendlyName:"Informacja"}
   }
 rename(){}
 save(){
