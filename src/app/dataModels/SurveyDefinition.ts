@@ -6,6 +6,7 @@ export class CommonAttributes{
     this.showId=false;
     this.defaultValue=undefined;
     this.tip=undefined;
+    this.overrideDefaultValue=false;
     this.required=false;
     this.orientation="horizontal"
     this.showTip=false;
@@ -25,6 +26,7 @@ export class CommonAttributes{
   tip?:string
   showTip=false;
   required?:boolean
+  overrideDefaultValue=false;
   orientation?:"horizontal"|"vertical"
   collapsed?:boolean
   rotate?
@@ -34,10 +36,11 @@ export class CommonAttributes{
 }
 export class Question extends GenericElement{
   static questionType;
-  header;
+  header="";
   commonAttributes?:CommonAttributes;
   constructor() {
     super();
+    this.commonAttributes=new CommonAttributes()
   }
 
 }
@@ -57,11 +60,28 @@ export class TextQuestion extends  Question{
 export class Choice{
   code:string="";
   value:string="";
+  rotate?:boolean=false;
+}
+export class GroupedQuestion{
+  code:string="";
+  value:string="";
+  rotate?:boolean=false;
 }
 export class SingleChoiceQuestion extends Question{
   static allowedAttrs=['showId','defaultValue', "required", "orientation", "collapsed", "rotate", "showTextField", "naLabel"]
   static questionType="single"
+  questionType = "single"
   options:Choice[]=[]
+  constructor() {
+    super()
+  }
+}
+export class GroupedSingleChoiceQuestion extends Question{
+  static allowedAttrs=['showId','defaultValue', "required", "orientation", "collapsed", "rotate", "showTextField", "naLabel"]
+  static questionType="groupedsingle"
+  questionType = "groupedsingle"
+  options:Choice[]=[]
+  questions:GroupedQuestion[]=[]
   constructor() {
     super()
   }
@@ -87,6 +107,9 @@ export class ScaleQuestion extends Question{
 }
 export class TitleElement extends GenericElement{
   text:string;
+  constructor() {
+    super();
+  }
 }
 
 export class SurveyDefinition{

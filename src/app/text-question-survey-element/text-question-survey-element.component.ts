@@ -5,7 +5,7 @@ import {GenericElement, TextQuestion} from '../dataModels/SurveyDefinition';
   selector: 'app-text-question-survey-element',
   template: `
     <div>
-      <input nz-input placeholder="Nazwa pytania..." (blur)="save.emit(parent)">
+      <app-survey-question-header-editor [element]="element" (focusEvent)="this.save.emit()"></app-survey-question-header-editor>
       <app-common-attributes-selector [allowed]="allowedAttributes" [element]="element" [type]="this.type"></app-common-attributes-selector>
     </div>
   `,

@@ -118,6 +118,10 @@ import {DynamicModule} from 'ng-dynamic-component';
 import { CommonAttributesSelectorComponent } from './common-attributes-selector/common-attributes-selector.component';
 import { InformationSurveyElementComponent } from './information-survey-element/information-survey-element.component';
 import { SingleQuestionSurveyElementComponent } from './single-question-survey-element/single-question-survey-element.component';
+import { SurveyQuestionHeaderEditorComponent } from './survey-question-header-editor/survey-question-header-editor.component';
+import { SurveyQuestionChoiceSelectorComponent } from './survey-question-choice-selector/survey-question-choice-selector.component';
+import { GroupedSingleQuestionQuestionsSelectorComponent } from './grouped-single-question-questions-selector/grouped-single-question-questions-selector.component';
+import { GroupedSingleQuestionElementComponent } from './grouped-single-question-element/grouped-single-question-element.component';
 
 
 echarts.use([TitleComponent, TooltipComponent, GridComponent, BarChart, SVGRenderer, LegendComponent, LineChart]);
@@ -249,6 +253,14 @@ export let commonNZImports = [
     InformationSurveyElementComponent,
 
     SingleQuestionSurveyElementComponent,
+
+    SurveyQuestionHeaderEditorComponent,
+
+    SurveyQuestionChoiceSelectorComponent,
+
+    GroupedSingleQuestionQuestionsSelectorComponent,
+
+    GroupedSingleQuestionElementComponent,
 
   ],
   imports: [

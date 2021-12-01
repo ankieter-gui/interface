@@ -5,6 +5,7 @@ import {Question} from '../dataModels/SurveyDefinition';
   selector: 'app-common-attributes-selector',
   template: `
     <p style="margin-top:1em">
+      <span><b>Opcje:</b></span>
       <nz-table nzTemplateMode>
         <tr><td>
           <label nz-checkbox [(ngModel)]="this.element.commonAttributes.showId">Pokazywać Id?</label>
@@ -20,6 +21,14 @@ import {Question} from '../dataModels/SurveyDefinition';
           <p>Podpowiedź</p>
           <input nz-input [(ngModel)]="element.commonAttributes.tip">
         </td></tr>
+    <tr>
+      <td>
+        <label nz-checkbox [(ngModel)]="this.element.commonAttributes.overrideDefaultValue">Nadpisać domyślną wartość?</label>
+      </td>
+      <td colspan="2"> <input *ngIf="element.commonAttributes.overrideDefaultValue" nz-input placeholder="Nowa wartość domyślna" [nz-tooltip]="'Nowa wartośc domyślna'" [(ngModel)]="element.commonAttributes.defaultValue"></td>
+      <td></td>
+      <td></td>
+    </tr>
       </nz-table>
     </p>
   `,

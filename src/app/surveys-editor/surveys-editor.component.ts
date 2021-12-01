@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {SurveyGeneratorService} from '../survey-generator.service';
 import {
-  CommonAttributes,
+  CommonAttributes, GroupedSingleChoiceQuestion,
   Information,
   Question,
   SingleChoiceQuestion,
@@ -12,6 +12,7 @@ import {TextQuestionSurveyElementComponent} from '../text-question-survey-elemen
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {InformationSurveyElementComponent} from '../information-survey-element/information-survey-element.component';
 import {SingleQuestionSurveyElementComponent} from '../single-question-survey-element/single-question-survey-element.component';
+import {GroupedSingleQuestionElementComponent} from '../grouped-single-question-element/grouped-single-question-element.component';
 export class SurveyComponentConfig{
   component;
   friendlyName:string;
@@ -40,7 +41,7 @@ export class SurveysEditorComponent implements OnInit {
       {questionType:"text", commonAttributes:new CommonAttributes(), header:"Pytanie #1 header", maxLength:250},
       {questionType:"text", commonAttributes:new CommonAttributes(), header:"Pytanie #2 header", maxLength:250},
       <SingleChoiceQuestion>{questionType:"single", commonAttributes:new CommonAttributes(), header:"Pytanie #2 header", options:[]},
-      {questionType:"text", commonAttributes:new CommonAttributes(), header:"Pytanie #3 header", maxLength:250},
+      new GroupedSingleChoiceQuestion()
 
     ]
       this.surveyComponents[TextQuestion.questionType]={
@@ -53,10 +54,15 @@ export class SurveysEditorComponent implements OnInit {
       component:SingleQuestionSurveyElementComponent,
       friendlyName:"Pytanie pojedyńczego wyboru"
     };
+    this.surveyComponents[GroupedSingleChoiceQuestion.questionType]={
+      component:GroupedSingleQuestionElementComponent,
+      friendlyName:"Pytanie pojedyńczego wyboru z wieloma podpytaniami"
+    }
   }
 rename(){}
 save(){
     console.log("save in editor")
+  console.log(this.surveyDefinition)
 }
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.surveyDefinition.elements, event.previousIndex, event.currentIndex);
