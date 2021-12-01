@@ -12,7 +12,14 @@ import {Question} from '../dataModels/SurveyDefinition';
           <td>
             <label nz-checkbox [(ngModel)]="this.element.commonAttributes.required">Odpowiedź wymagana?</label>
           </td>
+          <td>
+            <label nz-checkbox [(ngModel)]="this.element.commonAttributes.showTip">Pokazywać podpowiedź?</label>
+          </td>
         </tr>
+        <tr *ngIf="element.commonAttributes.showTip"><td colspan="3">
+          <p>Podpowiedź</p>
+          <input nz-input [(ngModel)]="element.commonAttributes.tip">
+        </td></tr>
       </nz-table>
     </p>
   `,

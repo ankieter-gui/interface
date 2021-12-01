@@ -31,7 +31,7 @@
         <div class="report-element" cdkDropList [cdkDropListData]="this.surveyDefinition.elements"
              (cdkDropListDropped)="drop($event)">
           <div style="background: #ECECEC;padding:30px;" *ngFor="let element of itemsForCurrentPage(); let i=index" cdkDrag  class="element-box" style="position:relative;">
-            <nz-card style="width: 600px;" [nzBordered]="false" [nzTitle]="getComponentFromType(element['questionType']).friendlyName" [nzExtra]="extraTemplate">
+            <nz-card style="max-width: 900px;"  [nzTitle]="getComponentFromType(element['questionType']).friendlyName" [nzExtra]="extraTemplate">
               <div style="position: relative; padding-left:2em;padding-right:2em;padding-top:0.5em">
 
                 <app-survey-element-host [componentConfig]="getComponentFromType(element['questionType'])" [element]="element" (saveEmitter)="save()"></app-survey-element-host>

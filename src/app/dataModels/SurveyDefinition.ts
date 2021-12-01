@@ -8,6 +8,7 @@ export class CommonAttributes{
     this.tip=undefined;
     this.required=false;
     this.orientation="horizontal"
+    this.showTip=false;
     this.collapsed=false;
     this.rotate=undefined
     this.showTextField=false;
@@ -22,6 +23,7 @@ export class CommonAttributes{
   showId?:boolean=false;
   defaultValue?:string
   tip?:string
+  showTip=false;
   required?:boolean
   orientation?:"horizontal"|"vertical"
   collapsed?:boolean
