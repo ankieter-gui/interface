@@ -73,18 +73,12 @@ nz-breadcrumb {
   justify-content: center;
   align-items: center;
 }
-.add-more-content i:not(.add-new i){
-  display: block;
-  font-size: 2em;
-  margin:0.5em;
-  color:rgba(0,0,0,0.6);
-  transition: 0.2s all;
+.hover-add{
+  transition:0.2s  ease-in-out  all;
 }
-.add-more-content i:hover:not(.add-new i){
-  color:rgba(0,0,0,0.9);
-  animation-fill-mode: forwards;
-  cursor: pointer;
-  transform: scale(1.3);
+.hover-add:hover{
+  color:rgba(0,0,0,0.8);
+  transform: scale(1.1);
 }
 .add-new{
   color:rgba(0,0,0,0.5);

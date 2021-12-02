@@ -6,7 +6,7 @@ import {Choice, GroupedQuestion, GroupedSingleChoiceQuestion, SingleChoiceQuesti
   template: `
     <nz-table nzTemplateMode>
       <thead>
-      <tr><th style="width: 20%">Kod pytania</th><th>Treść pytania</th><th><button nz-button nzType="default" nzShape="circle" (click)="addNewOption()"><i nz-icon nzType="plus"></i></button></th></tr>
+      <tr><th style="width: 20%">Kod pytania</th><th style="width: 50%">Treść pytania</th><th><button nz-button nzType="default" nzShape="circle" (click)="addNewOption()"><i nz-icon nzType="plus"></i></button></th></tr>
       </thead>
       <tbody>
       <tr *ngFor="let answer of this.element.questions"><td><input nz-input [(ngModel)]="answer.code" (blur)="save.emit()"></td><td><input nz-input [(ngModel)]="answer.value"  (blur)="save.emit()"></td>

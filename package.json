@@ -36,6 +36,7 @@
     "ngx-echarts": "^6.0.1",
     "ngx-file-drop": "^11.1.0",
     "node-lcs": "^1.0.3",
+    "ramda": "^0.27.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "xml-js": "^1.6.11",

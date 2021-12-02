@@ -122,6 +122,7 @@ import { SurveyQuestionHeaderEditorComponent } from './survey-question-header-ed
 import { SurveyQuestionChoiceSelectorComponent } from './survey-question-choice-selector/survey-question-choice-selector.component';
 import { GroupedSingleQuestionQuestionsSelectorComponent } from './grouped-single-question-questions-selector/grouped-single-question-questions-selector.component';
 import { GroupedSingleQuestionElementComponent } from './grouped-single-question-element/grouped-single-question-element.component';
+import { MultipleChoiceQuestionSurveyElementComponent } from './multiple-choice-question-survey-element/multiple-choice-question-survey-element.component';
 
 
 echarts.use([TitleComponent, TooltipComponent, GridComponent, BarChart, SVGRenderer, LegendComponent, LineChart]);
@@ -261,6 +262,8 @@ export let commonNZImports = [
     GroupedSingleQuestionQuestionsSelectorComponent,
 
     GroupedSingleQuestionElementComponent,
+
+    MultipleChoiceQuestionSurveyElementComponent,
 
   ],
   imports: [

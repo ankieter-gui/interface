@@ -24,13 +24,14 @@
         <nz-breadcrumb-item>Edytor ankiety</nz-breadcrumb-item>
 
       </nz-breadcrumb>
+      <button nz-button (click)="dashboardModals.openExportReportDialog(getSurveyAsJson())"></button>
       <div class="inner-content ">
         <mat-form-field class="title-input">
           <input matInput placeholder="Nazwa ankiety" [(ngModel)]="this.surveyDefinition.title" (blur)="rename();save()">
         </mat-form-field>
         <div class="report-element" cdkDropList [cdkDropListData]="this.surveyDefinition.elements"
              (cdkDropListDropped)="drop($event)">
-          <div style="background: #ECECEC;padding:30px;" *ngFor="let element of itemsForCurrentPage(); let i=index" cdkDrag  class="element-box" style="position:relative;">
+          <div [@fadeInOut] style="background: #ECECEC;padding:30px;" *ngFor="let element of itemsForCurrentPage(); let i=index" cdkDrag  class="element-box" style="position:relative;">
             <nz-card style="max-width: 900px;"  [nzTitle]="getComponentFromType(element['questionType']).friendlyName" [nzExtra]="extraTemplate">
               <div style="position: relative; padding-left:2em;padding-right:2em;padding-top:0.5em">
 
@@ -62,13 +63,14 @@
         </div>
         <section class="add-more slide-top-enter-animation" (mouseover)="mouseHoveringAddMorePanel=true" (mouseleave)="mouseHoveringAddMorePanel=false">
           <div class="add-more-content add-new"> Dodaj pytanie <i nz-icon nzType="plus"></i></div>
-          <div class="add-more-content">
-<!--            <span [class.shake]="mouseHoveringAddMorePanel" (click)="addNewQuestion()"><span [class.slide-top]="mouseHoveringAddMorePanel"><i  class="recommended" nz-icon nzType="bar-chart" [nz-tooltip]="'Wykres'"></i></span></span>-->
-            <!--            <i nz-icon nzType="line-chart" [nz-tooltip]="'Wykres liniowy'"></i>-->
-            <!--            <i nz-icon nzType="pie-chart" [nz-tooltip]="'Wykres ciasteczkowy (???)'"></i>-->
-            <!--            <i nz-icon nzType="area-chart" [nz-tooltip]="'Wykres liniowy'"></i>-->
-            <!--            <i nz-icon nzType="bar-chart" [nz-tooltip]="'Wykres kolumnowy, histogram'"></i>-->
-            <i nz-icon nzType="font-size" [nz-tooltip]="'Tekst'" (click)="addNewQuestion()"></i>
+          <div style="display: flex; color:rgba(0,0,0,0.6)">
+            <div *ngFor="let x of addButtonsList" style="margin: 1.2em; cursor: pointer; display: flex;flex-direction: row"  class="hover-add">
+              <div>{{x.friendlyName}}<div>
+              <i style="display: block;font-size: 2em" nz-icon [nzType]="x.icon" (click)="x.onAddEvent()()" ></i>
+            </div>
+
+          </div>
+            </div>
           </div>
         </section>
 

@@ -37,6 +37,7 @@ export class CommonAttributes{
 export class Question extends GenericElement{
   static questionType;
   header="";
+  static allowedAttrs=[]
   commonAttributes?:CommonAttributes;
   constructor() {
     super();
@@ -87,8 +88,10 @@ export class GroupedSingleChoiceQuestion extends Question{
   }
 }
 export class MultipleChoiceQuestion extends Question{
+  static questionType="multi"
   questionType="multi"
   options:Choice[]=[]
+  static allowedAttrs=[]
   range?:boolean=false
   maxAnswers=1
   minAnswers=1
