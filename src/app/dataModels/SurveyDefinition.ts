@@ -4,7 +4,7 @@ export class GenericElement{
 export class CommonAttributes{
   constructor() {
     this.showId=false;
-    this.defaultValue=undefined;
+    this.defaultValue=null;
     this.tip=undefined;
     this.overrideDefaultValue=false;
     this.required=false;
@@ -34,9 +34,27 @@ export class CommonAttributes{
   naLabel?
   id_prev?
 }
+export class ConditionGroup{
+  type:"and"="and"
+  elements:Condition[]=[]
+  constructor(type) {
+    this.type=type;
+  }
+}
+export class Condition{
+  invert=false;
+  aid:string="";
+  value:string="";
+  relation:"lte"|"gt"|"lt"|"gte"|"="='='
+  constructor() {
+  }
+}
 export class Question extends GenericElement{
   static questionType;
+  questionType;
   header="";
+  id="";
+  condition:ConditionGroup[];
   static allowedAttrs=[]
   commonAttributes?:CommonAttributes;
   constructor() {
@@ -45,12 +63,22 @@ export class Question extends GenericElement{
   }
 
 }
+export class Page extends Question{
+  static questionType="page";
+  questionType="page"
+  elements:Question[]=[]
+  constructor() {
+    super();
+  }
+}
 export class Information extends  Question{
   static questionType='information';
+  questionType='information'
   static allowedAttrs=[]
 }
 export class TextQuestion extends  Question{
   static questionType="text"
+  questionType="text"
   static allowedAttrs=['showId','defaultValue', "required", "orientation", "collapsed", "rotate", "showTextField", "naLabel"]
 
   maxLength=250;
@@ -116,7 +144,7 @@ export class TitleElement extends GenericElement{
 }
 
 export class SurveyDefinition{
-  elements:GenericElement[]=[]
+  elements:Question[]=[]
   title:string="";
   constructor() {
   }

@@ -6,7 +6,7 @@ import {GroupedSingleChoiceQuestion, SingleChoiceQuestion} from '../dataModels/S
   template: `
     <div>
       <app-survey-question-header-editor [element]="element" (focusEvent)="this.save.emit()"></app-survey-question-header-editor>
-      <app-common-attributes-selector [allowed]="allowedAttributes" [element]="element" [type]="this.type"></app-common-attributes-selector>
+      <app-common-attributes-selector [allowed]="allowedAttributes" [element]="element" [type]="this.type"  (save)="this.save.emit()"></app-common-attributes-selector>
       <app-grouped-single-question-questions-selector [element]="element" (save)="this.save.emit()"></app-grouped-single-question-questions-selector>
       <app-survey-question-choice-selector [element]="element" (save)="this.save.emit()"></app-survey-question-choice-selector>
     </div>

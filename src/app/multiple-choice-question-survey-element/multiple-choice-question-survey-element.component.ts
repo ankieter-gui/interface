@@ -6,6 +6,7 @@ import {MultipleChoiceQuestion, SingleChoiceQuestion} from '../dataModels/Survey
   template: `
     <div>
       <app-survey-question-header-editor [element]="element" (focusEvent)="this.save.emit()"></app-survey-question-header-editor>
+      <app-common-attributes-selector [allowed]="allowedAttributes" [element]="element" [type]="this.type" (save)="this.save.emit()"></app-common-attributes-selector>
       <app-survey-question-choice-selector [element]="element" (save)="this.save.emit()"></app-survey-question-choice-selector>
     </div>
   `,

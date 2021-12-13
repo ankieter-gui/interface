@@ -6,7 +6,7 @@ import {GenericElement, TextQuestion} from '../dataModels/SurveyDefinition';
   template: `
     <div>
       <app-survey-question-header-editor [element]="element" (focusEvent)="this.save.emit()"></app-survey-question-header-editor>
-      <app-common-attributes-selector [allowed]="allowedAttributes" [element]="element" [type]="this.type"></app-common-attributes-selector>
+      <app-common-attributes-selector  (save)="this.save.emit()" [allowed]="allowedAttributes" [element]="element" [type]="this.type"></app-common-attributes-selector>
     </div>
   `,
   styles: [

@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {TextQuestionSurveyElementComponent} from '../text-question-survey-element/text-question-survey-element.component';
-import {GenericElement} from '../dataModels/SurveyDefinition';
+import {GenericElement, SurveyDefinition} from '../dataModels/SurveyDefinition';
 import {SurveyComponentConfig} from '../surveys-editor/surveys-editor.component';
 
 @Component({
@@ -9,9 +9,15 @@ import {SurveyComponentConfig} from '../surveys-editor/surveys-editor.component'
     <section class="surveyElementHost">
 
       <ndc-dynamic [ndcDynamicComponent]="componentConfig.component"
-                   [ndcDynamicInputs]="{element:element, parent:this}"
+                   [ndcDynamicInputs]="{element:element, parent:this, survey:survey}"
                    [ndcDynamicOutputs]="outputs"
       ></ndc-dynamic>
+      <nz-collapse style="margin-top: 2em">
+        <nz-collapse-panel nzHeader="Warunki wyświetlania pytania">
+          <app-conditional-survey-question-selector (saveEmitter)="save()" [element]="element"></app-conditional-survey-question-selector>
+        </nz-collapse-panel>
+      </nz-collapse>
+
     </section>
 
 
@@ -20,6 +26,7 @@ import {SurveyComponentConfig} from '../surveys-editor/surveys-editor.component'
   ]
 })
 export class SurveyElementHostComponent implements OnInit {
+  @Input() survey:SurveyDefinition
   outputs = {
     save: t => this.save(),
   };
