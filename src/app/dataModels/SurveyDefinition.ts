@@ -35,13 +35,14 @@ export class CommonAttributes{
   id_prev?
 }
 export class ConditionGroup{
-  type:"and"="and"
-  elements:Condition[]=[]
+  type:"and"|"or"|"not"="and"
+  elements:Condition
   constructor(type) {
     this.type=type;
   }
 }
 export class Condition{
+  private type=""
   invert=false;
   aid:string="";
   value:string="";

@@ -25,14 +25,24 @@
 
       </nz-breadcrumb>
       <button nz-button (click)="dashboardModals.openExportReportDialog(getSurveyAsJson())"></button>
-      <div class="inner-content ">
+      <div class="inner-content " *ngIf="surveyDefinition">
         <mat-form-field class="title-input">
           <input matInput placeholder="Nazwa ankiety" [(ngModel)]="this.surveyDefinition.title" (blur)="rename();save()">
         </mat-form-field>
-      <app-survey-elements-renderer [survey]="surveyDefinition" [elements]="surveyDefinition.elements"></app-survey-elements-renderer>
-      <app-survey-element-add (add)="($event)()" [collection]="this.surveyDefinition.elements" [allowed]="addButtonsList"></app-survey-element-add>
+         <button nz-button (click)="verticalDropList=true;"> <i nz-icon nzType="unordered-list" nzTheme="outline"></i></button> <button nz-button (click)="verticalDropList=false;" ><i nz-icon nzType="group" nzTheme="outline"></i></button>
+        <div *ngIf="verticalDropList" cdkDropList (cdkDropListDropped)="drop($event)" cdkDropListOrientation="vertical">
+          <p>Przeciągnij aby zmienić kolejność</p>
+          <nz-tag cdkDrag *ngFor="let page of allPages" (click)="changeCurrentPage(page)" style="display:block;cursor: pointer;font-size: 1.2em; padding:0.6em">{{page.id}}</nz-tag>
+        </div>
+        <div *ngIf="!verticalDropList">
+          <p>Zmień tryb aby zmienić kolejność</p>
+          <nz-tag *ngFor="let page of allPages" (click)="changeCurrentPage(page)" style="cursor: pointer;font-size: 1.2em; padding:0.6em">{{page.id}}</nz-tag>
+        </div>
+          <app-survey-elements-renderer [survey]="surveyDefinition" [elements]="currentPage()"></app-survey-elements-renderer>
+      <app-survey-element-add (add)=" changeCurrentPage(($event)())" [collection]="this.surveyDefinition.elements" [allowed]="addButtonsList"></app-survey-element-add>
 
       </div>
+      <nz-spin *ngIf="!surveyDefinition"></nz-spin>
     </nz-content>
     <nz-footer></nz-footer>
   </nz-layout>

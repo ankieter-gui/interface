@@ -18,8 +18,10 @@ import {MultipleChoiceQuestionSurveyElementComponent} from '../multiple-choice-q
 import * as R from 'ramda'
 import {fadeInOut} from '../commonAnimations';
 import {SurveyPageElementComponent} from '../survey-page-element/survey-page-element.component';
+import {ActivatedRoute} from '@angular/router';
+import {SurveysService} from '../surveys.service';
 export class SurveyComponentConfig{
-  static add = (collection,item)=>()=>collection.push(item)
+  static add = (collection,item)=>()=>{collection.push(item);return item}
   component;
   friendlyName:string;
   onAddEvent:(collection)=>void
@@ -38,13 +40,17 @@ export interface SurveyComponents{
 })
 export class SurveysEditorComponent implements OnInit {
   surveyDefinition:SurveyDefinition = new SurveyDefinition()
-
+  surveyId:string;
   static surveyComponents:SurveyComponents = {}
 
-  constructor(private surveyGenerator:SurveyGeneratorService, public dashboardModals:DashboardModalsService) { }
+  constructor(private surveyGenerator:SurveyGeneratorService,public surveysService:SurveysService, public dashboardModals:DashboardModalsService, private route: ActivatedRoute,) { }
 
   ngOnInit(): void {
-    this.surveyDefinition = new SurveyDefinition()
+    this.surveyId = this.route.snapshot.paramMap.get('id')
+    this.surveysService.getSurveyJSON(this.surveyId).subscribe((x:any)=>{
+      this.surveyDefinition=x;
+      this._allPages= this.surveyDefinition.elements.filter((x:any)=>x.questionType=='page')
+    })
 
     SurveysEditorComponent.surveyComponents[Page.questionType]={
       component:SurveyPageElementComponent,
@@ -104,10 +110,32 @@ rename(){}
     return [SurveysEditorComponent.surveyComponents['page']]
   }
 save(){
-    console.log("save in editor")
-  console.log(this.surveyDefinition)
+  this.refreshAllPages()
+   this.surveysService.saveFromEditor(this.surveyDefinition, this.surveyId)
 }
-
-
+_currentPage;
+  changeCurrentPage(page){
+    this._currentPage=page;
+  }
+currentPage(){
+    if (this._currentPage) {
+      return [this._currentPage]
+    }
+    else{
+      return []
+    }
+}
+refreshAllPages(){
+  this._allPages = this.surveyDefinition.elements.filter((x:any)=>x.questionType=='page')
+}
+_allPages=[]
+  get allPages(){
+    return this._allPages
+  }
 addNewQuestion(){}
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.surveyDefinition.elements, event.previousIndex, event.currentIndex);
+
+  }
+  verticalDropList=false;
 }

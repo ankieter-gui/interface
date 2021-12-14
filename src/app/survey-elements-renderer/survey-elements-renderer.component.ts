@@ -11,7 +11,7 @@ import {fadeInOut} from '../commonAnimations';
     <div class="report-element" cdkDropList [cdkDropListData]="elements"
          (cdkDropListDropped)="drop($event)">
       <div [@fadeInOut] style="background: #ECECEC;padding:30px;" *ngFor="let element of itemsForCurrentPage(); let i=index" cdkDrag  class="element-box" style="position:relative;">
-        <nz-card style="max-width: 900px;"  [nzTitle]="getComponentFromType(element['questionType']).friendlyName" [nzExtra]="extraTemplate">
+        <nz-card style="max-width: 900px;"  [nzTitle]="getComponentFromType(element['questionType']).friendlyName +'   '+ element.id" [nzExtra]="extraTemplate">
           <div style="position: relative; padding-left:2em;padding-right:2em;padding-top:0.5em">
 
             <app-survey-element-host [survey]="survey" [componentConfig]="getComponentFromType(element['questionType'])" [element]="element" (saveEmitter)="save()"></app-survey-element-host>
@@ -32,7 +32,7 @@ import {fadeInOut} from '../commonAnimations';
                 <mat-icon>delete</mat-icon>
                 <span>Usuń</span>
               </button>
-              <div>
+              <div *ngIf="element.questionType!='page'">
                   <span>Przerzuć na inną stronę</span>
                 <div style="padding:1em;"><nz-tag style="cursor: pointer" *ngFor="let page of allPages" (click)="moveToPage(element,page)">{{page.id}}</nz-tag></div>
               </div>

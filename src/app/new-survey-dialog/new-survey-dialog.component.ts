@@ -3,6 +3,7 @@ import {FileSystemDirectoryEntry, FileSystemFileEntry, NgxFileDropEntry} from 'n
 import {HttpClient} from '@angular/common/http';
 import {SurveysService} from '../surveys.service';
 import {NzMessageService} from 'ng-zorro-antd/message';
+import {NzModalService} from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'app-new-survey-dialog',
@@ -27,6 +28,10 @@ import {NzMessageService} from 'ng-zorro-antd/message';
     </ngx-file-drop>
     <nz-alert *ngIf="filesXML.length==0 || files.length==0" nzType="warning" nzMessage="Musisz wybrać plik .csv i .xml!" style="margin-top:2em"></nz-alert>
     <nz-spin *ngIf="isFileBeingUploaded" nzSimple [nzSize]="'large'"></nz-spin>
+    <div style="margin: 2em; padding:1em; border:1px solid rgba(0,0,0,0.3)">
+      <button style="width: 100%" nz-button (click)="surveyService.createEmptyAndTakeToEditor()">Stwórz nową ankietę w edytorze</button>
+      <span>Ta opcja przeniesie cię do edytora.</span>
+    </div>
   `,
   styles: [`
 
@@ -35,7 +40,7 @@ import {NzMessageService} from 'ng-zorro-antd/message';
 })
 export class NewSurveyDialogComponent implements OnInit {
 
-  constructor(private http:HttpClient, private  surveyService:SurveysService,public message: NzMessageService) { }
+  constructor(private http:HttpClient, private  surveyService:SurveysService,public message: NzMessageService, public modalService:NzModalService) { }
   public files: NgxFileDropEntry[] = [];
   public filesXML: NgxFileDropEntry[] = [];
   public fileEntry:FileSystemFileEntry;

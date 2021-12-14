@@ -1,6 +1,7 @@
 import {Component, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 import {UserService} from '../user.service';
 import {DashboardModalsService} from '../dashboard-modals.service';
+import {SurveysService} from '../surveys.service';
 
 @Component({
   selector: 'app-global-sidemenu',
@@ -14,7 +15,7 @@ import {DashboardModalsService} from '../dashboard-modals.service';
           <i nz-icon nzType="folder"></i>
           <span>Ankiety i raporty</span>
         </li>
-        <li nz-menu-item  [routerLink]="'surveysEditor'">
+        <li nz-menu-item  (click)="surveysService.createEmptyAndTakeToEditor()">
           <i nz-icon nzType="folder"></i>
           <span>Edytor ankiet</span>
         </li>
@@ -35,7 +36,7 @@ import {DashboardModalsService} from '../dashboard-modals.service';
 })
 export class GlobalSidemenuComponent implements OnInit {
  // @ViewChild('template', {static: true}) template;
-  constructor( private viewContainerRef: ViewContainerRef, public user:UserService, public dashboardModals:DashboardModalsService) { }
+  constructor( private viewContainerRef: ViewContainerRef, public user:UserService, public dashboardModals:DashboardModalsService, public surveysService:SurveysService) { }
 
   ngOnInit(): void {
    // this.viewContainerRef.createEmbeddedView(this.template);

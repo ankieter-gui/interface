@@ -18,7 +18,7 @@ const routes: Routes = [
   { path: '', component: DashboardComponent, canActivate: [LoginGuard] },
   { path: 'groups', component: GroupsEditorPageComponent, canActivate: [OnlyAdminGuard] },
   { path: 'reports/editor/:id', component: EditorComponent, canActivate: [LoginGuard]},
-  {path: 'surveysEditor', component: SurveysEditorComponent, canActivate: [LoginGuard] },
+
   {path: 'surveysEditor/:id', component: SurveysEditorComponent, canActivate: [LoginGuard] },
   {path: 'reports/:id', component: ReportPreviewComponent },
   {path: 'shared/:hash', component: LinkActivatorComponent },

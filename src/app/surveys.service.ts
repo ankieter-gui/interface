@@ -4,13 +4,17 @@ import {Observable} from 'rxjs';
 import {BACKEND_URL} from './Configuration';
 import {SurveyQuery} from './dataModels/Query';
 import {SurveyGeneratorService} from './survey-generator.service';
+import {Router} from '@angular/router';
+import {SurveyDefinition} from './dataModels/SurveyDefinition';
+import {SurveysEditorComponent} from './surveys-editor/surveys-editor.component';
+import {NzModalService} from 'ng-zorro-antd/modal';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SurveysService {
 
-  constructor(private http:HttpClient, public generator:SurveyGeneratorService) {}
+  constructor(private http:HttpClient, public generator:SurveyGeneratorService, public router:Router, public modalService:NzModalService) {}
   getQuestions(survey){
 
     return this.http.get(`${BACKEND_URL}/data/${survey}/types`, {withCredentials:true})
@@ -47,6 +51,21 @@ export class SurveysService {
   }
   createSurvey(name, meta=null){
     return this.http.post(`${BACKEND_URL}/survey/new`, {name:name, meta:meta!=null?meta:{}}, {withCredentials:true})
+  }
+  saveFromEditor(survey:SurveyDefinition, id:string){
+    return this.http.post(`${BACKEND_URL}/survey/${id}`, survey, {withCredentials:true})
+  }
+  async createEmptyAndTakeToEditor(){
+    let rsp = await this.createSurvey("Nowa ankieta").toPromise()
+    const id = rsp['id']
+    const s = new SurveyDefinition()
+    s.title="Nowa ankieta"
+    await this.saveFromEditor(s, id).toPromise()
+    this.modalService.closeAll()
+    this.router.navigate(['surveysEditor', id])
+  }
+  getSurveyJSON(id:string){
+    return this.http.get(`${BACKEND_URL}/survey/${id}`, {withCredentials:true})
   }
 
 
