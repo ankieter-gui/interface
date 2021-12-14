@@ -29,16 +29,18 @@
         <mat-form-field class="title-input">
           <input matInput placeholder="Nazwa ankiety" [(ngModel)]="this.surveyDefinition.title" (blur)="rename();save()">
         </mat-form-field>
-         <button nz-button (click)="verticalDropList=true;"> <i nz-icon nzType="unordered-list" nzTheme="outline"></i></button> <button nz-button (click)="verticalDropList=false;" ><i nz-icon nzType="group" nzTheme="outline"></i></button>
+        <div><h3 style="font-size: 1.3em;display: inline;margin-right: 2em;"><b>Strony:</b></h3>
+         <button nz-button [nzType]="verticalDropList?'primary':'default'" (click)="verticalDropList=true;"> <i nz-icon nzType="unordered-list" nzTheme="outline"></i></button> <button [nzType]="!verticalDropList?'primary':'default'" style="margin-left: 0.3em" nz-button (click)="verticalDropList=false;" ><i nz-icon nzType="group" nzTheme="outline"></i></button>
+        </div>
         <div *ngIf="verticalDropList" cdkDropList (cdkDropListDropped)="drop($event)" cdkDropListOrientation="vertical">
           <p>Przeciągnij aby zmienić kolejność</p>
-          <nz-tag cdkDrag *ngFor="let page of allPages" (click)="changeCurrentPage(page)" style="display:block;cursor: pointer;font-size: 1.2em; padding:0.6em">{{page.id}}</nz-tag>
+          <nz-tag cdkDrag *ngFor="let page of allPages" (click)="changeCurrentPage(page)" style="display:block;cursor: pointer;font-size: 1.2em; padding:0.6em">{{page.id}}  ({{page.elements.length}})</nz-tag>
         </div>
         <div *ngIf="!verticalDropList">
           <p>Zmień tryb aby zmienić kolejność</p>
-          <nz-tag *ngFor="let page of allPages" (click)="changeCurrentPage(page)" style="cursor: pointer;font-size: 1.2em; padding:0.6em">{{page.id}}</nz-tag>
+          <nz-tag *ngFor="let page of allPages" (click)="changeCurrentPage(page)" style="cursor: pointer;font-size: 1.2em; padding:0.6em">{{page.id}} ({{page.elements.length}})</nz-tag>
         </div>
-          <app-survey-elements-renderer [survey]="surveyDefinition" [elements]="currentPage()"></app-survey-elements-renderer>
+          <app-survey-elements-renderer [survey]="surveyDefinition" [elements]="currentPage()" (save)="this.save()"></app-survey-elements-renderer>
       <app-survey-element-add (add)=" changeCurrentPage(($event)())" [collection]="this.surveyDefinition.elements" [allowed]="addButtonsList"></app-survey-element-add>
 
       </div>

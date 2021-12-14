@@ -135,7 +135,7 @@ _allPages=[]
 addNewQuestion(){}
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.surveyDefinition.elements, event.previousIndex, event.currentIndex);
-
+    this.save()
   }
   verticalDropList=false;
 }
