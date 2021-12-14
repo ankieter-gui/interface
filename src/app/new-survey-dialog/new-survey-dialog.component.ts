@@ -40,7 +40,7 @@ import {NzModalService} from 'ng-zorro-antd/modal';
 })
 export class NewSurveyDialogComponent implements OnInit {
 
-  constructor(private http:HttpClient, private  surveyService:SurveysService,public message: NzMessageService, public modalService:NzModalService) { }
+  constructor(private http:HttpClient, public  surveyService:SurveysService,public message: NzMessageService, public modalService:NzModalService) { }
   public files: NgxFileDropEntry[] = [];
   public filesXML: NgxFileDropEntry[] = [];
   public fileEntry:FileSystemFileEntry;
