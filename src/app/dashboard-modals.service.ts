@@ -126,7 +126,7 @@ export class DashboardModalsService {
             console.log(i.files[0].relativePath, file);
             console.log("sending XML...")
             console.log(newSurveyId)
-            let d = await (i.surveyService.uploadXML(newSurveyId, file, i.files[0].relativePath).toPromise())
+            let d = await (i.surveyService.uploadXML(newSurveyId, file, i.filesXML[0].relativePath).toPromise())
             console.log(file)
             console.log(i.files[0].relativePath)
             await (i.surveyService.uploadData(fileCSV, i.files[0].relativePath,newSurveyId, name).toPromise())
