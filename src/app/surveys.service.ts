@@ -8,7 +8,7 @@ import {Router} from '@angular/router';
 import {SurveyDefinition} from './dataModels/SurveyDefinition';
 import {SurveysEditorComponent} from './surveys-editor/surveys-editor.component';
 import {NzModalService} from 'ng-zorro-antd/modal';
-
+import { saveAs } from 'file-saver';
 @Injectable({
   providedIn: 'root'
 })
@@ -67,6 +67,9 @@ export class SurveysService {
   getSurveyJSON(id:string){
     return this.http.get(`${BACKEND_URL}/survey/${id}`, {withCredentials:true})
   }
-
+  async getSurveyXML(id:string){
+    let rsp = await this.http.get(`${BACKEND_URL}/survey/${id}/download`, {withCredentials:true, observe: 'response', responseType: 'blob' as 'json'}).toPromise()
+    saveAs(rsp.body, "ankieta.xml");
+  }
 
 }

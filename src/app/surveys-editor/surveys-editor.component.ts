@@ -109,9 +109,9 @@ rename(){}
 
     return [SurveysEditorComponent.surveyComponents['page']]
   }
-save(){
+async save(){
   this.refreshAllPages()
-   this.surveysService.saveFromEditor(this.surveyDefinition, this.surveyId)
+   await this.surveysService.saveFromEditor(this.surveyDefinition, this.surveyId).toPromise()
 }
 _currentPage;
   changeCurrentPage(page){
