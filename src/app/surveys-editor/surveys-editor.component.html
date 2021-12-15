@@ -32,12 +32,15 @@
         <div><h3 style="font-size: 1.3em;display: inline;margin-right: 2em;"><b>Strony:</b></h3>
          <button nz-button [nzType]="verticalDropList?'primary':'default'" (click)="verticalDropList=true;"> <i nz-icon nzType="unordered-list" nzTheme="outline"></i></button> <button [nzType]="!verticalDropList?'primary':'default'" style="margin-left: 0.3em" nz-button (click)="verticalDropList=false;" ><i nz-icon nzType="group" nzTheme="outline"></i></button>
         </div>
+
         <div *ngIf="verticalDropList" cdkDropList (cdkDropListDropped)="drop($event)" cdkDropListOrientation="vertical">
           <p>Przeciągnij aby zmienić kolejność</p>
+          <p>Kliknij aby wybrać stronę do edycji</p>
           <nz-tag cdkDrag *ngFor="let page of allPages" (click)="changeCurrentPage(page)" style="display:block;cursor: pointer;font-size: 1.2em; padding:0.6em">{{page.id}}  ({{page.elements.length}})</nz-tag>
         </div>
         <div *ngIf="!verticalDropList">
           <p>Zmień tryb aby zmienić kolejność</p>
+          <p>Kliknij aby wybrać stronę do edycji</p>
           <nz-tag *ngFor="let page of allPages" (click)="changeCurrentPage(page)" style="cursor: pointer;font-size: 1.2em; padding:0.6em">{{page.id}} ({{page.elements.length}})</nz-tag>
         </div>
           <app-survey-elements-renderer [survey]="surveyDefinition" [elements]="currentPage()" (save)="this.save()"></app-survey-elements-renderer>

@@ -3,15 +3,16 @@ import {DashboardModalsService} from '../dashboard-modals.service';
 import {SurveyMeta} from '../dataModels/survey';
 import {SurveysService} from '../surveys.service';
 import {UserService} from '../user.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-survey-tile',
   template: `
     <nz-card [nzBordered]="false" style="cursor: pointer"
              [nzCover]="coverTemplate"
-             [nzActions]="this.survey.authorId==this.user.userId?[actionShare, actionCreateReport,actionDelete]:[actionCreateReport]">
+             [nzActions]="this.survey.authorId==this.user.userId?[actionEdit, actionShare, actionCreateReport,actionDelete]:[actionCreateReport]">
       <!--      <nz-card-meta nzTitle="{{report.name}}" nzDescription=""></nz-card-meta>-->
-      <div class="large-indicator">
+      <div class="large-indicator" (click)="goToSurveyEditor(this.survey.id)">
         <figure class="indicator-icon"><img src="./assets/answers_count.png" style="width:70px;"></figure>
         <div class="indicator-right-side">
           <div class="indicator-right-side-top">
@@ -22,7 +23,7 @@ import {UserService} from '../user.service';
           </div>
         </div>
       </div>
-      <div class="large-indicator">
+      <div class="large-indicator" (click)="goToSurveyEditor(this.survey.id)">
         <figure class="indicator-icon"><img src="./assets/time_left.png" style="width:70px;"></figure>
         <div class="indicator-right-side">
           <div class="indicator-right-side-top">
@@ -51,12 +52,12 @@ import {UserService} from '../user.service';
 
     </ng-template>
     <ng-template #coverTemplate>
-      <figure class="header-image" [style]="'background-image: url(/bkg/'+survey.backgroundImg+');'">
+      <figure class="header-image" [style]="'background-image: url(/bkg/'+survey.backgroundImg+');'" (click)="goToSurveyEditor(this.survey.id)">
         <div style="position:absolute; font-weight: bold; right:15px; top:15px; background-color: white; border-radius: 5px; padding:6px">
           ANKIETA
         </div>
       </figure>
-      <span class="card-title">{{survey.name}}</span>
+      <span class="card-title" (click)="goToSurveyEditor(this.survey.id)">{{survey.name}}</span>
 
 
       <!--      <div class="units">-->
@@ -66,6 +67,9 @@ import {UserService} from '../user.service';
     </ng-template>
     <ng-template #actionSetting>
       <i nz-icon [nzType]="'copy'" nz-tooltip [nzTooltipTitle]="'Duplikuj'"></i>
+    </ng-template>
+    <ng-template #actionEdit>
+      <i nz-icon [nzType]="'edit'" nz-tooltip [nzTooltipTitle]="'Edytuj'" (click)="goToSurveyEditor(this.survey.id)"></i>
     </ng-template>
     <ng-template #actionDelete>
       <i nz-icon [nzType]="'delete'" nz-tooltip [nzTooltipTitle]="'Usuń'" (click)="deleteSurvey()"></i>
@@ -198,7 +202,10 @@ export class SurveyTileComponent implements OnInit {
   get daysAlready(){
     return  Math.round(Math.abs((+this.survey.startedOn) - (+new Date()))/8.64e7);
   }
-  constructor( public dashboardModals:DashboardModalsService, public surveyService:SurveysService, public user:UserService) { }
+  goToSurveyEditor(id){
+    this.router.navigate(['surveysEditor', id])
+  }
+  constructor( public dashboardModals:DashboardModalsService, public surveyService:SurveysService, public user:UserService, public router:Router) { }
   @Output()
   reloadEmitter = new EventEmitter();
   async deleteSurvey(){
