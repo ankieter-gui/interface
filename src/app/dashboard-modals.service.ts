@@ -21,6 +21,7 @@ import {ExportReportDialogComponent} from './export-report-dialog/export-report-
 import {ReorderDialogComponent} from './reorder-dialog/reorder-dialog.component';
 import {QuestionGroupEditorComponent} from './question-group-editor/question-group-editor.component';
 import {GroupSummaryGroup, GroupSummaryPickerComponent} from './group-summary-picker/group-summary-picker.component';
+import {ChangeDataSourceComponent} from './change-data-source/change-data-source.component';
 
 @Injectable({
   providedIn: 'root'
@@ -129,8 +130,14 @@ export class DashboardModalsService {
             let d = await (i.surveyService.uploadXML(newSurveyId, file, i.filesXML[0].relativePath).toPromise())
             console.log(file)
             console.log(i.files[0].relativePath)
-            await (i.surveyService.uploadData(fileCSV, i.files[0].relativePath,newSurveyId, name).toPromise())
+            let rsp = await (i.surveyService.uploadData(fileCSV, i.files[0].relativePath,newSurveyId, name).toPromise())
             i.isFileBeingUploaded = false;
+            if (rsp.error){
+             i.error=true;
+             i.errorMsg="Schemat XML i CSV nie są ze sobą zgodne! Wyślij poprawne pliki"
+              return;
+            }
+
             selectedSurvey = d
             callback(rsp,d)
             m.destroy();
@@ -139,7 +146,12 @@ export class DashboardModalsService {
           });
         }
         else{
-          await (i.surveyService.uploadData(fileCSV, i.files[0].relativePath,newSurveyId, name).toPromise())
+          let rsp = await (i.surveyService.uploadData(fileCSV, i.files[0].relativePath,newSurveyId, name).toPromise())
+          if (rsp.error){
+            i.error=true;
+            i.errorMsg = "Błąd przy wysyłaniu danych ankiety"
+            return;
+          }
           callback(rsp,null)
           m.destroy();
 
@@ -217,7 +229,15 @@ export class DashboardModalsService {
       m.destroy();
     }, '900px');
   }
+  async openDataSourceChangeDialog(reportId){
+    this.createComponentModal("Zmień źródlo danych", ChangeDataSourceComponent, {report:reportId,autocompleteSurveys: (await (this.dashboardService.getDashobardData().toPromise())).objects.filter(d=>d.type==="survey")}, async (i:ChangeDataSourceComponent,m)=>{
+      let rsp:any = this.reports.changeDataSource(reportId, i.autocompleteSurveys.find(x=>x.name==i.surveyInputValue).id)
+      if (rsp.error){i.error=true; return;}
 
+      m.destroy()
+    })
+
+  }
   openExportReportDialog(stringContent: string): void {
     this.createComponentModal('Kod', ExportReportDialogComponent, {content: stringContent}, async (i, m) => m.destroy());
   }

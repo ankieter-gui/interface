@@ -42,12 +42,16 @@ export class SurveysEditorComponent implements OnInit {
   surveyDefinition:SurveyDefinition = new SurveyDefinition()
   surveyId:string;
   static surveyComponents:SurveyComponents = {}
-
+  error=false;
   constructor(private surveyGenerator:SurveyGeneratorService,public surveysService:SurveysService, public dashboardModals:DashboardModalsService, private route: ActivatedRoute,) { }
 
   ngOnInit(): void {
     this.surveyId = this.route.snapshot.paramMap.get('id')
     this.surveysService.getSurveyJSON(this.surveyId).subscribe((x:any)=>{
+      if (x.error){
+        this.error=true;
+        return;
+      }
       this.surveyDefinition=x;
       this._allPages= this.surveyDefinition.elements.filter((x:any)=>x.questionType=='page')
     })

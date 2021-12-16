@@ -127,6 +127,7 @@ import { ConditionalSurveyQuestionSelectorComponent } from './conditional-survey
 import { SurveyPageElementComponent } from './survey-page-element/survey-page-element.component';
 import { SurveyElementAddComponent } from './survey-element-add/survey-element-add.component';
 import { SurveyElementsRendererComponent } from './survey-elements-renderer/survey-elements-renderer.component';
+import { ChangeDataSourceComponent } from './change-data-source/change-data-source.component';
 
 
 echarts.use([TitleComponent, TooltipComponent, GridComponent, BarChart, SVGRenderer, LegendComponent, LineChart]);
@@ -276,6 +277,8 @@ export let commonNZImports = [
     SurveyElementAddComponent,
 
     SurveyElementsRendererComponent,
+
+    ChangeDataSourceComponent,
 
   ],
   imports: [

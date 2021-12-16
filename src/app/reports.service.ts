@@ -72,7 +72,11 @@ export class ReportsService {
     return [...new Set(l)];
   }
 
-
+  changeDataSource(reportId, surveyId){
+    return {error:true}
+    //TODO:
+   // return this.http.post(`${BACKEND_URL}/data/new/answers`,{withCredentials:true})
+  }
 
   getSurveyStructure(reportId){
     return this.http.get(`${BACKEND_URL}/report/${reportId}/answers`,{withCredentials:true})

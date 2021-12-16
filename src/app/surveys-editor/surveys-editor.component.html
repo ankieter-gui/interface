@@ -49,6 +49,7 @@
 
       </div>
       <nz-spin *ngIf="!surveyDefinition"></nz-spin>
+      <p *ngIf="error" style="color:red;">Błąd przy pobieraniu ankiety.</p>
     </nz-content>
     <nz-footer></nz-footer>
   </nz-layout>

@@ -9,7 +9,7 @@ import {ReportElement, TextReportElement} from '../../dataModels/ReportElement';
 
     <!--    </ng-container>-->
     <ckeditor #e class="editor" *ngIf="!this.isPreview && isEditing" [(ngModel)]="text" (ngModelChange)="textChange.emit(text)"
-              (blur)="focused=false; focusEvent.emit([number,focused]); isEditing=false;" [config]="{extraPlugins:'justify'}"
+              (blur)="focused=false; focusEvent.emit([number,focused]); isEditing=!(this.text);" [config]="{extraPlugins:'justify'}"
               (focus)="focused=true; focusEvent.emit([number,focused])"></ckeditor>
     <div *ngIf="!this.isPreview && !isEditing " (click)="isEditing=true" [innerHTML]="text | keepHtml"
          nz-tooltip="Kliknij aby edytować tekst" style="cursor: text"></div>
@@ -18,6 +18,7 @@ import {ReportElement, TextReportElement} from '../../dataModels/ReportElement';
 
       <nz-table nzTemplateMode>
         <thead>
+        <tr><th>Opcjonalne:</th></tr>
         <tr><th>
           <label nz-checkbox (nzCheckedChange)="focusEvent.emit([number,focused])" [(ngModel)]="this.element.isLinkedToSectionBelow">Czy strona powinna być nigdy <b>nie łamana</b> po tym elemencie?</label>
 
