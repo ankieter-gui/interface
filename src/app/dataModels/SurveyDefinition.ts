@@ -34,15 +34,9 @@ export class CommonAttributes{
   naLabel?
   id_prev?
 }
-export class ConditionGroup{
-  type:"and"|"or"|"not"="and"
-  elements:Condition
-  constructor(type) {
-    this.type=type;
-  }
-}
+
 export class Condition{
-  private type=""
+  type:"and"|"or"|"not"|""="and"
   invert=false;
   aid:string="";
   value:string="";
@@ -55,7 +49,7 @@ export class Question extends GenericElement{
   questionType;
   header="";
   id="";
-  condition:ConditionGroup[];
+  conditions:Condition[];
   static allowedAttrs=[]
   commonAttributes?:CommonAttributes;
   constructor() {

@@ -9,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 
     <nz-select [(ngModel)]="role" style="width:100%;margin-top:1rem;">
       <nz-option nzValue="u" nzLabel="Użytkownik"></nz-option>
-      <nz-option nzValue="s" nzLabel="Superadmin"></nz-option>
+      <nz-option nzValue="s" nzLabel="Administrator"></nz-option>
     </nz-select>
   `,
   styles: [
