@@ -57,8 +57,12 @@ export class DashboardComponent implements OnInit {
   filter_tmp = ""
   loading = "open"
   dashboardData:DashboardRequestResponse={objects:[]};
-  ngOnInit(): void {
+  refresh(){
     this.dashboardService.getDashobardData().subscribe(d=>{ this.dashboardData = d; console.log(this.dashboardData)});
+  }
+  ngOnInit(): void {
+    this.dashboardService.refresh=()=>this.refresh()
+    this.refresh()
   }
   changeFilter(criterion: string, animate= true){
     if (this.filter_tmp == criterion) { return; }

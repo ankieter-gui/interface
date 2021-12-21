@@ -13,5 +13,6 @@ export class DashboardService {
   getDashobardData():Observable<DashboardRequestResponse>{
     return this.http.get<DashboardRequestResponse>(`${BACKEND_URL}/dashboard`, {withCredentials:true,})
   }
+  refresh:()=>void;
 
 }

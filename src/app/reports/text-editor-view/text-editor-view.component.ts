@@ -18,7 +18,7 @@ import {ReportElement, TextReportElement} from '../../dataModels/ReportElement';
 
       <nz-table nzTemplateMode>
         <thead>
-        <tr><th>Opcjonalne:</th></tr>
+        <tr><th rowspan="999">Opcjonalne:</th></tr>
         <tr><th>
           <label nz-checkbox (nzCheckedChange)="focusEvent.emit([number,focused])" [(ngModel)]="this.element.isLinkedToSectionBelow">Czy strona powinna być nigdy <b>nie łamana</b> po tym elemencie?</label>
 

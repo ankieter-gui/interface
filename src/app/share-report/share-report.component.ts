@@ -8,11 +8,15 @@ import {FRONTEND_URL} from '../Configuration';
   selector: 'app-share-report',
   template: `
 <!--    <div class="header">Udostępnij raport: {{this.report.name}}</div>-->
+<div *ngIf="this.sharingService._usersBeingDownloaded">
+  <nz-spin></nz-spin>
+</div>
+<div *ngIf="!this.sharingService._usersBeingDownloaded">
     <div class="input-with-label"><span class="label">Link do poglądu</span><input nz-input [value]="this.shareLinkRead"></div>
     <div class="input-with-label"><span class="label">Link do edycji</span><input nz-input [value]="this.shareLinkEdit"></div>
     <div>
       <p><b>Dostęp mają już:</b></p>
-      <nz-tag *ngFor="let userId of whoHasAccess"> {{this.sharingService.groupOrUserName(userId)}}</nz-tag>
+      <nz-tag *ngFor="let userId of whoHasAccess" nzMode="closeable" (nzOnClose)="removeUserWithAccess(userId)"> {{this.sharingService.groupOrUserName(userId)}} - {{this.sharingService.permissionName(this.report.sharedTo[userId])}}</nz-tag>
     </div>
 <nz-tabset>
   <nz-tab nzTitle="Użytkownicy">
@@ -27,7 +31,9 @@ import {FRONTEND_URL} from '../Configuration';
             <th>Nazwa</th>
 <!--            <th>Age</th>-->
 <!--            <th>Address</th>-->
-            <th></th>
+            <th>Właściciel</th>
+            <th>Edycja</th>
+            <th>Pogląd</th>
           </tr>
           </thead>
           <tbody>
@@ -38,8 +44,20 @@ import {FRONTEND_URL} from '../Configuration';
             <td>
 
               <nz-divider nzType="vertical"></nz-divider>
-              <a (click)="selected.push(data)" *ngIf="!isElementOnList(data)" [@fadeInOut]>Dodaj</a>
-              <a (click)="removeSelected(data)" *ngIf="isElementOnList(data)" [@fadeInOut]>Usuń</a>
+              <a (click)="selected.o.push(data)" *ngIf="!isElementOnList('o',data)" [@fadeInOut]>Dodaj</a>
+              <a (click)="removeSelected('o',data)" *ngIf="isElementOnList('o', data)" [@fadeInOut]>Usuń</a>
+            </td>
+            <td>
+
+              <nz-divider nzType="vertical"></nz-divider>
+              <a (click)="selected.w.push(data)" *ngIf="!isElementOnList('w',data)" [@fadeInOut]>Dodaj</a>
+              <a (click)="removeSelected('w',data)" *ngIf="isElementOnList('w', data)" [@fadeInOut]>Usuń</a>
+            </td>
+            <td>
+
+              <nz-divider nzType="vertical"></nz-divider>
+              <a (click)="selected.r.push(data)" *ngIf="!isElementOnList('r',data)" [@fadeInOut]>Dodaj</a>
+              <a (click)="removeSelected('r',data)" *ngIf="isElementOnList('r', data)" [@fadeInOut]>Usuń</a>
             </td>
           </tr>
           </tbody>
@@ -78,29 +96,38 @@ import {FRONTEND_URL} from '../Configuration';
 
 
   </nz-tab>
-  <nz-tab nzTitle="Użytkownicy (wybierz przez grupy)">
-    <nz-collapse style="margin-top:1.5em">
-      <nz-collapse-panel *ngFor="let groupName of this.sharingService.allGroupNames | filterString: ''" [nzHeader]="groupName + ' ('+sharingService.allGroups[groupName].length+')' | titlecase">
-        <nz-list>
-          <nz-list-item *ngFor="let user of sharingService.allGroups[groupName]">
-            <span nz-typography>{{user.casLogin}}</span>
-            <ul nz-list-item-actions>
-              <nz-list-item-action> <a (click)="selected.push(user)" *ngIf="!isElementOnList(user)" [@fadeInOut]>Dodaj</a>
-                <a (click)="removeSelected(user)" *ngIf="isElementOnList(user)" [@fadeInOut]>Usuń</a></nz-list-item-action>
+<!--  <nz-tab nzTitle="Użytkownicy (wybierz przez grupy)">-->
+<!--    <nz-collapse style="margin-top:1.5em">-->
+<!--      <nz-collapse-panel *ngFor="let groupName of this.sharingService.allGroupNames | filterString: ''" [nzHeader]="groupName + ' ('+sharingService.allGroups[groupName].length+')' | titlecase">-->
+<!--        <nz-list>-->
+<!--          <nz-list-item *ngFor="let user of sharingService.allGroups[groupName]">-->
+<!--            <span nz-typography>{{user.casLogin}}</span>-->
+<!--            <ul nz-list-item-actions>-->
+<!--              <nz-list-item-action> <a (click)="selected.push(user)" *ngIf="!isElementOnList(user)" [@fadeInOut]>Dodaj</a>-->
+<!--                <a (click)="removeSelected(user)" *ngIf="isElementOnList(user)" [@fadeInOut]>Usuń</a></nz-list-item-action>-->
 
-            </ul>
-          </nz-list-item>
+<!--            </ul>-->
+<!--          </nz-list-item>-->
 
-        </nz-list>
-      </nz-collapse-panel>
-    </nz-collapse>
-  </nz-tab>
+<!--        </nz-list>-->
+<!--      </nz-collapse-panel>-->
+<!--    </nz-collapse>-->
+<!--  </nz-tab>-->
 </nz-tabset>
 <div style="min-height: 25px;">
-  <nz-tag *ngFor="let selectedUser of this.selected" nzMode="closeable" (nzOnClose)="removeSelected(selectedUser)" [@fadeInOut]>{{selectedUser.casLogin}}</nz-tag>
-</div>
+  <div *ngFor="let key of this.selectedKeys">
+    <div *ngIf="this.selected[key]&&this.selected[key].length>0">
+    <span><b>{{this.sharingService.permissionName(key)}}</b></span><br>
+  <nz-tag *ngFor="let selectedUser of this.selected[key]" nzMode="closeable" (nzOnClose)="removeSelected(key,selectedUser)" [@fadeInOut]>{{selectedUser.casLogin}}</nz-tag>
+  </div>
+  </div>
+  </div>
 <div style="min-height: 25px;">
+  <div *ngIf="this.selectedGroups&&this.selectedGroups.length>0">
+  <span><b>Grupy odczyt:</b></span><br>
   <nz-tag *ngFor="let selectedGroup of this.selectedGroups" nzMode="closeable" (nzOnClose)="removeSelectedGroup(selectedGroup)" [@fadeInOut]>{{selectedGroup}}</nz-tag>
+</div>
+</div>
 </div>
   `,
   styles: [
@@ -111,7 +138,15 @@ export class ShareReportComponent implements OnInit {
   type
   @Input()
   report:ReportMeta
-  selected=[]
+  get selectedKeys(){
+    return Object.keys(this.selected)
+  }
+  selected={
+    o:[],
+    w:[],
+    r:[],
+    n:[],
+  }
   selectedGroups=[]
   usersSearchString;
   groupSearchString;
@@ -148,11 +183,19 @@ export class ShareReportComponent implements OnInit {
   get whoHasAccess(){
     return Object.keys(this.report.sharedTo)
   }
-  removeSelected(selectedUser){
-    this.selected = this.selected.filter(d=>d!==selectedUser)
+  removeSelected(key, selectedUser){
+    this.selected[key] = this.selected[key].filter(d=>d!==selectedUser)
   }
-  isElementOnList(elem){
-    return this.selected.includes(elem)
+  async removeUserWithAccess(id){
+
+    let rsp = await this.sharingService.removePermission(this.report.type, id,this.report.id).toPromise()
+    if (rsp['error']){
+      alert("Błąd przy usuwaniu");return;
+    }
+    delete this.report.sharedTo[id]
+  }
+  isElementOnList(key,elem){
+    return this.selected[key].includes(elem)
   }
   removeSelectedGroup(selectedUser){
     this.selectedGroups = this.selectedGroups.filter(d=>d!==selectedUser)

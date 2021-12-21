@@ -195,8 +195,9 @@ export class DashboardModalsService {
     this.createComponentModal("Udostępnij ankietę", ShareReportComponent, {report:survey, okText:"Udostępnij", type:"survey"}, async (i:ShareReportComponent,m)=>{
       console.log(i.selected)
       console.log(i.selectedGroups)
-      await this.sharing.shareSurveyToUsers(i.report.id, [], i.selected.map(d=>d.id), []).toPromise()
+      await this.sharing.shareSurveyToUsers(i.report.id, i.selected.r.map(x=>Number(x)), i.selected.w.map(x=>Number(x)), [],i.selected.o.map(x=>Number(x))).toPromise()
       await this.sharing.shareSurveyToGroups(i.report.id, [], i.selectedGroups, []).toPromise()
+      if (this.dashboardService.refresh) this.dashboardService.refresh()
       m.destroy()
     })
   }
@@ -205,8 +206,9 @@ export class DashboardModalsService {
       console.log(i.selected)
       console.log(i.selectedGroups)
       this.message.info('Udostępniono')
-      await this.sharing.shareReportToUsers(i.report.id, [], i.selected.map(d=>d.id), []).toPromise()
+      await this.sharing.shareReportToUsers(i.report.id, i.selected.r.map(x=>Number(x)), i.selected.w.map(x=>Number(x)), [], i.selected.o.map(x=>Number(x))).toPromise()
         await this.sharing.shareReportToGroups(i.report.id, [], i.selectedGroups, []).toPromise()
+        if (this.dashboardService.refresh) this.dashboardService.refresh()
         m.destroy()
     })
   }

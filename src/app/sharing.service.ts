@@ -22,11 +22,15 @@ export class SharingService {
 
     }
   }
+  permissionName(name){
+    return {"o":"Właściciel", "w":"Edytor", "r":"Podgląd"}[name]
+  }
   _allUsersCache;
   constructor(private http:HttpClient, private user:UserService) { }
   async downloadAllUsers(){
     let response = await this.http.get<{users:any[]}>(`${BACKEND_URL}/user/all`, {withCredentials:true}).toPromise()
     this._allUsersCache = response.users
+    this._usersBeingDownloaded=false;
   }
   async downloadMyGroups(){
     let response = await this.http.get(`${BACKEND_URL}/user/${this.user.userId}/group`, {withCredentials:true}).toPromise()
@@ -71,18 +75,22 @@ export class SharingService {
   groupOrUserName(id):string{
     return this.users().find(d=>d.id==id).casLogin
   }
-  shareReportToUsers(reportId,usersRead=[], usersWrite=[], usersNone=[]){
+  shareReportToUsers(reportId,usersRead=[], usersWrite=[], usersNone=[], usersOwner=[]){
     return this.http.post(`${BACKEND_URL}/report/${reportId}/share`, {"r":usersRead, "w":usersWrite, "n":usersNone}, {withCredentials:true})
   }
   shareReportToGroups(reportId, groupsRead:string[]=[],groupsWrite:string[]=[], groupsNone:string[]=[] ){
     return this.http.post(`${BACKEND_URL}/report/${reportId}/share`, {"r":groupsRead.map(g=>this.allGroups[g].map(d=>d.id)).flat(), "w":groupsWrite.map(g=>this.allGroups[g].map(d=>d.id)).flat(), "n":groupsNone.map(g=>this.allGroups[g].map(d=>d.id)).flat()}, {withCredentials:true})
   }
-  shareSurveyToUsers(surveyId,usersRead=[], usersWrite=[], usersNone=[]){
-    return this.http.post(`${BACKEND_URL}/report/${surveyId}/share`, {"r":usersRead, "w":usersWrite, "n":usersNone}, {withCredentials:true})
+  shareSurveyToUsers(surveyId,usersRead=[], usersWrite=[], usersNone=[], usersOwner=[]){
+    return this.http.post(`${BACKEND_URL}/survey/${surveyId}/share`, {"r":usersRead, "w":usersWrite, "n":usersNone}, {withCredentials:true})
   }
   shareSurveyToGroups(surveyId, groupsRead:string[]=[],groupsWrite:string[]=[], groupsNone:string[]=[] ){
-    return this.http.post(`${BACKEND_URL}/report/${surveyId}/share`, {"r":groupsRead.map(g=>this.allGroups[g].map(d=>d.id)).flat(), "w":groupsWrite.map(g=>this.allGroups[g].map(d=>d.id)).flat(), "n":groupsNone.map(g=>this.allGroups[g].map(d=>d.id)).flat()}, {withCredentials:true})
+    return this.http.post(`${BACKEND_URL}/survey/${surveyId}/share`, {"r":groupsRead.map(g=>this.allGroups[g].map(d=>d.id)).flat(), "w":groupsWrite.map(g=>this.allGroups[g].map(d=>d.id)).flat(), "n":groupsNone.map(g=>this.allGroups[g].map(d=>d.id)).flat()}, {withCredentials:true})
 
+  }
+  removePermission(type,userId, objectId){
+      if (type=="report") return this.shareReportToUsers(objectId, [],[],[Number(userId)])
+      if (type=="survey") return this.shareSurveyToUsers(objectId, [],[],[Number(userId)])
   }
   updateGroup(groupName, userIds){
     const body = {}
