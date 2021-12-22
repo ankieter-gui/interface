@@ -118,16 +118,16 @@ export let ComplimentQuery = (query: SurveyQuery, globalFilter: GlobalFilter[] =
   return q2;
 }
 export let SurveyQueryNamingDictionary = {
-  'share': 'udział',
-  'max': 'maksimum',
-  'min': 'minimum',
-  'mode': 'dominanta',
-  'median': 'me',
-  'mean': 'śr',
+  'share': 'Udział',
+  'max': 'Maksimum',
+  'min': 'Minimum',
+  'mode': 'Dominanta',
+  'median': 'Me',
+  'mean': 'Śr',
   'std': 'SD',
-  'var': 'wariancja',
+  'var': 'Var',
   'count': 'N*',
-  'sum': 'suma',
+  'sum': 'Suma',
   "rows":"N",
 }
 
