@@ -82,12 +82,14 @@
         </section>
       </section>
       <div class="inner-content " style="position: relative"  >
-        <section style="position: absolute;z-index: 999;top:15px;right:15px">
+        <section  *ngIf="this.reportDefinition.elements && this.reportDefinition.elements.length>0" style="position: absolute;z-index: 999;top:15px;right:15px;display:flex;flex-direction: row">
+          <button nz-button style="margin-right: 5px" (click)="currentPage=1"><< Pierwsza strona</button>
         <nz-pagination (nzPageIndexChange)="currentPage=$event"
-                       *ngIf="this.reportDefinition.elements && this.reportDefinition.elements.length>0"
+
                        [nzPageIndex]="currentPage" [nzPageSize]="itemsOnPage" (nzPageSizeChange)="itemsOnPage=$event"
                        [nzTotal]="this.reportDefinition.elements.length" nzShowQuickJumper
                        nzShowSizeChanger></nz-pagination>
+          <button nz-button (click)="currentPage=this.lastPage-1">Ostatnia strona >></button>
         </section>
 
           <mat-form-field class="title-input" style="z-index: 995" >

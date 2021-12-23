@@ -124,6 +124,7 @@ export class EditorComponent implements OnInit {
   }
 
   get lastPage() {
+    console.log(Math.round(this.reportDefinition.elements.length / this.itemsOnPage + 0.5))
     return Math.round(this.reportDefinition.elements.length / this.itemsOnPage + 0.5);
   }
 

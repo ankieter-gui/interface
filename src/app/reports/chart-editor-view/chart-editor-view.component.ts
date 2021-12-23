@@ -498,7 +498,9 @@ import {SuggestionsGenerator} from '../../SuggestionsGenerator';
         font-family: "Gilroy Light";
         padding-top: 25px;
         font-size: 8pt;
+        max-height: 100px;
 
+        overflow-y: hidden;
       }
 
       .indicator-card-inner {
