@@ -14,7 +14,7 @@ import {fadeInOut} from '../commonAnimations';
         <nz-card style="max-width: 900px;"  [nzTitle]="getComponentFromType(element['questionType']).friendlyName +'   '+ element.id" [nzExtra]="extraTemplate">
           <div style="position: relative; padding-left:2em;padding-right:2em;padding-top:0.5em">
 
-            <app-survey-element-host [survey]="survey" [componentConfig]="getComponentFromType(element['questionType'])" [element]="element" (saveEmitter)="save.emit()"></app-survey-element-host>
+            <app-survey-element-host [saveFromEditor]="saveFromEditor" [survey]="survey" [componentConfig]="getComponentFromType(element['questionType'])" [element]="element" (save)="saveFun()"></app-survey-element-host>
 
           </div>
         </nz-card>
@@ -60,6 +60,12 @@ import {fadeInOut} from '../commonAnimations';
 })
 export class SurveyElementsRendererComponent implements OnInit {
   selectedPage
+  @Input() saveFromEditor;
+  saveFun(){
+    console.log("Save emitter in renderer")
+    console.log(this.elements)
+    this.save.emit()
+  }
   @Output() save= new EventEmitter();
   @Input() survey:SurveyDefinition;
   @Input() elements:GenericElement[];
@@ -72,6 +78,7 @@ export class SurveyElementsRendererComponent implements OnInit {
     return this.elements
   }
   ngOnInit(): void {
+    console.log(this.saveFromEditor)
   }
   getComponentFromType(type){
     return SurveysEditorComponent.surveyComponents[type]

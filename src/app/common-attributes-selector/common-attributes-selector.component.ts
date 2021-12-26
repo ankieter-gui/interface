@@ -9,7 +9,7 @@ import {Question} from '../dataModels/SurveyDefinition';
       <nz-table nzTemplateMode>
         <tr><td>Własne ID</td><td><input nz-input [(ngModel)]="this.element.id" (blur)="save.emit()"></td></tr>
         <tr><td>
-          <label nz-checkbox [(ngModel)]="this.element.commonAttributes.showId" (nzCheckedChange)="save.emit()">Pokazywać Id?</label>
+           <label nz-checkbox [(ngModel)]="this.element.commonAttributes.showId" (nzCheckedChange)="save.emit()">Pokazywać Id?</label>
         </td>
           <td>
             <label nz-checkbox [(ngModel)]="this.element.commonAttributes.required" (nzCheckedChange)="save.emit()">Odpowiedź wymagana?</label>

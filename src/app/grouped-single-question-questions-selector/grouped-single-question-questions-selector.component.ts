@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Choice, GroupedQuestion, GroupedSingleChoiceQuestion, SingleChoiceQuestion} from '../dataModels/SurveyDefinition';
+import {SurveysService} from '../surveys.service';
 
 @Component({
   selector: 'app-grouped-single-question-questions-selector',
@@ -26,14 +27,14 @@ export class GroupedSingleQuestionQuestionsSelectorComponent implements OnInit {
   @Input() element:GroupedSingleChoiceQuestion
   @Output() save:EventEmitter<any> = new EventEmitter()
   addNewOption(){
-    this.element.questions.push(new GroupedQuestion())
+    this.element.questions.push(new GroupedQuestion(this.ss.generateNewId("Q")))
     this.save.emit()
   }
   deleteOption(answer){
     this.element.options = this.element.questions.filter(d=>d!=answer)
     this.save.emit()
   }
-  constructor() { }
+  constructor(private ss:SurveysService) { }
 
   ngOnInit(): void {
   }

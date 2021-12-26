@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Choice, GroupedSingleChoiceQuestion, MultipleChoiceQuestion, Question, SingleChoiceQuestion} from '../dataModels/SurveyDefinition';
+import {SurveysService} from '../surveys.service';
 
 @Component({
   selector: 'app-survey-question-choice-selector',
@@ -26,14 +27,14 @@ export class SurveyQuestionChoiceSelectorComponent implements OnInit {
   @Input() element:SingleChoiceQuestion|GroupedSingleChoiceQuestion|MultipleChoiceQuestion
   @Output() save:EventEmitter<any> = new EventEmitter()
   addNewOption(){
-    this.element.options.push(new Choice())
+    this.element.options.push(new Choice(this.surveyService.generateNewId("A")))
     this.save.emit()
   }
   deleteOption(answer){
     this.element.options = this.element.options.filter(d=>d!=answer)
     this.save.emit()
   }
-  constructor() { }
+  constructor(private surveyService:SurveysService) { }
 
   ngOnInit(): void {
   }

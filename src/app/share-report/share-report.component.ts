@@ -44,19 +44,19 @@ import {FRONTEND_URL} from '../Configuration';
             <td>
 
               <nz-divider nzType="vertical"></nz-divider>
-              <a (click)="selected.o.push(data)" *ngIf="!isElementOnList('o',data)" [@fadeInOut]>Dodaj</a>
+              <a (click)="addToList('o', data)" *ngIf="!isElementOnList('o',data)" [@fadeInOut]>Dodaj</a>
               <a (click)="removeSelected('o',data)" *ngIf="isElementOnList('o', data)" [@fadeInOut]>Usuń</a>
             </td>
             <td>
 
               <nz-divider nzType="vertical"></nz-divider>
-              <a (click)="selected.w.push(data)" *ngIf="!isElementOnList('w',data)" [@fadeInOut]>Dodaj</a>
+              <a (click)="addToList('w', data)" *ngIf="!isElementOnList('w',data)" [@fadeInOut]>Dodaj</a>
               <a (click)="removeSelected('w',data)" *ngIf="isElementOnList('w', data)" [@fadeInOut]>Usuń</a>
             </td>
             <td>
 
               <nz-divider nzType="vertical"></nz-divider>
-              <a (click)="selected.r.push(data)" *ngIf="!isElementOnList('r',data)" [@fadeInOut]>Dodaj</a>
+              <a (click)="addToList('r', data)" *ngIf="!isElementOnList('r',data)" [@fadeInOut]>Dodaj</a>
               <a (click)="removeSelected('r',data)" *ngIf="isElementOnList('r', data)" [@fadeInOut]>Usuń</a>
             </td>
           </tr>
@@ -176,6 +176,14 @@ export class ShareReportComponent implements OnInit {
 
   getEditUrl(){
 
+  }
+  addToList(group, element){
+     Object.entries(this.selected).forEach(u=>{
+       const key=u[0]
+       const value = u[1]
+       this.selected[key] = value.filter(d=>d!==element)
+     })
+    this.selected[group].push(element)
   }
   stringify(a){
     return JSON.stringify(a)

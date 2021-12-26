@@ -44,7 +44,7 @@
           <p>Kliknij aby wybrać stronę do edycji</p>
           <nz-tag *ngFor="let page of allPages" (click)="changeCurrentPage(page)" style="cursor: pointer;font-size: 1.2em; padding:0.6em">{{page.id}} ({{page.elements.length}})</nz-tag>
         </div>
-          <app-survey-elements-renderer [survey]="surveyDefinition" [elements]="currentPage()" (save)="this.save()"></app-survey-elements-renderer>
+          <app-survey-elements-renderer [saveFromEditor]="this.save" [survey]="surveyDefinition" [elements]="currentPage()" (save)="this.save()"></app-survey-elements-renderer>
       <app-survey-element-add (add)=" changeCurrentPage(($event)())" [collection]="this.surveyDefinition.elements" [allowed]="addButtonsList"></app-survey-element-add>
 
       </div>

@@ -15,6 +15,10 @@ import { saveAs } from 'file-saver';
 export class SurveysService {
 
   constructor(private http:HttpClient, public generator:SurveyGeneratorService, public router:Router, public modalService:NzModalService) {}
+  generateNewId(prefix='',definition=undefined):string{
+    let newId = definition?definition.elements.flat().length+1:''
+    return `${prefix}${newId}:${(Math.random() + 1).toString(36).substring(3)}`
+  }
   getQuestions(survey){
 
     return this.http.get(`${BACKEND_URL}/data/${survey}/types`, {withCredentials:true})

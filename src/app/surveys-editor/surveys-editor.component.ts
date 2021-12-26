@@ -44,7 +44,9 @@ export class SurveysEditorComponent implements OnInit {
   static surveyComponents:SurveyComponents = {}
   error=false;
   constructor(private surveyGenerator:SurveyGeneratorService,public surveysService:SurveysService, public dashboardModals:DashboardModalsService, private route: ActivatedRoute,) { }
-
+  generateNewId(prefix=''):string{
+    return this.surveysService.generateNewId(prefix, this.surveyDefinition)
+  }
   ngOnInit(): void {
     this.surveyId = this.route.snapshot.paramMap.get('id')
     this.surveysService.getSurveyJSON(this.surveyId).subscribe((x:any)=>{
@@ -60,7 +62,7 @@ export class SurveysEditorComponent implements OnInit {
       component:SurveyPageElementComponent,
       friendlyName:"Strona",
       onAddEvent:(collection)=>R.compose(
-        SurveyComponentConfig.add(collection, new Page())
+        SurveyComponentConfig.add(collection, new Page(this.generateNewId('p')))
       ),
       icon:"form"
     };
@@ -68,7 +70,7 @@ export class SurveysEditorComponent implements OnInit {
         component:TextQuestionSurveyElementComponent,
         friendlyName:"Pytanie tekstowe",
         onAddEvent:(collection)=>R.compose(
-          SurveyComponentConfig.add(collection, new TextQuestion())
+          SurveyComponentConfig.add(collection, new TextQuestion(this.generateNewId('t')))
         ),
         icon:'font-size',
       };
@@ -76,7 +78,7 @@ export class SurveysEditorComponent implements OnInit {
       component: InformationSurveyElementComponent,
       friendlyName:"Informacja",
       onAddEvent:(collection)=>R.compose(
-        SurveyComponentConfig.add(collection, new Information())
+        SurveyComponentConfig.add(collection, new Information(this.generateNewId('i')))
       ),
       icon:'info-circle',
     }
@@ -84,7 +86,7 @@ export class SurveysEditorComponent implements OnInit {
       component:SingleQuestionSurveyElementComponent,
       friendlyName:"Pytanie pojedyńczego wyboru",
       onAddEvent:(collection)=>R.compose(
-        SurveyComponentConfig.add(collection, new SingleChoiceQuestion())
+        SurveyComponentConfig.add(collection, new SingleChoiceQuestion(this.generateNewId('s')))
       ),
       icon:'check-circle',
     };
@@ -92,7 +94,7 @@ export class SurveysEditorComponent implements OnInit {
       component:GroupedSingleQuestionElementComponent,
       friendlyName:"Pytanie pojedyńczego wyboru z wieloma podpytaniami",
       onAddEvent:(collection)=>R.compose(
-        SurveyComponentConfig.add(collection, new GroupedSingleChoiceQuestion())
+        SurveyComponentConfig.add(collection, new GroupedSingleChoiceQuestion(this.generateNewId('gs')))
       ),
       icon:'check-circle',
     }
@@ -100,7 +102,7 @@ export class SurveysEditorComponent implements OnInit {
       component:MultipleChoiceQuestionSurveyElementComponent,
       friendlyName:"Pytanie wielokrotnego wyboru",
       onAddEvent:(collection)=>R.compose(
-        SurveyComponentConfig.add(collection, new MultipleChoiceQuestion())
+        SurveyComponentConfig.add(collection, new MultipleChoiceQuestion(this.generateNewId('m')))
       ),
       icon:'check-square',
     }
@@ -114,8 +116,9 @@ rename(){}
     return [SurveysEditorComponent.surveyComponents['page']]
   }
 async save(){
-  this.refreshAllPages()
-   await this.surveysService.saveFromEditor(this.surveyDefinition, this.surveyId).toPromise()
+    console.log("saving...")
+    this.refreshAllPages()
+    await this.surveysService.saveFromEditor(this.surveyDefinition, this.surveyId).toPromise()
 }
 _currentPage;
   changeCurrentPage(page){
