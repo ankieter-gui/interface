@@ -49,7 +49,7 @@ export class Question extends GenericElement{
   questionType;
   header="";
   id="";
-  conditions:Condition[];
+  condition:Condition[];
   static allowedAttrs=[]
   commonAttributes?:CommonAttributes;
   constructor(id='') {
