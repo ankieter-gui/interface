@@ -80,7 +80,9 @@ import {SuggestionsGenerator} from '../../SuggestionsGenerator';
 
         </div>
         <div class="chart-container" *ngIf="this.chartData.config.type!='summary' && this.chartData.config.type!='groupSummary'">
-          <figure *ngIf="!chartData.config.type || isError" style="margin:auto;"><img
+          <figure *ngIf="!chartData.config.type || isError" style="margin:auto;">
+            <p *ngIf="this.error" style="color:red;">Błąd: {{this.error}}</p>
+            <img
             src="../../../assets/Continuous-Animations_guidelines.gif"></figure>
           <section class="chart-area" *ngIf="chartData.config.type=='groupedPercentAndData' && this.echartOptions">
             <div [style.height.px]="echartOptions.pxHeight" echarts (chartInit)="onChartInit($event)" [options]="echartOptions"
@@ -644,7 +646,7 @@ export class ChartEditorViewComponent implements OnInit {
   showLinearPicker = false;
   hideGroupBy = false;
   summarySelectedQuestions = [];
-
+  error=''
   round(value) {
     return Math.round(value * 100 + Number.EPSILON) / 100;
   }
@@ -937,6 +939,7 @@ onChartInit(e){
 
   async downloadQueryResponse(query) {
     let _dataResponse:any;
+    this.error=''
     // if (this.isPreview && this.chartData.lastCachesResponse && !('error' in this.chartData.lastCachesResponse)){
     //   _dataResponse = this.chartData.lastCachesResponse;
     // }else {
@@ -944,7 +947,7 @@ onChartInit(e){
 
     // }
     if ('error' in _dataResponse) {
-
+        this.error=_dataResponse.error;
     } else {
 
       let indexOf9999 = _dataResponse['index'].indexOf(9999)
