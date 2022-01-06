@@ -56,31 +56,23 @@ export class GroupedPercentAndDataChartGenerator extends AbstractChartGenerator 
     this.yLabels = OrderGenerators.moveFirstToLast(this.indices.reverse()).order.map(d => this.shortenLabel(this.getLabelFor(this.chartElement.dataQuery.by[0], d)))
     let _tableData=[]
     let headers=[]
-    Object.entries(this.rawSeries).filter(d=>!(d[0].includes("share") || d[0]=="index")).forEach(([key,value]:[string,any[]]) => {
-      _tableData.push(OrderGenerators.moveFirstToLast(value.reverse()).order)
-      headers.push(key.split(" ")[0])
-    });
-    this.tableData={headers:headers, data:_tableData.length>0?_tableData:[]};
-    const rowsIndex = this.tableData.headers.indexOf("rows")
-    const countIndex = this.tableData.headers.indexOf("count")
+    let tableEntries = Object.entries(this.rawSeries).filter(d=>!(d[0].includes("share") || d[0]=="index"))
+    const shortFullNamePair = tableEntries.map(x=>[x[0].split(" ")[0], x[0]])
+    let sorted = OrderSetting.sortAnotherArrayInPlace(this.orderOfColumns,shortFullNamePair).filter(x=>x!=0)
+    sorted.forEach(x=>{
+      const shortName = x.split(" ")[0]
+      const fullKeyName=x
+      console.log(x)
+      const seriesValue = this.rawSeries[fullKeyName]
+      const correctOrder = OrderGenerators.moveFirstToLast(seriesValue.reverse()).order //since we append a new field "UAM".
+      _tableData.push(correctOrder)
+      headers.push(shortName)
+    })
 
-    //zmiana kolejności, tak, żeby N i N* były na pcczątku
-    if (rowsIndex && rowsIndex>=0){
-      let entry = this.tableData.headers[rowsIndex]
-      let entry2 = this.tableData.data[rowsIndex]
-      this.tableData.headers.splice(rowsIndex,1)
-      this.tableData.data.splice(rowsIndex,1)
-      this.tableData.headers.unshift(entry)
-      this.tableData.data.unshift(entry2)
-    }
-    if (countIndex && countIndex>=0){
-      let entry = this.tableData.headers[countIndex]
-      let entry2 = this.tableData.data[countIndex]
-      this.tableData.headers.splice(rowsIndex,1)
-      this.tableData.data.splice(rowsIndex,1)
-      this.tableData.headers.unshift(entry)
-      this.tableData.data.unshift(entry2)
-    }
+
+    console.log(_tableData)
+    this.tableData={headers:headers, data:_tableData.length>0?_tableData:[]};
+   
     this.tableData.data = this.tableData.data.length>0?transpose(this.tableData.data).reverse():[]
     return this;
   }

@@ -42,7 +42,7 @@ export interface DataPair {
 
 }
 export abstract class AbstractChartGenerator {
-  orderOfColumns = ['mean', 'median', 'std','var','mode','sum', 'max', 'min','rows','count']
+  orderOfColumns =new OrderSetting(['mean', 'median', 'std','var','mode','sum', 'max', 'min','rows','count'])
   horizontalBarHeight=40;
   gray="#9F9F9F"
   tableData:{headers:string[], data:any[]}={headers:[], data:[]};

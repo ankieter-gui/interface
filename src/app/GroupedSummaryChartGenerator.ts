@@ -6,6 +6,7 @@ import {breakLongLabels} from './breakLongLabels';
 import {commonSubstring} from './lcs';
 import {OrderGenerators} from '../OrderGenerators';
 import {SurveyQuery} from './dataModels/Query';
+import {OrderSetting} from './dataModels/OrderSetting';
 
 export class GroupedSummaryChartGenerator extends AbstractChartGenerator {
   yLabels;
@@ -74,15 +75,19 @@ export class GroupedSummaryChartGenerator extends AbstractChartGenerator {
     }
     this.ranks = ranks;
     let _tableData = [];
+    let _tableHeaders = [];
     this.yLabels.forEach(label => {
       let tmp = this.chartElement.dataQuery.as.filter(d => d != 'mean').map(d => d + label);
-      tmp = tmp.sort((a,b)=>a.includes("rows") || a.includes("count")?-1:1 )
-      console.log(tmp)
-      _tableData.push(tmp.map(u => this.series[u][0]));
+      const shortFullNamePair = tmp.map(x=>[x.split(" ")[0], x])
+      let sorted = OrderSetting.sortAnotherArrayInPlace(this.orderOfColumns,shortFullNamePair).filter(x=>x!=0)
+
+      _tableHeaders = sorted.map(x=>x.split(" ")[0])
+      _tableData.push(sorted.map(u => this.series[u][0]));
     });
 
-    this.tableData = {headers: this.chartElement.dataQuery.as.filter(d => d != 'mean').sort((a,b)=>a.includes("rows") || a.includes("count")?-1:1 ), data: _tableData.reverse()};
-    //zmiana kolejności, tak, żeby N i N* były na pcczątku
+    this.tableData = {headers: _tableHeaders, data: _tableData.reverse()};
+
+    console.log(this.tableData)
     return this;
   }
   asJSONConfig(): EChartsOption {
