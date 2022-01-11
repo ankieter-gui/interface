@@ -64,7 +64,7 @@ import {SuggestionsGenerator} from '../../SuggestionsGenerator';
 
               <tr>
                 <th style="white-space: nowrap; background:transparent!important;padding:0px;"
-                    *ngFor="let header of chartData.generator.tableData.headers">{{header | PolskieNazwy | titlecase}}</th>
+                    *ngFor="let header of chartData.generator.tableData.headers">{{header | PolskieNazwy}}</th>
               </tr>
               </thead>
               <tbody>
@@ -250,7 +250,7 @@ import {SuggestionsGenerator} from '../../SuggestionsGenerator';
                           <td style="cursor: pointer!important;"
                               *ngFor='let q of ["max","min","mode","mean","median","std","var","count", "rows","sum"]'
                               (click)="$event.preventDefault();$event.stopPropagation();asPickerClick(q);refreshChart()"><label><input
-                            style="pointer-events:none; text-transform: capitalize;" type="checkbox" (click)="$event.preventDefault()"
+                            style="pointer-events:none;" type="checkbox" (click)="$event.preventDefault()"
                             [checked]="chartData.dataQuery.as.includes(q)"> {{q |  PolskieNazwy}}</label></td>
                         </tr>
                         </tbody>

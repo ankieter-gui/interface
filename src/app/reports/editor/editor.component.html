@@ -83,13 +83,13 @@
       </section>
       <div class="inner-content " style="position: relative"  >
         <section  *ngIf="this.reportDefinition.elements && this.reportDefinition.elements.length>0" style="position: absolute;z-index: 999;top:15px;right:15px;display:flex;flex-direction: row">
-          <button nz-button style="margin-right: 5px" (click)="currentPage=1"><< Pierwsza strona</button>
+          <button nz-button style="margin-right: 5px" (click)="currentPage=1"><<</button>
         <nz-pagination (nzPageIndexChange)="currentPage=$event"
 
                        [nzPageIndex]="currentPage" [nzPageSize]="itemsOnPage" (nzPageSizeChange)="itemsOnPage=$event"
                        [nzTotal]="this.reportDefinition.elements.length" nzShowQuickJumper
                        nzShowSizeChanger></nz-pagination>
-          <button nz-button (click)="currentPage=this.lastPage-1">Ostatnia strona >></button>
+          <button nz-button (click)="currentPage=this.lastPage-1">>></button>
         </section>
 
           <mat-form-field class="title-input" style="z-index: 995" >
@@ -178,11 +178,16 @@
             <i nz-icon nzType="font-size" [nz-tooltip]="'Tekst'" (click)="addNewTextElement()"></i>
           </div>
         </section>
-        <nz-pagination style="margin-top:1em" (nzPageIndexChange)="currentPage=$event"
+        <section  *ngIf="this.reportDefinition.elements && this.reportDefinition.elements.length>0" style="display:flex;flex-direction: row;margin-top:1em">
+
+        <button nz-button style="margin-right: 5px" (click)="currentPage=1"><<</button>
+        <nz-pagination (nzPageIndexChange)="currentPage=$event"
                        *ngIf="this.reportDefinition.elements && this.reportDefinition.elements.length>0"
                        [nzPageIndex]="currentPage" [nzPageSize]="itemsOnPage" (nzPageSizeChange)="itemsOnPage=$event"
                        [nzTotal]="this.reportDefinition.elements.length" nzShowQuickJumper
                        nzShowSizeChanger></nz-pagination>
+        <button nz-button (click)="currentPage=this.lastPage-1">>></button>
+        </section>
       </div>
 <!--      <p>Lub wklej kod raportu:</p>-->
 <!--      <textarea [(ngModel)]="codeModel"></textarea>-->
