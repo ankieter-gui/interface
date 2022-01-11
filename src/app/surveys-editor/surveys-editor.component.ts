@@ -107,7 +107,9 @@ export class SurveysEditorComponent implements OnInit {
       icon:'check-square',
     }
   }
-rename(){}
+rename(){
+     this.surveysService.rename(this.surveyId, this.surveyDefinition.title).subscribe(x=>console.log(x))
+}
   getSurveyAsJson(){
     return JSON.stringify(this.surveyDefinition)
   }

@@ -17,7 +17,7 @@ export class SurveysService {
   constructor(private http:HttpClient, public generator:SurveyGeneratorService, public router:Router, public modalService:NzModalService) {}
   generateNewId(prefix='',definition=undefined):string{
     let newId = definition?definition.elements.flat().length+1:''
-    return `${prefix}${newId}:${(Math.random() + 1).toString(36).substring(3)}`
+    return `${prefix}${newId}${(Math.random() + 1).toString(36).substring(3)}`
   }
   getQuestions(survey){
 
@@ -70,6 +70,9 @@ export class SurveysService {
   }
   getSurveyJSON(id:string){
     return this.http.get(`${BACKEND_URL}/survey/${id}`, {withCredentials:true})
+  }
+  rename(id:string, newName:string){
+    return this.http.post(`${BACKEND_URL}/survey/${id}/rename`, {title:newName}, {withCredentials:true})
   }
   async getSurveyXML(id:string){
     let rsp = await this.http.get(`${BACKEND_URL}/survey/${id}/download`, {withCredentials:true, observe: 'response', responseType: 'blob' as 'json'}).toPromise()
