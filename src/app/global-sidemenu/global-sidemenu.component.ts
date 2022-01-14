@@ -27,6 +27,10 @@ import {SurveysService} from '../surveys.service';
           <i nz-icon nzType="user"></i>
           <span>Grupy udostępniania</span>
         </li>
+        <li  nz-menu-item (click)="moveToHelp()" >
+          <i nz-icon nzType="question-circle"></i>
+          <span>Dokumentacja</span>
+        </li>
       </ul>
 
 
@@ -36,8 +40,10 @@ import {SurveysService} from '../surveys.service';
 })
 export class GlobalSidemenuComponent implements OnInit {
  // @ViewChild('template', {static: true}) template;
-  constructor( private viewContainerRef: ViewContainerRef, public user:UserService, public dashboardModals:DashboardModalsService, public surveysService:SurveysService) { }
-
+  constructor( public window:Window,private viewContainerRef: ViewContainerRef, public user:UserService, public dashboardModals:DashboardModalsService, public surveysService:SurveysService) { }
+  moveToHelp(){
+    this.window.location.href="/docs"
+  }
   ngOnInit(): void {
    // this.viewContainerRef.createEmbeddedView(this.template);
   }

@@ -347,6 +347,7 @@ import {SuggestionsGenerator} from '../../SuggestionsGenerator';
 
                 </nz-tab>
               </nz-tabset>
+              <button nz-button (click)="requestJSONConfig()">Wyygeneruj wykres jako JSON</button><input nz-input (blur)="assignAdvancedQueryAsConfig(); refreshChart()" [(ngModel)]="advancedQuery" placeholder="lub wklej wykres zapisany jako json">
             </div>
             <div *ngIf="this.chartData.config.type!=='groupedBars'">Nazwa całego zestawu danych (np.: łącznie, razem, UAM):
               <input nz-input (blur)="refreshChart(true)" placeholder="Nazwa dla zagregowanych wyników - może to być 'Razem', 'łącznie' itd"
@@ -971,6 +972,13 @@ onChartInit(e){
   generateChart(fullQuery){
     this.echartOptions = this.chartsService.generateChart(this.dataResponse, this.chartData, this.reportId, this.namingDictionary, this.report.dictionaryOverrides,undefined, fullQuery);
     console.log(this.echartOptions)
+  }
+
+  assignAdvancedQueryAsConfig(){
+    this.chartData.config=JSON.parse(this.advancedQuery)
+  }
+  requestJSONConfig(){
+    this.advancedQuery=JSON.stringify(this.chartData.config)
   }
 
 
