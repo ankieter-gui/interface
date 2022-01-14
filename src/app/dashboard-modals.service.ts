@@ -135,7 +135,9 @@ export class DashboardModalsService {
             i.isFileBeingUploaded = false;
             if (rsp.error){
              i.error=true;
-             i.errorMsg="Schemat XML i CSV nie są ze sobą zgodne! Wyślij poprawne pliki"
+             i.errorMsg="Wystąpił błąd. Czy pliki są poprawne?\n"+rsp.error;
+             i.extraError = rsp.extra
+              i.lackingError = rsp.lacking
               return;
             }
 

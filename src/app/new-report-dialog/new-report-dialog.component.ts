@@ -26,28 +26,28 @@ import {SurveyMeta} from '../dataModels/survey';
         </nz-auto-option>
       </nz-autocomplete>
     </nz-input-group>
-    <nz-collapse style="margin-top:1em;">
-      <nz-collapse-panel [nzHeader]="'Lub użyj własnych danych z pliku .csv'">
-        CSV:
-        <ngx-file-drop *ngIf="!isFileBeingUploaded" dropZoneLabel="Upuść plik tutaj" (onFileDrop)="dropped($event)"
-                       (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)" accept=".csv">
-          <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
-            <span style="display:block;" *ngIf="files.length>0">Wybrano: {{files[0].relativePath}}</span>
-            <button nz-button (click)="openFileSelector()">{{files.length > 0 ? "Zmień" : "Wybierz"}}</button>
-          </ng-template>
-        </ngx-file-drop>
-        XML:
-        <ngx-file-drop *ngIf="!isFileBeingUploaded" dropZoneLabel="Upuść plik tutaj" (onFileDrop)="droppedXML($event)"
-                       (onFileOver)="fileOverXML($event)" (onFileLeave)="fileLeaveXML($event)" accept=".xml">
-          <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
-            <span style="display:block;" *ngIf="filesXML.length>0">Wybrano: {{filesXML[0].relativePath}}</span>
-            <button nz-button (click)="openFileSelector()">{{filesXML.length>0?"Zmień":"Wybierz"}}</button>
-          </ng-template>
-        </ngx-file-drop>
-        <nz-alert *ngIf="(filesXML.length==1 && files.length==0) ||(filesXML.length==0 && files.length==1) " nzType="warning" nzMessage="Musisz wybrać plik .csv i .xml!" style="margin-top:2em"></nz-alert>
-        <nz-spin *ngIf="isFileBeingUploaded" nzSimple [nzSize]="'large'"></nz-spin>
-      </nz-collapse-panel>
-    </nz-collapse>
+<!--    <nz-collapse style="margin-top:1em;">-->
+<!--      <nz-collapse-panel [nzHeader]="'Lub użyj własnych danych z pliku .csv'">-->
+<!--        CSV:-->
+<!--        <ngx-file-drop *ngIf="!isFileBeingUploaded" dropZoneLabel="Upuść plik tutaj" (onFileDrop)="dropped($event)"-->
+<!--                       (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)" accept=".csv">-->
+<!--          <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">-->
+<!--            <span style="display:block;" *ngIf="files.length>0">Wybrano: {{files[0].relativePath}}</span>-->
+<!--            <button nz-button (click)="openFileSelector()">{{files.length > 0 ? "Zmień" : "Wybierz"}}</button>-->
+<!--          </ng-template>-->
+<!--        </ngx-file-drop>-->
+<!--        XML:-->
+<!--        <ngx-file-drop *ngIf="!isFileBeingUploaded" dropZoneLabel="Upuść plik tutaj" (onFileDrop)="droppedXML($event)"-->
+<!--                       (onFileOver)="fileOverXML($event)" (onFileLeave)="fileLeaveXML($event)" accept=".xml">-->
+<!--          <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">-->
+<!--            <span style="display:block;" *ngIf="filesXML.length>0">Wybrano: {{filesXML[0].relativePath}}</span>-->
+<!--            <button nz-button (click)="openFileSelector()">{{filesXML.length>0?"Zmień":"Wybierz"}}</button>-->
+<!--          </ng-template>-->
+<!--        </ngx-file-drop>-->
+<!--        <nz-alert *ngIf="(filesXML.length==1 && files.length==0) ||(filesXML.length==0 && files.length==1) " nzType="warning" nzMessage="Musisz wybrać plik .csv i .xml!" style="margin-top:2em"></nz-alert>-->
+<!--        <nz-spin *ngIf="isFileBeingUploaded" nzSimple [nzSize]="'large'"></nz-spin>-->
+<!--      </nz-collapse-panel>-->
+<!--    </nz-collapse>-->
 
     <span style="display:block;margin-top:25px;">Nazwa:</span>
     <input placeholder="Nazwa" nz-input [(ngModel)]="reportNameInputValue" (focus)="nameEdited=true"/>

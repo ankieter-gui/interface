@@ -10,6 +10,8 @@ import {NzModalService} from 'ng-zorro-antd/modal';
   template: `
     <input nz-input [(ngModel)]="name" placeholder="Nazwa ankiety...">
     <p *ngIf="error" style="color:red;">{{errorMsg}}</p>
+    <p style="color:red;" *ngIf="errorExtra"><b>Pola których nie ma w XML</b>: <span *ngFor="let e of errorExtra">{{e}}</span></p>
+    <p style="color:red;" *ngIf="errorLacking"><b>Pola których nie ma w CSV</b>: <span *ngFor="let e of errorLacking">{{e}}</span></p>
     CSV/XLSX:
     <ngx-file-drop *ngIf="!isFileBeingUploaded" dropZoneLabel="Upuść plik tutaj" (onFileDrop)="dropped($event)"
                    (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)" accept=".csv,.xlsx">
@@ -48,6 +50,8 @@ export class NewSurveyDialogComponent implements OnInit {
   name:string
   isFileBeingUploaded=false;
   error=false;
+  errorExtra=undefined
+  errorLacking=undefined
   errorMsg = "Nazwa nie może być pusta!"
   ngOnInit(): void {
   }
