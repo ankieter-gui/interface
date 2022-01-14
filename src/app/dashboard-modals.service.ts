@@ -22,6 +22,7 @@ import {ReorderDialogComponent} from './reorder-dialog/reorder-dialog.component'
 import {QuestionGroupEditorComponent} from './question-group-editor/question-group-editor.component';
 import {GroupSummaryGroup, GroupSummaryPickerComponent} from './group-summary-picker/group-summary-picker.component';
 import {ChangeDataSourceComponent} from './change-data-source/change-data-source.component';
+import {SurveyEditorXMLUploadDialogComponent} from './survey-editor-xmlupload-dialog/survey-editor-xmlupload-dialog.component';
 
 @Injectable({
   providedIn: 'root'
@@ -201,7 +202,11 @@ export class DashboardModalsService {
       m.destroy()
     })
   }
+  async openUploadXMLDialog(surveyId){
+    this.createComponentModal("Wyślij XML", SurveyEditorXMLUploadDialogComponent, {surveyId:surveyId}, async (i,m)=>{
 
+    });
+  }
   async openShareReportDialog(report:ReportMeta){
     this.createComponentModal("Udostępnij raport", ShareReportComponent, {report:report, okText:"Udostępnij", type:"report"}, async (i:ShareReportComponent,m)=>{
       console.log(i.selected)
