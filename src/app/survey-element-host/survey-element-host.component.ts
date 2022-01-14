@@ -42,6 +42,7 @@ export class SurveyElementHostComponent implements OnInit {
   @Output()
   save:EventEmitter<any> = new EventEmitter()
   saveFun(){
+    console.log("save in "+this.element.id)
     console.log(this.saveFromEditor)
    this.save.emit()
 

@@ -136,8 +136,8 @@ export class DashboardModalsService {
             if (rsp.error){
              i.error=true;
              i.errorMsg="Wystąpił błąd. Czy pliki są poprawne?\n"+rsp.error;
-             i.extraError = rsp.extra
-              i.lackingError = rsp.lacking
+             i.errorExtra = rsp.extra;
+              i.errorLacking = rsp.lacking;
               return;
             }
 
@@ -206,7 +206,27 @@ export class DashboardModalsService {
   }
   async openUploadXMLDialog(surveyId){
     this.createComponentModal("Wyślij XML", SurveyEditorXMLUploadDialogComponent, {surveyId:surveyId}, async (i,m)=>{
+      console.log("ok")
+      if (i.filesXML.length!=1){
+        i.error=true;
+        i.errorMsg="Musisz wybrać plik"
+        return;
+      }
+      i.fileEntryXML.file(async (file: File) => {
+        i.isFileBeingUploaded=true;
+        let d = await (i.surveyService.uploadXML(surveyId, file, i.filesXML[0].relativePath).toPromise())
+        i.isFileBeingUploaded = false;
+        if (d.error){
+          i.error=true;
+          i.errorMsg="Wystąpił błąd. Czy pliki są poprawne?\n"+d.error;
+          i.isFileBeingUploaded=false;
+          return;
+        }
+        m.destroy();
+        this.window.location.reload()
 
+
+      });
     });
   }
   async openShareReportDialog(report:ReportMeta){

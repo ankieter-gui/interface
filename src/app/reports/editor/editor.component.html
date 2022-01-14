@@ -89,7 +89,7 @@
                        [nzPageIndex]="currentPage" [nzPageSize]="itemsOnPage" (nzPageSizeChange)="itemsOnPage=$event"
                        [nzTotal]="this.reportDefinition.elements.length" nzShowQuickJumper
                        nzShowSizeChanger></nz-pagination>
-          <button nz-button (click)="currentPage=this.lastPage-1">>></button>
+          <button nz-button (click)="currentPage=this.lastPage">>></button>
         </section>
 
           <mat-form-field class="title-input" style="z-index: 995" >
@@ -186,7 +186,7 @@
                        [nzPageIndex]="currentPage" [nzPageSize]="itemsOnPage" (nzPageSizeChange)="itemsOnPage=$event"
                        [nzTotal]="this.reportDefinition.elements.length" nzShowQuickJumper
                        nzShowSizeChanger></nz-pagination>
-        <button nz-button (click)="currentPage=this.lastPage-1">>></button>
+        <button nz-button (click)="currentPage=this.lastPage">>></button>
         </section>
       </div>
 <!--      <p>Lub wklej kod raportu:</p>-->

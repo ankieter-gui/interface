@@ -84,7 +84,8 @@ export class SurveyElementsRendererComponent implements OnInit {
     return SurveysEditorComponent.surveyComponents[type]
   }
   removeElement(element){
-    this.elements=this.elements.filter(x=>x!=element)
+    this.elements.splice(this.elements.indexOf(element),1)
+    this.saveFun()
   }
   get allPages(){
     return this.survey.elements.filter((x:any)=>x.questionType=='page' && x.elements!=this.elements)
@@ -94,6 +95,6 @@ export class SurveyElementsRendererComponent implements OnInit {
     if (this.elements!=page.elements){
     page.elements.push(element)
     this.removeElement(element)}
-
+    this.saveFun()
   }
 }
