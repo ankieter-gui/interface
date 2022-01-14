@@ -6,8 +6,8 @@ import {MultipleChoiceQuestion, Page, SurveyDefinition} from '../dataModels/Surv
   selector: 'app-survey-page-element',
   template: `
     <span>ID strony:</span><input nz-input (blur)="save.emit()" [(ngModel)]="element.id" label="ID strony" placeholder="ID strony">
-    <app-survey-elements-renderer (save)="this.save.emit()" [survey]="survey" [elements]="element.elements"></app-survey-elements-renderer>
-    <app-survey-element-add [collection]="this.element.elements" [allowed]="components" (add)="($event)()"></app-survey-element-add>
+    <app-survey-elements-renderer (save)="this.save.emit()" [survey]="survey" [elements]="element.elements" [showConditions]="false"></app-survey-elements-renderer>
+    <app-survey-element-add [collection]="this.element.elements" [allowed]="components" (add)="this.element.elements.push($event)"></app-survey-element-add>
   `,
   styles: [
   ]

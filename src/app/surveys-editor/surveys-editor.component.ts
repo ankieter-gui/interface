@@ -20,11 +20,13 @@ import {fadeInOut} from '../commonAnimations';
 import {SurveyPageElementComponent} from '../survey-page-element/survey-page-element.component';
 import {ActivatedRoute} from '@angular/router';
 import {SurveysService} from '../surveys.service';
+import {collect} from 'echarts/types/src/component/axisPointer/modelHelper';
 export class SurveyComponentConfig{
-  static add = (collection,item)=>()=>{collection.push(item);return item}
+  static atIndexOrEnd = (collection, element)=>{const e = collection.indexOf(element); return e==-1?collection.length:e+1}
+  static add = (index,collection,item)=>()=>{collection.splice(index,item);return item}
   component;
   friendlyName:string;
-  onAddEvent:(collection)=>void
+  factory:(collection)=>void
   icon:string="file-add";
 
 }
@@ -61,61 +63,58 @@ export class SurveysEditorComponent implements OnInit {
     SurveysEditorComponent.surveyComponents[Page.questionType]={
       component:SurveyPageElementComponent,
       friendlyName:"Strona",
-      onAddEvent:(collection)=>R.compose(
-        SurveyComponentConfig.add(collection, new Page(this.generateNewId('p')))
-      ),
+      factory:(collection)=> new Page(this.generateNewId('p')),
       icon:"form"
     };
     SurveysEditorComponent.surveyComponents[TextQuestion.questionType]={
         component:TextQuestionSurveyElementComponent,
         friendlyName:"Pytanie tekstowe",
-        onAddEvent:(collection)=>R.compose(
-          SurveyComponentConfig.add(collection, new TextQuestion(this.generateNewId('t')))
-        ),
+        factory:(collection)=>
+          new TextQuestion(this.generateNewId('t')),
         icon:'font-size',
       };
     SurveysEditorComponent.surveyComponents[Information.questionType]={
       component: InformationSurveyElementComponent,
       friendlyName:"Informacja",
-      onAddEvent:(collection)=>R.compose(
-        SurveyComponentConfig.add(collection, new Information(this.generateNewId('i')))
-      ),
+      factory:(collection)=> new Information(this.generateNewId('i')),
       icon:'info-circle',
     }
     SurveysEditorComponent.surveyComponents[SingleChoiceQuestion.questionType]={
       component:SingleQuestionSurveyElementComponent,
       friendlyName:"Pytanie pojedyńczego wyboru",
-      onAddEvent:(collection)=>R.compose(
-        SurveyComponentConfig.add(collection, new SingleChoiceQuestion(this.generateNewId('s')))
-      ),
+      factory:(collection)=> new SingleChoiceQuestion(this.generateNewId('s')),
       icon:'check-circle',
     };
     SurveysEditorComponent.surveyComponents[GroupedSingleChoiceQuestion.questionType]={
       component:GroupedSingleQuestionElementComponent,
       friendlyName:"Pytanie pojedyńczego wyboru z wieloma podpytaniami",
-      onAddEvent:(collection)=>R.compose(
-        SurveyComponentConfig.add(collection, new GroupedSingleChoiceQuestion(this.generateNewId('gs')))
-      ),
+      factory:(collection)=> new GroupedSingleChoiceQuestion(this.generateNewId('gs')),
       icon:'check-circle',
     }
     SurveysEditorComponent.surveyComponents[MultipleChoiceQuestion.questionType]={
       component:MultipleChoiceQuestionSurveyElementComponent,
       friendlyName:"Pytanie wielokrotnego wyboru",
-      onAddEvent:(collection)=>R.compose(
-        SurveyComponentConfig.add(collection, new MultipleChoiceQuestion(this.generateNewId('m')))
-      ),
+      factory:(collection)=> new MultipleChoiceQuestion(this.generateNewId('m')),
       icon:'check-square',
     }
   }
 rename(){
      this.surveysService.rename(this.surveyId, this.surveyDefinition.title).subscribe(x=>console.log(x))
 }
+addNewElement(element){
+    let x =
+      this.surveyDefinition.elements.splice(
+        SurveyComponentConfig.atIndexOrEnd(this.surveyDefinition.elements, this.currentPage()[this.currentPage().length-1]),0,
+        element
+      )
+    return element;
+}
   getSurveyAsJson(){
     return JSON.stringify(this.surveyDefinition)
   }
   get addButtonsList(){
 
-    return [SurveysEditorComponent.surveyComponents['page']]
+    return Object.values(SurveysEditorComponent.surveyComponents)
   }
 async save(){
     console.log("saving...")
@@ -136,6 +135,26 @@ currentPage(){
 }
 refreshAllPages(){
   this._allPages = this.surveyDefinition.elements.filter((x:any)=>x.questionType=='page')
+}
+removeElement(collection:any[], element){
+    if (collection.includes(element)) collection.splice(collection.indexOf(element),1);
+      for (let i of collection){
+        if (i.elements)
+          if (i.elements.includes(element)) i.elements.splice(i.elements.indexOf(element),1);
+    }
+}
+previousPageIndex=undefined
+cachePreviousPage(){
+    this.previousPageIndex = this.surveyDefinition.elements.indexOf(this._currentPage)-1
+    if (this.previousPageIndex<0){
+      this.previousPageIndex=0
+    }
+}
+removeCleanup(){
+    if (!this.surveyDefinition.elements.includes(this.currentPage()[0])){
+      if (this.previousPageIndex) this.changeCurrentPage(this.surveyDefinition.elements[this.previousPageIndex])
+      else this.changeCurrentPage(this.surveyDefinition.elements[0])
+    }
 }
 _allPages=[]
   get allPages(){

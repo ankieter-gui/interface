@@ -12,7 +12,7 @@ import {SurveyComponentConfig} from '../surveys-editor/surveys-editor.component'
                    [ndcDynamicInputs]="{element:element, parent:this, survey:survey, saveFromEditor:saveFromEditor}"
                    [ndcDynamicOutputs]="outputs"
       ></ndc-dynamic>
-      <nz-collapse style="margin-top: 2em">
+      <nz-collapse style="margin-top: 2em" *ngIf="this.element.questionType!='page'">
         <nz-collapse-panel nzHeader="Warunki wyświetlania pytania">
           <app-conditional-survey-question-selector (saveEmitter)="saveFun()" [element]="element"></app-conditional-survey-question-selector>
         </nz-collapse-panel>
@@ -27,6 +27,7 @@ import {SurveyComponentConfig} from '../surveys-editor/surveys-editor.component'
 })
 export class SurveyElementHostComponent implements OnInit {
   @Input() survey:SurveyDefinition
+  @Input() showConditions=true;
   @Input() saveFromEditor;
   outputs = {
     save: t => this.saveFun(),

@@ -38,15 +38,15 @@
         <div *ngIf="verticalDropList" cdkDropList (cdkDropListDropped)="drop($event)" cdkDropListOrientation="vertical">
           <p>Przeciągnij aby zmienić kolejność</p>
           <p>Kliknij aby wybrać stronę do edycji</p>
-          <nz-tag cdkDrag *ngFor="let page of allPages" (click)="changeCurrentPage(page)" style="display:block;cursor: pointer;font-size: 1.2em; padding:0.6em">{{page.id}}  ({{page.elements.length}})</nz-tag>
+          <nz-tag cdkDrag *ngFor="let page of this.surveyDefinition.elements" (click)="changeCurrentPage(page)" style="display:block;cursor: pointer;font-size: 1.2em; padding:0.6em">{{page.id}} <span *ngIf="page.questionType == 'page'"> ({{page.elements.length}})</span> - <span>{{page.header.slice(0,50) | striphtml  }}...</span></nz-tag>
         </div>
         <div *ngIf="!verticalDropList">
           <p>Zmień tryb aby zmienić kolejność</p>
           <p>Kliknij aby wybrać stronę do edycji</p>
-          <nz-tag *ngFor="let page of allPages" (click)="changeCurrentPage(page)" style="cursor: pointer;font-size: 1.2em; padding:0.6em">{{page.id}} ({{page.elements.length}})</nz-tag>
+          <nz-tag *ngFor="let page of this.surveyDefinition.elements" (click)="changeCurrentPage(page)" style="cursor: pointer;font-size: 1.2em; padding:0.6em">{{page.id}} <span *ngIf="page.questionType == 'page'">({{page.elements.length}})</span></nz-tag>
         </div>
-          <app-survey-elements-renderer [saveFromEditor]="this.save" [survey]="surveyDefinition" [elements]="this.currentPage()" (save)="this.save()"></app-survey-elements-renderer>
-      <app-survey-element-add (add)=" changeCurrentPage(($event)())" [collection]="this.surveyDefinition.elements" [allowed]="addButtonsList"></app-survey-element-add>
+          <app-survey-elements-renderer [saveFromEditor]="this.save" [survey]="surveyDefinition" [elements]="this.currentPage()" (save)="this.save()" (remove)="cachePreviousPage();removeElement(this.surveyDefinition.elements, $event);removeCleanup()"></app-survey-elements-renderer>
+      <app-survey-element-add (add)="changeCurrentPage(addNewElement($event))" [collection]="this.surveyDefinition.elements" [allowed]="addButtonsList"></app-survey-element-add>
 
       </div>
       <nz-spin *ngIf="!surveyDefinition"></nz-spin>

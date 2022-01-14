@@ -89,7 +89,7 @@ import {NzAlertModule} from 'ng-zorro-antd/alert';
 import {NzMessageModule} from 'ng-zorro-antd/message';
 import {DeleteConfirmModalComponent} from './delete-confirm-modal/delete-confirm-modal.component';
 import {DummyChartComponent} from './dummy-chart/dummy-chart.component';
-import {EscapeHtmlPipe} from './keep-html.pipe';
+import {EscapeHtmlPipe, StripHtmlPipe} from './keep-html.pipe';
 import {GlobalDictionaryOverrideEditorComponent} from './global-dictionary-override-editor/global-dictionary-override-editor.component';
 import {LocalQuestionDictionaryOverrideEditorComponent} from './local-question-dictionary-override-editor/local-question-dictionary-override-editor.component';
 import {IgnoreSelectorComponent} from './ignore-selector/ignore-selector.component';
@@ -129,6 +129,7 @@ import { SurveyElementAddComponent } from './survey-element-add/survey-element-a
 import { SurveyElementsRendererComponent } from './survey-elements-renderer/survey-elements-renderer.component';
 import { ChangeDataSourceComponent } from './change-data-source/change-data-source.component';
 import { SurveyEditorXMLUploadDialogComponent } from './survey-editor-xmlupload-dialog/survey-editor-xmlupload-dialog.component';
+import {NzPipesModule} from 'ng-zorro-antd/pipes';
 
 
 echarts.use([TitleComponent, TooltipComponent, GridComponent, BarChart, SVGRenderer, LegendComponent, LineChart]);
@@ -178,6 +179,7 @@ export let commonNZImports = [
   declarations: [
     AppComponent,
     EscapeHtmlPipe,
+    StripHtmlPipe,
     DashboardComponent,
     SurveyTileComponent,
     FilterByFieldPipe,
@@ -284,32 +286,33 @@ export let commonNZImports = [
     SurveyEditorXMLUploadDialogComponent,
 
   ],
-  imports: [
-    BrowserAnimationsModule,
-    ...commonNZImports,
-    DragDropModule,
-    MatFormFieldModule,
-    MatInputModule,
-    ReportsModule,
-    CKEditorModule,
-    MatIconModule,
-    NzCollapseModule,
-    NzListModule,
-    NgxFileDropModule,
-    NzBadgeModule,
-    NzTabsModule,
-    NzCheckboxModule,
-    NzSpinModule,
-    NzDividerModule,
-    InViewportModule,
-    NzPaginationModule,
-    NzDropDownModule,
-    NzRadioModule,
-    NzAlertModule,
-    MatTooltipModule,
-    DynamicModule
+    imports: [
+        BrowserAnimationsModule,
+        ...commonNZImports,
+        DragDropModule,
+        MatFormFieldModule,
+        MatInputModule,
+        ReportsModule,
+        CKEditorModule,
+        MatIconModule,
+        NzCollapseModule,
+        NzListModule,
+        NgxFileDropModule,
+        NzBadgeModule,
+        NzTabsModule,
+        NzCheckboxModule,
+        NzSpinModule,
+        NzDividerModule,
+        InViewportModule,
+        NzPaginationModule,
+        NzDropDownModule,
+        NzRadioModule,
+        NzAlertModule,
+        MatTooltipModule,
+        DynamicModule,
+        NzPipesModule
 
-  ],
+    ],
   providers: [
     {provide: NZ_I18N, useValue: pl_PL},
     {provide: Window, useValue: window},

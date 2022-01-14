@@ -6,7 +6,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
     <section class="add-more slide-top-enter-animation">
       <div class="add-more-content add-new"> Dodaj pytanie <i nz-icon nzType="plus"></i></div>
       <div style="display: flex; color:rgba(0,0,0,0.6)">
-        <div *ngFor="let x of allowed" style="margin: 1.2em; cursor: pointer; display: flex;flex-direction: row" (click)="add.emit(x.onAddEvent(this.collection))" class="hover-add">
+        <div *ngFor="let x of allowed" style="margin: 1.2em; cursor: pointer; display: flex;flex-direction: row" (click)="add.emit(x.factory())" class="hover-add">
           <div>{{x.friendlyName}}<div>
             <i style="display: block;font-size: 2em" nz-icon [nzType]="x.icon"  ></i>
           </div>
