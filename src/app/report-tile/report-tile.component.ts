@@ -12,7 +12,7 @@ import {SharingService} from '../sharing.service';
   selector: 'app-report-tile',
   template: `
     <nz-card [class.fromLogin]="true" [nzBordered]="false" [nzCover]="coverTemplate"
-             [nzActions]="this.fromLogin?[]:this.report.authorId==this.user.userId?[actionSetting, actionEdit, actionEllipsis, actionSee, this.actionDelete]:[actionSetting, actionEdit, actionSee]">
+             [nzActions]="this.fromLogin?[]:this.report.sharedTo[this.user.userId]=='o'?[actionSetting, actionEdit, actionEllipsis, actionSee, this.actionDelete]:[actionSetting, actionEdit, actionSee]">
       <!--      <nz-card-meta nzTitle="{{report.name}}" nzDescription=""></nz-card-meta>-->
       <div (click)="fromLogin?this.preview():this.openEditor()">
         <div class="large-indicator">

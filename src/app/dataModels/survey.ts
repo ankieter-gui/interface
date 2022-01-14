@@ -27,7 +27,7 @@ export class SurveyMeta extends  GenericObjectMeta{
   startedOn: number; // linux timestamp
   endsOn: number;
   answersCount:number;
-
+  sharedTo: string[];
 }
 
 export class ReportMeta extends  GenericObjectMeta{

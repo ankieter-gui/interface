@@ -26,6 +26,7 @@
       </nz-breadcrumb>
       <button nz-button (click)="dashboardModals.openExportReportDialog(getSurveyAsJson())">Pobierz jako JSON</button>
       <button nz-button (click)="surveysService.getSurveyXML(this.surveyId).then()">Pobierz jako XML</button>
+      <button nz-button (click)="this.dashboardModals.openUploadXMLDialog()">Wczytaj XML</button>
       <div class="inner-content " *ngIf="surveyDefinition">
         <mat-form-field class="title-input">
           <input matInput placeholder="Nazwa ankiety" [(ngModel)]="this.surveyDefinition.title" (blur)="rename();save()">
@@ -44,7 +45,7 @@
           <p>Kliknij aby wybrać stronę do edycji</p>
           <nz-tag *ngFor="let page of allPages" (click)="changeCurrentPage(page)" style="cursor: pointer;font-size: 1.2em; padding:0.6em">{{page.id}} ({{page.elements.length}})</nz-tag>
         </div>
-          <app-survey-elements-renderer [saveFromEditor]="this.save" [survey]="surveyDefinition" [elements]="currentPage()" (save)="this.save()"></app-survey-elements-renderer>
+          <app-survey-elements-renderer [saveFromEditor]="this.save" [survey]="surveyDefinition" [elements]="this.surveyDefinition.elements" (save)="this.save()"></app-survey-elements-renderer>
       <app-survey-element-add (add)=" changeCurrentPage(($event)())" [collection]="this.surveyDefinition.elements" [allowed]="addButtonsList"></app-survey-element-add>
 
       </div>

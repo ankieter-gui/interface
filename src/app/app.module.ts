@@ -128,6 +128,7 @@ import { SurveyPageElementComponent } from './survey-page-element/survey-page-el
 import { SurveyElementAddComponent } from './survey-element-add/survey-element-add.component';
 import { SurveyElementsRendererComponent } from './survey-elements-renderer/survey-elements-renderer.component';
 import { ChangeDataSourceComponent } from './change-data-source/change-data-source.component';
+import { SurveyEditorXMLUploadDialogComponent } from './survey-editor-xmlupload-dialog/survey-editor-xmlupload-dialog.component';
 
 
 echarts.use([TitleComponent, TooltipComponent, GridComponent, BarChart, SVGRenderer, LegendComponent, LineChart]);
@@ -279,6 +280,8 @@ export let commonNZImports = [
     SurveyElementsRendererComponent,
 
     ChangeDataSourceComponent,
+
+    SurveyEditorXMLUploadDialogComponent,
 
   ],
   imports: [

@@ -10,8 +10,20 @@ import {Router} from '@angular/router';
   template: `
     <nz-card [nzBordered]="false" style="cursor: pointer"
              [nzCover]="coverTemplate"
-             [nzActions]="this.survey.authorId==this.user.userId?[actionEdit, actionShare, actionCreateReport,actionDelete]:[actionCreateReport]">
+             [nzActions]="this.survey.sharedTo[this.user.userId]=='o'?[actionEdit, actionShare, actionCreateReport,actionDelete]:[actionCreateReport]">
       <!--      <nz-card-meta nzTitle="{{report.name}}" nzDescription=""></nz-card-meta>-->
+
+      <div class="large-indicator" (click)="goToSurveyEditor(this.survey.id)">
+        <figure class="indicator-icon"><img src="./assets/time_left.png" style="width:70px;"></figure>
+        <div class="indicator-right-side">
+          <div class="indicator-right-side-top">
+            {{survey.authorName}}
+          </div>
+          <div class="indicator-right-side-bottom">
+            Twórca
+          </div>
+        </div>
+      </div>
       <div class="large-indicator" (click)="goToSurveyEditor(this.survey.id)">
         <figure class="indicator-icon"><img src="./assets/answers_count.png" style="width:70px;"></figure>
         <div class="indicator-right-side">
@@ -23,17 +35,18 @@ import {Router} from '@angular/router';
           </div>
         </div>
       </div>
-      <div class="large-indicator" (click)="goToSurveyEditor(this.survey.id)">
-        <figure class="indicator-icon"><img src="./assets/time_left.png" style="width:70px;"></figure>
-        <div class="indicator-right-side">
-          <div class="indicator-right-side-top">
-            {{daysAlready/(totalDays==0?daysAlready:totalDays) | percent}}
-          </div>
-          <div class="indicator-right-side-bottom">
-           Czasu minęło
-          </div>
-        </div>
-      </div>
+
+<!--      <div class="large-indicator" (click)="goToSurveyEditor(this.survey.id)">-->
+<!--        <figure class="indicator-icon"><img src="./assets/time_left.png" style="width:70px;"></figure>-->
+<!--        <div class="indicator-right-side">-->
+<!--          <div class="indicator-right-side-top">-->
+<!--            {{daysAlready/(totalDays==0?daysAlready:totalDays) | percent}}-->
+<!--          </div>-->
+<!--          <div class="indicator-right-side-bottom">-->
+<!--           Czasu minęło-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
       <div class="progress" style="margin:1em">
 <!--                <i nz-icon nzType="user" style="margin-right: 1em"></i>Autor: {{survey.authorName}}-->
               </div>
