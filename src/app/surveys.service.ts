@@ -23,17 +23,8 @@ export class SurveysService {
 
     return this.http.get(`${BACKEND_URL}/data/${survey}/types`, {withCredentials:true})
   }
-  query(survey, q:SurveyQuery){
-    console.log("sending the following:")
-    console.log(q)
-    // if (q.get[0][0] == undefined){
-    //   q.get[0] = q.get[0].splice(0,1)
-    // }
-    return this.http.post(`${BACKEND_URL}/data/${survey}`, q, {withCredentials:true})
-  }
-  getSurveyLinkedToReport(reportId){
 
-  }
+
   uploadData(file,relativePath, id, name=undefined){
 
      // You could upload it like this:

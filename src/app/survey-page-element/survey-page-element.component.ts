@@ -6,7 +6,7 @@ import {MultipleChoiceQuestion, Page, SurveyDefinition} from '../dataModels/Surv
   selector: 'app-survey-page-element',
   template: `
     <span>ID strony:</span><input nz-input (blur)="save.emit()" [(ngModel)]="element.id" label="ID strony" placeholder="ID strony">
-    <app-survey-elements-renderer (save)="this.save.emit()" [survey]="survey" [elements]="element.elements" [showConditions]="false"></app-survey-elements-renderer>
+    <app-survey-elements-renderer (save)="this.save.emit()" [survey]="survey" [elements]="element.elements" [showConditions]="false" (remove)="remove($event)"></app-survey-elements-renderer>
     <app-survey-element-add [collection]="this.element.elements" [allowed]="components" (add)="this.element.elements.push($event)"></app-survey-element-add>
   `,
   styles: [
@@ -25,6 +25,13 @@ export class SurveyPageElementComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+  }
+  remove(element){
+
+    let thisElements=  (this.survey.elements.find(x=>x.id==this.element.id) as Page).elements
+    if (thisElements.map(x=>x.id).includes(element.id)){
+
+      thisElements.splice(thisElements.map(x=>x.id).indexOf(element.id),1);}
   }
 
 }
