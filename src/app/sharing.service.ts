@@ -76,13 +76,13 @@ export class SharingService {
     return this.users().find(d=>d.id==id).casLogin
   }
   shareReportToUsers(reportId,usersRead=[], usersWrite=[], usersNone=[], usersOwner=[]){
-    return this.http.post(`${BACKEND_URL}/report/${reportId}/share`, {"r":usersRead, "w":usersWrite, "n":usersNone}, {withCredentials:true})
+    return this.http.post(`${BACKEND_URL}/report/${reportId}/share`, {"r":usersRead, "w":usersWrite, "n":usersNone, "o":usersOwner}, {withCredentials:true})
   }
   shareReportToGroups(reportId, groupsRead:string[]=[],groupsWrite:string[]=[], groupsNone:string[]=[] ){
     return this.http.post(`${BACKEND_URL}/report/${reportId}/share`, {"r":groupsRead.map(g=>this.allGroups[g].map(d=>d.id)).flat(), "w":groupsWrite.map(g=>this.allGroups[g].map(d=>d.id)).flat(), "n":groupsNone.map(g=>this.allGroups[g].map(d=>d.id)).flat()}, {withCredentials:true})
   }
   shareSurveyToUsers(surveyId,usersRead=[], usersWrite=[], usersNone=[], usersOwner=[]){
-    return this.http.post(`${BACKEND_URL}/survey/${surveyId}/share`, {"r":usersRead, "w":usersWrite, "n":usersNone}, {withCredentials:true})
+    return this.http.post(`${BACKEND_URL}/survey/${surveyId}/share`, {"r":usersRead, "w":usersWrite, "n":usersNone,"o":usersOwner}, {withCredentials:true})
   }
   shareSurveyToGroups(surveyId, groupsRead:string[]=[],groupsWrite:string[]=[], groupsNone:string[]=[] ){
     return this.http.post(`${BACKEND_URL}/survey/${surveyId}/share`, {"r":groupsRead.map(g=>this.allGroups[g].map(d=>d.id)).flat(), "w":groupsWrite.map(g=>this.allGroups[g].map(d=>d.id)).flat(), "n":groupsNone.map(g=>this.allGroups[g].map(d=>d.id)).flat()}, {withCredentials:true})

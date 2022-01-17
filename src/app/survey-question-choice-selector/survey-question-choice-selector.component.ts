@@ -26,8 +26,11 @@ import {SurveysService} from '../surveys.service';
 export class SurveyQuestionChoiceSelectorComponent implements OnInit {
   @Input() element:SingleChoiceQuestion|GroupedSingleChoiceQuestion|MultipleChoiceQuestion
   @Output() save:EventEmitter<any> = new EventEmitter()
+  newId(){
+    return Math.max(...this.element.options.map(x=>Number(x.code)))+1
+  }
   addNewOption(){
-    this.element.options.push(new Choice(this.surveyService.generateNewId("A")))
+    this.element.options.push(new Choice(String(this.newId())))
     this.save.emit()
   }
   deleteOption(answer){
