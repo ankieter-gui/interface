@@ -27,6 +27,7 @@ export class SurveyQuestionChoiceSelectorComponent implements OnInit {
   @Input() element:SingleChoiceQuestion|GroupedSingleChoiceQuestion|MultipleChoiceQuestion
   @Output() save:EventEmitter<any> = new EventEmitter()
   newId(){
+    if (this.element.options.length==0) return 1
     return Math.max(...this.element.options.map(x=>Number(x.code)))+1
   }
   addNewOption(){

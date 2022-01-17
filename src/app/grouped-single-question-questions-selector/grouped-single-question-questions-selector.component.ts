@@ -27,11 +27,15 @@ export class GroupedSingleQuestionQuestionsSelectorComponent implements OnInit {
   @Input() element:GroupedSingleChoiceQuestion
   @Output() save:EventEmitter<any> = new EventEmitter()
   addNewOption(){
-    this.element.questions.push(new GroupedQuestion(this.ss.generateNewId("Q")))
+    this.element.questions.push(new GroupedQuestion(String(this.newId())))
     this.save.emit()
   }
+  newId(){
+    if (this.element.questions.length==0) return 1
+    return Math.max(...this.element.questions.map(x=>Number(x.code)))+1
+  }
   deleteOption(answer){
-    this.element.options = this.element.questions.filter(d=>d!=answer)
+    this.element.questions = this.element.questions.filter(d=>d!=answer)
     this.save.emit()
   }
   constructor(private ss:SurveysService) { }
