@@ -9,10 +9,10 @@ import {Condition, Question} from '../dataModels/SurveyDefinition';
         <thead>
         <tr>
           <th>Typ</th>
-          <th>Aid</th>
+          <th>ID pytania (AID)</th>
           <th>Warunek</th>
           <th>Wartość</th>
-          <th>Odwrócić?</th>
+          <th>Negacja</th>
         </tr>
         </thead>
         <tbody>

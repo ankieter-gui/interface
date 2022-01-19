@@ -20,13 +20,13 @@ import {ReportElement, TextReportElement} from '../../dataModels/ReportElement';
         <thead>
         <tr><th rowspan="999">Opcjonalne:</th></tr>
         <tr><th>
-          <label nz-checkbox (nzCheckedChange)="focusEvent.emit([number,focused])" [(ngModel)]="this.element.isLinkedToSectionBelow">Czy strona powinna być nigdy <b>nie łamana</b> po tym elemencie?</label>
+          <label nz-checkbox (nzCheckedChange)="focusEvent.emit([number,focused])" [(ngModel)]="this.element.isLinkedToSectionBelow">Nigdy nie łam strony po tym tekście</label>
 
         </th><th>
-          <label nz-checkbox (nzCheckedChange)="focusEvent.emit([number,focused])" [(ngModel)]="this.element.dontBreakInside">Czy w środku tekstu może wystąpić podział strony?</label>
+          <label nz-checkbox (nzCheckedChange)="focusEvent.emit([number,focused])" [(ngModel)]="this.element.dontBreakInside">Zezwalaj na łamanie strony w środku tekstu</label>
 
         </th><th>
-          <label nz-checkbox (nzCheckedChange)="focusEvent.emit([number,focused])" [(ngModel)]="this.parentElement.alwaysBreakAfter">Czy strona powinna być zawsze łamana po tym elemencie?</label>
+          <label nz-checkbox (nzCheckedChange)="focusEvent.emit([number,focused])" [(ngModel)]="this.parentElement.alwaysBreakAfter">Zawsze łam stronę po tym tekście</label>
 
         </th></tr>
         </thead>

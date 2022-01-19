@@ -25,7 +25,7 @@
 
       </nz-breadcrumb>
       <button nz-button (click)="dashboardModals.openExportReportDialog(getSurveyAsJson())">Pobierz jako JSON</button>
-      <button nz-button (click)="surveysService.getSurveyXML(this.surveyId).then()">Pobierz jako XML</button>
+      <button nz-button (click)="surveysService.getSurveyXML(this.surveyId, this.surveyDefinition.title).then()">Pobierz jako XML</button>
       <button nz-button (click)="this.dashboardModals.openUploadXMLDialog(this.surveyId)">Wczytaj XML</button>
       <div class="inner-content " *ngIf="surveyDefinition">
         <mat-form-field class="title-input">

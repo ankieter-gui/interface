@@ -48,9 +48,12 @@ import {SuggestionsGenerator} from '../../SuggestionsGenerator';
             <input nz-input [value]="this.chartData.name ? this.chartData.name : this.chartData.dataQuery.get[0][0]" [disabled]="!this.chartData.config.showTitle" (blur)="save()" [(ngModel)]="this.chartData.name" [placeholder]="this.chartData.dataQuery.get[0][0]">
 <!--          <b>{{this.chartData.name ? this.chartData.name : this.chartData.dataQuery.get[0][0]}}</b>-->
         </p>
+        <p *ngIf="this.error" style="color:red;">{{this.error}}</p>
         <div class="chart-container summary-container" *ngIf="this.chartData.config.type=='summary' || this.chartData.config.type=='groupSummary'">
           <figure *ngIf="!chartData.config.type || isError" style="margin:auto;"><img
-            src="../../../assets/Continuous-Animations_guidelines.gif"></figure>
+            src="../../../assets/Continuous-Animations_guidelines.gif">
+          <p *ngIf="this.error" style="color:red;">{{this.error}}</p>
+          </figure>
           <section class="chart-area" *ngIf="this.echartOptions">
             <div [style.height.px]="echartOptions.pxHeight" echarts (chartInit)="onChartInit($event)" [options]="echartOptions"
                  class="chart"
@@ -347,13 +350,14 @@ import {SuggestionsGenerator} from '../../SuggestionsGenerator';
 
                 </nz-tab>
               </nz-tabset>
-              <button nz-button (click)="requestJSONConfig()">Wyygeneruj wykres jako JSON</button><input nz-input (blur)="assignAdvancedQueryAsConfig(); refreshChart()" [(ngModel)]="advancedQuery" placeholder="lub wklej wykres zapisany jako json">
-            </div>
-            <div *ngIf="this.chartData.config.type!=='groupedBars'">Nazwa całego zestawu danych (np.: łącznie, razem, UAM):
+             <div style="display: flex;flex-direction: row"> <button style="margin-right:2em;" nz-button (click)="requestJSONConfig()">Pobierz JSON wykresu</button><input nz-input (blur)="assignAdvancedQueryAsConfig(); refreshChart()" [(ngModel)]="advancedQuery" placeholder="lub wklej wykres zapisany jako json">
+             </div>
+             </div>
+            <div  *ngIf="this.chartData.config.type!=='groupedBars'">Nazwa całego zestawu danych (np.: łącznie, razem, UAM):
               <input nz-input (blur)="refreshChart(true)" placeholder="Nazwa dla zagregowanych wyników - może to być 'Razem', 'łącznie' itd"
                      [(ngModel)]="chartData.config.allTogetherLabel" value="UAM">
             </div>
-            <label nz-checkbox [(ngModel)]="this.parentElement.alwaysBreakAfter">Czy strona powinna być zawsze łamana po tym elemencie?</label>
+            <label style="margin-top:1em;" nz-checkbox [(ngModel)]="this.parentElement.alwaysBreakAfter">Złam stronę po tym wykresie.</label>
 
 
             <!--            <div><label nz-checkbox [(ngModel)]="this.chartData.config.shortLabels"-->
@@ -947,8 +951,18 @@ onChartInit(e){
        _dataResponse = await (this.reportsService.getData(this.reportId,query).toPromise());
 
     // }
+    if (_dataResponse["index"].length==0){
+      this.dataResponse=undefined;
+      this.echartOptions=undefined;
+      this.error = "Brak danych do narysowania wykresu. Czy filtry nie powodują, że żadna odpowiedź na ankietę nie jest brana pod uwagę?"
+      this.isError=true;
+      return;
+    }
     if ('error' in _dataResponse) {
+      this.dataResponse=undefined;
+      this.echartOptions=undefined;
         this.error=_dataResponse.error;
+        this.isError=true;
     } else {
 
       let indexOf9999 = _dataResponse['index'].indexOf(9999)

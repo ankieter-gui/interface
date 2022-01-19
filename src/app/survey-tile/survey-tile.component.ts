@@ -10,7 +10,7 @@ import {Router} from '@angular/router';
   template: `
     <nz-card [nzBordered]="false" style="cursor: pointer"
              [nzCover]="coverTemplate"
-             [nzActions]="this.survey.sharedTo[this.user.userId]=='o'?[actionEdit, actionShare, actionCreateReport,actionDelete]:[actionCreateReport]">
+             [nzActions]="this.survey.sharedTo[this.user.userId]=='o'?[actionEdit, actionShare, actionCreateReport,actionEllipsis,actionDelete]:[actionCreateReport]">
       <!--      <nz-card-meta nzTitle="{{report.name}}" nzDescription=""></nz-card-meta>-->
 
       <div class="large-indicator" (click)="goToSurveyEditor(this.survey.id)">
@@ -94,7 +94,7 @@ import {Router} from '@angular/router';
       <i nz-icon nzType="edit" nz-tooltip [nzTooltipTitle]="'Edytuj ankietę'"></i>
     </ng-template>
     <ng-template #actionEllipsis>
-     <i nz-icon nzType="download" nz-tooltip [nzTooltipTitle]="'Pobierz XML ankiety'"></i>
+     <i nz-icon nzType="download" (click)="surveyService.getSurveyXML(this.survey.id, this.survey.name).then()" nz-tooltip [nzTooltipTitle]="'Pobierz XML ankiety'"></i>
     </ng-template>
     <ng-template #actionCreateReport>
       <i nz-icon nzType="folder-add" nz-tooltip [nzTooltipTitle]="'Nowy raport z wyników ankiety'" (click)="dashboardModals.openNewReportDialog(this.survey)"></i>

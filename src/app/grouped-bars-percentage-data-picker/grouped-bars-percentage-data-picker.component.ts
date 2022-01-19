@@ -6,10 +6,7 @@ import {ChartsService} from '../charts.service';
 @Component({
   selector: 'app-grouped-bars-percentage-data-picker',
   template: `
-    <nz-alert style="margin:1em" nzType="info" nzMessage="Wpisanie poniższych danych jest nieobowiązkowe. Uzupełnienie pól pozwoli na przedstawienie frekwencji na wydziale jako %"></nz-alert>
-    <nz-alert style="margin:1em" nzType="warning" nzMessage="Trzeba wpisać dane dla każdego wydziału widoczengo na wykresie! Inaczej wykres będzie niewidoczny!"></nz-alert>
-    <nz-alert style="margin:1em" nzType="error"
-              nzMessage="Należy wpisać wartości po przefiltrowaniu. Jeżeli wykres przez filtry przedstawia tylko wyniki dla studentów stopnia pierwszego - wpisz liczby studentów pierwszego stopnia na każdym wydziale."></nz-alert>
+    <nz-alert style="margin:1em" nzType="info" nzMessage="Wpisanie poniższych danych jest nieobowiązkowe. Uzupełnienie pól pozwoli na przedstawienie frekwencji na wydziale jako %. Wpisane wartości powinny być już przefiltrowane"></nz-alert>
 
     <nz-table #dataTable [nzData]="this.chart.config.handCodedData">
 

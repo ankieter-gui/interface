@@ -9,6 +9,8 @@ import {SurveyDefinition} from './dataModels/SurveyDefinition';
 import {SurveysEditorComponent} from './surveys-editor/surveys-editor.component';
 import {NzModalService} from 'ng-zorro-antd/modal';
 import { saveAs } from 'file-saver';
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -65,9 +67,9 @@ export class SurveysService {
   rename(id:string, newName:string){
     return this.http.post(`${BACKEND_URL}/survey/${id}/rename`, {title:newName}, {withCredentials:true})
   }
-  async getSurveyXML(id:string){
+  async getSurveyXML(id:string,name:string){
     let rsp = await this.http.get(`${BACKEND_URL}/survey/${id}/download`, {withCredentials:true, observe: 'response', responseType: 'blob' as 'json'}).toPromise()
-    saveAs(rsp.body, "ankieta.xml");
+    saveAs(rsp.body, `${name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.xml`);
   }
 
 }
