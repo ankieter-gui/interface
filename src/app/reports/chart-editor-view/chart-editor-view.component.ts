@@ -951,29 +951,30 @@ onChartInit(e){
        _dataResponse = await (this.reportsService.getData(this.reportId,query).toPromise());
 
     // }
-    if (_dataResponse["index"].length==0){
+    if (_dataResponse.index && _dataResponse["index"].length==0){
       this.dataResponse=undefined;
       this.echartOptions=undefined;
       this.error = "Brak danych do narysowania wykresu. Czy filtry nie powodują, że żadna odpowiedź na ankietę nie jest brana pod uwagę?"
       this.isError=true;
       return;
     }
-    if ('error' in _dataResponse) {
+    if ('error' in _dataResponse && this.chartData.config.type!="multipleBarsOwnData" && this.chartData.config.type!='linearCustomData') {
       this.dataResponse=undefined;
       this.echartOptions=undefined;
         this.error=_dataResponse.error;
         this.isError=true;
     } else {
+      if (_dataResponse.index) {
+        let indexOf9999 = _dataResponse['index'].indexOf(9999)
+        console.log(indexOf9999)
+        if (indexOf9999 >= 0) {
+          for (let key of Object.keys(_dataResponse).filter(x => x != 'index')) {
+            _dataResponse[key].splice(indexOf9999, 1)
 
-      let indexOf9999 = _dataResponse['index'].indexOf(9999)
-      console.log(indexOf9999)
-      if (indexOf9999>=0) {
-        for (let key of Object.keys(_dataResponse).filter(x => x != 'index')) {
-          _dataResponse[key].splice(indexOf9999, 1)
-
+          }
+          _dataResponse['index'].splice(indexOf9999, 1)
+          console.log(_dataResponse)
         }
-        _dataResponse['index'].splice(indexOf9999, 1)
-        console.log(_dataResponse)
       }
       this.dataResponse = _dataResponse;
       // this.chartData.lastCachesResponse = this.dataResponse;
