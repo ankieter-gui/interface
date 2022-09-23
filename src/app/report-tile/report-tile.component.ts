@@ -12,7 +12,7 @@ import {SharingService} from '../sharing.service';
   selector: 'app-report-tile',
   template: `
     <nz-card [class.fromLogin]="true" [nzBordered]="false" [nzCover]="coverTemplate"
-             [nzActions]="this.fromLogin?[]:this.report.sharedTo[this.user.userId]=='o'?[actionSetting, actionEdit, actionEllipsis, actionSee, this.actionDelete]:[actionSetting, actionEdit, actionSee]">
+             [nzActions]="this.fromLogin?[]:this.report.sharedTo[this.user.userId]=='o'?[actionSetting, actionEdit, actionEllipsis, actionSee, this.actionDelete, actionDownload]:[actionSetting, actionEdit, actionSee, actionDownload]">
       <!--      <nz-card-meta nzTitle="{{report.name}}" nzDescription=""></nz-card-meta>-->
       <div (click)="fromLogin?this.preview():this.openEditor()">
         <div class="large-indicator">
@@ -208,9 +208,13 @@ export class ReportTileComponent implements OnInit {
   }
 
   async PDF() {
-    this.router.navigateByUrl(`/reports/${this.report.id}`, {
-      state: {shallPrint: true}
-    });
+    alert("Z powodów ograniczeń technicznych, funkcja pobierania raportu jako PDF jest niedostępna. " +
+      "Aby wygenerować raport w formacie PDF, wejdź na jego podgląd i wydrukuj go jako PDF (wybierz Microsoft Print to PDF jako drukarkę." +
+      " Zamiast drukować na drukarce, na komputer zostanie pobrany PDF). " +
+      "Ważne! Musisz odczekać aż wszystkie wykresy się załadują. Najlepiej przewinąć na sam dół i poczekać aż ostatni wykres się wyświetli. Wtedy można drukować.  ")
+    // this.router.navigateByUrl(`/reports/${this.report.id}`, {
+    //   state: {shallPrint: true}
+    // });
   }
 
   async openEditor() {
