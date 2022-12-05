@@ -64,7 +64,7 @@ export class MultipleChoiceChartGenerator extends AbstractChartGenerator {
         left: '6%',
         right: '4%',
         bottom: '3%',
-        top: '0%',
+        top: '6%',
         containLabel: true
       },
       xAxis: {type: 'value', show: true, animation: true},
