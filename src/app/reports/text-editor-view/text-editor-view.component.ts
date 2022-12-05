@@ -15,7 +15,7 @@ import {ReportElement, TextReportElement} from '../../dataModels/ReportElement';
          nz-tooltip="Kliknij aby edytować tekst" style="cursor: text"></div>
     <div *ngIf="this.isPreview" [innerHTML]="text | keepHtml"></div>
     <div *ngIf="!isPreview">
-
+      <button nz-button nzType="default" (click)="isEditing=!isEditing" nz-tooltip="Edytuj tekst">{{this.isEditing?"Wyłącz edytor":"Włącz edytor"}}<i nz-icon nzType="edit"></i></button>
       <nz-table nzTemplateMode>
         <thead>
         <tr><th rowspan="999">Opcjonalne:</th></tr>

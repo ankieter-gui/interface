@@ -182,7 +182,7 @@ export class FiltersSelectorComponent implements OnInit {
     this.filtersChange.emit(this.filters);
   }
   ngOnInit(): void {
-    if (this.filters) {
+    if (this.filters && this.filters.length>0){
       this.selectedQuestionName = this.filters[0].question;
       this.downloadAnswers();
     }else{

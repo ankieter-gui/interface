@@ -40,7 +40,7 @@ export class LinearCustomDataChartGenerator extends AbstractChartGenerator {
         data: this.chartElement.config.handCodedData.map(d => d.secondLine?d.label + "\n" + d.secondLine:d.label)
       },
       yAxis: {
-        axisLabel: {interval: 0},
+        // axisLabel: {interval: 0},
         axisTick: {show: true},
         min: Math.round((Number(Math.min(
           ...this.chartElement.config.handCodedData.map(

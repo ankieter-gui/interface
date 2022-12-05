@@ -25,7 +25,7 @@ import {Condition, Question} from '../dataModels/SurveyDefinition';
           <td><input nz-input [(ngModel)]="condition.aid" (blur)="save()"></td>
           <td style="width:33%">
             <nz-select style="width: 100%" [(ngModel)]="condition.relation" (ngModelChange)="save()">
-              <nz-option *ngFor="let x of ['lte','gte','lt','lte','=']" [nzValue]="x" [nzLabel]="x"></nz-option>
+              <nz-option *ngFor="let x of ['lte','gte','lt','lte','=']" [nzValue]="x" [nzLabel]="getPolishLabel(x)"></nz-option>
             </nz-select>
           </td>
           <td><input nz-input [(ngModel)]="condition.value" (blur)="save()"></td>
@@ -45,7 +45,11 @@ import {Condition, Question} from '../dataModels/SurveyDefinition';
 })
 export class ConditionalSurveyQuestionSelectorComponent implements OnInit {
   @Output() saveEmitter = new EventEmitter();
-  @Input() element:Question
+  @Input() element: Question
+  getPolishLabel(name: string): string{
+    return {lte: "<=", gte: ">=", lt: "<", gt: ">", "=": "="}[name];
+  }
+
   constructor() { }
   addNew(){
    this.element.condition.push(new Condition())
@@ -54,7 +58,7 @@ export class ConditionalSurveyQuestionSelectorComponent implements OnInit {
     this.saveEmitter.emit()
   }
   ngOnInit(): void {
-    if (!this.element.condition) this.element.condition=[]
+    if (!this.element.condition) { this.element.condition = [] }
 
 
 

@@ -1,6 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import { saveAs } from 'file-saver';
+
 import {MockService} from '../../mock.service';
+import { saveAs } from 'file-saver';
+import { svgAsPngUri } from 'save-svg-as-png';
 
 import {ReportMeta, SurveyMeta} from '../../dataModels/survey';
 import {SurveysService} from '../../surveys.service';
@@ -45,7 +47,7 @@ import {SuggestionsGenerator} from '../../SuggestionsGenerator';
         </label>
         <p [style.display]="isPreview? chartData.config.showTitle?'block':'none':'block'"
            [class.title-hidden]="!chartData.config.showTitle">
-            <input nz-input [value]="this.chartData.name ? this.chartData.name : this.chartData.dataQuery.get[0][0]" [disabled]="!this.chartData.config.showTitle" (blur)="save()" [(ngModel)]="this.chartData.name" [placeholder]="this.chartData.dataQuery.get[0][0]">
+            <input *ngIf="this.chartData.dataQuery.get[0]" nz-input [value]="this.chartData.name ? this.chartData.name : this.chartData.dataQuery.get[0] ? this.chartData.dataQuery.get[0][0] : ''" [disabled]="!this.chartData.config.showTitle" (blur)="save()" [(ngModel)]="this.chartData.name" [placeholder]="this.chartData.dataQuery.get[0][0]">
 <!--          <b>{{this.chartData.name ? this.chartData.name : this.chartData.dataQuery.get[0][0]}}</b>-->
         </p>
         <p *ngIf="this.error" style="color:red;">{{this.error}}</p>
@@ -653,7 +655,9 @@ export class ChartEditorViewComponent implements OnInit {
   summarySelectedQuestions = [];
   error=''
   round(value) {
-    return Math.round(value * 100 + Number.EPSILON) / 100;
+   let x = Math.round(value * 100 + Number.EPSILON) / 100;
+   //make it 2 decimal places
+    return x.toFixed(2);
   }
 
   @Input()
@@ -865,6 +869,26 @@ export class ChartEditorViewComponent implements OnInit {
     this.refreshChart()
   }
 
+  saveAsPng(){
+    const svgString = this.chartInstance.renderToSVGString();
+    const svgString2 = this.chartInstance.getDataURL({
+      type: 'svg',
+      backgroundColor: '#fff',
+    })
+    console.log(svgString);
+    // Then, convert the SVG string to a SVG element
+    const element = document.createElement('div');
+    element.innerHTML = svgString;
+
+    // Then, convert the SVG element to a PNG image
+    svgAsPngUri(element.firstChild, {}, (uri) => {
+      // Finally, save the PNG image using the file-saver library
+      saveAs(uri, 'echarts.png');
+    });
+  }
+
+
+
   isError = false;
 
   async refreshChart(shallSave=true){
@@ -900,26 +924,7 @@ export class ChartEditorViewComponent implements OnInit {
 onChartInit(e){
   this.chartInstance=e
 }
- base64toBlob(base64Data, contentType) {
-    contentType = contentType || '';
-    var sliceSize = 1024;
-    var byteCharacters = atob(base64Data);
-    var bytesLength = byteCharacters.length;
-    var slicesCount = Math.ceil(bytesLength / sliceSize);
-    var byteArrays = new Array(slicesCount);
 
-    for (var sliceIndex = 0; sliceIndex < slicesCount; ++sliceIndex) {
-      var begin = sliceIndex * sliceSize;
-      var end = Math.min(begin + sliceSize, bytesLength);
-
-      var bytes = new Array(end - begin);
-      for (var offset = begin, i = 0; offset < end; ++i, ++offset) {
-        bytes[i] = byteCharacters[offset].charCodeAt(0);
-      }
-      byteArrays[sliceIndex] = new Uint8Array(bytes);
-    }
-   return new Blob(byteArrays, {type: contentType});
- }
 
   get filtersAsString() {
     if (this.chartData.config.filters && this.chartData.config.filters.length > 0) {
@@ -931,16 +936,7 @@ onChartInit(e){
     return 'Brak';
   }
 
-  saveAsPng() {
-
-    let src = this.chartInstance.getDataURL({
-      pixelRatio: 2,
-      backgroundColor: '#fff'
-    });
-    console.log(decodeURIComponent(src.replace(/^data:image\/(png|jpeg|jpg);base64,/, '')));
-    var blob = this.base64toBlob(decodeURIComponent(src.replace(/^data:image\/(png|jpeg|jpg);base64,/, '')), 'image/png');
-    saveAs(blob, 'wykres_' + this.chartData.name + ".png")
-  }
+ //write
 
   async downloadQueryResponse(query) {
     let _dataResponse:any;

@@ -61,7 +61,7 @@ export class MultipleChoiceChartGenerator extends AbstractChartGenerator {
       pxHeight: this.categories.length * this.horizontalBarHeight,
 
       grid: {
-        left: '0%',
+        left: '6%',
         right: '4%',
         bottom: '3%',
         top: '0%',
