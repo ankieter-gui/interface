@@ -13,3 +13,7 @@ export let breakLongLabels = (label: string, limit = 3) => {
   }
   return out.join(" ")
 }
+
+export let cutLongLabels = (label: string, limit = 40) => {
+  return label.length > limit ? label.substring(0, limit) + '...' : label;
+}

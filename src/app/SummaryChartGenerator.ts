@@ -2,7 +2,7 @@ import {AbstractChartGenerator} from './AbstractChartGenerator';
 import {ChartReportElement} from './dataModels/ReportElement';
 import {ReportsService} from './reports.service';
 import {EChartsOption} from 'echarts';
-import {breakLongLabels} from './breakLongLabels';
+import {breakLongLabels,  cutLongLabels} from './breakLongLabels';
 import {commonSubstring} from './lcs';
 import {SurveyQuery} from './dataModels/Query';
 import {OrderSetting} from './dataModels/OrderSetting';
@@ -110,7 +110,7 @@ export class SummaryChartGenerator extends AbstractChartGenerator {
         show: true,
         minorTick: {show: true},
         data: this.shortYLabels,
-        axisLabel: {formatter: (o) => breakLongLabels(o.toString(), 3), fontSize: 10, interval: 0},
+        axisLabel: {formatter: (o) => cutLongLabels(breakLongLabels(o.toString(), 3)), fontSize: 9, interval: 0},
         axisLine: {show: true},
       }
       ]
