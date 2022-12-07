@@ -47,7 +47,10 @@ import {SuggestionsGenerator} from '../../SuggestionsGenerator';
         </label>
         <p [style.display]="isPreview? chartData.config.showTitle?'block':'none':'block'"
            [class.title-hidden]="!chartData.config.showTitle">
-            <input *ngIf="this.chartData.dataQuery.get[0]" nz-input [value]="this.chartData.name ? this.chartData.name : this.chartData.dataQuery.get[0] ? this.chartData.dataQuery.get[0][0] : ''" [disabled]="!this.chartData.config.showTitle" (blur)="save()" [(ngModel)]="this.chartData.name" [placeholder]="this.chartData.dataQuery.get[0][0]">
+            <input *ngIf="this.chartData.dataQuery.get[0] && !isPreview" nz-input [value]="this.chartData.name ? this.chartData.name : this.chartData.dataQuery.get[0] ? this.chartData.dataQuery.get[0][0] : ''" [disabled]="!this.chartData.config.showTitle" (blur)="save()" [(ngModel)]="this.chartData.name" [placeholder]="this.chartData.dataQuery.get[0][0]">
+            <span *ngIf="this.chartData.dataQuery.get[0] && isPreview" style="font-weight: bold;">
+              {{this.chartData.name ? this.chartData.name : this.chartData.dataQuery.get[0] ? this.chartData.dataQuery.get[0][0] : ''}}
+            </span>
 <!--          <b>{{this.chartData.name ? this.chartData.name : this.chartData.dataQuery.get[0][0]}}</b>-->
         </p>
         <p *ngIf="this.error" style="color:red;">{{this.error}}</p>
@@ -77,7 +80,12 @@ import {SuggestionsGenerator} from '../../SuggestionsGenerator';
                 <td
                   style="white-space: nowrap; padding-right:0px!important;padding-top:0px!important;padding-bottom:0px!important;height:23px"
                   [class.leftpadding]="i>0"
-                  *ngFor="let value of row; let i=index;">{{this.reportsService.getLabelFor(namingDictionary, this.question, value) == value ? this.round(value) : this.reportsService.getLabelFor(namingDictionary, this.question, value) }}</td>
+                  *ngFor="let value of row; let i=index;">{{
+                  this.reportsService.getLabelFor(namingDictionary, this.question, value) == value ?
+                    this.round(value, chartData.generator.tableData.headers[i]) :
+                    ['share','mode'].includes(this.chartData.generator.tableData.headers[i]) ?
+                      this.reportsService.getLabelFor(namingDictionary, this.question, value):
+                      round(value,chartData.generator.tableData.headers[i]) }}</td>
               </tr>
               </tbody>
             </nz-table>
@@ -107,7 +115,11 @@ import {SuggestionsGenerator} from '../../SuggestionsGenerator';
               <tbody>
               <tr style="line-height: 1.428!important;" *ngFor="let row of this.chartData.generator.tableData.data">
                 <td style="white-space: nowrap"
-                    *ngFor="let value of row; let i =index">{{this.reportsService.getLabelFor(namingDictionary, this.question, value) == value ? this.round(value) :  ['share','mode'].includes(this.chartData.generator.tableData.headers[i]) ?this.reportsService.getLabelFor(namingDictionary, this.question, value):round(value) }}</td>
+                    *ngFor="let value of row; let i =index">{{this.reportsService.getLabelFor(namingDictionary, this.question, value) == value ?
+                  this.round(value, chartData.generator.tableData.headers[i]) :
+                  ['share','mode'].includes(this.chartData.generator.tableData.headers[i]) ?
+                    this.reportsService.getLabelFor(namingDictionary, this.question, value):
+                    round(value,chartData.generator.tableData.headers[i]) }}</td>
               </tr>
               </tbody>
             </nz-table>
@@ -654,10 +666,10 @@ export class ChartEditorViewComponent implements OnInit {
   hideGroupBy = false;
   summarySelectedQuestions = [];
   error=''
-  round(value) {
+  round(value, category="") {
    let x = Math.round(value * 100 + Number.EPSILON) / 100;
-   //make it 2 decimal places
-    return x.toFixed(2);
+    if (['mean', 'mode', 'std', 'var'].includes(category)) return x.toFixed(2);
+    return x;
   }
 
   @Input()
