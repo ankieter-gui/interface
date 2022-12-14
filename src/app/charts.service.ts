@@ -140,7 +140,6 @@ export class ChartsService {
   }
 
   generateChart(series: any, chartElement: ChartReportElement, reportId, namingDictioanry, dictionaryOverrides, localOverrides = undefined,fullQuery=undefined): EChartsOption {
-
     let [strategyType, strategy] = this.getGenerator(series, chartElement, namingDictioanry, this.reportService, dictionaryOverrides, localOverrides);
     strategy.generate();
     strategy.getAllCount(reportId,fullQuery);

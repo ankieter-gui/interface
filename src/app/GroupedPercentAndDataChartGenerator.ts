@@ -72,7 +72,6 @@ export class GroupedPercentAndDataChartGenerator extends AbstractChartGenerator 
 
     console.log(_tableData)
     this.tableData={headers:headers, data:_tableData.length>0?_tableData:[]};
-   
     this.tableData.data = this.tableData.data.length>0?transpose(this.tableData.data).reverse():[]
     return this;
   }

@@ -14,7 +14,7 @@ export class OrderSettingGenerator {
         condition:()=>{
           return generator.chartElement.config.type=="groupedPercentAndData"
         },
-        orderingFunction: (l)=>OrderGenerators.moveFirstToLast(OrderGenerators.reverse(l).order)
+        orderingFunction: (l)=>OrderGenerators.naiveSort(OrderGenerators.reverse(l).order)
       }
     ];
     for (const conditionPair of conditions) {

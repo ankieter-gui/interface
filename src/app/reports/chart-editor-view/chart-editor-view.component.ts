@@ -993,8 +993,9 @@ onChartInit(e){
   }
   echartOptions;
   generateChart(fullQuery){
+
     this.echartOptions = this.chartsService.generateChart(this.dataResponse, this.chartData, this.reportId, this.namingDictionary, this.report.dictionaryOverrides,undefined, fullQuery);
-    console.log(this.echartOptions)
+
   }
 
   assignAdvancedQueryAsConfig(){
