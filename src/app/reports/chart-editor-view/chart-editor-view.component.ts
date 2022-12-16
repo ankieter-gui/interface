@@ -367,9 +367,13 @@ import {SuggestionsGenerator} from '../../SuggestionsGenerator';
              <div style="display: flex;flex-direction: row"> <button style="margin-right:2em;" nz-button (click)="requestJSONConfig()">Pobierz JSON wykresu</button><input nz-input (blur)="assignAdvancedQueryAsConfig(); refreshChart()" [(ngModel)]="advancedQuery" placeholder="lub wklej wykres zapisany jako json">
              </div>
              </div>
-            <div  *ngIf="this.chartData.config.type!=='groupedBars'">Nazwa całego zestawu danych (np.: łącznie, razem, UAM):
+            <div>Nazwa całego zestawu danych (np.: łącznie, razem, UAM):
               <input nz-input (blur)="refreshChart(true)" placeholder="Nazwa dla zagregowanych wyników - może to być 'Razem', 'łącznie' itd"
                      [(ngModel)]="chartData.config.allTogetherLabel" value="UAM">
+            </div>
+            <div>
+              <label nz-checkbox nz-input (nzCheckedChange)="refreshChart(true)"
+                     [(ngModel)]="chartData.config.dontDisplayAllTogetherLabel">Czy schować wyniki dla całego zestawu danych? Zaznaczenie tej opcji spowoduje ukrycie kategorii "UAM" w wykresie:</label>
             </div>
             <label style="margin-top:1em;" nz-checkbox [(ngModel)]="this.parentElement.alwaysBreakAfter">Złam stronę po tym wykresie.</label>
 

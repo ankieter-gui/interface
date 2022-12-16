@@ -37,6 +37,7 @@ export class ChartConfig {
   colors? = {};
   showDataLabels?: boolean = true;
   allTogetherLabel = 'UAM';
+  dontDisplayAllTogetherLabel = false; //warunek jest odwrotny żeby nie psuć istniejących raportów
   orientation?: 'horizontal' | 'vertical' = 'horizontal';
   extraEChartLiteralObject?: EChartsOption = null;
   tableDefinition: Table = {series: []};

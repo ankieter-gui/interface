@@ -89,7 +89,7 @@ export class FrequencyChartGenerator extends AbstractChartGenerator {
       console.log(chartValuesPairs);
       let sum = 0;
       chartValuesPairs.forEach(d => sum += Number(d[1]));
-      outChartValuesPairs = [...outChartValuesPairs, [this.chartElement.config.allTogetherLabel,
+      if (!this.chartElement.config.dontDisplayAllTogetherLabel) outChartValuesPairs = [...outChartValuesPairs, [this.chartElement.config.allTogetherLabel,
         sum,
         Math.round(sum / Number(this.chartElement.config.allTogetherValue) * 100)],];
       console.log(chartValuesPairs)
@@ -102,7 +102,7 @@ export class FrequencyChartGenerator extends AbstractChartGenerator {
       }
       console.log(this.chartElement.config.allTogetherValue);
       chartValuesPairs = chartValuesPairs.sort((a, b) => a[1] - b[1]);
-      outChartValuesPairs = [...chartValuesPairs, [this.chartElement.config.allTogetherLabel,
+      if (!this.chartElement.config.dontDisplayAllTogetherLabel) outChartValuesPairs = [...chartValuesPairs, [this.chartElement.config.allTogetherLabel,
         this.chartElement.config.allTogetherValue]];
     }
 
