@@ -124,6 +124,7 @@ export abstract class AbstractChartGenerator {
     } else {
       this.series = this.rawSeries;
     }
+
   }
 
   abstract getAllCount(reportId, complimentedQuery: SurveyQuery);

@@ -914,7 +914,7 @@ export class ChartEditorViewComponent implements OnInit {
       }
       return;
     }
-    let query = this.advancedQuery ? JSON.parse(this.advancedQuery) : ComplimentQuery(this.chartData.dataQuery, this.globalFilter, this.chartData.config.filters ? this.chartData.config.filters : [this.chartData.config.filter],this.chartData.config.ignoreAnswersForCalculations)
+    let query = this.advancedQuery ? JSON.parse(this.advancedQuery) : ComplimentQuery(this.chartData.dataQuery, this.globalFilter, this.chartData.config.filters ? this.chartData.config.filters : [this.chartData.config.filter],this.chartData.config.ignoreAnswersForCalculations, this.chartData.config.dontDisplayAllTogetherLabel);
 
     if (shallSave) {
       this.chartData.lastQueryCache = query;

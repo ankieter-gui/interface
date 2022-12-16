@@ -16,7 +16,7 @@ export class SurveyQuery{
     this.filter=[]
   }
 }
-export let ComplimentQuery = (query: SurveyQuery, globalFilter: GlobalFilter[] = null, localFilter: GlobalFilter[] = null, ignore=[]): SurveyQuery => {
+export let ComplimentQuery = (query: SurveyQuery, globalFilter: GlobalFilter[] = null, localFilter: GlobalFilter[] = null, ignore=[], removeAllTogether=false): SurveyQuery => {
   let deleteDatabaseIf=false;
   if (query.join && query.join.length>0){
 
@@ -113,6 +113,9 @@ export let ComplimentQuery = (query: SurveyQuery, globalFilter: GlobalFilter[] =
   //@ts-ignore
     q2['except'] = Object.entries(exceptDict).map(x=>[x[0],'in',...x[1].flat()])
 
+  }
+  if (removeAllTogether){
+    q2['by'] = q2['by'].filter(x=>x!="*")
   }
 
   return q2;
