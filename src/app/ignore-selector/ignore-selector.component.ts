@@ -20,8 +20,8 @@ import {ReportsService} from '../reports.service';
           </thead>
           <tbody>
           <tr style="line-height: 1.428!important;" *ngFor="let row of this.selections|filterByField:1:searchString" (click)="row[0]=!row[0]; update()">
-            <td  style="cursor: pointer">  <label nz-checkbox [(ngModel)]="row[0]"></label></td>
-            <td>{{this.chart.generator.getLabelFor(this.chart.dataQuery.get[0][0], row[1])}} ({{row[1]}})</td>
+            <td  style="cursor: pointer">  <label nz-checkbox [(ngModel)]="row[0]" (nzCheckedChange)="update()" ></label></td>
+            <td  >{{this.chart.generator.getLabelFor(this.chart.dataQuery.get[0][0], row[1])}} ({{row[1]}})</td>
           </tr>
           </tbody>
         </nz-table>
