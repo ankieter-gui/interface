@@ -42,7 +42,7 @@ import {SuggestionsGenerator} from '../../SuggestionsGenerator';
                 nzShape="circle"
                 style="position: absolute;right:50px;top:-15px" (click)="saveAsPng()"><i nz-icon nzType="download"></i></button>
         <label style="margin-bottom:0.4em" nz-checkbox [(ngModel)]="this.chartData.config.showTitle" (ngModelChange)="save()"
-               *ngIf="!isPreview && (this.chartData.name||(this.chartData.dataQuery.get[0]&&this.chartData.dataQuery.get[0][0])) ">
+               *ngIf="!isPreview && (this.chartData.config.type === 'linearCustomData' || this.chartData.name||(this.chartData.dataQuery.get[0]&&this.chartData.dataQuery.get[0][0])) ">
           {{ chartData.config.showTitle ? 'Wyświetlać tytuł?' : 'Wyświetlać tytuł?' }}
         </label>
         <p [style.display]="isPreview? chartData.config.showTitle?'block':'none':'block'"
